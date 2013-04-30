@@ -2,9 +2,29 @@
 <html>
 	<head>
 		<title><%= blocks.title %></title>
-		<link rel="stylesheet" href= "/stylesheet/style.css" />
+		<link href="jQuery-ui/css/ui-lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" />
+		<script src="jQuery-ui/js/jquery-1.9.1.js" type="text/javascript"></script>
+		<script src="jQuery-ui/js/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
+
+		<script type="text/javascript">
+			$('document').ready(function () {
+
+				$('#tabs').tabs();
+			});
+			
+		</script>
 	</head>
 	<body>
+		<div id = "tabs">
+			<ul>
+				<li><a href="#a">First</a></li>
+				<li><a href="#b">Second</a></li>
+				<li><a href="#c">Third</a></li>
+			</ul>
+			<div id="a">Here is the first tab</div>
+			<div id="b">Here is the second tab</div>
+			<div id="c">Here is the third tab</div>
+		</div>
 		<%- body %>
 	</body>
 </html>
