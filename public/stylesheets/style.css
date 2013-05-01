@@ -6,3 +6,37 @@ body {
 a {
   color: #00B7FF;
 }
+
+/* styling for news tab */
+#table {
+    display: block;
+    width: 900px;
+    margin: 0 auto;
+}
+
+.tableElement {
+    display: block;
+    width: 700px;
+    height: 65px;
+    list-style: none;
+    border: 3px solid black;
+    padding: 5px;
+    margin: 10px 0px;
+}
+
+.button {
+    font-size: 10px;
+    margin-bottom: 5px;
+    display: block;
+    cursor: pointer;
+}
+
+.description {
+    position: relative;
+    display: block;
+    width: 600px;
+    height: 50px;
+    left: 65px;
+    top: -30px;
+    font-size: 15px;
+}
