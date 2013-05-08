@@ -1,3 +1,5 @@
+//model
+
 var NewsEvent = Backbone.Model.extend({
 
 	description: '',
@@ -23,6 +25,7 @@ var NewsEvent = Backbone.Model.extend({
 	}
 });
 
+//view
 var NewsTableView = Backbone.View.extend({
 
 	el: '#table',
@@ -35,12 +38,14 @@ var NewsTableView = Backbone.View.extend({
 	},
 	back: function(tableViewElement) {
 		//adds the table view element to the end of the table
+		alert('back method is called');
 		this.$el.append(tableViewElement);
 		
 	}
 
 
 });
+
 var NewsEventView = Backbone.View.extend({
 
 	tagName: 'li',
@@ -56,6 +61,8 @@ var NewsEventView = Backbone.View.extend({
 	},
 	render: function() {
 		//do thie rendering stuff here with the template
+
+		//append adds elements within the li, appended to one another
 		this.$el.addClass('tableElement');
 		this.$el.append("<div class='button remove'>Remove</div>");
 		this.$el.append("<div class='button edit'>Edit</div>");
@@ -65,7 +72,10 @@ var NewsEventView = Backbone.View.extend({
 		this.$el.draggable(
 			{
 				cursor: 'move',
-				containment: '#table'
+				containment: '#table',
+				snap: true
+				//how to allow for elements to be moved exclusively
+				//up and down the table, instead of all around
 			}
 		);
 	},
@@ -79,11 +89,19 @@ var NewsEventView = Backbone.View.extend({
 	}
 });
 
+
 //script starts here
 var testEvent = new NewsEvent({description: "This is the description for an event"});
 var testView = new NewsEventView({model : testEvent});
 
 var anotherTestEvent = new NewsEvent({description: "This is a second description for an event"});
-var anotherTestView = new NewsEvent({model: anotherTestEvent});
+var anotherTestView = new NewsEventView({model: anotherTestEvent});
 
+var andAnotherTestEvent = new NewsEvent({description: "this is a third description for an event that is happenning at the rec center"});
+var andAnotherTextView = new NewsEventView({model: andAnotherTestEvent});
 
+/*
+var table = new NewsTableView();
+table.back(testView);
+table.back(anotherTestView);
+*/
