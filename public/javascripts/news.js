@@ -8,7 +8,7 @@ var NewsEvent = Backbone.Model.extend({
 	index: 0,
 
 	initialize: function() {
-		this.description = "This is the new default description for any news";
+		
 	},
 	index: function() {
 
@@ -22,10 +22,12 @@ var NewsEvent = Backbone.Model.extend({
 	},
 	setIndex: function(newIndex) {
 		this.index = newIndex;
-	}
-	description: function(newDescription) {
-
-		this.description = newDescription;
+	},
+	getDescription: function() {
+		return this.get('description');
+	},
+	setDescription: function(description) {
+		this.set({'description': description});
 	}
 });
 
@@ -193,3 +195,5 @@ eventCollection.add([testEvent, anotherTestEvent, andAnotherTestEvent]);
 
 
 
+testEvent.setDescription('new description');
+console.log(testEvent.getDescription());
