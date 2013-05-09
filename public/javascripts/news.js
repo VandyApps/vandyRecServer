@@ -90,7 +90,6 @@ var NewsEventView = Backbone.View.extend({
 	},
 	edit: function() {
 		//allows changes to be made to the model's description
-		
 		if (this.$el.children('.edit').text() === 'Edit') {
 			var descriptionElement = this.$el.children('.description');
 			var currentText = descriptionElement.text();
@@ -121,9 +120,7 @@ var NewsEventView = Backbone.View.extend({
 		this.$el.remove();
 	},
 	onEnter: function(event) {
-		console.log("This is being called");
 		if (editMode && event.which === 13) {
-			console.log("enter was pressed");
 			this.edit();
 		}
 	}
