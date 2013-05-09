@@ -10,8 +10,8 @@ a {
 /* styling for news tab */
 #table {
     display: block;
-    width: 900px;
-    margin: 0 auto;
+    width: 770px;
+    margin: 0;
 }
 
 .tableElement {
@@ -19,9 +19,24 @@ a {
     width: 700px;
     height: 65px;
     list-style: none;
-    border: 3px solid black;
-    padding: 5px;
-    margin: 0;
+    border: 1px solid black;
+    padding: 5px 10px;
+    margin: 10px 0px;
+    border-radius: 10px;
+    
+    background-image: linear-gradient(bottom, rgb(177,174,181) 10%, rgb(240,240,240) 55%);
+    background-image: -o-linear-gradient(bottom, rgb(177,174,181) 10%, rgb(240,240,240) 55%);
+    background-image: -moz-linear-gradient(bottom, rgb(177,174,181) 10%, rgb(240,240,240) 55%);
+    background-image: -webkit-linear-gradient(bottom, rgb(177,174,181) 10%, rgb(240,240,240) 55%);
+    background-image: -ms-linear-gradient(bottom, rgb(177,174,181) 10%, rgb(240,240,240) 55%);
+
+    background-image: -webkit-gradient(
+	   linear,
+	   left bottom,
+	   left top,
+	   color-stop(0.1, rgb(177,174,181)),
+	   color-stop(0.55, rgb(240,240,240))
+    );
 }
 
 .button {

@@ -35,7 +35,6 @@ var NewsTableView = Backbone.View.extend({
 		this.$el.sortable(
 			{
 				update: function(event, ui) {
-					console.log("update was called");
 				}
 			}
 		);
