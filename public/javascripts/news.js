@@ -92,7 +92,7 @@ var NewsEventView = Backbone.View.extend({
 	},
 	delete: function() {
 		//deletes the model and removes the element from the view
-		alert('about to delete the element');
+		this.$el.remove();
 	}
 });
 
