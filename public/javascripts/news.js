@@ -8,7 +8,7 @@ var NewsEvent = Backbone.Model.extend({
 	index: 0,
 
 	initialize: function() {
-		
+		this.description = "This is the new default description for any news";
 	},
 	index: function() {
 
@@ -20,7 +20,9 @@ var NewsEvent = Backbone.Model.extend({
 	decrementIndex: function() {
 		this.index -= 1;
 	},
-
+	setIndex: function(newIndex) {
+		this.index = newIndex;
+	}
 	description: function(newDescription) {
 
 		this.description = newDescription;
@@ -35,7 +37,7 @@ var NewsEvents = Backbone.Collection.extend({
 		
 	},
 	enqueue: function() {
-		var newEvent = new NewsEvent({'description': 'please add your description here'})
+		var newEvent = new NewsEvent({description: 'Here is the default adding description'});
 		var newEventView = new NewsEventView({model: newEvent});
 		this.add(newEvent);
 	},
@@ -64,8 +66,10 @@ var NewsTableView = Backbone.View.extend({
 		//this.$el.children('.tableViewElement').on('sortreceive', (this.elementMoved).bind(this));
 		
 	},
-	front: function(tableViewElement) {
+	front: function(tableViewElement, animated) {
 		//adds the table view element to the beginning of the table
+		this.$el.prepend(tableViewElement);
+
 	},
 	back: function(tableViewElement) {
 		//adds the table view element to the end of the table
@@ -85,6 +89,7 @@ var NewsEventView = Backbone.View.extend({
 	tagName: 'li',
 	className: 'tableElement',
 	editMode: false,
+	animateEnqueue: true,
 
 	events: {
 		'dblclick .description': 'edit',
@@ -104,8 +109,16 @@ var NewsEventView = Backbone.View.extend({
 		this.$el.append("<div class='button edit'>Edit</div>");
 		this.$el.append("<div class='button remove'>Remove</div>");
 		this.$el.append("<div class='description'>" + this.model.get('description') + '</div>');
-		var table = new NewsTableView().back(this.$el);
-
+		//note that the new keyword does not make a new instance of 
+		//the table view because the table view has an element that 
+		//already exists in the html
+		if (this.animateEnqueue) {
+			this.$el.hide();
+		}
+		var table = new NewsTableView().front(this.$el);
+		if (this.animateEnqueue) {
+			this.$el.slideDown();
+		}
 		
 
 		//add events for drag and drop
@@ -149,18 +162,7 @@ var NewsEventView = Backbone.View.extend({
 });
 
 
-//script starts here
-var testEvent = new NewsEvent({description: "This is the description for an event"});
-var testView = new NewsEventView({model : testEvent});
-
-var anotherTestEvent = new NewsEvent({description: "This is a second description for an event"});
-var anotherTestView = new NewsEventView({model: anotherTestEvent});
-
-var andAnotherTestEvent = new NewsEvent({description: "this is a third description for an event that is happenning at the rec center"});
-var andAnotherTextView = new NewsEventView({model: andAnotherTestEvent});
-
-var eventCollection = new NewsEvents([testEvent, anotherTestEvent, andAnotherTestEvent]);
-
+var eventCollection = new NewsEvents([]);
 //add event to the add button 
 var addButton = $('#add');
 addButton.mousedown(function() {
@@ -175,5 +177,19 @@ addButton.click({collection : eventCollection}, function(event) {
 	//passed in
 	event.data.collection.enqueue();
 });
+
+//script starts here
+var testEvent = new NewsEvent({description: "This is the description for an event"});
+var testView = new NewsEventView({model : testEvent});
+
+var anotherTestEvent = new NewsEvent({description: "This is a second description for an event"});
+var anotherTestView = new NewsEventView({model : anotherTestEvent});
+
+var andAnotherTestEvent = new NewsEvent({description: "This is a third description for an event that is happenning at the rec center"});
+var andAnotherTextView = new NewsEventView({model : andAnotherTestEvent});
+
+eventCollection.add([testEvent, anotherTestEvent, andAnotherTestEvent]);
+
+
 
 
