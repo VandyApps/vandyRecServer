@@ -31,16 +31,29 @@ var NewsTableView = Backbone.View.extend({
 	el: '#table',
 
 	initialize: function() {
+		
+		this.$el.sortable(
+			{
+				update: function(event, ui) {
+					console.log("update was called");
+				}
+			}
+		);
 
+		//this.$el.children('.tableViewElement').on('sortreceive', (this.elementMoved).bind(this));
+		
 	},
 	front: function(tableViewElement) {
 		//adds the table view element to the beginning of the table
 	},
 	back: function(tableViewElement) {
 		//adds the table view element to the end of the table
-		alert('back method is called');
 		this.$el.append(tableViewElement);
 		
+	},
+	elementMoved: function(ui, event) {
+
+		console.log('element moved was called');
 	}
 
 
@@ -57,6 +70,7 @@ var NewsEventView = Backbone.View.extend({
 		'click .remove': 'delete'
 	},
 	initialize: function() {
+		
 		this.render();
 	},
 	render: function() {
@@ -69,15 +83,9 @@ var NewsEventView = Backbone.View.extend({
 		this.$el.append("<div class='description'>" + this.model.get('description') + '</div>');
 		var table = new NewsTableView().back(this.$el);
 
-		this.$el.draggable(
-			{
-				cursor: 'move',
-				containment: '#table',
-				snap: true
-				//how to allow for elements to be moved exclusively
-				//up and down the table, instead of all around
-			}
-		);
+		
+
+		//add events for drag and drop
 	},
 	edit: function() {
 		//allows changes to be made to the model's description
@@ -100,8 +108,3 @@ var anotherTestView = new NewsEventView({model: anotherTestEvent});
 var andAnotherTestEvent = new NewsEvent({description: "this is a third description for an event that is happenning at the rec center"});
 var andAnotherTextView = new NewsEventView({model: andAnotherTestEvent});
 
-/*
-var table = new NewsTableView();
-table.back(testView);
-table.back(anotherTestView);
-*/
