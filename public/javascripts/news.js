@@ -1,5 +1,7 @@
-//model
 
+
+
+//model
 var NewsEvent = Backbone.Model.extend({
 
 	description: '',
@@ -23,6 +25,26 @@ var NewsEvent = Backbone.Model.extend({
 
 		this.description = newDescription;
 	}
+});
+
+//collection
+var NewsEvents = Backbone.Collection.extend({
+	model: NewsEvent,
+
+	initialize: function() {
+		
+	},
+	enqueue: function() {
+		var newEvent = new NewsEvent({'description': 'please add your description here'})
+		var newEventView = new NewsEventView({model: newEvent});
+		this.add(newEvent);
+	},
+	getEventAtIndex: function(index) {
+		
+		return this.models[index];
+	}
+	
+	
 });
 
 //view
@@ -136,4 +158,22 @@ var anotherTestView = new NewsEventView({model: anotherTestEvent});
 
 var andAnotherTestEvent = new NewsEvent({description: "this is a third description for an event that is happenning at the rec center"});
 var andAnotherTextView = new NewsEventView({model: andAnotherTestEvent});
+
+var eventCollection = new NewsEvents([testEvent, anotherTestEvent, andAnotherTestEvent]);
+
+//add event to the add button 
+var addButton = $('#add');
+addButton.mousedown(function() {
+	$(this).css({'backgroundColor': 'black', 'color': 'white'});
+});
+addButton.mouseup(function() {
+	$(this).css({'backgroundColor' : 'white', 'color': 'black'});
+});
+addButton.click({collection : eventCollection}, function(event) {
+	//pass in the event as a parameter
+	//the event contains a data property, which is the object
+	//passed in
+	event.data.collection.enqueue();
+});
+
 
