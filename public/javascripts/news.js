@@ -62,11 +62,13 @@ var NewsEventView = Backbone.View.extend({
 
 	tagName: 'li',
 	className: 'tableElement',
+	editMode: false,
 
 	events: {
 		'dblclick .description': 'edit',
 		'click .edit': 'edit',
-		'click .remove': 'delete'
+		'click .remove': 'delete',
+		'keydown .description': 'onEnter'
 	},
 	initialize: function() {
 		
@@ -95,8 +97,14 @@ var NewsEventView = Backbone.View.extend({
 			descriptionElement.remove();
 
 			this.$el.append("<textarea class='description'>"+currentText+"</textarea>");
-			this.$el.children('textarea').select();
+			var textarea = this.$el.children('textarea');
+			//hilight the text area
+			textarea.select(); 
+			//bind the edit event to the text area
+			
 			this.$el.children('.edit').text('Done');
+			editMode = true;
+			
 		} else {
 			this.$el.children('.edit').text('Edit');
 			var textareaElement = this.$el.children('.description');
@@ -104,12 +112,20 @@ var NewsEventView = Backbone.View.extend({
 			textareaElement.remove();
 
 			this.$el.append("<div class='description'>"+textareaText+"</div>");
+			editMode = false;
 		}
 		
 	},
 	delete: function() {
 		//deletes the model and removes the element from the view
 		this.$el.remove();
+	},
+	onEnter: function(event) {
+		console.log("This is being called");
+		if (editMode && event.which === 13) {
+			console.log("enter was pressed");
+			this.edit();
+		}
 	}
 });
 
