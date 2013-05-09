@@ -88,7 +88,24 @@ var NewsEventView = Backbone.View.extend({
 	},
 	edit: function() {
 		//allows changes to be made to the model's description
-		alert('about to edit the element');
+		
+		if (this.$el.children('.edit').text() === 'Edit') {
+			var descriptionElement = this.$el.children('.description');
+			var currentText = descriptionElement.text();
+			descriptionElement.remove();
+
+			this.$el.append("<textarea class='description'>"+currentText+"</textarea>");
+			this.$el.children('textarea').select();
+			this.$el.children('.edit').text('Done');
+		} else {
+			this.$el.children('.edit').text('Edit');
+			var textareaElement = this.$el.children('.description');
+			var textareaText = textareaElement.val();
+			textareaElement.remove();
+
+			this.$el.append("<div class='description'>"+textareaText+"</div>");
+		}
+		
 	},
 	delete: function() {
 		//deletes the model and removes the element from the view
