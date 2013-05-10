@@ -5,6 +5,7 @@
 var NewsTableView = Backbone.View.extend({
 
 	el: '#table',
+	animate: true,
 
 	initialize: function() {
 		
@@ -35,11 +36,25 @@ var NewsTableView = Backbone.View.extend({
 		//adds the table view element to the end of the table
 		this.$el.append(tableViewElement);
 		
+	},
+	toggleAnimate: function() {
+		if (this.animate) {
+			this.animate = false;
+		} else {
+			this.animate = true;
+		}
+	},
+	shouldAnimate: function() {
+		return this.animate;
 	}
 
 
 });
 
+//create the instance of the table view
+var tableView = new NewsTableView();
+
+//view
 var NewsEventView = Backbone.View.extend({
 
 	tagName: 'li',
@@ -71,11 +86,11 @@ var NewsEventView = Backbone.View.extend({
 		//note that the new keyword does not make a new instance of 
 		//the table view because the table view has an element that 
 		//already exists in the html
-		if (this.animateEnqueue) {
+		if (tableView.shouldAnimate()) {
 			this.$el.hide();
 		}
 		var table = new NewsTableView().front(this.$el);
-		if (this.animateEnqueue) {
+		if (tableView.shouldAnimate()) {
 			this.$el.slideDown({duration:300});
 		}
 		
@@ -111,7 +126,7 @@ var NewsEventView = Backbone.View.extend({
 	},
 	delete: function() {
 		//deletes the model and removes the element from the view
-		if (this.animateDequeue) {
+		if (tableView.shouldAnimate()) {
 			this.$el.slideUp(300, function() {
 				$(this).remove();
 			});
@@ -140,5 +155,34 @@ addButton.click({collection : eventCollection}, function(event) {
 	//the event contains a data property, which is the object
 	//passed in
 	event.data.collection.enqueue();
+});
+
+//add event to animate button
+var animateButton = $('#animate');
+animateButton.mousedown(function() {
+	$(this).css({'color': 'white', 'backgroundColor': 'black'})
+});
+animateButton.mouseup(function() {
+	if (!tableView.shouldAnimate()) {
+		//change the button from green to red
+		$(this).css(
+			{
+				'backgroundColor': '#38b331',
+				'border': 'solid 3px #226b1d'
+			}
+		);
+	} else {
+		//change the button from red to green
+		$(this).css(
+			{
+				'backgroundColor': '#da3320',
+				'border': 'solid 3px #952316'
+			}
+		);
+	}
+	$(this).css({'color': 'black'});
+});
+animateButton.click(function() {
+	tableView.toggleAnimate();
 });
 

@@ -76,7 +76,7 @@ textarea {
     cursor: pointer;
     font-size: 18;
     border-radius: 5px;
-    border: 1px solid black;
+    border: 3px solid black;
     text-align: center;
     padding: 5px;
     background-color: white;
@@ -92,8 +92,8 @@ textarea {
     cursor: pointer;
     font-size: 18;
     border-radius: 5px;
-    border: 1px solid black;
+    border: 3px solid #226b1d;
     text-align: center;
     padding: 5px;
-    background-color: white;
+    background-color: #38b331;
 }

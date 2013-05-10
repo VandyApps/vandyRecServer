@@ -69,7 +69,7 @@ var NewsEvents = Backbone.Collection.extend({
 
 //script starts here
 
-var eventCollection = new NewsEvents([]);
+var eventCollection = new NewsEvents();
 
 
 
