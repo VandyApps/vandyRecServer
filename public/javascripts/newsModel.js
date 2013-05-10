@@ -52,7 +52,7 @@ var NewsEvents = Backbone.Collection.extend({
 		);
 
 		var newEventView = new NewsEventView({model: newEvent});
-		this.models.unshift(newEvent);
+		this.unshift(newEvent);
 		this.eventHistoryCount++;
 		console.log(this.models);
 	},
@@ -64,7 +64,11 @@ var NewsEvents = Backbone.Collection.extend({
 	//array of ids, which are the ids of the current
 	//elements in the li
 	resortArray: function(ids) {
-
+		var newModels = [];
+		ids.forEach(function(id) {
+			newModels.push(this.get(id));
+		}, this);
+		this.models = newModels;
 	}
 	
 	
@@ -72,7 +76,7 @@ var NewsEvents = Backbone.Collection.extend({
 
 //script starts here
 
-var eventCollection = new NewsEvents([]);
+window.eventCollection = new NewsEvents([]);
 
 
 

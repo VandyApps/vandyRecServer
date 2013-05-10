@@ -10,8 +10,20 @@ var NewsTableView = Backbone.View.extend({
 		console.log("starting initialization");
 		
 		this.$el.sortable();
-		this.$el.on("sortupdate", null, {element: this.$el}, function(event, ui) {
-			console.log("update has been called");
+
+		//add filter (2nd argument) so that this method is not called
+		//on every single element in the table view whenever sortupdate
+		//event is called.  The result of calling it on any element in the
+		//table view will be the same, only need to call it once
+		this.$el.on("sortupdate", this.$el.children()[0], {element: this.$el}, function(event, ui) {
+			//iterate through li of table view and construct an array
+			//to pass to the collection
+			var arrayOfIds = [];
+			event.data.element.children().toArray().forEach(function(child) {
+
+				arrayOfIds.push($(child).attr("id"));
+			}, arrayOfIds);
+			eventCollection.resortArray(arrayOfIds);
 		});
 		
 	},
