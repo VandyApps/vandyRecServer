@@ -6,6 +6,7 @@ var NewsEvent = Backbone.Model.extend({
 
 	description: '',
 	index: 0,
+	id: 0,
 
 	initialize: function() {
 		
@@ -39,7 +40,13 @@ var NewsEvents = Backbone.Collection.extend({
 		
 	},
 	enqueue: function() {
-		var newEvent = new NewsEvent({description: 'Here is the default adding description'});
+		var newEvent = new NewsEvent(
+			{
+				description: 'Here is the default adding description',
+				id: this.models.length,
+			}
+		);
+
 		var newEventView = new NewsEventView({model: newEvent});
 		this.add(newEvent);
 	},
@@ -69,7 +76,7 @@ var NewsTableView = Backbone.View.extend({
 		//this.$el.children('.tableViewElement').on('sortreceive', (this.elementMoved).bind(this));
 		
 	},
-	front: function(tableViewElement, animated) {
+	front: function(tableViewElement) {
 		//adds the table view element to the beginning of the table
 		this.$el.prepend(tableViewElement);
 
@@ -146,7 +153,6 @@ var NewsEventView = Backbone.View.extend({
 			var textareaElement = this.$el.children('.description');
 
 			this.model.setDescription(textareaElement.val());
-			console.log("The description in the model is now " + this.model.getDescription());
 			var textareaText = textareaElement.val();
 			textareaElement.remove();
 
@@ -174,7 +180,7 @@ var NewsEventView = Backbone.View.extend({
 
 //script starts here
 
-var eventCollection = new NewsEvents([]);
+window.eventCollection = new NewsEvents([]);
 //add event to the add button 
 var addButton = $('#add');
 addButton.mousedown(function() {
