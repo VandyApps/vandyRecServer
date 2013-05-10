@@ -32,6 +32,8 @@ app.configure('development', function(){
 
 //routes
 app.get('/', routes.login);
+app.post('/', routes.index);
+
 app.get('/home', routes.index);
 app.get('/news', routes.news);
 app.get('/hours', routes.hours);
