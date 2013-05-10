@@ -61,6 +61,7 @@ var NewsTableView = Backbone.View.extend({
 		this.$el.sortable(
 			{
 				update: function(event, ui) {
+					console.log("This method was called");
 				}
 			}
 		);
@@ -92,6 +93,7 @@ var NewsEventView = Backbone.View.extend({
 	className: 'tableElement',
 	editMode: false,
 	animateEnqueue: true,
+	animateDequeue: true,
 
 	events: {
 		'dblclick .description': 'edit',
@@ -119,7 +121,7 @@ var NewsEventView = Backbone.View.extend({
 		}
 		var table = new NewsTableView().front(this.$el);
 		if (this.animateEnqueue) {
-			this.$el.slideDown();
+			this.$el.slideDown({duration:300});
 		}
 		
 
@@ -144,6 +146,11 @@ var NewsEventView = Backbone.View.extend({
 		} else {
 			this.$el.children('.edit').text('Edit');
 			var textareaElement = this.$el.children('.description');
+
+			//instead of changing the value here, you should listen
+			//for changes in the model
+			this.model.setDescription(textareaElement.val());
+			console.log("The description in the model is now " + this.model.getDescription());
 			var textareaText = textareaElement.val();
 			textareaElement.remove();
 
@@ -154,7 +161,13 @@ var NewsEventView = Backbone.View.extend({
 	},
 	delete: function() {
 		//deletes the model and removes the element from the view
-		this.$el.remove();
+		if (this.animateDequeue) {
+			this.$el.slideUp(300, function() {
+				this.$el.remove();
+			});
+		}	else {
+			this.$el.remove();
+		}	
 	},
 	onEnter: function(event) {
 		if (editMode && event.which === 13) {
