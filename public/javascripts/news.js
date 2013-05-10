@@ -130,11 +130,9 @@ var NewsEventView = Backbone.View.extend({
 	edit: function() {
 		//allows changes to be made to the model's description
 		if (this.$el.children('.edit').text() === 'Edit') {
-			var descriptionElement = this.$el.children('.description');
-			var currentText = descriptionElement.text();
-			descriptionElement.remove();
+			this.$el.children('.description').remove();
 
-			this.$el.append("<textarea class='description'>"+currentText+"</textarea>");
+			this.$el.append("<textarea class='description'>"+this.model.getDescription()+"</textarea>");
 			var textarea = this.$el.children('textarea');
 			//hilight the text area
 			textarea.select(); 
@@ -147,8 +145,6 @@ var NewsEventView = Backbone.View.extend({
 			this.$el.children('.edit').text('Edit');
 			var textareaElement = this.$el.children('.description');
 
-			//instead of changing the value here, you should listen
-			//for changes in the model
 			this.model.setDescription(textareaElement.val());
 			console.log("The description in the model is now " + this.model.getDescription());
 			var textareaText = textareaElement.val();
@@ -176,6 +172,7 @@ var NewsEventView = Backbone.View.extend({
 	}
 });
 
+//script starts here
 
 var eventCollection = new NewsEvents([]);
 //add event to the add button 
@@ -193,20 +190,6 @@ addButton.click({collection : eventCollection}, function(event) {
 	event.data.collection.enqueue();
 });
 
-//script starts here
-var testEvent = new NewsEvent({description: "This is the description for an event"});
-var testView = new NewsEventView({model : testEvent});
-
-var anotherTestEvent = new NewsEvent({description: "This is a second description for an event"});
-var anotherTestView = new NewsEventView({model : anotherTestEvent});
-
-var andAnotherTestEvent = new NewsEvent({description: "This is a third description for an event that is happenning at the rec center"});
-var andAnotherTextView = new NewsEventView({model : andAnotherTestEvent});
-
-eventCollection.add([testEvent, anotherTestEvent, andAnotherTestEvent]);
 
 
 
-
-testEvent.setDescription('new description');
-console.log(testEvent.getDescription());
