@@ -35,9 +35,6 @@ var NewsTableView = Backbone.View.extend({
 		//adds the table view element to the end of the table
 		this.$el.append(tableViewElement);
 		
-	},
-	elementMoved: function(ui, event) {
-		//reset the order of the array in the model
 	}
 
 
