@@ -32,9 +32,13 @@ var NewsEvent = Backbone.Model.extend({
 	}
 });
 
-//collection
+//the first element in the list is at the 0 index
+//of the model and the last element is at the last 
+//index of the model
 var NewsEvents = Backbone.Collection.extend({
 	model: NewsEvent,
+	//0-based index used to generate model id's
+	eventHistoryCount: 0,
 
 	initialize: function() {
 		
@@ -43,12 +47,14 @@ var NewsEvents = Backbone.Collection.extend({
 		var newEvent = new NewsEvent(
 			{
 				description: 'Here is the default adding description',
-				id: this.models.length,
+				id: this.eventHistoryCount,
 			}
 		);
 
 		var newEventView = new NewsEventView({model: newEvent});
-		this.add(newEvent);
+		this.models.unshift(newEvent);
+		this.eventHistoryCount++;
+		console.log(this.models);
 	},
 	getEventAtIndex: function(index) {
 		
