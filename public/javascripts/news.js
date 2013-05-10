@@ -59,6 +59,11 @@ var NewsEvents = Backbone.Collection.extend({
 	getEventAtIndex: function(index) {
 		
 		return this.models[index];
+	},
+	//redetermines the order of the array based on the current
+	//order of the list items
+	resortArray: function() {
+
 	}
 	
 	
@@ -74,7 +79,7 @@ var NewsTableView = Backbone.View.extend({
 		this.$el.sortable(
 			{
 				update: function(event, ui) {
-					console.log("This method was called");
+					console.log(event);
 				}
 			}
 		);
@@ -171,9 +176,9 @@ var NewsEventView = Backbone.View.extend({
 		//deletes the model and removes the element from the view
 		if (this.animateDequeue) {
 			this.$el.slideUp(300, function() {
-				this.$el.remove();
+				$(this).remove();
 			});
-		}	else {
+		} else {
 			this.$el.remove();
 		}	
 	},
