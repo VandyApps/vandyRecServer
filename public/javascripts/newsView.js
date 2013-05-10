@@ -1,18 +1,18 @@
 
-//view
+
+//view can see the model
+
 var NewsTableView = Backbone.View.extend({
 
 	el: '#table',
 
 	initialize: function() {
+		console.log("starting initialization");
 		
-		this.$el.sortable(
-			{
-				update: function(event, ui) {
-					console.log(event);
-				}
-			}
-		);
+		this.$el.sortable();
+		this.$el.on("sortupdate", null, {element: this.$el}, function(event, ui) {
+			console.log("update has been called");
+		});
 		
 	},
 	front: function(tableViewElement) {

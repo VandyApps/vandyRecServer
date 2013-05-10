@@ -60,9 +60,10 @@ var NewsEvents = Backbone.Collection.extend({
 		
 		return this.models[index];
 	},
-	//redetermines the order of the array based on the current
-	//order of the list items
-	resortArray: function() {
+	//redetermines the order of the array based on an
+	//array of ids, which are the ids of the current
+	//elements in the li
+	resortArray: function(ids) {
 
 	}
 	
@@ -71,8 +72,7 @@ var NewsEvents = Backbone.Collection.extend({
 
 //script starts here
 
-window.eventCollection = new NewsEvents([]);
-
+var eventCollection = new NewsEvents([]);
 
 
 
