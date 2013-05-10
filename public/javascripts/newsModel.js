@@ -8,9 +8,6 @@ var NewsEvent = Backbone.Model.extend({
 	index: 0,
 	id: 0,
 
-	initialize: function() {
-		
-	},
 	index: function() {
 
 		return this.index;
@@ -40,9 +37,6 @@ var NewsEvents = Backbone.Collection.extend({
 	//0-based index used to generate model id's
 	eventHistoryCount: 0,
 
-	initialize: function() {
-		
-	},
 	enqueue: function() {
 		var newEvent = new NewsEvent(
 			{
