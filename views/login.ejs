@@ -1,5 +1,24 @@
 <!DOCTYPE html>
 <html>
-	<div id="loginWrapper">
-	</div>
+	<head>
+		<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+	</head>
+	<body>
+		<form method="post">
+			<div id="loginWrapper">
+				<div id="title">Login</div>
+				<div class="inputWrapper">
+					<span class="inputIndicator">Username:</span>
+					<input class="loginTextInput" type="text" value="username" name="username"/>
+				</div>
+				<div class="inputWrapper">
+					<span class="inputIndicator">Password:</span>
+					<input class="loginTextInput" type="text" name="password" />
+				</div>
+				<div id="submitWrapper">
+					<input id="submit" type="submit" value="Login" />
+				</div>
+			</div>
+		</form>
+	</body>
 </html>
