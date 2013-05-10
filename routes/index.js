@@ -3,10 +3,16 @@
  * GET home page.
  */
 exports.login= function(req, res) {
-	res.render('login');
+	res.render('login', {warning: ''});
 };
 exports.index = function(req, res) {
-  res.render('index');
+	var isValidLogin = false;
+	if (isValidLogin) {
+		res.render('index');
+	} else {
+		res.render('login', {warning: 'Your username or password is invalid.'})
+	}
+  	
 };
 
 exports.news = function(req, res) {
