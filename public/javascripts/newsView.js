@@ -7,7 +7,6 @@ var NewsTableView = Backbone.View.extend({
 	el: '#table',
 
 	initialize: function() {
-		console.log("starting initialization");
 		
 		this.$el.sortable();
 

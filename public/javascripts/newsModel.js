@@ -54,7 +54,6 @@ var NewsEvents = Backbone.Collection.extend({
 		var newEventView = new NewsEventView({model: newEvent});
 		this.unshift(newEvent);
 		this.eventHistoryCount++;
-		console.log(this.models);
 	},
 	getEventAtIndex: function(index) {
 		
@@ -76,7 +75,7 @@ var NewsEvents = Backbone.Collection.extend({
 
 //script starts here
 
-window.eventCollection = new NewsEvents([]);
+var eventCollection = new NewsEvents([]);
 
 
 
