@@ -6,7 +6,7 @@ exports.login= function(req, res) {
 	res.render('login', {warning: ''});
 };
 exports.index = function(req, res) {
-	var isValidLogin = false;
+	var isValidLogin = true;
 	if (isValidLogin) {
 		res.render('index');
 	} else {

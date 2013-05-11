@@ -8,6 +8,7 @@
   "dependencies": {
     "express": "3.0.6",
     "ejs": "*",
-    "ejs-locals": "*"
+    "ejs-locals": "*",
+    "passport": "*"
   }
 }
