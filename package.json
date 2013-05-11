@@ -9,6 +9,7 @@
     "express": "3.0.6",
     "ejs": "*",
     "ejs-locals": "*",
-    "passport": "*"
+    "passport": "*",
+    "passport-local": "*"
   }
 }

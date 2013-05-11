@@ -8,7 +8,8 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
-  , engine = require('ejs-locals');
+  , engine = require('ejs-locals')
+  , passport = require('passport');
 
 var app = express();
 
