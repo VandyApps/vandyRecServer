@@ -26,7 +26,7 @@ app.configure(function(){
   app.use(express.favicon());
   app.use(express.cookieParser());
   //session middleware needs to be called after the cookie parder middleware
-  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(express.session({ secret: 'secretSessionKey' }));
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(express.logger('dev'));
@@ -50,18 +50,11 @@ passport.use(new LocalStrategy( function(username, password, done) {
 }));
 
 //routes
-app.get('/', function(req, res) {
-  res.render('login', {warning: ''});
-});
+app.get('/', routes.login);
 
-app.post('/', passport.authenticate('local', {failureRedirect: '/'}) , function(req, res) {
-  res.render('index');
-});
+app.post('/', passport.authenticate('local', {failureRedirect: '/'}) , routes.index);
 
-app.get('/home', function(req, res) {
-
-  res.render('home');
-});
+app.get('/home', routes.index);
 
 //client routing
 app.get('/news', routes.news);
