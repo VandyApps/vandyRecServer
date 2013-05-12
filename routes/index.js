@@ -2,16 +2,11 @@
 /*
  * GET home page.
  */
-exports.login= function(req, res) {
+exports.login = function(req, res) {
 	res.render('login', {warning: ''});
 };
 exports.index = function(req, res) {
-	var isValidLogin = true;
-	if (isValidLogin) {
-		res.render('index');
-	} else {
-		res.render('login', {warning: 'Your username or password is invalid.'})
-	}
+	res.render('index');
   	
 };
 
