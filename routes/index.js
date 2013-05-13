@@ -19,12 +19,10 @@ exports.index = function(req, res) {
 };
 
 exports.news = function(req, res) {
-	var news;
 	db.newsCollection(function(collection) {
-		news = collection;
+		console.log(collection);
+		res.render('news', {news: JSON.stringify(collection)});
 	});
-	console.log(news);
-	res.render('news', {news: news});
 
 };
 exports.hours = function(req, res) {

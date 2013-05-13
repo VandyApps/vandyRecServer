@@ -81,6 +81,10 @@ textarea {
 }
 
 /* styling for news tab */
+
+#newsData {
+    display: none;
+}
 #table {
     display: block;
     width: 770px;

@@ -75,11 +75,6 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
-//test the db here
-db.newsCollection(function(collection) {
-  console.log(collection);
-});
-
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
