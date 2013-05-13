@@ -2,6 +2,9 @@
 /*
  * GET home page.
  */
+
+var db = require('../db');
+
 exports.login = function(req, res) {
 	res.render('login', {warning: ''});
 	
@@ -16,7 +19,12 @@ exports.index = function(req, res) {
 };
 
 exports.news = function(req, res) {
-	res.render('news');
+	var news;
+	db.newsCollection(function(collection) {
+		news = collection;
+	});
+	console.log(news);
+	res.render('news', {news: news});
 
 };
 exports.hours = function(req, res) {
