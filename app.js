@@ -14,7 +14,7 @@ var express = require('express')
 
 var app = express();
 
-user = {username: "Brendan",
+var user = {username: "Brendan",
         password: "Brendan"};
 
 
