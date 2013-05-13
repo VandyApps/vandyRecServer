@@ -185,4 +185,3 @@ animateButton.mouseup(function() {
 animateButton.click(function() {
 	tableView.toggleAnimate();
 });
-

@@ -67,9 +67,14 @@ var NewsEvents = Backbone.Collection.extend({
 	
 });
 
+
+
+
 //script starts here
 
+//create collection variable
 var eventCollection = new NewsEvents();
+
 
 
 
