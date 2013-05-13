@@ -10,7 +10,8 @@ var express = require('express')
   , path = require('path')
   , engine = require('ejs-locals')
   , passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+  , LocalStrategy = require('passport-local').Strategy
+  , db = require('./db');
 
 var app = express();
 
@@ -65,8 +66,6 @@ app.get('/intramurals', routes.intramurals);
 app.get('/programs', routes.programs);
 
 
-//app.get('/users', user.list);
-
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -76,6 +75,10 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
+//test the db here
+db.newsCollection(function(collection) {
+  console.log(collection);
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
