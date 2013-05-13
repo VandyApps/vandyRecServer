@@ -4,6 +4,11 @@
  */
 exports.login = function(req, res) {
 	res.render('login', {warning: ''});
+	
+};
+
+exports.loginError = function(req, res) {
+	res.render('login', {warning: 'Login attempt failed due to incorrect credentials'});
 };
 exports.index = function(req, res) {
 	res.render('index');

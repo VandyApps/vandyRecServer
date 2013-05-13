@@ -52,10 +52,10 @@ passport.use(new LocalStrategy( function(username, password, done) {
 //routes
 app.get('/', routes.login);
 
-app.post('/', passport.authenticate('local', {failureRedirect: '/'}) , routes.index);
+app.post('/', passport.authenticate('local', {failureRedirect: '/login'}) , routes.index);
 
 app.get('/home', routes.index);
-
+app.get('/login', routes.loginError);
 //client routing
 app.get('/news', routes.news);
 app.get('/hours', routes.hours);
