@@ -46,6 +46,7 @@ var NewsEvents = Backbone.Collection.extend({
 	model: NewsEvent,
 	//this variable holds the next ID available to assign to an event
 	IDOnQueue: 0,
+	url: '/JSON/news',
 
 	//this method is for adding and generating brand new models to the
 	//collection
@@ -92,7 +93,7 @@ var NewsEvents = Backbone.Collection.extend({
 			newModels.push(this.getEventWithID(id));
 		}, this);
 		
-		this.reset(newModels);
+		this.reset(newModels, {silent: true});
 
 		this.resetPriorityNumbers();
 	},
@@ -148,6 +149,7 @@ var NewsEvents = Backbone.Collection.extend({
 
 //create collection variable
 window.eventCollection = new NewsEvents();
+
 
 
 

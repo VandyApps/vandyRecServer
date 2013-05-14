@@ -24,6 +24,9 @@ var NewsTableView = Backbone.View.extend({
 			}, arrayOfIds);
 			eventCollection.resortArray(arrayOfIds);
 		});
+		eventCollection.on('reset', function() {
+			console.log("reset was called");
+		});
 		
 	},
 	front: function(tableViewElement) {
@@ -198,3 +201,5 @@ animateButton.mouseup(function() {
 animateButton.click(function() {
 	tableView.toggleAnimate();
 });
+
+
