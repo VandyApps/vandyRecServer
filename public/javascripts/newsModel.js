@@ -37,6 +37,8 @@ var NewsEvents = Backbone.Collection.extend({
 	//this variable holds the next ID available to assign to an event
 	IDOnQueue: 0,
 
+	//this method is for adding and generating brand new models to the
+	//collection
 	enqueue: function() {
 		var newEvent = new NewsEvent(
 			{
@@ -63,8 +65,15 @@ var NewsEvents = Backbone.Collection.extend({
 		}, this);
 		this.models = newModels;
 	},
+	//use this method instead of push so that other configurations
+	//can be taken care of
+	//this method is for adding elements to the collection that already exist
+	//event should already have an ID and a description
 	back: function(event) {
-
+		var eventID = event.get('id');
+		if (eventID >= this.IDOnQueue) {
+			this.IDOnQueue = eventID + 1;
+		}
 		this.models.push(event);
 	}
 	
