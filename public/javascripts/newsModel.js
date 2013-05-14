@@ -93,6 +93,7 @@ var NewsEvents = Backbone.Collection.extend({
 			newModels.push(this.getEventWithID(id));
 		}, this);
 		
+		//reset event should only be called during server fetching
 		this.reset(newModels, {silent: true});
 
 		this.resetPriorityNumbers();

@@ -24,9 +24,21 @@ var NewsTableView = Backbone.View.extend({
 			}, arrayOfIds);
 			eventCollection.resortArray(arrayOfIds);
 		});
+
+
+		//make sure that the reset event is only being called during server syncing
 		eventCollection.on('reset', function() {
-			console.log("reset was called");
-		});
+			
+			//must remove all elements from the table view first
+
+			//add new elements fetched from the server
+			
+			console.log(eventCollection.models.length);
+			eventCollection.models.forEach(function(model) {
+
+			}, this);
+
+		}, this);
 		
 	},
 	front: function(tableViewElement) {
