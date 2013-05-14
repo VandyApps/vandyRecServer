@@ -21,7 +21,7 @@ var NewsTableView = Backbone.View.extend({
 			var arrayOfIds = [];
 			event.data.element.children().toArray().forEach(function(child) {
 				console.log($(child).attr("id"));
-				arrayOfIds.push(parseInt($(child).attr("id"), 10));
+				this.push(parseInt($(child).attr("id"), 10));
 			}, arrayOfIds);
 			eventCollection.resortArray(arrayOfIds);
 		});
@@ -63,6 +63,7 @@ var NewsEventView = Backbone.View.extend({
 	id: '',
 	className: 'tableElement',
 	editMode: false,
+	//if this is false, then elements are prepended to the table view
 	appendToTableView: false,
 
 	events: {

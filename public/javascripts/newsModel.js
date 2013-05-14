@@ -54,17 +54,19 @@ var NewsEvents = Backbone.Collection.extend({
 		this.IDOnQueue++;
 		return newEvent;
 	},
+	//index must be of type number
 	getEventAtIndex: function(index) {
 		
 		return this.models[index];
 	},
+	//id must be of type number
 	getEventWithID: function(id) {
 		var eventModel;
-		console.log("Checking for id " + id + " of type " + typeof id);
+		
 		this.models.forEach(function(event) {
-			console.log("ID is " + event.get('id') + " and type of Id is " + typeof event.get('id'));
+			
 			if (event.get('id') === id) {
-				console.log('found the model');
+				
 				eventModel = event;
 				return;
 			}
@@ -77,8 +79,6 @@ var NewsEvents = Backbone.Collection.extend({
 	resortArray: function(ids) {
 		var newModels = [];
 		ids.forEach(function(id) {
-			console.log("for each loop running on id:" + id);
-			console.log("Found the event for this id" + this.getEventWithID(id));
 			newModels.push(this.getEventWithID(id));
 		}, this);
 		console.log(JSON.stringify(newModels));
@@ -100,7 +100,6 @@ var NewsEvents = Backbone.Collection.extend({
 	create: function(eventData) {
 
 		var eventID = eventData.newsID;
-		console.log(this.IDOnQueue);
 		if (eventID >= this.IDOnQueue) {
 			this.IDOnQueue = eventID + 1;
 		}
@@ -113,7 +112,6 @@ var NewsEvents = Backbone.Collection.extend({
 			}
 		)
 		this.models.push(newNewsEvent);
-		var newEventView = new NewsEventView({model: newNewsEvent});
 		return newNewsEvent;
 	}
 	
