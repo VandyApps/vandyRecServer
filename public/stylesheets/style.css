@@ -138,7 +138,7 @@ textarea {
     width: 580px;
     height: 50px;
     left: 50px;
-    top: -30px;
+    top: -40px;
     font-size: 15px;
 }
 
@@ -146,7 +146,7 @@ textarea {
     display: block;
     position: relative;
     width: 90px;
-    top: -65px;
+    top: -10px;
     left: 650px;
     font-size: 10px;
     color: red;
