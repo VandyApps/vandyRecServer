@@ -105,7 +105,11 @@ var NewsEvents = Backbone.Collection.extend({
 		this.models.push(event);
 	},
 	delete: function(eventID) {
-		this.remove(this.getEventWithID(eventID));
+		var deletedEvent = this.getEventWithID(eventID);
+		deletedEvent.destroy();
+		this.remove(deletedEvent);
+		
+		console.log('event was destroyed');
 	},
 	//pass in data from the server for a single event
 	//adds the data to the end of the models array

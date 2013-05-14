@@ -6,7 +6,7 @@ var mongodb = require('mongodb'),
 var dbName = "recDB";
 var dbPort = mongodb.Connection.DEFAULT_PORT;
 
-var newsCollection = 'news';
+var newsCol = 'news';
 
 console.log(dbPort);
 db = new Db(dbName, new Server('localhost', dbPort), {safe: true}); //what is safe?
@@ -25,7 +25,7 @@ db.open(function(err, db) {
 */
 exports.newsCollection = function(callback) {
 	db.open(function(err, db) {
-		var collection = db.collection(newsCollection);
+		var collection = db.collection(newsCol);
 		collection.find(function(err, cursor) {
 			cursor.toArray(function(err, collection) {
 				callback(collection);

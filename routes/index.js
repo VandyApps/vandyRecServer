@@ -32,7 +32,9 @@ exports.updateNews = function(req, res) {
 
 
 exports.deleteNews = function(req, res) {
-
+	console.log('delete method on server was called');
+	console.log(req.body);
+	res.send('nothing to send yet');
 }
 exports.hours = function(req, res) {
 

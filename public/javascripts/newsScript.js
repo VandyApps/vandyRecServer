@@ -1,3 +1,4 @@
+/*
 var newsData = $('#newsData').text();
 
 window.newsArray = JSON.parse(newsData);
@@ -12,5 +13,5 @@ newsArray.forEach(function(event) {
 	var newsEvent = eventCollection.create(event);
 	var newEventView = new NewsEventView({model: newsEvent, appendToTableView: true});
 });
-
+*/
 

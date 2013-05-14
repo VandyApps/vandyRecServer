@@ -11,7 +11,8 @@ var express = require('express')
   , engine = require('ejs-locals')
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
-  , db = require('./db');
+  , db = require('./db')
+  , data = require('./routes/data');
 
 var app = express();
 
@@ -69,7 +70,8 @@ app.get('/traffic', routes.traffic);
 app.get('/intramurals', routes.intramurals);
 app.get('/programs', routes.programs);
 
-
+//JSON data for all the tabs
+app.get('/JSON/news', data.news);
 
 passport.serializeUser(function(user, done) {
   done(null, user);
