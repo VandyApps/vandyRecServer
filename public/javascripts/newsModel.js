@@ -44,7 +44,8 @@ var NewsEvents = Backbone.Collection.extend({
 		var newEvent = new NewsEvent(
 			{
 				description: 'Here is the default adding description',
-				id: this.IDOnQueue,
+				author: 'No author',
+				id: this.IDOnQueue
 			}
 		);
 

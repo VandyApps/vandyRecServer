@@ -85,7 +85,8 @@ var NewsEventView = Backbone.View.extend({
 		this.$el.addClass('tableElement');
 		this.$el.append("<div class='button edit'>Edit</div>");
 		this.$el.append("<div class='button remove'>Remove</div>");
-		this.$el.append("<div class='description'>" + this.model.get('description') + '</div>');
+		this.$el.append("<div class='description'>" + this.model.getDescription() + '</div>');
+		this.$el.append("<div class='author'>" + this.model.get('author') + "</div>");
 		//note that the new keyword does not make a new instance of 
 		//the table view because the table view has an element that 
 		//already exists in the html

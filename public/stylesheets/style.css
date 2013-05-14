@@ -93,7 +93,7 @@ textarea {
 
 .tableElement {
     display: block;
-    width: 700px;
+    width: 750px;
     height: 65px;
     list-style: none;
     border: 1px solid black;
@@ -128,18 +128,28 @@ textarea {
 .remove {
     position: relative;
     top: -17px;
-    left: 658px;
+    left: 708px;
     text-align: right;
 }
 
 .description {
     position: relative;
     display: block;
-    width: 600px;
+    width: 580px;
     height: 50px;
     left: 50px;
     top: -30px;
     font-size: 15px;
+}
+
+.author {
+    display: block;
+    position: relative;
+    width: 90px;
+    top: -65px;
+    left: 650px;
+    font-size: 10px;
+    color: red;
 }
 
 #add {
@@ -147,7 +157,7 @@ textarea {
     height: 20px;
     width: 40px;
     position: relative;
-    left: 800px;
+    left: 830px;
     cursor: pointer;
     font-size: 18;
     border-radius: 5px;
@@ -163,7 +173,7 @@ textarea {
     width: 100px;
     position: relative;
     top: 5px;
-    left: 800px;
+    left: 830px;
     cursor: pointer;
     font-size: 18;
     border-radius: 5px;
