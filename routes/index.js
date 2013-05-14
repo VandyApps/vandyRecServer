@@ -30,10 +30,7 @@ exports.updateNews = function(req, res) {
 	res.send('nothing to send yet');
 };
 
-exports.createNews = function(req, res) {
-	console.log(req.body);
-	res.send('nothing to send yet');
-};
+
 exports.deleteNews = function(req, res) {
 
 }
