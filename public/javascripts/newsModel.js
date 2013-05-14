@@ -62,6 +62,10 @@ var NewsEvents = Backbone.Collection.extend({
 			newModels.push(this.get(id));
 		}, this);
 		this.models = newModels;
+	},
+	back: function(event) {
+
+		this.models.push(event);
 	}
 	
 	
@@ -73,7 +77,7 @@ var NewsEvents = Backbone.Collection.extend({
 //script starts here
 
 //create collection variable
-var eventCollection = new NewsEvents();
+window.eventCollection = new NewsEvents();
 
 
 
