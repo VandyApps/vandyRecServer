@@ -23,8 +23,16 @@ exports.news = function(req, res) {
 		console.log(collection);
 		res.render('news', {news: JSON.stringify(collection)});
 	});
-
 };
+
+exports.updateNews = function(req, res) {
+	console.log(req.body);
+	res.send('nothing to send yet');
+};
+
+exports.deleteNews = function(req, res) {
+
+}
 exports.hours = function(req, res) {
 
 	res.render('hours')

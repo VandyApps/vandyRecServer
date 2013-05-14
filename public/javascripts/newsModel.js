@@ -8,6 +8,7 @@ var NewsEvent = Backbone.Model.extend({
 	author: '',
 	index: 0,
 	id: 0,
+	url: '/news',
 
 	index: function() {
 
@@ -27,6 +28,7 @@ var NewsEvent = Backbone.Model.extend({
 	},
 	setDescription: function(description) {
 		this.set({'description': description});
+		this.save();
 	}
 });
 

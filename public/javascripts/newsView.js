@@ -108,8 +108,6 @@ var NewsEventView = Backbone.View.extend({
 			this.$el.slideDown({duration:300});
 		}
 		
-
-		//add events for drag and drop
 	},
 	edit: function() {
 		//allows changes to be made to the model's description

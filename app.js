@@ -59,6 +59,9 @@ app.get('/home', routes.index);
 app.get('/login', routes.loginError);
 //client routing
 app.get('/news', routes.news);
+app.put('/news', routes.updateNews);
+app.delete('/news', routes.deleteNews);
+
 app.get('/hours', routes.hours);
 app.get('/groupFitness', routes.groupFitness);
 app.get('/traffic', routes.traffic);
