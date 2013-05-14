@@ -73,6 +73,7 @@ var NewsEvents = Backbone.Collection.extend({
 	//event should already have an ID and a description
 	back: function(event) {
 		var eventID = event.get('id');
+		console.log(this.IDOnQueue);
 		if (eventID >= this.IDOnQueue) {
 			this.IDOnQueue = eventID + 1;
 		}

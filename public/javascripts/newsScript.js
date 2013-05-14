@@ -16,7 +16,7 @@ newsArray.forEach(function(event) {
 
 	var anEventView = new NewsEventView({model: anEvent, appendToTableView: true});
 
-	eventCollection.models.push(anEvent);
+	eventCollection.back(anEvent);
 });
 
 
