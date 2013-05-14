@@ -7,6 +7,7 @@ var NewsEvent = Backbone.Model.extend({
 	description: '',
 	author: '',
 	index: 0,
+	priorityNumber: 0,
 	newsID: 0,
 	url: '/news',
 
@@ -29,6 +30,12 @@ var NewsEvent = Backbone.Model.extend({
 	setDescription: function(description) {
 		this.set({'description': description});
 		this.save();
+	},
+	getPriorityNumber: function() {
+		return this.get('priorityNumber');
+	},
+	setPriorityNumber: function(newPriorityNumber) {
+		this.set('priorityNumber', newPriorityNumber);
 	}
 });
 
@@ -83,8 +90,13 @@ var NewsEvents = Backbone.Collection.extend({
 		ids.forEach(function(id) {
 			newModels.push(this.getEventWithID(id));
 		}, this);
-		console.log(JSON.stringify(newModels));
+		
 		this.reset(newModels);
+
+		//must reset the priority number in each of the models
+		for (var nextIndex in this.models) {
+			this.models[nextIndex].setPriorityNumber(nextIndex);
+		}
 	},
 	//use this method instead of push so that other configurations
 	//can be taken care of
@@ -110,7 +122,8 @@ var NewsEvents = Backbone.Collection.extend({
 			{
 				description: eventData.description,
 				author: eventData.author,
-				newsID: eventData.newsID
+				newsID: eventData.newsID,
+				priorityNumber: eventData.priorityNumber
 			}
 		)
 		this.models.push(newNewsEvent);

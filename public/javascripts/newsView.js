@@ -20,7 +20,6 @@ var NewsTableView = Backbone.View.extend({
 			//if ID's to pass to the collection
 			var arrayOfIds = [];
 			event.data.element.children().toArray().forEach(function(child) {
-				console.log($(child).attr("id"));
 				this.push(parseInt($(child).attr("id"), 10));
 			}, arrayOfIds);
 			eventCollection.resortArray(arrayOfIds);
@@ -30,12 +29,10 @@ var NewsTableView = Backbone.View.extend({
 	front: function(tableViewElement) {
 		//adds the table view element to the beginning of the table
 		this.$el.prepend(tableViewElement);
-		console.log("prepended");
 
 	},
 	back: function(tableViewElement) {
 		//adds the table view element to the end of the table
-		console.log("appended");
 		this.$el.append(tableViewElement);
 		
 	},
