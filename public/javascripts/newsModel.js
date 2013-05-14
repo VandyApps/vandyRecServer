@@ -61,6 +61,7 @@ var NewsEvents = Backbone.Collection.extend({
 		//var newEventView = new NewsEventView({model: newEvent});
 		this.unshift(newEvent);
 		this.IDOnQueue++;
+		this.resetPriorityNumbers();
 		return newEvent;
 	},
 	//index must be of type number
@@ -93,10 +94,7 @@ var NewsEvents = Backbone.Collection.extend({
 		
 		this.reset(newModels);
 
-		//must reset the priority number in each of the models
-		for (var nextIndex in this.models) {
-			this.models[nextIndex].setPriorityNumber(nextIndex);
-		}
+		this.resetPriorityNumbers();
 	},
 	//use this method instead of push so that other configurations
 	//can be taken care of
@@ -128,6 +126,12 @@ var NewsEvents = Backbone.Collection.extend({
 		)
 		this.models.push(newNewsEvent);
 		return newNewsEvent;
+	},
+	resetPriorityNumbers: function() {
+		//must reset the priority number in each of the models
+		for (var nextIndex in this.models) {
+			this.models[nextIndex].setPriorityNumber(nextIndex);
+		}
 	}
 	
 	
