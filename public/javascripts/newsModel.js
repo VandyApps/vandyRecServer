@@ -5,6 +5,7 @@
 var NewsEvent = Backbone.Model.extend({
 
 	description: '',
+	author: '',
 	index: 0,
 	id: 0,
 
