@@ -17,11 +17,11 @@ var NewsTableView = Backbone.View.extend({
 		//table view will be the same, only need to call it once
 		this.$el.on("sortupdate", this.$el.children()[0], {element: this.$el}, function(event, ui) {
 			//iterate through li of table view and construct an array
-			//to pass to the collection
+			//if ID's to pass to the collection
 			var arrayOfIds = [];
 			event.data.element.children().toArray().forEach(function(child) {
-
-				arrayOfIds.push($(child).attr("id"));
+				console.log($(child).attr("id"));
+				arrayOfIds.push(parseInt($(child).attr("id"), 10));
 			}, arrayOfIds);
 			eventCollection.resortArray(arrayOfIds);
 		});
@@ -30,10 +30,12 @@ var NewsTableView = Backbone.View.extend({
 	front: function(tableViewElement) {
 		//adds the table view element to the beginning of the table
 		this.$el.prepend(tableViewElement);
+		console.log("prepended");
 
 	},
 	back: function(tableViewElement) {
 		//adds the table view element to the end of the table
+		console.log("appended");
 		this.$el.append(tableViewElement);
 		
 	},
@@ -137,6 +139,8 @@ var NewsEventView = Backbone.View.extend({
 	},
 	delete: function() {
 		//deletes the model and removes the element from the view
+		//remove the element from the collection
+		eventCollection.delete(parseInt(this.$el.attr('id'), 10));
 		if (tableView.shouldAnimate()) {
 			this.$el.slideUp(300, function() {
 				$(this).remove();
@@ -165,7 +169,9 @@ addButton.click({collection : eventCollection}, function(event) {
 	//pass in the event as a parameter
 	//the event contains a data property, which is the object
 	//passed in
-	event.data.collection.enqueue();
+
+	var newEvent = event.data.collection.enqueue();
+	var newsEventView = new NewsEventView({model: newEvent});
 });
 
 //add event to animate button
