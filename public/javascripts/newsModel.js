@@ -34,20 +34,20 @@ var NewsEvent = Backbone.Model.extend({
 //index of the model
 var NewsEvents = Backbone.Collection.extend({
 	model: NewsEvent,
-	//0-based index used to generate model id's
-	eventHistoryCount: 0,
+	//this variable holds the next ID available to assign to an event
+	IDOnQueue: 0,
 
 	enqueue: function() {
 		var newEvent = new NewsEvent(
 			{
 				description: 'Here is the default adding description',
-				id: this.eventHistoryCount,
+				id: this.IDOnQueue,
 			}
 		);
 
 		var newEventView = new NewsEventView({model: newEvent});
 		this.unshift(newEvent);
-		this.eventHistoryCount++;
+		this.IDOnQueue++;
 	},
 	getEventAtIndex: function(index) {
 		
