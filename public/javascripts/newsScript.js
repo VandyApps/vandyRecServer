@@ -9,9 +9,8 @@ newsArray.sort(function(newsA, newsB) {
 //add the array to the table view via backbone objects
 //add the array to the event collection
 newsArray.forEach(function(event) {
-	console.log("loop is called");
 	var anEvent = new NewsEvent({description: event.description});
-	var anEventView = new NewsEventView({model: anEvent});
+	var anEventView = new NewsEventView({model: anEvent, appendToTableView: true});
 
 	eventCollection.models.push(anEvent);
 });

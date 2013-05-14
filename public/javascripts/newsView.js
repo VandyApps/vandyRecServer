@@ -61,8 +61,7 @@ var NewsEventView = Backbone.View.extend({
 	id: '',
 	className: 'tableElement',
 	editMode: false,
-	animateEnqueue: true,
-	animateDequeue: true,
+	appendToTableView: false,
 
 	events: {
 		'dblclick .description': 'edit',
@@ -70,8 +69,12 @@ var NewsEventView = Backbone.View.extend({
 		'click .remove': 'delete',
 		'keydown .description': 'onEnter'
 	},
-	initialize: function() {
-		
+	initialize: function(attrs) {
+		//is there an alternative to manually setting it
+		if (typeof attrs.appendToTableView !== "undefined") {
+			this.appendToTableView = attrs.appendToTableView;
+		}
+
 		this.render();
 	},
 	render: function() {
@@ -89,7 +92,13 @@ var NewsEventView = Backbone.View.extend({
 		if (tableView.shouldAnimate()) {
 			this.$el.hide();
 		}
-		var table = new NewsTableView().front(this.$el);
+		console.log(this.appendToTableView);
+		if (this.appendToTableView) {
+			tableView.back(this.$el);
+		} else {
+			tableView.front(this.$el);
+		}
+		
 		if (tableView.shouldAnimate()) {
 			this.$el.slideDown({duration:300});
 		}
