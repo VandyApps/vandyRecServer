@@ -7,7 +7,7 @@ var NewsEvent = Backbone.Model.extend({
 	description: '',
 	author: '',
 	index: 0,
-	id: 0,
+	newsID: 0,
 	url: '/news',
 
 	index: function() {
@@ -47,7 +47,7 @@ var NewsEvents = Backbone.Collection.extend({
 			{
 				description: 'Here is the default adding description',
 				author: 'No author',
-				id: this.IDOnQueue
+				newsID: this.IDOnQueue
 			}
 		);
 
@@ -67,7 +67,7 @@ var NewsEvents = Backbone.Collection.extend({
 		
 		this.models.forEach(function(event) {
 			
-			if (event.get('id') === id) {
+			if (event.get('newsID') === id) {
 				
 				eventModel = event;
 				return;
@@ -110,7 +110,7 @@ var NewsEvents = Backbone.Collection.extend({
 			{
 				description: eventData.description,
 				author: eventData.author,
-				id: eventData.newsID
+				newsID: eventData.newsID
 			}
 		)
 		this.models.push(newNewsEvent);

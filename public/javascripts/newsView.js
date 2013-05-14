@@ -84,7 +84,7 @@ var NewsEventView = Backbone.View.extend({
 		//do thie rendering stuff here with the template
 
 		//append adds elements within the li, appended to one another
-		this.$el.attr("id", this.model.id);
+		this.$el.attr("id", this.model.get('newsID'));
 		this.$el.addClass('tableElement');
 		this.$el.append("<div class='button edit'>Edit</div>");
 		this.$el.append("<div class='button remove'>Remove</div>");
