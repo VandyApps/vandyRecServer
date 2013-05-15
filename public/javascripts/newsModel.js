@@ -39,9 +39,9 @@ var NewsEvent = Backbone.Model.extend({
 		this.set('priorityNumber', newPriorityNumber);
 	},
 	//should call this method instead of save
+	//any customization to save process should go in here
 	saveAndUpdate: function() {
 		
-		var self = this;
 		this.save(
 		{},
 		{
@@ -51,10 +51,8 @@ var NewsEvent = Backbone.Model.extend({
 				
 			},
 			error: function() {
-				console.log("error when trying to save");
+				alert('There was an error saving your updates to the server');
 			}
-		}).done(function() {
-			console.log(self.id);
 		});
 		
 		

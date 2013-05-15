@@ -20,7 +20,6 @@ exports.index = function(req, res) {
 
 exports.news = function(req, res) {
 	db.newsCollection(function(collection) {
-		console.log(collection);
 		res.render('news', {news: JSON.stringify(collection)});
 	});
 };
@@ -30,7 +29,6 @@ exports.createNews = function(req, res) {
 	db.addNewsElement(req.body, function(err, result) {
 		
 		if (!err) {
-			console.log(JSON.stringify(result));
 			res.send(JSON.stringify(result));
 		} else {
 			res.send(null);
