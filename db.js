@@ -46,12 +46,12 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 	//NOTE: db.close() should be nested inside the callback functions
 	//so that the database does not close before operations are complete!!!
 	_db.open(function(err, db) {
-		console.log("Inside method with error " + err);
+		
 		var parsedID = new ObjectID.createFromHexString(mongoID);
 		db.collection(newsCol, function(err, collection) {
-			console.log("Inside collection method with err " + err);
+			
 			collection.remove({_id : parsedID}, {w: 1}, function(err, numberRemoved) {
-				console.log("number removed is " + numberRemoved);
+				
 				if (numberRemoved === 1) {
 					callback(err, mongoID);
 				} else {
@@ -72,9 +72,6 @@ exports.addNewsElement = function(model, callback) {
 		db.collection(newsCol, function(err, collection) {
 
 			collection.insert(model, {w:1}, function(err, doc) {
-				console.log("Inside the insert method");
-				
-				
 				callback(err, doc[0]);
 				db.close();
 
@@ -87,12 +84,12 @@ exports.addNewsElement = function(model, callback) {
 //callback function takes parameters of the error message and the document
 //that was updated
 exports.updateNewsElement = function(model, callback) {
-	console.log("update being called");
+	
 	var parsedID = new ObjectID.createFromHexString(model._id);
 	_db.open(function(err, db) {
-		console.log("inside db.open");
+		
 		db.collection(newsCol, function(err, collection) {
-			console.log("inside collection");
+			
 			collection.update(
 				{_id: parsedID}, 
 				{
@@ -102,7 +99,7 @@ exports.updateNewsElement = function(model, callback) {
 				},
 				{w: 1, upsert: true}, function(err, doc) {
 
-				console.log("inside update method with err" + err + " and doc " + doc)
+				
 				callback(err, doc);
 				db.close();
 			});

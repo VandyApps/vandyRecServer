@@ -45,11 +45,6 @@ var NewsEvent = Backbone.Model.extend({
 		this.save(
 		{},
 		{
-			success: function(model, response) {
-				
-				console.log(JSON.stringify(model));
-				
-			},
 			error: function() {
 				alert('There was an error saving your updates to the server');
 			}
@@ -132,8 +127,7 @@ var NewsEvents = Backbone.Collection.extend({
 		deletedEvent.destroy(
 			{
 				headers: { _id: deletedEvent.id },
-				success: function() {console.log('success');},
-				error: function() {console.log('error');}
+				error: function() {alert("There was an error when deleting this event from the server");}
 			}
 		);
 		//this.remove(deletedEvent);
@@ -143,16 +137,10 @@ var NewsEvents = Backbone.Collection.extend({
 	//adds the data to the end of the models array
 	create: function(eventData) {
 
-		var eventID = eventData.newsID;
-		if (eventID >= this.IDOnQueue) {
-			this.IDOnQueue = eventID + 1;
-		}
-		
 		var newNewsEvent = new NewsEvent(
 			{
 				description: eventData.description,
 				author: eventData.author,
-				newsID: eventData.newsID,
 				priorityNumber: eventData.priorityNumber
 			}
 		)

@@ -25,7 +25,7 @@ exports.news = function(req, res) {
 };
 
 exports.createNews = function(req, res) {
-	console.log(req.body);
+	
 	db.addNewsElement(req.body, function(err, result) {
 		
 		if (!err) {
