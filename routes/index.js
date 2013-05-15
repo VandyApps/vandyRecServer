@@ -42,7 +42,7 @@ exports.createNews = function(req, res) {
 exports.updateNews = function(req, res) {
 	db.updateNewsElement(req.body, function(err, doc) {
 		if (!err) {
-			res.send(doc);
+			res.send(JSON.stringify(doc));
 		} else {
 			res.send(null);
 		}
