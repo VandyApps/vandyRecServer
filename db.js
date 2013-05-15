@@ -40,15 +40,24 @@ exports.newsCollection = function(callback) {
 //removes the element with the ID and returns the ID
 //callback has two parameters: error and isRemoved
 exports.removeNewsElementWithID = function(mongoID, callback) {
-	var parsedID = new ObjectID.createFromHexString(mongoID);
-	var collection = db.collection(newsCol);
-
+	
+	//NOTE: db.close() should be nested inside the callback functions
+	//so that the database does not close before operations are complete!!!
 	_db.open(function(err, db) {
-		
-		collection.remove({_id: parsedID}, function(err, numberRemoved) {
-			callback(err, numberRemoved === 1);
+		console.log("Inside method with error " + err);
+		var parsedID = new ObjectID.createFromHexString(mongoID);
+		db.collection(newsCol, function(err, collection) {
+			console.log("Inside collection method with err " + err);
+			collection.remove({_id : parsedID}, {w: 1}, function(err, numberRemoved) {
+				console.log("number removed is " + numberRemoved);
+				if (numberRemoved === 1) {
+					callback(err, mongoID);
+				} else {
+					callback(err, null);
+				}
+				db.close();
+			});
 		});
-		db.close();
 	});
 };
 
@@ -62,7 +71,7 @@ exports.addNewsElement = function(model, callback) {
 		collection.insert(model, {w:1}, function(err, result) {
 			console.log(JSON.stringify(result));
 			callback(err, null);
-
+			db.close();
 		});
 	});
 }

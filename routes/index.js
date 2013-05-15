@@ -45,19 +45,16 @@ exports.updateNews = function(req, res) {
 
 
 exports.deleteNews = function(req, res) {
-	console.log("The id to delete is " + req.headers._id);
-	console.log(parseInt(req.headers._id, 16));
 	//should return JSON serialization of the element that was deleted to indicate
 	//a successful deletion
-	var removedDoc = db.removeNewsElementWithID(req.headers._id, function(err, isRemoved) {
+	var removedDoc = db.removeNewsElementWithID(req.headers._id, function(err, deletedID) {
 
-		console.log(err + " is the err message and " + isRemoved + " is isRemoved");
-		if (err || !isRemoved) {
-			console.log("Document not removed");
+		if (err || typeof deletedID === null) {
+			
 			res.send(new Error("failed to remove document"));
 		} else {
-			console.log("document has been removed");
-			res.send(null);
+			
+			res.send({_id: deletedID});
 		}
 	});
 	
