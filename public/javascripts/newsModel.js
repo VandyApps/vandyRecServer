@@ -64,6 +64,11 @@ var NewsEvents = Backbone.Collection.extend({
 	//url to retrieve data from
 	url: '/JSON/news',
 
+
+	//comparator for sorting is based on the priority number of the event
+	comparator: function(event) {
+		return event.getPriorityNumber();
+	},
 	//this method is for adding and generating brand new models to the
 	//collection
 	enqueue: function() {
@@ -154,14 +159,6 @@ var NewsEvents = Backbone.Collection.extend({
 		for (var nextIndex in this.models) {
 			this.models[nextIndex].setPriorityNumber(nextIndex);
 		}
-	},
-	//resets the order of the elements in the collection to match
-	//the current priority numbers of the models in the collection
-	resetOrder: function() {
-
-		this.sortBy(function(event) {
-			return event.getPriorityNumber();
-		});
 	}
 	
 	

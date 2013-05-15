@@ -5,12 +5,14 @@ eventCollection.on('reset', function() {
 	tableView.removeAllElements();
 	//make sure the elements are in the correct order by priority number
 	//once they are pulled from the database
-	eventCollection.resetOrder();
+	eventCollection.sort();
 
 	//add new elements fetched from the server
 	eventCollection.models.forEach(function(model) {
 		var newViewElement = new NewsEventView({model: model, appendToTableView: true});
 	});
+
+	
 
 });
 
