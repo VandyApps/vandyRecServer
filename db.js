@@ -9,8 +9,7 @@ var dbPort = mongodb.Connection.DEFAULT_PORT;
 
 var newsCol = 'news';
 
-console.log(dbPort);
-db = new Db(dbName, new Server('localhost', dbPort), {safe: true}); //what is safe?
+var _db = new Db(dbName, new Server('localhost', dbPort), {safe: true}); //what is safe?
 
 
 /*
@@ -27,7 +26,7 @@ db.open(function(err, db) {
 
 //related to the news collection
 exports.newsCollection = function(callback) {
-	db.open(function(err, db) {
+	_db.open(function(err, db) {
 		var collection = db.collection(newsCol);
 		collection.find(function(err, cursor) {
 			cursor.toArray(function(err, collection) {
@@ -44,7 +43,7 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 	var parsedID = new ObjectID.createFromHexString(mongoID);
 	var collection = db.collection(newsCol);
 
-	db.open(function(err, db) {
+	_db.open(function(err, db) {
 		
 		collection.remove({_id: parsedID}, function(err, numberRemoved) {
 			callback(err, numberRemoved === 1);
@@ -52,3 +51,17 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 		db.close();
 	});
 };
+
+//callback function takes a parameter of the news element as a JSON
+//object that was created by the DB, it will include a _id property
+exports.addNewsElement = function(model, callback) {
+	
+
+	_db.open(function(err, db) {
+		var collection = db.collection(newsCol);
+		collection.insert(model, {w:1}, function(err, result) {
+			callback(err, result._id);
+
+		});
+	});
+}

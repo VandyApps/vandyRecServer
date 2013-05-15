@@ -61,7 +61,7 @@ app.get('/login', routes.loginError);
 //client routing
 app.get('/news', routes.news);
 app.put('/news', routes.updateNews);
-app.post('/news', routes.updateNews);
+app.post('/news', routes.createNews);
 app.delete('/news', routes.deleteNews);
 
 app.get('/hours', routes.hours);

@@ -25,7 +25,19 @@ exports.news = function(req, res) {
 	});
 };
 
+exports.createNews = function(req, res) {
+	console.log(req.body);
+	db.addNewsElement(req.body, function(result) {
+		console.log('result is returned');
+		console.log(result);
+		res.send(result);
+		
+	});
+	
+};
+
 exports.updateNews = function(req, res) {
+	//model should have an _id that already exists
 	console.log(req.body);
 	res.send('nothing to send yet');
 };
