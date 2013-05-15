@@ -30,13 +30,26 @@ var NewsEvent = Backbone.Model.extend({
 	},
 	setDescription: function(description) {
 		this.set({'description': description});
-		this.save();
+		this.saveAndUpdate();
 	},
 	getPriorityNumber: function() {
 		return this.get('priorityNumber');
 	},
 	setPriorityNumber: function(newPriorityNumber) {
 		this.set('priorityNumber', newPriorityNumber);
+	},
+	//should call this method instead of save
+	saveAndUpdate: function() {
+		this.save(
+		{},
+		{
+			success: function(model, response) {
+				console.log("Success with model " + model + " and response " + response);
+			},
+			error: function() {
+				console.log("error when trying to save");
+			}
+		});
 	}
 	/*
 	//override isNew()
@@ -54,8 +67,7 @@ var NewsEvent = Backbone.Model.extend({
 //index of the model
 var NewsEvents = Backbone.Collection.extend({
 	model: NewsEvent,
-	//this variable holds the next ID available to assign to an event
-	IDOnQueue: 0,
+	
 	//url to retrieve data from
 	url: '/JSON/news',
 
@@ -65,14 +77,12 @@ var NewsEvents = Backbone.Collection.extend({
 		var newEvent = new NewsEvent(
 			{
 				description: 'Here is the default adding description',
-				author: 'No author',
-				newsID: this.IDOnQueue
+				author: 'No author'
 			}
 		);
 
 		//var newEventView = new NewsEventView({model: newEvent});
 		this.unshift(newEvent);
-		this.IDOnQueue++;
 		this.resetPriorityNumbers();
 		return newEvent;
 	},
