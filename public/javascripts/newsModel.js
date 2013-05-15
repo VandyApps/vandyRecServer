@@ -9,7 +9,6 @@ var NewsEvent = Backbone.Model.extend({
 	author: '',
 	index: 0,
 	priorityNumber: 0,
-	newsID: 0,
 	url: '/news',
 
 	index: function() {
@@ -47,6 +46,7 @@ var NewsEvents = Backbone.Collection.extend({
 	model: NewsEvent,
 	//this variable holds the next ID available to assign to an event
 	IDOnQueue: 0,
+	//url to retrieve data from
 	url: '/JSON/news',
 
 	//this method is for adding and generating brand new models to the
@@ -71,13 +71,13 @@ var NewsEvents = Backbone.Collection.extend({
 		
 		return this.models[index];
 	},
-	//id must be of type number
+	//this is the cid of the backbone model
 	getEventWithID: function(id) {
 		var eventModel;
 		
 		this.models.forEach(function(event) {
 			
-			if (event.get('newsID') === id) {
+			if (event.cid === id) {
 				
 				eventModel = event;
 				return;
@@ -110,7 +110,7 @@ var NewsEvents = Backbone.Collection.extend({
 	delete: function(eventID) {
 		var deletedEvent = this.getEventWithID(eventID);
 		deletedEvent.destroy();
-		this.remove(deletedEvent);
+		//this.remove(deletedEvent);
 		
 		console.log('event was destroyed');
 	},

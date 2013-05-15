@@ -20,7 +20,7 @@ var NewsTableView = Backbone.View.extend({
 			//if ID's to pass to the collection
 			var arrayOfIds = [];
 			event.data.element.children().toArray().forEach(function(child) {
-				this.push(parseInt($(child).attr("id"), 10));
+				this.push($(child).cid);
 			}, arrayOfIds);
 			eventCollection.resortArray(arrayOfIds);
 		});
@@ -90,7 +90,7 @@ var NewsEventView = Backbone.View.extend({
 		//do thie rendering stuff here with the template
 
 		//append adds elements within the li, appended to one another
-		this.$el.attr("id", this.model.get('newsID'));
+		this.$el.attr("id", this.model.cid);
 		this.$el.addClass('tableElement');
 		this.$el.append("<div class='button edit'>Edit</div>");
 		this.$el.append("<div class='button remove'>Remove</div>");
@@ -145,7 +145,7 @@ var NewsEventView = Backbone.View.extend({
 	delete: function() {
 		//deletes the model and removes the element from the view
 		//remove the element from the collection
-		eventCollection.delete(parseInt(this.$el.attr('id'), 10));
+		eventCollection.delete(this.$el.attr('cid'));
 		if (tableView.shouldAnimate()) {
 			this.$el.slideUp(300, function() {
 				$(this).remove();
