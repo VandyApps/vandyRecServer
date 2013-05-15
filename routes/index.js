@@ -27,10 +27,11 @@ exports.news = function(req, res) {
 
 exports.createNews = function(req, res) {
 	console.log(req.body);
-	db.addNewsElement(req.body, function(result) {
-		console.log('result is returned');
-		console.log(result);
-		res.send(result);
+	db.addNewsElement(req.body, function(err, result) {
+		
+		if (!err) {
+			res.send(result);
+		}
 		
 	});
 	

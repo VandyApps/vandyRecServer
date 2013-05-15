@@ -60,7 +60,8 @@ exports.addNewsElement = function(model, callback) {
 	_db.open(function(err, db) {
 		var collection = db.collection(newsCol);
 		collection.insert(model, {w:1}, function(err, result) {
-			callback(err, result._id);
+			console.log(JSON.stringify(result));
+			callback(err, null);
 
 		});
 	});
