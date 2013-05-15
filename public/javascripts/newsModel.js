@@ -5,6 +5,7 @@
 var NewsEvent = Backbone.Model.extend({
 
 	_id: 0, //mongo ID
+	idAttribute: "_id",
 	description: '',
 	author: '',
 	index: 0,
@@ -36,7 +37,8 @@ var NewsEvent = Backbone.Model.extend({
 	},
 	setPriorityNumber: function(newPriorityNumber) {
 		this.set('priorityNumber', newPriorityNumber);
-	},
+	}
+	/*
 	//override isNew()
 	isNew: function() {
 		if (typeof this.get('_id') === 'undefined') {
@@ -44,6 +46,7 @@ var NewsEvent = Backbone.Model.extend({
 		}
 		return false;
 	}
+	*/
 });
 
 //the first element in the list is at the 0 index
@@ -116,8 +119,11 @@ var NewsEvents = Backbone.Collection.extend({
 	},
 	delete: function(eventID) {
 		var deletedEvent = this.getEventWithID(eventID);
+		var idToDelete;
+
 		deletedEvent.destroy(
 			{
+				headers: { _id: deletedEvent.id },
 				success: function() {console.log('success');},
 				error: function() {console.log('error');}
 			}

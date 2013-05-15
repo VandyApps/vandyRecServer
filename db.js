@@ -1,7 +1,8 @@
 var mongodb = require('mongodb'),
 	Db = require('mongodb').Db,
 	MongoClient = require('mongodb').MongoClient,
-	Server = require('mongodb').Server;
+	Server = require('mongodb').Server,
+	ObjectID = require('mongodb').ObjectID;
 
 var dbName = "recDB";
 var dbPort = mongodb.Connection.DEFAULT_PORT;
@@ -23,6 +24,8 @@ db.open(function(err, db) {
 	});
 });
 */
+
+//related to the news collection
 exports.newsCollection = function(callback) {
 	db.open(function(err, db) {
 		var collection = db.collection(newsCol);
@@ -34,3 +37,18 @@ exports.newsCollection = function(callback) {
 		});
 	});
 }
+
+//removes the element with the ID and returns the ID
+//callback has two parameters: error and isRemoved
+exports.removeNewsElementWithID = function(mongoID, callback) {
+	var parsedID = new ObjectID.createFromHexString(mongoID);
+	var collection = db.collection(newsCol);
+
+	db.open(function(err, db) {
+		
+		collection.remove({_id: parsedID}, function(err, numberRemoved) {
+			callback(err, numberRemoved === 1);
+		});
+		db.close();
+	});
+};
