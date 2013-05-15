@@ -4,7 +4,7 @@
 //model
 var NewsEvent = Backbone.Model.extend({
 
-	_id: 0, //mongo ID
+	
 	idAttribute: "_id",
 	description: '',
 	author: '',
@@ -40,26 +40,26 @@ var NewsEvent = Backbone.Model.extend({
 	},
 	//should call this method instead of save
 	saveAndUpdate: function() {
+		
+		var self = this;
 		this.save(
 		{},
 		{
 			success: function(model, response) {
-				console.log("Success with model " + model + " and response " + response);
+				
+				console.log(JSON.stringify(model));
+				
 			},
 			error: function() {
 				console.log("error when trying to save");
 			}
+		}).done(function() {
+			console.log(self.id);
 		});
+		
+		
 	}
-	/*
-	//override isNew()
-	isNew: function() {
-		if (typeof this.get('_id') === 'undefined') {
-			return true;
-		}
-		return false;
-	}
-	*/
+	
 });
 
 //the first element in the list is at the 0 index
@@ -180,9 +180,6 @@ var NewsEvents = Backbone.Collection.extend({
 	
 	
 });
-
-
-
 
 //script starts here
 

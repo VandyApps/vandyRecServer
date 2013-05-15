@@ -30,7 +30,8 @@ exports.createNews = function(req, res) {
 	db.addNewsElement(req.body, function(err, result) {
 		
 		if (!err) {
-			res.send(result);
+			console.log(JSON.stringify(result));
+			res.send(JSON.stringify(result));
 		} else {
 			res.send(null);
 		}

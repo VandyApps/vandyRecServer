@@ -72,8 +72,10 @@ exports.addNewsElement = function(model, callback) {
 		db.collection(newsCol, function(err, collection) {
 
 			collection.insert(model, {w:1}, function(err, doc) {
-
-				callback(err, doc._id);
+				console.log("Inside the insert method");
+				
+				
+				callback(err, doc[0]);
 				db.close();
 
 			});
