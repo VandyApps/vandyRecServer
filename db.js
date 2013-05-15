@@ -27,13 +27,15 @@ db.open(function(err, db) {
 //related to the news collection
 exports.newsCollection = function(callback) {
 	_db.open(function(err, db) {
-		var collection = db.collection(newsCol);
-		collection.find(function(err, cursor) {
+		var collection = db.collection(newsCol, function(err, collection) {
+			collection.find(function(err, cursor) {
 			cursor.toArray(function(err, collection) {
 				callback(collection);
 				db.close();
 			});
 		});
+		});
+		
 	});
 }
 
