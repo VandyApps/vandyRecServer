@@ -36,6 +36,13 @@ var NewsEvent = Backbone.Model.extend({
 	},
 	setPriorityNumber: function(newPriorityNumber) {
 		this.set('priorityNumber', newPriorityNumber);
+	},
+	//override isNew()
+	isNew: function() {
+		if (typeof this.get('_id') === 'undefined') {
+			return true;
+		}
+		return false;
 	}
 });
 
@@ -109,10 +116,14 @@ var NewsEvents = Backbone.Collection.extend({
 	},
 	delete: function(eventID) {
 		var deletedEvent = this.getEventWithID(eventID);
-		deletedEvent.destroy();
+		deletedEvent.destroy(
+			{
+				success: function() {console.log('success');},
+				error: function() {console.log('error');}
+			}
+		);
 		//this.remove(deletedEvent);
 		
-		console.log('event was destroyed');
 	},
 	//pass in data from the server for a single event
 	//adds the data to the end of the models array
