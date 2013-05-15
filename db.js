@@ -61,17 +61,21 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 	});
 };
 
-//callback function takes a parameter of the news element as a JSON
-//object that was created by the DB, it will include a _id property
+//callback function takes a parameter of err and the documents 
+//new id that was created
 exports.addNewsElement = function(model, callback) {
 	
 
 	_db.open(function(err, db) {
-		var collection = db.collection(newsCol);
-		collection.insert(model, {w:1}, function(err, result) {
-			console.log(JSON.stringify(result));
-			callback(err, null);
-			db.close();
+		db.collection(newsCol, function(err, collection) {
+
+			collection.insert(model, {w:1}, function(err, doc) {
+
+				callback(err, doc._id);
+				db.close();
+
+			});
 		});
+		
 	});
 }

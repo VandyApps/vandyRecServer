@@ -31,6 +31,8 @@ exports.createNews = function(req, res) {
 		
 		if (!err) {
 			res.send(result);
+		} else {
+			res.send(null);
 		}
 		
 	});
