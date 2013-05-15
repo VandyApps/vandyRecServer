@@ -139,6 +139,8 @@ var NewsEventView = Backbone.View.extend({
 
 			this.$el.append("<div class='description'>"+textareaText+"</div>");
 			editMode = false;
+			//wait 1 second before saving to the server, to make sure
+			//everything is set
 		}
 		
 	},

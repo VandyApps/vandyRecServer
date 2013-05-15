@@ -85,9 +85,22 @@ exports.addNewsElement = function(model, callback) {
 //callback function takes parameters of the error message and the document
 //that was updated
 exports.updateNewsElement = function(model, callback) {
+	console.log("update being called");
+	var parsedID = new ObjectID.createFromHexString(model._id);
 	_db.open(function(err, db) {
+		console.log("inside db.open");
 		db.collection(newsCol, function(err, collection) {
-			collection.update(model, {w: 1, upsert: true}, function(err, doc) {
+			console.log("inside collection");
+			collection.update(
+				{_id: parsedID}, 
+				{
+					priorityNumber: model.priorityNumber,
+					description: model.description,
+					author: model.author
+				},
+				{w: 1, upsert: true}, function(err, doc) {
+
+				console.log("inside update method with err" + err + " and doc " + doc)
 				callback(err, doc);
 				db.close();
 			});
