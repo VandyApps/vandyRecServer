@@ -133,11 +133,21 @@ var NewsEvents = Backbone.Collection.extend({
 		this.models.push(newNewsEvent);
 		return newNewsEvent;
 	},
+	//resets the priority numbers of the models in the 
+	//collection to match the current order the elements are in
 	resetPriorityNumbers: function() {
 		//must reset the priority number in each of the models
 		for (var nextIndex in this.models) {
 			this.models[nextIndex].setPriorityNumber(nextIndex);
 		}
+	},
+	//resets the order of the elements in the collection to match
+	//the current priority numbers of the models in the collection
+	resetOrder: function() {
+
+		this.sortBy(function(event) {
+			return event.getPriorityNumber();
+		});
 	}
 	
 	

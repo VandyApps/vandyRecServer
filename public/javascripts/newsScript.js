@@ -2,6 +2,10 @@
 eventCollection.on('reset', function() {
 	
 	//must remove all elements from the table view first
+	tableView.removeAllElements();
+	//make sure the elements are in the correct order by priority number
+	//once they are pulled from the database
+	eventCollection.resetOrder();
 
 	//add new elements fetched from the server
 	eventCollection.models.forEach(function(model) {
@@ -12,5 +16,6 @@ eventCollection.on('reset', function() {
 
 
 eventCollection.fetch();
+
 
 
