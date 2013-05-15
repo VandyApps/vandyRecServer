@@ -4,6 +4,7 @@
 //model
 var NewsEvent = Backbone.Model.extend({
 
+	_id: 0, //mongo ID
 	description: '',
 	author: '',
 	index: 0,
