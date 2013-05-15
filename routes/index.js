@@ -40,9 +40,14 @@ exports.createNews = function(req, res) {
 };
 
 exports.updateNews = function(req, res) {
-	//model should have an _id that already exists
-	console.log(req.body);
-	res.send('nothing to send yet');
+	db.updateNewsElement(req.body, function(err, doc) {
+		if (!err) {
+			res.send(doc);
+		} else {
+			res.send(null);
+		}
+	});
+	
 };
 
 

@@ -81,3 +81,16 @@ exports.addNewsElement = function(model, callback) {
 		
 	});
 }
+
+//callback function takes parameters of the error message and the document
+//that was updated
+exports.updateNewsElement = function(model, callback) {
+	_db.open(function(err, db) {
+		db.collection(newsCol, function(err, collection) {
+			collection.update(model, {w: 1, upsert: true}, function(err, doc) {
+				callback(err, doc);
+				db.close();
+			});
+		});
+	});
+}
