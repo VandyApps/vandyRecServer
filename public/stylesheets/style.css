@@ -189,6 +189,35 @@ textarea {
 }
 
 /* styling for programs*/
+#monthWrapper {
+    position: relative;
+    display: block;
+    margin: auto;
+    margin-bottom: 35px;
+    
+    width: 230px;
+    text-align: center;
+    color: #1C94C4;
+}
+#month {
+    display: block;
+   
+    width: 170px;
+    margin: 0 auto;
+}
+#arrow_left {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    cursor: pointer;
+}
+
+#arrow_right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+}
 #calendarWrapper {
     overflow: scroll;
     overflow-y: hidden;
