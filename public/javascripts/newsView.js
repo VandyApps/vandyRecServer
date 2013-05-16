@@ -20,7 +20,7 @@ var NewsTableView = Backbone.View.extend({
 			//if ID's to pass to the collection
 			var arrayOfIds = [];
 			event.data.element.children().toArray().forEach(function(child) {
-				this.push($(child).cid);
+				this.push($(child).attr('id'));
 			}, arrayOfIds);
 			eventCollection.resortArray(arrayOfIds);
 		});

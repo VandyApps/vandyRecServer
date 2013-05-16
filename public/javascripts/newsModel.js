@@ -41,7 +41,7 @@ var NewsEvent = Backbone.Model.extend({
 		return this.get('priorityNumber');
 	},
 	setPriorityNumber: function(newPriorityNumber) {
-		this.set('priorityNumber', newPriorityNumber);
+		this.set({'priorityNumber': newPriorityNumber});
 		this.saveAndUpdate();
 	},
 	//should call this method instead of save
@@ -109,19 +109,22 @@ var NewsEvents = Backbone.Collection.extend({
 		});
 		return eventModel;
 	},
+	//sets the priority number of the event with the id to
+	//new priority number that is passed in
+	setPriorityNumberForEventWithID: function(id, priorityNumber) {
+		this.getEventWithID(id).setPriorityNumber(priorityNumber);
+	},
 	//redetermines the order of the array based on an
 	//array of ids, which are the ids of the current
 	//elements in the li
 	resortArray: function(ids) {
-		var newModels = [];
-		ids.forEach(function(id) {
-			newModels.push(this.getEventWithID(id));
-		}, this);
-		
-		//reset event should only be called during server fetching
-		this.reset(newModels, {silent: true});
-
-		this.resetPriorityNumbers();
+		console.log(ids);
+		for (var index in ids) {
+			this.setPriorityNumberForEventWithID(ids[index], index);
+		}
+		//sorts based on priority numbers, according to 
+		//the comparator function that is overriden above
+		this.sort(); 
 	},
 	//use this method instead of push so that other configurations
 	//can be taken care of
@@ -164,8 +167,11 @@ var NewsEvents = Backbone.Collection.extend({
 		//must reset the priority number in each of the models
 		for (var nextIndex in this.models) {
 			this.models[nextIndex].setPriorityNumber(nextIndex);
+			this.models[nextIndex].saveAndUpdate();
 		}
+
 	}
+	
 	
 	
 });
