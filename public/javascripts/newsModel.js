@@ -12,6 +12,11 @@ var NewsEvent = Backbone.Model.extend({
 	priorityNumber: 0,
 	url: '/news',
 
+	initialization: function() {
+		this.on('change', function() {
+			console.log("do something because of change");
+		});
+	},
 	index: function() {
 
 		return this.index;
@@ -37,6 +42,7 @@ var NewsEvent = Backbone.Model.extend({
 	},
 	setPriorityNumber: function(newPriorityNumber) {
 		this.set('priorityNumber', newPriorityNumber);
+		this.saveAndUpdate();
 	},
 	//should call this method instead of save
 	//any customization to save process should go in here

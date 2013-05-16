@@ -11,32 +11,28 @@ var newsCol = 'news';
 
 var _db = new Db(dbName, new Server('localhost', dbPort), {safe: true}); //what is safe?
 
-
-/*
-db.open(function(err, db) {
-
-	var collection = db.collection(testCollection);
-	collection.find(function(err, cursor) {
-		cursor.toArray(function(err, collection) {
-			console.log(collection);
-		});
-	});
-});
-*/
-
 //related to the news collection
 exports.newsCollection = function(callback) {
-	_db.open(function(err, db) {
-		var collection = db.collection(newsCol, function(err, collection) {
+	// Set up the connection to the local db
+	var mongoclient = new MongoClient(new Server("localhost", 27017, {native_parser: true}));
+
+	// Open the connection to the server
+	mongoclient.open(function(err, mongoclient) {
+
+  		// Get the first db and do an update document on it
+  		var db = mongoclient.db(dbName);
+  		db.collection(newsCol, function(err, collection) {
+
 			collection.find(function(err, cursor) {
-			cursor.toArray(function(err, collection) {
-				callback(collection);
-				db.close();
+
+				cursor.toArray(function(err, collection) {
+					callback(collection);
+					mongoclient.close();
+				});
 			});
 		});
-		});
-		
-	});
+
+	});		
 }
 
 //removes the element with the ID and returns the ID

@@ -12,8 +12,6 @@ eventCollection.on('reset', function() {
 		var newViewElement = new NewsEventView({model: model, appendToTableView: true});
 	});
 
-	
-
 });
 
 
