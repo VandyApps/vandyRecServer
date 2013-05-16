@@ -306,3 +306,16 @@ textarea {
     border-radius: 14px;
     
 }
+
+.add_programs {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    border: solid black 1px;
+    height: 23px;
+    width: 45px;
+    text-align: center;
+    line-height: 23px;
+    border-radius: 10px;
+    cursor: pointer;
+}
