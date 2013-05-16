@@ -187,3 +187,70 @@ textarea {
     padding: 5px;
     background-color: #38b331;
 }
+
+/* styling for programs*/
+#calendarWrapper {
+    overflow: scroll;
+    overflow-y: hidden;
+    position: relative;
+    
+}
+#calendar {
+    
+    position: relative;
+    display: block;
+    border: solid black 1px;
+    height: 1000px;
+    width: 1000px;
+}
+
+.column {
+    border: solid black 1px;
+    display: block;
+    width: 141px;
+    height: 1000px;
+}
+#sundayColumn {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+#mondayColumn {
+    position: absolute;
+    top: 0px;
+    left: 143px;
+    
+}
+#tuesdayColumn {
+    position: absolute;
+    top: 0px;
+    left: 286px;
+}
+#wednesdayColumn {
+    position: absolute;
+    top: 0px;
+    left: 429px;
+}
+#thursdayColumn {
+    position: absolute;
+    top: 0px;
+    left: 572px;
+}
+#fridayColumn {
+    position: absolute;
+    top: 0px;
+    left: 715px;
+}
+#saturdayColumn {
+    position: absolute;
+    top: 0px;
+    left: 858px;
+}
+
+.dayLabel {
+    border: solid black 1px;
+    display: block;
+    height: 20px;
+    padding: 10px 0px;
+    text-align: center;
+}
