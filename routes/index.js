@@ -5,6 +5,11 @@
 
 var db = require('../db');
 
+exports.index = function(req, res) {
+	res.render('index');
+  	
+};
+
 exports.login = function(req, res) {
 	res.render('login', {warning: ''});
 	
@@ -12,10 +17,6 @@ exports.login = function(req, res) {
 
 exports.loginError = function(req, res) {
 	res.render('login', {warning: 'Login attempt failed due to incorrect credentials'});
-};
-exports.index = function(req, res) {
-	res.render('index');
-  	
 };
 
 exports.news = function(req, res) {
