@@ -19,7 +19,12 @@ var app = express();
 var user = {username: "Brendan",
         password: "Brendan"};
 
+if (process.env.MONGOHQ_URL) {
 
+  db.setURL(process.env.MONGOHQ_URL);
+} else {
+  db.setURL('mongodb://localhost:27017/recDB');
+}
 app.configure(function() {
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
@@ -39,12 +44,8 @@ app.configure(function() {
 });
 
 app.configure('development', function(){
-  db.setURL('mongodb://localhost:27017/recDB');
+  
   app.use(express.errorHandler());
-});
-
-app.configure('production', function() {
-  db.setURL(process.env.MONGOHQ_URL);
 });
 
 
