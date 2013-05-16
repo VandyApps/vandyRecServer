@@ -127,6 +127,7 @@ textarea {
     margin-bottom: 5px;
     display: block;
     cursor: pointer;
+    line-height: 11px;
 }
 
 .remove {
