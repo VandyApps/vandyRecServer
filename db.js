@@ -42,12 +42,9 @@ exports.newsCollection = function(callback) {
 exports.removeNewsElementWithID = function(mongoID, callback) {
 	
 	//NOTE: db.close() should be nested inside the callback functions
-	//so that the database does not close before operations are complete!!!
+	//so that the database does not close before operations are complete!!
+	Db.connect(MONGO_LOCAL_URL, function(err, db) {
 
-	var mongoclient = new MongoClient(new Server("localhost", 27017));
-	mongoclient.open(function(err, mongoclient) {
-
-		var db = mongoclient.db(dbName);
 		var parsedID = new ObjectID.createFromHexString(mongoID);
 		db.collection(newsCol, function(err, collection) {
 			
@@ -61,7 +58,7 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 				} else {
 					callback(new Error("Did not remove 1 element from the database"), null);
 				}
-				mongoclient.close();
+				db.close();
 			});
 		});
 	});
@@ -71,9 +68,7 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 //new id that was created
 exports.addNewsElement = function(model, callback) {
 	
-	var mongoclient = new MongoClient(new Server("localhost", 27017));
-	mongoclient.open(function(err, mongoclient) {
-		var db = mongoclient.db(dbName);
+	Db.connect(MONGO_LOCAL_URL, function(err, db) {
 		db.collection(newsCol, function(err, collection) {
 
 			//returns an array of the documents that were added, with the
@@ -81,7 +76,7 @@ exports.addNewsElement = function(model, callback) {
 			//added at a time
 			collection.insert(model, {w:1}, function(err, docs) {
 				callback(err, docs[0]);
-				mongoclient.close();
+				db.close();
 
 			});
 		});
@@ -92,9 +87,8 @@ exports.addNewsElement = function(model, callback) {
 //that was updated
 exports.updateNewsElement = function(model, callback) {
 	
-	var mongoclient = new MongoClient(new Server("localhost", 27017));
-	mongoclient.open(function(err, mongoclient) {
-		var db = mongoclient.db(dbName);
+	Db.connect(MONGO_LOCAL_URL, function(err, db) {
+		
 		var parsedID = new ObjectID.createFromHexString(model._id);
 
 		db.collection(newsCol, function(err, collection) {
@@ -110,7 +104,7 @@ exports.updateNewsElement = function(model, callback) {
 
 				
 				callback(err, doc);
-				mongoclient.close();
+				db.close();
 			});
 		});
 	});
