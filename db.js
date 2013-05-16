@@ -4,22 +4,21 @@ var mongodb = require('mongodb'),
 	Server = require('mongodb').Server,
 	ObjectID = require('mongodb').ObjectID;
 
-var dbName = "recDB";
-var dbPort = mongodb.Connection.DEFAULT_PORT;
-//local url used to connect to the DB
-//no password on the localhost
-var MONGO_LOCAL_URL = "mongodb://localhost:" + dbPort + "/" + dbName;
+var MONGODB_URL;
 var newsCol = 'news';
 
-//var _db = new Db(dbName, new Server('localhost', dbPort), {safe: true}); //what is safe?
-
+//this function must be called before any subsequent function in this module
+//can work.  The MONGO_URL must be set before DB calls are made
+exports.setURL = function(MONGO_URL) {
+	MONGODB_URL = MONGO_URL;
+}
 //related to the news collection
 exports.newsCollection = function(callback) {
 	// Set up the connection to the local db
 
 	// Open the connection to the server
 	
-	Db.connect(MONGO_LOCAL_URL, function(err, db) {
+	Db.connect(MONGODB_URL, function(err, db) {
   		// Get the first db and do an update document on it
   		
   		db.collection(newsCol, function(err, collection) {
@@ -43,7 +42,7 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 	
 	//NOTE: db.close() should be nested inside the callback functions
 	//so that the database does not close before operations are complete!!
-	Db.connect(MONGO_LOCAL_URL, function(err, db) {
+	Db.connect(MONGODB_URL, function(err, db) {
 
 		var parsedID = new ObjectID.createFromHexString(mongoID);
 		db.collection(newsCol, function(err, collection) {
@@ -68,7 +67,7 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 //new id that was created
 exports.addNewsElement = function(model, callback) {
 	
-	Db.connect(MONGO_LOCAL_URL, function(err, db) {
+	Db.connect(MONGODB_URL, function(err, db) {
 		db.collection(newsCol, function(err, collection) {
 
 			//returns an array of the documents that were added, with the
@@ -87,7 +86,7 @@ exports.addNewsElement = function(model, callback) {
 //that was updated
 exports.updateNewsElement = function(model, callback) {
 	
-	Db.connect(MONGO_LOCAL_URL, function(err, db) {
+	Db.connect(MONGODB_URL, function(err, db) {
 		
 		var parsedID = new ObjectID.createFromHexString(model._id);
 

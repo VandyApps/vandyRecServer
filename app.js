@@ -39,7 +39,12 @@ app.configure(function() {
 });
 
 app.configure('development', function(){
+  db.setURL('mongodb://localhost:27017/recDB');
   app.use(express.errorHandler());
+});
+
+app.configure('production', function() {
+
 });
 
 
