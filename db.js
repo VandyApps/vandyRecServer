@@ -5,7 +5,13 @@ var mongodb = require('mongodb'),
 	ObjectID = require('mongodb').ObjectID;
 
 var MONGODB_URL;
-var newsCol = 'news';
+
+//other collections to be added later
+var Collections = 
+{
+	news: 'news'
+}
+
 
 //this function must be called before any subsequent function in this module
 //can work.  The MONGO_URL must be set before DB calls are made
@@ -21,7 +27,7 @@ exports.newsCollection = function(callback) {
 	Db.connect(MONGODB_URL, function(err, db) {
   		// Get the first db and do an update document on it
   		
-  		db.collection(newsCol, function(err, collection) {
+  		db.collection(Collections.news, function(err, collection) {
 
 			collection.find(function(err, cursor) {
 
@@ -45,7 +51,7 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 	Db.connect(MONGODB_URL, function(err, db) {
 
 		var parsedID = new ObjectID.createFromHexString(mongoID);
-		db.collection(newsCol, function(err, collection) {
+		db.collection(Collections.news, function(err, collection) {
 			
 			collection.remove({_id : parsedID}, {w: 1}, function(err, numberRemoved) {
 				
@@ -68,7 +74,7 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 exports.addNewsElement = function(model, callback) {
 	
 	Db.connect(MONGODB_URL, function(err, db) {
-		db.collection(newsCol, function(err, collection) {
+		db.collection(Collections.news, function(err, collection) {
 
 			//returns an array of the documents that were added, with the
 			//_id added to the JSON object, there should only be 1 document 
@@ -90,7 +96,7 @@ exports.updateNewsElement = function(model, callback) {
 		
 		var parsedID = new ObjectID.createFromHexString(model._id);
 
-		db.collection(newsCol, function(err, collection) {
+		db.collection(Collections.news, function(err, collection) {
 			
 			collection.update(
 				{_id: parsedID}, //selector
