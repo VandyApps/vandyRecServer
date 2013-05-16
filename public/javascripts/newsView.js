@@ -165,7 +165,7 @@ var NewsEventView = Backbone.View.extend({
 
 
 //add event to the add button 
-var addButton = $('#add');
+var addButton = $('#add_news');
 addButton.mousedown(function() {
 	$(this).css({'backgroundColor': 'black', 'color': 'white'});
 });
@@ -182,7 +182,7 @@ addButton.click({collection : eventCollection}, function(event) {
 });
 
 //add event to animate button
-var animateButton = $('#animate');
+var animateButton = $('#animate_news');
 animateButton.mousedown(function() {
 	$(this).css({'color': 'white', 'backgroundColor': 'black'})
 });

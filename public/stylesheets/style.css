@@ -157,7 +157,7 @@ textarea {
     color: red;
 }
 
-#add {
+#add_news {
     display: block;
     height: 20px;
     width: 40px;
@@ -172,7 +172,7 @@ textarea {
     background-color: white;
 }
 
-#animate {
+#animate_news {
     display: block;
     height: 20px;
     width: 100px;
