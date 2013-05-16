@@ -82,16 +82,20 @@ textarea {
 
 /* styling for news tab */
 
+#ui-tabs-1 {
+    overflow: hidden;
+}
 #newsData {
     display: none;
 }
 #table {
     display: block;
-    width: 770px;
+    width: 780px;
     margin: 0;
 }
 
 .tableElement {
+    margin: 0 auto;
     display: block;
     width: 750px;
     height: 65px;
