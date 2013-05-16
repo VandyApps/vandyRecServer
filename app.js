@@ -44,7 +44,7 @@ app.configure('development', function(){
 });
 
 app.configure('production', function() {
-
+  db.setURL(process.env.MONGOHQ_URL);
 });
 
 
