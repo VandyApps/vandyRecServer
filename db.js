@@ -69,17 +69,20 @@ exports.removeNewsElementWithID = function(mongoID, callback) {
 //new id that was created
 exports.addNewsElement = function(model, callback) {
 	
-
-	_db.open(function(err, db) {
+	var mongoclient = new MongoClient(new Server("localhost", 27017));
+	mongoclient.open(function(err, mongoclient) {
+		var db = mongoclient.db(dbName);
 		db.collection(newsCol, function(err, collection) {
 
-			collection.insert(model, {w:1}, function(err, doc) {
-				callback(err, doc[0]);
-				db.close();
+			//returns an array of the documents that were added, with the
+			//_id added to the JSON object, there should only be 1 document 
+			//added at a time
+			collection.insert(model, {w:1}, function(err, docs) {
+				callback(err, docs[0]);
+				mongoclient.close();
 
 			});
 		});
-		
 	});
 }
 
@@ -87,14 +90,16 @@ exports.addNewsElement = function(model, callback) {
 //that was updated
 exports.updateNewsElement = function(model, callback) {
 	
-	var parsedID = new ObjectID.createFromHexString(model._id);
-	_db.open(function(err, db) {
-		
+	var mongoclient = new MongoClient(new Server("localhost", 27017));
+	mongoclient.open(function(err, mongoclient) {
+		var db = mongoclient.db(dbName);
+		var parsedID = new ObjectID.createFromHexString(model._id);
+
 		db.collection(newsCol, function(err, collection) {
 			
 			collection.update(
-				{_id: parsedID}, 
-				{
+				{_id: parsedID}, //selector
+				{ //updated properties
 					priorityNumber: model.priorityNumber,
 					description: model.description,
 					author: model.author
@@ -103,7 +108,7 @@ exports.updateNewsElement = function(model, callback) {
 
 				
 				callback(err, doc);
-				db.close();
+				mongoclient.close();
 			});
 		});
 	});
