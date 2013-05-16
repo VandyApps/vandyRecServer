@@ -267,12 +267,13 @@ textarea {
 .dayIndicator {
     display: block;
     position: absolute;
-    height: 25px;
-    width: 25px;
-    top: 7px;
-    left: 105px;
+    height: 28px;
+    width: 28px;
+    top: 6px;
+    left: 103px;
     text-align: center;
-    vertical-align: middle;
+    line-height: 28px;
     background-color: #c7c7c7;
+    border-radius: 14px;
     
 }
