@@ -6,7 +6,9 @@ var mongodb = require('mongodb'),
 
 var dbName = "recDB";
 var dbPort = mongodb.Connection.DEFAULT_PORT;
-
+//local url used to connect to the DB
+//no password on the localhost
+var MONGO_LOCAL_URL = "mongodb://localhost:" + dbPort + "/" + dbName;
 var newsCol = 'news';
 
 //var _db = new Db(dbName, new Server('localhost', dbPort), {safe: true}); //what is safe?
@@ -14,20 +16,20 @@ var newsCol = 'news';
 //related to the news collection
 exports.newsCollection = function(callback) {
 	// Set up the connection to the local db
-	var mongoclient = new MongoClient(new Server("localhost", 27017, {native_parser: true}));
 
 	// Open the connection to the server
-	mongoclient.open(function(err, mongoclient) {
-
+	
+	Db.connect(MONGO_LOCAL_URL, function(err, db) {
   		// Get the first db and do an update document on it
-  		var db = mongoclient.db(dbName);
+  		
   		db.collection(newsCol, function(err, collection) {
 
 			collection.find(function(err, cursor) {
 
 				cursor.toArray(function(err, collection) {
 					callback(collection);
-					mongoclient.close();
+
+					db.close();
 				});
 			});
 		});
