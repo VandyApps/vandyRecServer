@@ -290,6 +290,7 @@ textarea {
     display: block;
     border-bottom: solid black 1px;
     height: 170.5px;
+    cursor: pointer;
     
 }
 
@@ -307,7 +308,15 @@ textarea {
     
 }
 
-.programsList {
-    display: none;
+.programCountIndicator {
     
+    position: absolute;
+    display: block;
+    top: 75px;
+    height: 50px;
+    width: 142px;
+    line-height: 25px;
+    text-align: center;
+    font-size: 18px;
+    color: #898989;
 }
