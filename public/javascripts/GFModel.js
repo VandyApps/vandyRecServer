@@ -1,5 +1,3 @@
-//DateHelper is a utility class
-var DateHelper = {};
 
 
 window.FitnessClass = Backbone.Model.extend({
