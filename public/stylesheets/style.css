@@ -239,38 +239,38 @@ textarea {
     width: 141px;
     height: 1000px;
 }
-#sundayColumn {
+#calColumn-0 {
     position: absolute;
     top: 0px;
     left: 0px;
 }
-#mondayColumn {
+#calColumn-1 {
     position: absolute;
     top: 0px;
     left: 143px;
     
 }
-#tuesdayColumn {
+#calColumn-2 {
     position: absolute;
     top: 0px;
     left: 286px;
 }
-#wednesdayColumn {
+#calColumn-3 {
     position: absolute;
     top: 0px;
     left: 429px;
 }
-#thursdayColumn {
+#calColumn-4 {
     position: absolute;
     top: 0px;
     left: 572px;
 }
-#fridayColumn {
+#calColumn-5 {
     position: absolute;
     top: 0px;
     left: 715px;
 }
-#saturdayColumn {
+#calColumn-6 {
     position: absolute;
     top: 0px;
     left: 858px;
