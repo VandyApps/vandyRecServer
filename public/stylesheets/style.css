@@ -219,13 +219,14 @@ textarea {
     cursor: pointer;
 }
 #calendarWrapper {
+    
     overflow: scroll;
     overflow-y: hidden;
     position: relative;
     
 }
 #calendar {
-    
+    margin: 0 auto;
     position: relative;
     display: block;
     border: solid black 1px;
