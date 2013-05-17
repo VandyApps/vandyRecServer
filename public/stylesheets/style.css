@@ -230,7 +230,8 @@ textarea {
     position: relative;
     display: block;
     border: solid black 1px;
-    height: 897px;
+    border-bottom: none;
+    height: 745px;
     width: 1000px;
 }
 
@@ -238,7 +239,6 @@ textarea {
     border-right: solid black 1px;
     display: block;
     width: 142px;
-    height: 1000px;
 }
 #calColumn-0 {
     position: absolute;
@@ -290,9 +290,8 @@ textarea {
     position: relative;
     display: block;
     border-bottom: solid black 1px;
-    height: 170.5px;
-    cursor: pointer;
-    
+    height: 140px;
+    cursor: pointer;   
 }
 
 .dayIndicator {
