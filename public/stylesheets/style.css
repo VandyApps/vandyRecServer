@@ -308,11 +308,11 @@ textarea {
     
 }
 
-.programCountIndicator {
+.classCountIndicator {
     
     position: absolute;
     display: block;
-    top: 75px;
+    top: 60px;
     height: 50px;
     width: 142px;
     line-height: 25px;
