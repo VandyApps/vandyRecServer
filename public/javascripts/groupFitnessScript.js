@@ -2,7 +2,7 @@
 
 $('.dayBlock').mouseover(function() {
 
-	$(this).animate({backgroundColor: 'rgba(200, 200, 200, 1)'};
+	$(this).animate({backgroundColor: 'rgba(200, 200, 200, 1)'});
 });
 
 $('.dayBlock').mouseout(function() {
