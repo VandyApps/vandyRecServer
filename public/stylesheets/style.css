@@ -240,38 +240,38 @@ textarea {
     display: block;
     width: 142px;
 }
-#calColumn-0 {
+#cal-column-0 {
     position: absolute;
     top: 0px;
     left: 0px;
 }
-#calColumn-1 {
+#cal-column-1 {
     position: absolute;
     top: 0px;
     left: 143px;
     
 }
-#calColumn-2 {
+#cal-column-2 {
     position: absolute;
     top: 0px;
     left: 286px;
 }
-#calColumn-3 {
+#cal-column-3 {
     position: absolute;
     top: 0px;
     left: 429px;
 }
-#calColumn-4 {
+#cal-column-4 {
     position: absolute;
     top: 0px;
     left: 572px;
 }
-#calColumn-5 {
+#cal-column-5 {
     position: absolute;
     top: 0px;
     left: 715px;
 }
-#calColumn-6 {
+#cal-column-6 {
     position: absolute;
     top: 0px;
     left: 858px;
