@@ -5,6 +5,9 @@ DateHelper.addWeekToDate = function(date) {
 	date.setDate(date.getDate() + 7);
 }
 
+DateHelper.substractWeekFromDate = function(date) {
+	date.setDate(date.getDate() - 7);
+}
 
 //returns the week day of the date as a string
 DateHelper.weekDayAsString = function(date) {
