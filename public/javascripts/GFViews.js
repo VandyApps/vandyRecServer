@@ -31,17 +31,24 @@ window.BlockView = Backbone.View.extend({
 	//initialize with a row and column specifying the coordinates
 	//of the block on the calendar
 	//set the day that this block is to represent
-	initialize: function(row, column, day) {
+	initialize: function(row, column, day, numberOfFitnessClasses) {
 		//set up the element
 		var calenderRow = '.cal-block-' + row; 
 		var calendarColumn = '#cal-column-' + column;
 		this.$el = $(calendarColumn).children(calenderRow);
 		this.day = day;
+		this.numberOfFitnessClasses = numberOfFitnessClasses;
 		this.render();
 	},
 	render: function() {
 
 		this.$el.append('<div class="dayIndicator">'+this.day+'</div>');
-		
+		if (this.numberOfFitnessClasses === 1) {
+
+			this.$el.append('<div class="classCountIndicator">1 Class</div>');
+		} else if (this.numberOfFitnessClasses > 1) {
+			this.$el.append('<div class="classCountIndicator">'+this.numberOfFitnessClasses+" Classes</div>");
+
+		}
 	}
 });
