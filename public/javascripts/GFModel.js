@@ -42,8 +42,56 @@ window.FitnessClass = Backbone.Model.extend({
 	//so that the end date is before the date passed in
 	//does not do anything if the date passed in is before the 
 	//starting date
-	sliceFitnessDates: function(date) {
+	sliceFitnessDates: function(sliceDate) {
 
 	}
 
 });
+
+
+//all the fitness classes that are available
+//used for retrieving and posting classes to and
+// from the server as well as giving classes to 
+//smaller collections
+var FitnessClasses = Backbone.Collection.extend({
+	model: FitnessClass,
+
+	//earliest month and year of any class
+	firstMonth: 0,
+	firstYear: 0,
+	//latest month and year of any class
+	lastMonth: 0,
+	lastYear: 0,
+
+	getClassesForMonthAndYear: function(monthIndex, year) {
+
+	} 
+});
+
+//set of all classes within a given month
+//used to put classes into views displayed to user
+var FitnessClassesByMonth = Backbone.Collection.extend({
+	model: FitnessClass,
+
+	//index of the month
+	month: 0,
+	//full year i.e. 2013
+	year: 0, 
+
+	//first weekday of the month
+	//0=sunday, 6=saturday
+	firstWeekDay: 0,
+	//last weekday of the month
+	lastWeekDay: 0,
+	//get all the classes that are on a particular day
+	//day is the day of the month, 1-based, 2 is the second
+	//day of the month, does nothing if the day passed in 
+	//is out of the bounds for the days of a month
+	//returns an array of the models on that particular day
+	getClassesForDay: function(day) {
+
+	}
+
+
+});
+
