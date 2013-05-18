@@ -31,13 +31,13 @@ window.BlockView = Backbone.View.extend({
 		'mouseover': 'hoverOn',
 		'mouseout': 'hoverOff'
 	},
-	//for some reason, initialize is not setting up the element correctly, so 
-	//for now, use this method
-	setupView: function(row, column, day, numberOfFitnessClasses) {
-		this.row = row;
-		this.column = column;
-		this.day = day;
-		this.numberOfFitnessClasses = numberOfFitnessClasses;
+	
+	initialize: function(options) {
+		//set the variables
+		this.row = options.row;
+		this.column = options.column;
+		this.day = options.day;
+		this.numberOfFitnessClasses = options.numberOfFitnessClasses;
 
 		var columnSelector = "#cal-column-" + this.column;
 		var rowSelector = ".cal-block-" + this.row;
@@ -57,6 +57,7 @@ window.BlockView = Backbone.View.extend({
 		}
 	},
 	hoverOn: function() {
+		console.log("This method is called");
 		this.$el.animate( { backgroundColor: 'rgba(200, 200, 200, 1)' } );
 	},
 	hoverOff: function() {
