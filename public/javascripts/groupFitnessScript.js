@@ -1,10 +1,10 @@
 //animate color changes of the blocks
-$('.dayBlock').mouseover(function() {
+$('.dayBlock:not([empty])').mouseover(function() {
 	$(this).animate( { backgroundColor: 'rgba(200, 200, 200, 1)' } );
 	
 });
 
-$('.dayBlock').mouseout(function() {
+$('.dayBlock:not([empty])').mouseout(function() {
 	
 	$(this).animate( { backgroundColor: 'rgba(0, 0, 0, 0)' } );
 	

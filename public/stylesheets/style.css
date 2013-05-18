@@ -294,6 +294,10 @@ textarea {
     cursor: pointer;   
 }
 
+.dayBlock[empty] {
+    background-color: #898989;
+}
+
 .dayIndicator {
     display: block;
     position: absolute;
