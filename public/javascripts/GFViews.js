@@ -35,6 +35,9 @@ window.BlockView = Backbone.View.extend({
 	//row and column on the calendar grid
 	column: 0,
 	row: 0,
+	//empty block defaults to false
+	//empty means that this block does not represent a valid date
+	empty: false,
 	//the number of fitness classes to be held on this day
 	numberOfFitnessClasses: 0,
 
@@ -47,9 +50,11 @@ window.BlockView = Backbone.View.extend({
 		var rowSelector = ".cal-block-" + this.row;
 		this.$el = $(columnSelector).children(rowSelector);
 		if (options.empty === true) {
+			this.empty = true;
 			this.$el.attr('empty', 'empty');
 
 		} else {
+			this.empty = false;
 			this.day = options.day;
 			this.numberOfFitnessClasses = options.numberOfFitnessClasses;
 			this.render();
