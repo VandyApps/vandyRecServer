@@ -71,7 +71,7 @@ var BlockView = Backbone.View.extend({
 			this.numberOfFitnessClasses = options.numberOfFitnessClasses;
 		}
 		
-		//rerender the html
+		this.rerender();
 
 	},
 	rerender: function() {
@@ -167,13 +167,17 @@ window.MonthView = Backbone.View.extend({
 		}
 	},
 	incrementMonth: function() {
-
+		this.month += 1;
+		if (month > 11) {
+			this.month = 0;
+			this.year += 1;
+		}
+		this.rerender();
 	},
 	decrementMonth: function() {
 
 	},
 	rerender: function() {
-
 		//construct date
 		//set iterationDate to the first of the month
 		var foundFirstDay = false;
@@ -181,8 +185,9 @@ window.MonthView = Backbone.View.extend({
 		var passedLastDay = false;
 		var counter = 0;
 		var iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
+
 		for (var row = 0; row < 5; ++row) {
-			this.dayBlocks[row] = new Array(7);
+
 			for (var column = 0; column < 7; ++column) {
 
 				//check for the first day 
@@ -192,12 +197,11 @@ window.MonthView = Backbone.View.extend({
 				} else if (foundLastDay) {
 
 					passedLastDay = true;
-				}else if (!foundLastDay && DateHelper.daysForMonth(iterationDate.getMonth(), this.year) === iterationDate.getDate()) {
+				} else if (!foundLastDay && DateHelper.daysForMonth(iterationDate.getMonth(), this.year) === iterationDate.getDate()) {
 					foundLastDay = true;
 				}
 
 				if (!foundFirstDay || passedLastDay) {
-
 					//reset instead of initiate
 					this.dayBlocks[row][column].reset({row: row, column: column, empty: true});
 
@@ -212,9 +216,6 @@ window.MonthView = Backbone.View.extend({
 				
 			}
 		}
-
-
 	}
-
 });
 
