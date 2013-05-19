@@ -1,5 +1,5 @@
 //DateHelper is a utility class
-var DateHelper = {};
+window.DateHelper = {};
 
 DateHelper.addWeekToDate = function(date) {
 	date.setDate(date.getDate() + 7);
@@ -23,6 +23,23 @@ DateHelper.weekDayAsString = function(date) {
 	return "Saturday";
 }
 
+//get the number of days for a month index
+DateHelper.daysForMonth = function(monthIndex, year) {
+	switch(monthIndex) {
+		case 0: return 31;
+		case 1: if (year % 4 === 0) return 29; else return 28;
+		case 2: return 31; 
+		case 3: return 30;
+		case 4: return 31;
+		case 5: return 30;
+		case 6: return 31;
+		case 7: return 31;
+		case 8: return 30;
+		case 9: return 31;
+		case 10: return 30;
+		default: return 31;
+	}
+}
 //sets the date so that the date is the same
 //with the exception of the time, which is 
 //12:00:00 am

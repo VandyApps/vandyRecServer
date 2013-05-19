@@ -3,14 +3,16 @@ var MonthView = Backbone.View.extend({
 	el: '#calendar',
 
 	month: 0,
-	day: 0,
 	year: 0,
 
-	initialize: function() {
+	initialize: function(options) {
+		this.month = options.month;
+		this.year = options.year;
 		this.render();
 	},
 	render: function() {
-
+		//construct date
+		
 	}
 
 });
