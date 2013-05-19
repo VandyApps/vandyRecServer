@@ -1,34 +1,6 @@
-var MonthView = Backbone.View.extend({
-
-	el: '#calendar',
-
-	month: 0,
-	year: 0,
-
-	initialize: function(options) {
-		this.month = options.month;
-		this.year = options.year;
-		this.render();
-	},
-	render: function() {
-		//construct date
-		//set iterationDate to the first of the month
-		var foundFirstDay = false;
-		var counter = 0;
-		var iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
-		for (var i = 0; i < 5; ++i) {
-			for (var j = 0; j < 7; ++j) {
-
-
-			}
-		}
-	}
-
-});
-
 //this is not really a backbone view in that it has not real models but helps 
 //delegate the display of models in a separate window
-window.BlockView = Backbone.View.extend({
+var BlockView = Backbone.View.extend({
 
 	//the day to display
 	day: 0,
@@ -62,6 +34,7 @@ window.BlockView = Backbone.View.extend({
 	},
 	render: function() {
 		
+
 		this.$el.append('<div class="dayIndicator">'+this.day+'</div>');
 		if (this.numberOfFitnessClasses === 1) {
 
@@ -74,5 +47,69 @@ window.BlockView = Backbone.View.extend({
 	//for resetting the view without removing it
 	reset: function(options) {
 	}
+});
+
+
+
+
+
+
+window.MonthView = Backbone.View.extend({
+
+	el: '#calendar',
+
+	month: 0,
+	year: 0,
+
+	initialize: function(options) {
+		this.month = options.month;
+		this.year = options.year;
+		this.render();
+	},
+	render: function() {
+
+		//set the display to the month and year indication outside of
+		//calendar element
+		
+		//construct date
+		//set iterationDate to the first of the month
+		var foundFirstDay = false;
+		var foundLastDay = false;
+		var passedLastDay = false;
+		var counter = 0;
+		var iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
+		for (var row = 0; row < 5; ++row) {
+			for (var column = 0; column < 7; ++column) {
+
+				//check for the first day 
+				if (!foundFirstDay && iterationDate.getDay() === column) {
+					foundFirstDay = true;
+
+				} else if (foundLastDay) {
+
+					passedLastDay = true;
+				}else if (!foundLastDay && DateHelper.daysForMonth(iterationDate.getMonth(), this.year) === iterationDate.getDate()) {
+					foundLastDay = true;
+				}
+
+				if (!foundFirstDay || passedLastDay) {
+
+					//create an empty element
+					var newBlock = new BlockView({row: row, column: column, empty: true});
+
+				} else {
+
+					//create a filled column
+					//set the number of fitness classes to 0 initially
+					var newBlock = new BlockView({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: 0});
+					iterationDate.setDate(iterationDate.getDate() + 1);
+					counter++;
+				}
+
+				
+			}
+		}
+	}
+
 });
 
