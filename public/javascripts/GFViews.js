@@ -102,11 +102,11 @@ var BlockView = Backbone.View.extend({
 		
 		var partialSelector = $(event.delegateTarget).attr('class');
 		
-		$(event.delegateTarget).not('[empty]').animate({backgroundColor: 'rgba(200,200,200,1)'}, 300);
+		$(event.delegateTarget).not('[empty]').animate({backgroundColor: 'rgba(200,200,200,1)'}, 200);
 	},
 	hoverOff: function(event) {
 		
-		$(event.delegateTarget).not('[empty]').animate({backgroundColor: 'rgba(0,0,0,0)'}, 300);
+		$(event.delegateTarget).not('[empty]').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
 	}
 	
 });
