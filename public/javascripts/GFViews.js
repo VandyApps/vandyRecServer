@@ -102,7 +102,7 @@ var BlockView = Backbone.View.extend({
 
 
 
-window.MonthView = Backbone.View.extend({
+var MonthView = Backbone.View.extend({
 
 	el: '#calendar',
 
@@ -227,3 +227,10 @@ window.MonthView = Backbone.View.extend({
 		}
 	}
 });
+
+//setup the MonthView instance
+var currentDate = new Date();
+var monthView = new MonthView({month: currentDate.getMonth(), year: currentDate.getYear() + 1900});
+
+//set up other events
+
