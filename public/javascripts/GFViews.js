@@ -169,7 +169,7 @@ var MonthView = Backbone.View.extend({
 	},
 	incrementMonth: function() {
 		this.month += 1;
-		if (month > 11) {
+		if (this.month > 11) {
 			this.month = 0;
 			this.year += 1;
 			
@@ -178,7 +178,7 @@ var MonthView = Backbone.View.extend({
 	},
 	decrementMonth: function() {
 		this.month -= 1;
-		if (month < 0) {
+		if (this.month < 0) {
 			this.month = 11;
 			this.year -= 1;
 
@@ -233,4 +233,10 @@ var currentDate = new Date();
 var monthView = new MonthView({month: currentDate.getMonth(), year: currentDate.getYear() + 1900});
 
 //set up other events
+$('#leftArrow').click(function() {
+	monthView.decrementMonth();
+});
 
+$('#rightArrow').click(function() {
+	monthView.incrementMonth();
+});

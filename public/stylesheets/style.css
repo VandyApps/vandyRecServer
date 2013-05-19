@@ -216,14 +216,14 @@ textarea {
     position: relative;
     top: 5px;
 }
-#arrow_left {
+#leftArrow {
     position: absolute;
     top: 13px;
     left: 0px;
     cursor: pointer;
 }
 
-#arrow_right {
+#rightArrow {
     position: absolute;
     top: 13px;
     right: 0px;
