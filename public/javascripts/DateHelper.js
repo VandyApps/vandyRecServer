@@ -23,6 +23,23 @@ DateHelper.weekDayAsString = function(date) {
 	return "Saturday";
 }
 
+DateHelper.monthNameForIndex = function(monthIndex) {
+	switch(monthIndex) {
+		case 0: return "January";
+		case 1: return "February";
+		case 2: return "March";
+		case 3: return "April";
+		case 4: return "May";
+		case 5: return "June";
+		case 6: return "July";
+		case 7: return "August";
+		case 8: return "September";
+		case 9: return "October";
+		case 10: return "Novermber";
+		default: return "December";
+	}
+}
+
 //get the number of days for a month index
 DateHelper.daysForMonth = function(monthIndex, year) {
 	switch(monthIndex) {

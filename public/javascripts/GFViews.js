@@ -122,7 +122,8 @@ window.MonthView = Backbone.View.extend({
 
 		//set the display to the month and year indication outside of
 		//calendar element
-		
+		$('#month').text(DateHelper.monthNameForIndex(this.month));
+		$('#year').text(this.year.toString());
 		//construct date
 		//set iterationDate to the first of the month
 		var foundFirstDay = false;
@@ -171,15 +172,23 @@ window.MonthView = Backbone.View.extend({
 		if (month > 11) {
 			this.month = 0;
 			this.year += 1;
+			
 		}
 		this.rerender();
 	},
 	decrementMonth: function() {
+		this.month -= 1;
+		if (month < 0) {
+			this.month = 11;
+			this.year -= 1;
 
+		}
+		this.rerender();
 	},
 	rerender: function() {
-		//construct date
-		//set iterationDate to the first of the month
+		$('#month').text(DateHelper.monthNameForIndex(this.month));
+		$('#year').text(this.year.toString());
+
 		var foundFirstDay = false;
 		var foundLastDay = false;
 		var passedLastDay = false;
