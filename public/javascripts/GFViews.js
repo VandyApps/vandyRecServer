@@ -21,9 +21,9 @@ var BlockView = Backbone.View.extend({
 		var columnSelector = "#cal-column-" + this.column;
 		var rowSelector = ".cal-block-" + this.row;
 		this.$el = $(columnSelector).children(rowSelector);
+		
 		if (options.empty === true) {
 			this.empty = true;
-			this.$el.attr('empty', 'empty');
 
 		} else {
 			this.empty = false;
@@ -34,26 +34,21 @@ var BlockView = Backbone.View.extend({
 		
 	},
 	render: function() {
-		
-		if (this.empty == true) {
-			this.$el.append('<div class="dayIndicator"></div>')
-			this.$('.dayIndicator').hide();
+		if (this.empty) {
+			this.$el.attr('empty', 'empty');
+		}
 
+		this.$el.append('<div class="dayIndicator">'+this.day+'</div>');
+		if (this.numberOfFitnessClasses === 1) {
+
+			this.$el.append('<div class="classCountIndicator">1 Class</div>');
+
+		} else if (this.numberOfFitnessClasses > 1) {
+			this.$el.append('<div class="classCountIndicator">'+this.numberOfFitnessClasses+" Classes</div>");
+
+		} else {
 			this.$el.append('<div class="classCountIndicator"><div>');
 			this.$('.classCountIndicator').hide();
-		} else {
-			this.$el.append('<div class="dayIndicator">'+this.day+'</div>');
-			if (this.numberOfFitnessClasses === 1) {
-
-				this.$el.append('<div class="classCountIndicator">1 Class</div>');
-
-			} else if (this.numberOfFitnessClasses > 1) {
-				this.$el.append('<div class="classCountIndicator">'+this.numberOfFitnessClasses+" Classes</div>");
-
-			} else {
-				this.$el.append('<div class="classCountIndicator"><div>');
-				this.$('.classCountIndicator').hide();
-			}
 		}
 		
 		
@@ -75,20 +70,14 @@ var BlockView = Backbone.View.extend({
 			this.empty = false;
 			this.day = options.day;
 			this.numberOfFitnessClasses = options.numberOfFitnessClasses;
-			this.rerender();
 		}
+		this.rerender();
 	},
 	//used to reset the elements
 	rerender: function() {
-		this.$('.dayIndicator').text(this.day.toString());
-		if (this.empty === true) {
-			this.$el.attr('empty', 'empty');
-
-
-		} else {
-			this.$el.removeAttr('empty');
-		}
+		
 	}
+	
 });
 
 

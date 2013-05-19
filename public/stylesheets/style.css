@@ -308,9 +308,21 @@ textarea {
 .dayBlock[empty] {
     background-color: #898989;
 }
+.dayBlock[empty] .dayIndicator {
+    display: none;
+}
+.dayBlock[empty] .classCountIndicator {
+    display: none;
+}
+.dayBlock:not([empty]) .dayIndicator {
+    display: block;
+}
+.dayBlock:not([empty]) .classCountIndicator {
+    display: block;
+}
 
 .dayIndicator {
-    display: block;
+    
     position: absolute;
     height: 28px;
     width: 28px;
@@ -326,7 +338,7 @@ textarea {
 .classCountIndicator {
     
     position: absolute;
-    display: block;
+   
     top: 60px;
     height: 50px;
     width: 142px;
