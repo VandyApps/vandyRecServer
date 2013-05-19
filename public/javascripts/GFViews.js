@@ -27,10 +27,6 @@ window.BlockView = Backbone.View.extend({
 	//the number of fitness classes to be held on this day
 	numberOfFitnessClasses: 0,
 
-	events: {
-		'mouseover': 'hoverOn',
-		'mouseout': 'hoverOff'
-	},
 	
 	initialize: function(options) {
 		//set the variables
@@ -46,7 +42,7 @@ window.BlockView = Backbone.View.extend({
 		this.render();
 	},
 	render: function() {
-		console.log("Called render");
+		
 		this.$el.append('<div class="dayIndicator">'+this.day+'</div>');
 		if (this.numberOfFitnessClasses === 1) {
 
@@ -55,12 +51,6 @@ window.BlockView = Backbone.View.extend({
 			this.$el.append('<div class="classCountIndicator">'+this.numberOfFitnessClasses+" Classes</div>");
 
 		}
-	},
-	hoverOn: function() {
-		console.log("This method is called");
-		this.$el.animate( { backgroundColor: 'rgba(200, 200, 200, 1)' } );
-	},
-	hoverOff: function() {
-		this.$el.animate( { backgroundColor: 'rgba(0, 0, 0, 0)' } );
 	}
 });
+
