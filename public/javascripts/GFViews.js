@@ -21,7 +21,7 @@ var BlockView = Backbone.View.extend({
 		var columnSelector = "#cal-column-" + this.column;
 		var rowSelector = ".cal-block-" + this.row;
 		this.$el = $(columnSelector).children(rowSelector);
-		
+
 		if (options.empty === true) {
 			this.empty = true;
 
@@ -48,7 +48,6 @@ var BlockView = Backbone.View.extend({
 
 		} else {
 			this.$el.append('<div class="classCountIndicator"><div>');
-			this.$('.classCountIndicator').hide();
 		}
 		
 		
@@ -71,11 +70,29 @@ var BlockView = Backbone.View.extend({
 			this.day = options.day;
 			this.numberOfFitnessClasses = options.numberOfFitnessClasses;
 		}
-		this.rerender();
-	},
-	//used to reset the elements
-	rerender: function() {
 		
+		//rerender the html
+
+	},
+	rerender: function() {
+		if (this.empty) {
+			this.$el.attr('empty', 'empty');
+		} else {
+			this.$el.removeAttr('empty');
+		}
+		
+		this.$('.dayIndicator').text(this.day.toString());
+		if (this.numberOfFitnessClasses === 1) {
+
+			this.$('.classCountIndicator').text('1 Class');
+
+		} else if (this.numberOfFitnessClasses > 1) {
+
+			this.$('.classCountIndicator').text(this.numberOfFitnessClasses+' Classes');
+		} else { //0 classes
+			this.$('.classCountIndicator').text('');
+			
+		}
 	}
 	
 });
