@@ -15,7 +15,8 @@ var BlockView = Backbone.View.extend({
 	events: {
 
 		'mouseenter.dayBlock': 'hoverOn',
-		'mouseleave.dayBlock': 'hoverOff'
+		'mouseleave.dayBlock': 'hoverOff',
+		'click.dayBlock': 'showForm'
 	},
 	
 	initialize: function(options) {
@@ -107,6 +108,15 @@ var BlockView = Backbone.View.extend({
 	hoverOff: function(event) {
 		
 		$(event.delegateTarget).not('[empty]').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
+	},
+	showForm: function(event) {
+		
+		if (typeof $(event.delegateTarget).attr('empty') === "undefined") {
+			$('#windowPrimer').fadeIn(400, function() {
+				$('#formWindow').show();
+			});
+		}
+		
 	}
 	
 });
@@ -254,3 +264,7 @@ $('#leftArrow').click(function() {
 $('#rightArrow').click(function() {
 	monthView.incrementMonth();
 });
+$('#windowPrimer').click(function() {
+	$(this).hide();
+	$('#formWindow').hide();
+})

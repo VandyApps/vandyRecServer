@@ -349,7 +349,7 @@ textarea {
 }
 
 #windowPrimer {
-    display: block;
+    display: none;
     position: absolute;
     
     top: 0;
@@ -360,8 +360,9 @@ textarea {
     opacity: .55;
 }
 #formWindow {
+    display: none;
     border: solid black;
-    display: block;
+    
     position: fixed;
     background-color: blue;
     top: 50%;
