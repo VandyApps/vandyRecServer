@@ -131,7 +131,7 @@ window.MonthView = Backbone.View.extend({
 		var passedLastDay = false;
 		var counter = 0;
 		var iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
-		for (var row = 0; row < 5; ++row) {
+		for (var row = 0; row < 6; ++row) {
 			
 			//initiate the nested array
 			this.dayBlocks[row] = new Array(7);
@@ -195,7 +195,7 @@ window.MonthView = Backbone.View.extend({
 		var counter = 0;
 		var iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
 
-		for (var row = 0; row < 5; ++row) {
+		for (var row = 0; row < 6; ++row) {
 
 			for (var column = 0; column < 7; ++column) {
 
@@ -227,4 +227,3 @@ window.MonthView = Backbone.View.extend({
 		}
 	}
 });
-
