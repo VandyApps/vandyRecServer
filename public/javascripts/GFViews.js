@@ -80,7 +80,7 @@ var BlockView = Backbone.View.extend({
 		} else {
 			this.$el.removeAttr('empty');
 		}
-		
+
 		this.$('.dayIndicator').text(this.day.toString());
 		if (this.numberOfFitnessClasses === 1) {
 
@@ -108,6 +108,10 @@ window.MonthView = Backbone.View.extend({
 
 	month: 0,
 	year: 0,
+	//2D array for blocks in the month view
+	//this is an array of rows, and each row 
+	//is an array of columns
+	dayBlocks: [],
 
 	initialize: function(options) {
 		this.month = options.month;
@@ -127,6 +131,58 @@ window.MonthView = Backbone.View.extend({
 		var counter = 0;
 		var iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
 		for (var row = 0; row < 5; ++row) {
+			
+			//initiate the nested array
+			this.dayBlocks[row] = new Array(7);
+			for (var column = 0; column < 7; ++column) {
+				
+
+				//check for the first day 
+				if (!foundFirstDay && iterationDate.getDay() === column) {
+					foundFirstDay = true;
+
+				} else if (foundLastDay) {
+
+					passedLastDay = true;
+				}else if (!foundLastDay && DateHelper.daysForMonth(iterationDate.getMonth(), this.year) === iterationDate.getDate()) {
+					foundLastDay = true;
+				}
+
+				if (!foundFirstDay || passedLastDay) {
+					
+					//create an empty element
+					this.dayBlocks[row][column] = new BlockView({row: row, column: column, empty: true});
+
+				} else {
+					
+					//create a filled column
+					//set the number of fitness classes to 0 initially
+					this.dayBlocks[row][column] = new BlockView({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: 0});
+					iterationDate.setDate(iterationDate.getDate() + 1);
+					counter++;
+				}
+
+				
+			}
+		}
+	},
+	incrementMonth: function() {
+
+	},
+	decrementMonth: function() {
+
+	},
+	rerender: function() {
+
+		//construct date
+		//set iterationDate to the first of the month
+		var foundFirstDay = false;
+		var foundLastDay = false;
+		var passedLastDay = false;
+		var counter = 0;
+		var iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
+		for (var row = 0; row < 5; ++row) {
+			this.dayBlocks[row] = new Array(7);
 			for (var column = 0; column < 7; ++column) {
 
 				//check for the first day 
@@ -142,14 +198,13 @@ window.MonthView = Backbone.View.extend({
 
 				if (!foundFirstDay || passedLastDay) {
 
-					//create an empty element
-					var newBlock = new BlockView({row: row, column: column, empty: true});
+					//reset instead of initiate
+					this.dayBlocks[row][column].reset({row: row, column: column, empty: true});
 
 				} else {
 
-					//create a filled column
-					//set the number of fitness classes to 0 initially
-					var newBlock = new BlockView({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: 0});
+					//reset instead of initiate
+					this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: 0});
 					iterationDate.setDate(iterationDate.getDate() + 1);
 					counter++;
 				}
@@ -157,6 +212,8 @@ window.MonthView = Backbone.View.extend({
 				
 			}
 		}
+
+
 	}
 
 });
