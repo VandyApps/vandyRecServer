@@ -12,7 +12,16 @@ var MonthView = Backbone.View.extend({
 	},
 	render: function() {
 		//construct date
-		
+		//set iterationDate to the first of the month
+		var foundFirstDay = false;
+		var counter = 0;
+		var iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
+		for (var i = 0; i < 5; ++i) {
+			for (var j = 0; j < 7; ++j) {
+
+
+			}
+		}
 	}
 
 });
@@ -34,14 +43,17 @@ window.BlockView = Backbone.View.extend({
 		//set the variables
 		this.row = options.row;
 		this.column = options.column;
-		this.day = options.day;
-		this.numberOfFitnessClasses = options.numberOfFitnessClasses;
-
 		var columnSelector = "#cal-column-" + this.column;
 		var rowSelector = ".cal-block-" + this.row;
 		this.$el = $(columnSelector).children(rowSelector);
-		//set up the element
-		this.render();
+		if (options.empty === true) {
+			this.$el.attr('empty', 'empty');
+
+		} else {
+			this.day = options.day;
+			this.numberOfFitnessClasses = options.numberOfFitnessClasses;
+			this.render();
+		}
 	},
 	render: function() {
 		
@@ -53,6 +65,9 @@ window.BlockView = Backbone.View.extend({
 			this.$el.append('<div class="classCountIndicator">'+this.numberOfFitnessClasses+" Classes</div>");
 
 		}
+	},
+	//for resetting the view without removing it
+	reset: function(options) {
 	}
 });
 
