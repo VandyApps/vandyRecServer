@@ -12,7 +12,11 @@ var BlockView = Backbone.View.extend({
 	empty: false,
 	//the number of fitness classes to be held on this day
 	numberOfFitnessClasses: 0,
+	events: {
 
+		'mouseenter.dayBlock': 'hoverOn',
+		'mouseleave.dayBlock': 'hoverOff'
+	},
 	
 	initialize: function(options) {
 		//set the variables
@@ -49,7 +53,6 @@ var BlockView = Backbone.View.extend({
 		} else {
 			this.$el.append('<div class="classCountIndicator"><div>');
 		}
-		
 		
 	},
 	//for resetting the view for another date 
@@ -93,6 +96,16 @@ var BlockView = Backbone.View.extend({
 			this.$('.classCountIndicator').text('');
 			
 		}
+	},
+	hoverOn: function(event) {
+		
+		var partialSelector = $(event.delegateTarget).attr('class');
+		
+		$(event.delegateTarget).not('[empty]').animate({backgroundColor: 'rgba(200,200,200,1)'}, 300);
+	},
+	hoverOff: function(event) {
+		
+		$(event.delegateTarget).not('[empty]').animate({backgroundColor: 'rgba(0,0,0,0)'}, 300);
 	}
 	
 });
