@@ -29,23 +29,65 @@ var BlockView = Backbone.View.extend({
 			this.empty = false;
 			this.day = options.day;
 			this.numberOfFitnessClasses = options.numberOfFitnessClasses;
-			this.render();
 		}
+		this.render();
+		
 	},
 	render: function() {
 		
+		if (this.empty == true) {
+			this.$el.append('<div class="dayIndicator"></div>')
+			this.$('.dayIndicator').hide();
 
-		this.$el.append('<div class="dayIndicator">'+this.day+'</div>');
-		if (this.numberOfFitnessClasses === 1) {
+			this.$el.append('<div class="classCountIndicator"><div>');
+			this.$('.classCountIndicator').hide();
+		} else {
+			this.$el.append('<div class="dayIndicator">'+this.day+'</div>');
+			if (this.numberOfFitnessClasses === 1) {
 
-			this.$el.append('<div class="classCountIndicator">1 Class</div>');
-		} else if (this.numberOfFitnessClasses > 1) {
-			this.$el.append('<div class="classCountIndicator">'+this.numberOfFitnessClasses+" Classes</div>");
+				this.$el.append('<div class="classCountIndicator">1 Class</div>');
 
+			} else if (this.numberOfFitnessClasses > 1) {
+				this.$el.append('<div class="classCountIndicator">'+this.numberOfFitnessClasses+" Classes</div>");
+
+			} else {
+				this.$el.append('<div class="classCountIndicator"><div>');
+				this.$('.classCountIndicator').hide();
+			}
+		}
+		
+		
+	},
+	//for resetting the view for another date 
+	//without removing it
+	reset: function(options) {
+		//set the variables
+		this.row = options.row;
+		this.column = options.column;
+		var columnSelector = "#cal-column-" + this.column;
+		var rowSelector = ".cal-block-" + this.row;
+		this.$el = $(columnSelector).children(rowSelector);
+		if (options.empty === true) {
+			this.empty = true;
+			this.$el.attr('empty', 'empty');
+
+		} else {
+			this.empty = false;
+			this.day = options.day;
+			this.numberOfFitnessClasses = options.numberOfFitnessClasses;
+			this.rerender();
 		}
 	},
-	//for resetting the view without removing it
-	reset: function(options) {
+	//used to reset the elements
+	rerender: function() {
+		this.$('.dayIndicator').text(this.day.toString());
+		if (this.empty === true) {
+			this.$el.attr('empty', 'empty');
+
+
+		} else {
+			this.$el.removeAttr('empty');
+		}
 	}
 });
 
