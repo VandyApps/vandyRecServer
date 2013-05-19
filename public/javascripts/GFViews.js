@@ -78,6 +78,7 @@ var BlockView = Backbone.View.extend({
 
 	},
 	rerender: function() {
+		this.$el.removeAttr('style');
 		if (this.empty) {
 			this.$el.attr('empty', 'empty');
 		} else {
