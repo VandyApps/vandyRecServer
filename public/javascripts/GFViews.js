@@ -305,6 +305,14 @@ var GFClassView = Backbone.View.extend({
 	render: function() {
 
 	},
+	//for deleting a single instance
+	deleteOne: function() {
+
+	},
+	//for deleting many instances
+	deleteMany:function() {
+
+	}
 	
 
 });

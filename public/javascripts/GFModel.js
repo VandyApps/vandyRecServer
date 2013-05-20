@@ -2,10 +2,10 @@
 
 window.FitnessClass = Backbone.Model.extend({
 
-	//time in military time, 1200 is 12 pm, 1330, is 1:30 pm
-	//make sure end time is greater than start time
-	startTime: 0, 
-	endTime: 0,
+	//time is in the form 12:30pm
+	startTime: '', 
+	endTime: '',
+	
 	instructor: '',
 	className: '',
 	//0-based index of the day of the week that this class is in
@@ -55,7 +55,7 @@ window.FitnessClass = Backbone.Model.extend({
 //smaller collections
 var FitnessClasses = Backbone.Collection.extend({
 	model: FitnessClass,
-
+	url: '/JSON/GF',
 	//earliest month and year of any class
 	firstMonth: 0,
 	firstYear: 0,
