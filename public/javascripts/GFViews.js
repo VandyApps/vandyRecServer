@@ -252,6 +252,50 @@ var MonthView = Backbone.View.extend({
 	}
 });
 
+//does not have a single model that it renders
+//manages the creation and deletion of models
+//that are being rendered in the window form
+var GFClassForm = Backbone.View.extend({
+
+	el: '#formWindow-classes',
+
+	events: {
+
+		//need an event for clicking submit on the form
+		//need an event to show and hide the form
+		//need events to manage selections and changes to existing classes
+	},
+
+	initialize: function(options) {
+
+	},
+	render: function() {
+
+	},
+	//adds class that was submitted by the form
+	//and appends it immediately after the class creation
+	//form
+	addClass: function() {
+
+	}
+});
+
+//this backbone view does take a model of a single class
+//that it renders to a li
+var GFClassView = Backbone.View.extend({
+
+	className: 'formWindow-existingClass',
+
+	//render the list item with necessary forms for
+	//changing options
+	render: function() {
+
+	}
+
+});
+
+
+
 //setup the MonthView instance
 var currentDate = new Date();
 var monthView = new MonthView({month: currentDate.getMonth(), year: currentDate.getYear() + 1900});
