@@ -366,7 +366,7 @@ textarea {
     border-radius: 15px;
     position: fixed;
     background-color: #dedede;
-    top: 50%;
+    top: 20%;
     left: 50%;
     margin: auto 0;
     height: 500px;
@@ -408,8 +408,10 @@ textarea {
 
 #formWindow-classes {
     list-style: none;
+    display: block;
+    height: 430px;
     margin: 0;
-    overflow-y:auto;
+    overflow-y: auto;
     overflow-x:hidden;
 }
 
