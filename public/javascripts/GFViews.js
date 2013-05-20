@@ -264,7 +264,8 @@ $('#leftArrow').click(function() {
 $('#rightArrow').click(function() {
 	monthView.incrementMonth();
 });
-$('#windowPrimer').click(function() {
-	$(this).hide();
+$('#windowPrimer,#formWindow-exit').click(function() {
+	$('#windowPrimer').hide();
 	$('#formWindow').hide();
-})
+});
+
