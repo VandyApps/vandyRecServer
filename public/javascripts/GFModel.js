@@ -70,6 +70,8 @@ var FitnessClasses = Backbone.Collection.extend({
 	} 
 });
 
+window.fitnessClasses = new FitnessClasses();
+
 //set of all classes within a given month
 //used to put classes into views displayed to user
 var FitnessClassesByMonth = Backbone.Collection.extend({
