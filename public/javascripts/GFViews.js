@@ -112,6 +112,12 @@ var BlockView = Backbone.View.extend({
 	showForm: function(event) {
 		
 		if (typeof $(event.delegateTarget).attr('empty') === "undefined") {
+			
+			var dayOfWeekIndex = parseInt($(event.delegateTarget).parent().attr('id').charAt(11), 10);
+
+			
+			var windowTitle = DateHelper.weekDayAsString(dayOfWeekIndex) +', '+$('#month').text()+' '+$('.dayIndicator' , event.delegateTarget).text()+' '+$('#year').text();
+			$('#formWindow-title').text(windowTitle);
 			$('#windowPrimer').fadeIn(400, function() {
 				$('#formWindow').show();
 			});

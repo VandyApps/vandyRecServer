@@ -10,8 +10,17 @@ DateHelper.substractWeekFromDate = function(date) {
 }
 
 //returns the week day of the date as a string
+//can either pass in a date or an index of a day
 DateHelper.weekDayAsString = function(date) {
-	switch(date.getDay()) {
+	var dayOfWeekIndex;
+	if (typeof date === 'object') {
+		dayOfWeekIndex = date.getDay();
+	} else if (typeof date === 'number') {
+		dayOfWeekIndex = date;
+	} else {
+		return new Error('parameter passed into weekDayAsString is not valid');
+	}
+	switch(dayOfWeekIndex) {
 		case 0: return "Sunday";
 		case 1: return "Monday";
 		case 2: return "Tuesday";
@@ -22,6 +31,7 @@ DateHelper.weekDayAsString = function(date) {
 	}
 	return "Saturday";
 }
+
 
 DateHelper.monthNameForIndex = function(monthIndex) {
 	switch(monthIndex) {
