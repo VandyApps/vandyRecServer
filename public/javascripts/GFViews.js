@@ -268,12 +268,12 @@ var GFClassForm = Backbone.View.extend({
 	events: {
 
 		//need an event for clicking submit on the form
-		//need an event to show and hide the form
+		'click #formWindow-newClass-title': 'toggleForm'
 		//need events to manage selections and changes to existing classes
 	},
 
 	initialize: function(options) {
-
+		
 	},
 	render: function() {
 
@@ -283,20 +283,29 @@ var GFClassForm = Backbone.View.extend({
 	//form
 	addClass: function() {
 
+	},
+	//this toggles the appearance of the new class form
+	toggleForm: function() {
+		$('#formWindow-newClass-form').slideToggle();
 	}
 });
 
+var formWindowView = new GFClassForm();
 //this backbone view does take a model of a single class
 //that it renders to a li
 var GFClassView = Backbone.View.extend({
 
 	className: 'formWindow-existingClass',
 
+	events: {
+		
+	},
 	//render the list item with necessary forms for
 	//changing options
 	render: function() {
 
-	}
+	},
+	
 
 });
 

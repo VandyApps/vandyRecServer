@@ -429,6 +429,7 @@ textarea {
     width: 400px;
     margin: 0 auto;
     border-bottom: solid black 1px;
+    cursor: pointer;
 }
 
 
