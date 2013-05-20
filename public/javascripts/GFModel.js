@@ -2,10 +2,12 @@
 
 window.FitnessClass = Backbone.Model.extend({
 
-	//time is in the form 12:30pm
-	startTime: '', 
-	endTime: '',
-	
+	//timeRange is in the form 12:30pm - 1:30pm
+	//note that there is no spaces in between a single
+	//time elements but there is a space-dash-space between 
+	//two different time elements
+	timeRange: '',
+
 	instructor: '',
 	className: '',
 	//0-based index of the day of the week that this class is in

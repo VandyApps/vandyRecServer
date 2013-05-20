@@ -78,6 +78,7 @@ app.get('/programs', routes.programs);
 
 //JSON data for all the tabs
 app.get('/JSON/news', data.news);
+app.get('/JSON/GF', data.groupFitness);
 
 passport.serializeUser(function(user, done) {
   done(null, user);

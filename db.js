@@ -9,7 +9,8 @@ var MONGODB_URL;
 //other collections to be added later
 var Collections = 
 {
-	news: 'news'
+	news: 'news',
+	groupFitness: 'groupFitness'
 }
 
 
@@ -110,6 +111,22 @@ exports.updateNewsElement = function(model, callback) {
 				
 				callback(err, doc);
 				db.close();
+			});
+		});
+	});
+}
+
+
+//related to groupFitness collection
+exports.allGFObjects = function(callback) {
+	Db.connect(MONGODB_URL, function(err, db) {
+		db.collection(Collections.groupFitness, function(err, collection) {
+
+			collection.find(function(err, cursor) {
+				cursor.toArray(function(err, collection) {
+					callback(err, collection);
+					db.close();
+				});
 			});
 		});
 	});

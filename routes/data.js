@@ -5,3 +5,9 @@ exports.news = function(req, res) {
 		res.send(collection);
 	});
 };
+
+exports.groupFitness = function(req, res) {
+	db.allGFObjects(function(err, collection) {
+		res.send(collection);
+	});
+}
