@@ -307,6 +307,7 @@ textarea {
 
 .dayBlock[empty] {
     background-color: #898989;
+    cursor: auto;
 }
 .dayBlock[empty] .dayIndicator {
     display: none;
