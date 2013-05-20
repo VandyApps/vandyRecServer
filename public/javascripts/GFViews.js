@@ -318,4 +318,11 @@ $('#windowPrimer,#formWindow-exit').click(function() {
 	$('#windowPrimer').hide();
 	$('#formWindow').hide();
 });
+$('#formWindow-exit').mouseover(function() {
+	$(this).animate({backgroundColor: '#cb7c01'}, 200);
+});
+$('#formWindow-exit').mouseout(function() {
+	$(this).animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
+});
+
 
