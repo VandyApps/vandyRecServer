@@ -375,14 +375,124 @@ textarea {
     
 }
 
-#formWindow_title {
+#formWindow-title {
     display: block;
     border-bottom: solid black 1px;
     height: 55px;
-    line-height: 55px;
     background-color: #EB8F00;
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
+    line-height: 55px;
     font-size: 18pt;
     text-align: center;
 }
+
+#formWindow-classes {
+    list-style: none;
+    margin: 0;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+#formWindow-classes li {
+    border-bottom: solid black 1px;
+    margin-left: -40px;
+    
+}
+
+#formWindow-newClass-title {
+    display: block;
+    padding: 20px;
+    text-align: center;
+    color: red;
+    width: 400px;
+    margin: 0 auto;
+    border-bottom: solid black 1px;
+}
+
+#formWindow-newClass {
+    padding-bottom: 20px;
+
+}
+
+#formWindow-newClass-form {
+    padding-top: 20px;
+}
+#formWindow-newClass-className {
+   margin: 15px;
+    
+}
+#formWindow-newClass-className span {
+    padding-right: 50px;
+     
+}
+
+#formWindow-newClass-className input {
+    border-radius: 10px;
+    border: solid black 1px;
+    padding: 3px 10px;
+    width: 180px;
+}
+
+#formWindow-newClass-times {
+    margin: 40px 0px;
+    position: relative;
+    height: 65px;
+    
+}
+
+.formWindow-newClass-timeTitle {
+    text-align: center;
+    padding: 10px;
+}
+
+#formWindow-newClass-startTime {
+    
+    position: absolute;
+    width: 234px;
+    padding-left: 15px;
+    top: 0;
+    left: 0;
+
+}
+
+#formWindow-newClass-endTime {
+   
+    position: absolute;
+    padding-right: 15px;
+    width: 234px;
+    top: 0;
+    right: 0;
+}
+
+.formWindow-newClass-selectWrapper {
+    
+    /*text-align causes the selectors to be centered*/
+    text-align: center;
+}
+
+#formWindow-newClass-repeatOptions {
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+#formWindow-newClass-repeatOptions div {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#formWindow-newClass-submitNewClass {
+    position: relative;
+    display: block;
+    border: solid black 1px;
+    width: 200px;
+    height: 30px;
+    border-radius: 10px;
+    margin-left: -101px; /*add 1 for the padding*/
+    left: 50%;
+    
+}
+
+
+
+
