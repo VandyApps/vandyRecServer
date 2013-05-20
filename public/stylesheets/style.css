@@ -361,10 +361,10 @@ textarea {
 }
 #formWindow {
     display: none;
-    border: solid black;
-    
+    border: solid black 1px;
+    border-radius: 15px;
     position: fixed;
-    background-color: blue;
+    background-color: #dedede;
     top: 50%;
     left: 50%;
     margin: auto 0;
@@ -373,4 +373,16 @@ textarea {
     margin-top: -250px;
     margin-left: -250px;
     
+}
+
+#formWindow_title {
+    display: block;
+    border-bottom: solid black 1px;
+    height: 55px;
+    line-height: 55px;
+    background-color: #EB8F00;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+    font-size: 18pt;
+    text-align: center;
 }
