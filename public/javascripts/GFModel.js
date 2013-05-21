@@ -25,28 +25,31 @@ window.FitnessClass = Backbone.Model.extend({
 
 	//an array of dates that are exceptions to the date range
 	exceptionDates: [],
-	//returns true if the class exists within a given month
-	//takes parameter of month index, where 0 is January, 11 is December
-	isInMonth: function(monthIndex, year) {
-		var firstDayOfMonth = new Date(year, monthIndex, 1, 0,0,0,0);
-		var startDate = this.getStartDate();
-		var endDate = this.getEndDate();
-		if (typeof startDate === 'undefined') {
-			return new Error('no start date specified');
-		}
-		
-		if (typeof endDate !== 'undefined' && DateHelper.earlierDate(endDate, firstDayOfMonth)) {
+	
+	//dateString in the format MM/DD/YYYY
+	//where month is 1-based indexed
+	isOnDay: function(year, monthIndex, day) {
+		var date = new Date(year, monthIndex, day, 0,0,0,0);
+		if (date.getDay() !== this.get('dayOfWeek')) {
 			return false;
-		} 
+		}
 
+		//check if the date is after the end date
+		if (typeof this.getEndDate() !== 'undefined' && DateHelper.earlierDate(this.getEndDate(), date) {
+			return false;
+		}
 
-		
-	},
-	//returns true if the class exists on a given day
-	//takes a parameter of the day, which is 1-based, 
-	//so 2 is the second day of a month, month index
-	//is 0 based
-	isOnDay: function(day, monthIndex, year) {
+		//check if the date is before the start date
+		if (DateHelper.earlierDate(date, this.getStartDate())) {
+			return false;
+		}
+
+		//check if the date is an exception date
+		if (this.isExceptionDate(date)) {
+			return false;
+		}
+
+		return true;
 
 	},
 	//returns the day of the week the class exists
