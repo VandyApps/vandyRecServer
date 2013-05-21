@@ -22,9 +22,6 @@ window.FitnessClass = Backbone.Model.extend({
 	//if the class keeps going, then the end date is blank
 	startDate: '',
 	endDate: '',
-
-	//an array of dates that are exceptions to the date range
-	exceptionDates: [],
 	
 	//dateString in the format MM/DD/YYYY
 	//where month is 1-based indexed
@@ -82,54 +79,6 @@ window.FitnessClass = Backbone.Model.extend({
 		}
 		var endDateArray = this.get('endDate').split('/');
 		return new Date(parseInt(endDateArray[2],10), parseInt(endDateArray[0]-1, 10), parseInt(endDateArray[1],10), 0, 0 , 0, 0);
-	},
-	//date string is in the format: MM/DD/YYYY
-	addExceptionDate: function(dateString) {
-		//lazy instantiation
-		if (typeof this.get('exceptionDates') === 'undefined') {
-			this.set('exceptionDates', []);
-		}
-		this.get('exceptionDates').push(dateString);
-	},
-	//date string is in the format: MM/DD/YYYY
-	//returns true if the date string represents
-	//one of the dates in the exception date
-	//can either pass in a dateString of the 
-	//format MM/DD/YYYY or an actual date object
-	isExceptionDate: function(date) {
-		var dateString;
-		if (typeof date === 'string') {
-			dateString = date;
-		} else if (typeof date === 'object') {
-			var monthString;
-			var dayString;
-
-			//convert month for 0-based to 1-based
-			//when representing date as string
-			if (date.getMonth()+1 < 10) {
-				monthString = '0'+(date.getMonth()+1);
-			} else {
-				monthString = date.getMonth().toString();
-			}
-
-			if (date.getDate() < 10) {
-				dayString = '0'+date.getDate();
-			} else {
-				dayString = date.getDate().toString();
-			}
-
-			dateString = monthString+'/'+dayString+'/'+ (date.getYear()+1900);
-			console.log(dateString);
-		} else {
-			return new Error('Invalid parameter for the function isExceptionDate');
-		}
-
-		for (var index in this.get('exceptionDates')) {
-			if (dateString === this.get('exceptionDates')[index]) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 });

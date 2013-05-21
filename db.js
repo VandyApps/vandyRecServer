@@ -123,8 +123,7 @@ var fieldsToRender = {
 					instructor: true,
 					startDate: true,
 					endDate: true,
-					dayOfWeek: true,
-					exceptionDates: true
+					dayOfWeek: true
 				};
 
 exports.allGFObjects = function(callback) {
@@ -144,7 +143,7 @@ exports.allGFObjects = function(callback) {
 	});
 }
 
-//this is not yet fixes to check for exception dates
+
 exports.GFObjectsForDates = function(monthIndex, year, callback) {
 
 	var dateQuery = {
