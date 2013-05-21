@@ -135,7 +135,8 @@ var BlockView = Backbone.View.extend({
 var MonthView = Backbone.View.extend({
 
 	el: '#calendar',
-
+	//collection that is used by the view
+	fitnessClasses: null,
 	month: 0,
 	year: 0,
 	//2D array for blocks in the month view
@@ -146,10 +147,11 @@ var MonthView = Backbone.View.extend({
 	initialize: function(options) {
 		this.month = options.month;
 		this.year = options.year;
+		this.fitnessClasses = new FitnessClasses({month: this.month, year: this.year});
 		this.render();
 	},
 	render: function() {
-
+		console.log(this.fitnessClasses.models);
 		//set the display to the month and year indication outside of
 		//calendar element
 		$('#month').text(DateHelper.monthNameForIndex(this.month));
@@ -204,6 +206,7 @@ var MonthView = Backbone.View.extend({
 			this.year += 1;
 			
 		}
+		this.fitnessClasses.incrementMonth();
 		this.rerender();
 	},
 	decrementMonth: function() {
@@ -213,9 +216,11 @@ var MonthView = Backbone.View.extend({
 			this.year -= 1;
 
 		}
+		this.fitnessClasses.decrementMonth();
 		this.rerender();
 	},
 	rerender: function() {
+		console.log(this.fitnessClasses.models);
 		$('#month').text(DateHelper.monthNameForIndex(this.month));
 		$('#year').text(this.year.toString());
 
@@ -271,6 +276,7 @@ var GFClassForm = Backbone.View.extend({
 		'click #formWindow-newClass-title': 'toggleForm'
 		//need events to manage selections and changes to existing classes
 	},
+
 
 	initialize: function(options) {
 		

@@ -105,7 +105,7 @@ window.FitnessClasses = Backbone.Collection.extend({
 	initialize: function(options) {
 		this.month = options.month;
 		this.year = options.year;
-		this.fetch();
+		this.fetch({async: false});
 	},
 	//get all the classes that are on a particular day
 	//day is the day of the month, 1-based indexing, 2 is the second
@@ -118,11 +118,21 @@ window.FitnessClasses = Backbone.Collection.extend({
 	//increments the date by a month and resets the models in the 
 	//collection to correspond with the new month
 	incrementMonth: function() {
-
+		this.month += 1;
+		if (this.month > 11) {
+			this.month = 0;
+			this.year += 1;
+		}
+		this.fetch({reset: true, async: false});
 	},
 	//decrements the month and seeks for new models using url query
 	decrementMonth: function() {
-
+		this.month -= 1;
+		if (this.month < 0) {
+			this.month = 11;
+			this.year -=1;
+		}
+		this.fetch({reset: true, async: false});
 	}
 
 
