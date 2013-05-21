@@ -165,7 +165,10 @@ var FitnessClasses = Backbone.Collection.extend({
 		newFitnessClass.save();
 		//fetch data, no need to reset because month has not
 		//changes
-		this.fetch();
+		this.fetch({
+			success: function(collection) {console.log("success: " + JSON.stringify(collection))},
+			error: function(collection) {console.log("error: " + JSON.stringify(collection))}
+		});
 	}
 
 

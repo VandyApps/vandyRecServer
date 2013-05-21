@@ -69,14 +69,17 @@ exports.deleteNews = function(req, res) {
 }
 
 exports.createGF = function(req, res) {
+
 	var data = req.body;
+
 	//add data that can be used for server side querying
 	var startDateArray = data.startDate.split('/');
-	data.SD_monthCount = parseInt(startDateArray[2], 10) * 12 + parseInt(startDateArray[0], 10);
+	data.SD_monthCount = (parseInt(startDateArray[2], 10) -1970) * 12 + parseInt(startDateArray[0], 10);
 
 	var endDateArray = data.endDate.split('/');
-	data.ED_monthCount = parseInt(endDateArray[2], 10) * 12 + parseInt(endDateArray[0], 10);
+	data.ED_monthCount = (parseInt(endDateArray[2], 10) - 1970) * 12 + parseInt(endDateArray[0], 10);
 
+	console.log(data);
 	db.insertGFObject(data, function(err, document) {
 		console.log(document);
 	});

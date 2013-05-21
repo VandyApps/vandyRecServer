@@ -349,7 +349,7 @@ var GFClassForm = Backbone.View.extend({
 			} else {
 				data.endDate = data.startDate;
 			}
-			console.log(data);
+			fitnessClasses.addNewClass(data);
 
 		} else {
 			//present the error message

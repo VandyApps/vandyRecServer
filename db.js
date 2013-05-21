@@ -178,13 +178,13 @@ exports.insertGFObject = function(object, callback) {
 		db.collection(Collections.groupFitness, function(err, collection) {
 			collection.insert(object, {w:1}, function(err, docs) {
 				var visibleDoc = {
-					_id: doc[0]._id,
-					className: doc[0].className,
-					timeRange: doc[0].timeRange,
-					instructor: doc[0].instructor,
-					startDate: doc[0].startDate,
-					endDate: doc[0].endDate,
-					dayOfWeek: doc[0].dayOfWeek
+					_id: docs[0]._id,
+					className: docs[0].className,
+					timeRange: docs[0].timeRange,
+					instructor: docs[0].instructor,
+					startDate: docs[0].startDate,
+					endDate: docs[0].endDate,
+					dayOfWeek: docs[0].dayOfWeek
 				};
 				callback(err, visibleDoc);
 				db.close();
