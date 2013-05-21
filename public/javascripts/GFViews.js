@@ -121,6 +121,7 @@ var BlockView = Backbone.View.extend({
 			var windowTitle = DateHelper.weekDayAsString(dayOfWeekIndex) +', '+DateHelper.monthNameForIndex(parseInt($('#monthIndex').text(),10))+' '+$('.dayIndicator' , event.delegateTarget).text()+' '+$('#yearIndex').text();
 
 			$('#formWindow-title').text(windowTitle);
+			$('#formWindow-dayIndex').text(this.day.toString());
 			$('#windowPrimer').fadeIn(400, function() {
 				$('#formWindow').show();
 			});
@@ -330,8 +331,20 @@ var GFClassForm = Backbone.View.extend({
 			}
 
 			var dayString;
+			if ($('#formWindow-dayIndex').text().length === 1) {
+				dayString = '0' + $('#formWindow-dayIndex').text();
+			} else {
+				dayString = $('#formWindow-dayIndex').text();
+			}
 
 			var yearString = $('#yearIndex').text();
+			
+			data.startDate = monthString + '/' + dayString + '/' + yearString;
+			if ($("input[name='isRepeated']:checked", '#formWindow-newClass-repeatSelections').val() === 'true') {
+				data.endDate = '*';
+			} else {
+				data.endDate = data.startDate;
+			}
 			
 
 		} else {
