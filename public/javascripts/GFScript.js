@@ -1,1 +1,0 @@
-fitnessClasses.fetch();

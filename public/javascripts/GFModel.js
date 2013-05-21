@@ -101,8 +101,14 @@ window.FitnessClasses = Backbone.Collection.extend({
 	firstWeekDay: 0,
 	//last weekday of the month
 	lastWeekDay: 0,
+
+	initialize: function(options) {
+		this.month = options.month;
+		this.year = options.year;
+		this.fetch();
+	},
 	//get all the classes that are on a particular day
-	//day is the day of the month, 1-based, 2 is the second
+	//day is the day of the month, 1-based indexing, 2 is the second
 	//day of the month, does nothing if the day passed in 
 	//is out of the bounds for the days of a month
 	//returns an array of the models on that particular day
