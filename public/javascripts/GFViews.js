@@ -296,19 +296,21 @@ var GFClassForm = Backbone.View.extend({
 		if ($('#formWindow-newClass-className-input').val() === '') {
 			return "You need to enter a name";
 		}
+
 		return true;
 	},
 	//called when the submit button is hit
 	submit: function() {
 		var validation = this.validateSubmission();
 		if (validation === true) {
+			$('#formWindow-newClass-error').hide();
 			//submission process
 
 			console.log("Submitting");
 		} else {
 			//present the error message
-
-			console.log("Present an error message: " +validation);
+			$('#formWindow-newClass-error').text(validation);
+			$('#formWindow-newClass-error').show();
 		}
 	}
 });
