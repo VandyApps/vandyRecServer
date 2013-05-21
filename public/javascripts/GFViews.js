@@ -133,7 +133,10 @@ var BlockView = Backbone.View.extend({
 
 
 
-
+//view for the calendar
+//has no model but contains the collections and has 
+//events that listen to changes in the collection in order to
+//render data on the calendar
 var MonthView = Backbone.View.extend({
 
 	el: '#calendar',
@@ -151,8 +154,13 @@ var MonthView = Backbone.View.extend({
 		this.month = options.month;
 		this.year = options.year;
 		//this is a collection of backbone models
+		//render is called by the reset event on fitness classes
 		this.fitnessClasses = options.fitnessClasses;
-		this.render();
+		//set the reset event for rendering the calendar
+		this.fitnessClasses.on('reset', this.render, this);
+		
+		this.fitnessClasses.fetch();
+		
 	},
 	render: function() {
 		
