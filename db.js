@@ -118,11 +118,23 @@ exports.updateNewsElement = function(model, callback) {
 
 
 //related to groupFitness collection
+var fieldsToRender = {
+					className: true,
+					instructor: true,
+					startDate: true,
+					endDate: true,
+					dayOfWeek: true,
+					exceptionDates: true
+				};
+
 exports.allGFObjects = function(callback) {
 	Db.connect(MONGODB_URL, function(err, db) {
 		db.collection(Collections.groupFitness, function(err, collection) {
 
-			collection.find(function(err, cursor) {
+			//only want to render some of the stored JSON
+			//other JSON that is not rendered is in place 
+			//to make queries easier
+			collection.find({}, fieldsToRender, function(err, cursor) {
 				cursor.toArray(function(err, collection) {
 					callback(err, collection);
 					db.close();
@@ -130,4 +142,12 @@ exports.allGFObjects = function(callback) {
 			});
 		});
 	});
+}
+
+//this is not yet fixes to check for exception dates
+exports.GFObjectsForDates = function(monthIndex, year, callback) {
+
+	var dateQuery = {
+
+	};
 }
