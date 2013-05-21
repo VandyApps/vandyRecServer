@@ -7,9 +7,10 @@ var FitnessClass = Backbone.Model.extend({
 	//time elements but there is a space-dash-space between 
 	//two different time elements
 	timeRange: '',
-
 	instructor: '',
 	className: '',
+	//url for POST and PUT
+	url: '/groupFitness', 
 	//0-based index of the day of the week that this class is in
 	dayOfWeek: 0,
 
@@ -149,6 +150,22 @@ var FitnessClasses = Backbone.Collection.extend({
 			this.year -=1;
 		}
 		this.fetch({reset: true});
+	},
+	addNewClass: function(data) {
+		//create
+		var newFitnessClass = new FitnessClass({
+			className: data.className, 
+			timeRange: data.timeRange,
+			startDate: data.startDate,
+			endDate: data.endDate,
+			dayOfWeek: data.dayOfWeek,
+		});
+		//add to server side database
+		//call post
+		newFitnessClass.save();
+		//fetch data, no need to reset because month has not
+		//changes
+		this.fetch();
 	}
 
 
