@@ -20,32 +20,113 @@ window.FitnessClass = Backbone.Model.extend({
 	//if the class is a 1-time occurence, then 
 	//the start and end dates are the same
 	//if the class keeps going, then the end date is blank
-	startDate: null,
-	endDate: null,
+	startDate: '',
+	endDate: '',
 
 	//an array of dates that are exceptions to the date range
 	exceptionDates: [],
 	//returns true if the class exists within a given month
 	//takes parameter of month index, where 0 is January, 11 is December
-	isInMonth: function(monthIndex) {
+	isInMonth: function(monthIndex, year) {
+		var firstDayOfMonth = new Date(year, monthIndex, 1, 0,0,0,0);
+		var startDate = this.getStartDate();
+		var endDate = this.getEndDate();
+		if (typeof startDate === 'undefined') {
+			return new Error('no start date specified');
+		}
+		
+		if (typeof endDate !== 'undefined' && DateHelper.earlierDate(endDate, firstDayOfMonth)) {
+			return false;
+		} 
 
+
+		
 	},
 	//returns true if the class exists on a given day
 	//takes a parameter of the day, which is 1-based, 
-	//so 2 is the second of a month
-	isOnDay: function(day) {
+	//so 2 is the second day of a month, month index
+	//is 0 based
+	isOnDay: function(day, monthIndex, year) {
 
 	},
 	//returns the day of the week the class exists
 	getDayOfWeek: function() {
-
+		return this.get('dayofWeek');
 	},
 	//takes a parameters of a date and sets the date range
 	//so that the end date is before the date passed in
 	//does not do anything if the date passed in is before the 
-	//starting date
+	//starting date.  Also removes the date that is passed in
 	sliceFitnessDates: function(sliceDate) {
 
+	},
+	//converts the string into a javascript date object
+	//before returning the value
+	getStartDate: function() {
+		if (typeof this.get('startDate') === 'undefined') {
+			return 'undefined';
+		}
+		var startDateArray = this.get('startDate').split('/');
+		//convert month from 1-based to 0-based indexing when 
+		//representing as date
+		return new Date(parseInt(startDateArray[2],10), parseInt(startDateArray[0]-1, 10), parseInt(startDateArray[1],10), 0, 0 , 0, 0);
+	},
+	//converts the string into a javascript date object
+	//before returning the value
+	getEndDate: function() {
+		if (typeof this.get('endDate') === 'undefined') {
+			return 'undefined';
+		}
+		var endDateArray = this.get('endDate').split('/');
+		return new Date(parseInt(endDateArray[2],10), parseInt(endDateArray[0]-1, 10), parseInt(endDateArray[1],10), 0, 0 , 0, 0);
+	},
+	//date string is in the format: MM/DD/YYYY
+	addExceptionDate: function(dateString) {
+		//lazy instantiation
+		if (typeof this.get('exceptionDates') === 'undefined') {
+			this.set('exceptionDates', []);
+		}
+		this.get('exceptionDates').push(dateString);
+	},
+	//date string is in the format: MM/DD/YYYY
+	//returns true if the date string represents
+	//one of the dates in the exception date
+	//can either pass in a dateString of the 
+	//format MM/DD/YYYY or an actual date object
+	isExceptionDate: function(date) {
+		var dateString;
+		if (typeof date === 'string') {
+			dateString = date;
+		} else if (typeof date === 'object') {
+			var monthString;
+			var dayString;
+
+			//convert month for 0-based to 1-based
+			//when representing date as string
+			if (date.getMonth()+1 < 10) {
+				monthString = '0'+(date.getMonth()+1);
+			} else {
+				monthString = date.getMonth().toString();
+			}
+
+			if (date.getDate() < 10) {
+				dayString = '0'+date.getDate();
+			} else {
+				dayString = date.getDate().toString();
+			}
+
+			dateString = monthString+'/'+dayString+'/'+ (date.getYear()+1900);
+			console.log(dateString);
+		} else {
+			return new Error('Invalid parameter for the function isExceptionDate');
+		}
+
+		for (var index in this.get('exceptionDates')) {
+			if (dateString === this.get('exceptionDates')[index]) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 });

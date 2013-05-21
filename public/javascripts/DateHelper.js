@@ -82,6 +82,9 @@ DateHelper.earlierDate = function(date1, date2) {
 	return date1.getTime() < date2.getTime();
 }
 
+DateHelper.equalDates = function(date1, date2) {
+	return date1.getTime() === date2.getTime();
+}
 
 //this function set the dateToSet to a date that is on or after the comparison date
 //but of the same week day as the dateToSet currently is
