@@ -150,7 +150,11 @@ exports.GFObjectsForDates = function(monthCount, callback) {
 
 	var dateQuery = {
 		'SD_monthCount': {$lte: monthCount},
-		'ED_monthCount': {$gte: monthCount}
+		$or: [
+			{'ED_monthCount': {$gte: monthCount}},
+			{'ED_monthCount': 0}
+		]
+		
 	};
 
 	Db.connect(MONGODB_URL, function(error, db) {

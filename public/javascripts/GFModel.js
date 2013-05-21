@@ -81,7 +81,7 @@ var FitnessClass = Backbone.Model.extend({
 	//converts the string into a javascript date object
 	//before returning the value
 	getEndDate: function() {
-		if (typeof this.get('endDate') === 'undefined') {
+		if (typeof this.get('endDate') === 'undefined' || this.getEndDate === '*') {
 			return undefined;
 		}
 		var endDateArray = this.get('endDate').split('/');
