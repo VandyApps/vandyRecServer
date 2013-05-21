@@ -11,6 +11,8 @@ DateHelper.substractWeekFromDate = function(date) {
 
 //returns the week day of the date as a string
 //can either pass in a date or an index of a day
+//returns nothing if the int passed in is not a 
+//valid index
 DateHelper.weekDayAsString = function(date) {
 	var dayOfWeekIndex;
 	if (typeof date === 'object') {
@@ -27,11 +29,30 @@ DateHelper.weekDayAsString = function(date) {
 		case 3: return "Wednesday";
 		case 4: return "Thursday";
 		case 5: return "Friday";
-
+		case 6: return "Saturday";
 	}
-	return "Saturday";
 }
 
+//takes the day of the week as a string and converts it to an
+//integer, 0-based index, returns nothing if the string passed in is not valid
+DateHelper.weekAsInt = function(dayOfWeek) {
+	var stringDate = dayOfWeek.toUpperCase();
+	if (stringDate === "MONDAY") {
+		return 1;
+	} else if (stringDate === "TUESDAY") {
+		return 2;
+	} else if (stringDate === "WEDNESDAY") {
+		return 3;
+	} else if (stringDate === "THURSDAY") {
+		return 4;
+	} else if (stringDate === "FRIDAY") {
+		return 5;
+	} else if (stringDate === "SATURDAY") {
+		return 6;
+	} else if (stringDate === "SUNDAY") {
+		return 7;
+	} 
+ }
 
 DateHelper.monthNameForIndex = function(monthIndex) {
 	switch(monthIndex) {
@@ -47,6 +68,39 @@ DateHelper.monthNameForIndex = function(monthIndex) {
 		case 9: return "October";
 		case 10: return "November";
 		default: return "December";
+	}
+}
+
+//returns the month index for the month name
+//returns nothing if the name is not a valid name
+//for a month
+DateHelper.monthIndexForName = function(monthName) {
+
+	var monthString = monthName.toUpperCase();
+	if (monthString === "JANUARY") {
+		return 0;
+	} else if (monthString === "FEBRUARY") {
+		return 1;
+	} else if (monthString === "MARCH") {
+		return 2;
+	} else if (monthString === "APRIL") {
+		return 3;
+	} else if (monthString === "MAY") {
+		return 4;
+	} else if (monthString === "JUNE") {
+		return 5;
+	} else if (monthString === "JULY") {
+		return 6;
+	} else if (monthString === "AUGUST") {
+		return 7;
+	} else if (monthString === "SEPTEMBER") {
+		return 8;
+	} else if (monthString === "OCTOBER") {
+		return 9;
+	} else if (monthString === "NOVEMBER") {
+		return 10;
+	} else if (monthString === "DECEMBER") {
+		return 11;
 	}
 }
 
