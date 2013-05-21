@@ -82,31 +82,9 @@ window.FitnessClass = Backbone.Model.extend({
 
 });
 
-
-//all the fitness classes that are available
-//used for retrieving and posting classes to and
-// from the server as well as giving classes to 
-//smaller collections
-var FitnessClasses = Backbone.Collection.extend({
-	model: FitnessClass,
-	url: '/JSON/GF',
-	//earliest month and year of any class
-	firstMonth: 0,
-	firstYear: 0,
-	//latest month and year of any class
-	lastMonth: 0,
-	lastYear: 0,
-
-	getClassesForMonthAndYear: function(monthIndex, year) {
-
-	} 
-});
-
-window.fitnessClasses = new FitnessClasses();
-
 //set of all classes within a given month
 //used to put classes into views displayed to user
-window.FitnessClassesByMonth = Backbone.Collection.extend({
+window.FitnessClasses = Backbone.Collection.extend({
 	model: FitnessClass,
 	idAttribute: '_id',
 	url: function() {
@@ -129,6 +107,15 @@ window.FitnessClassesByMonth = Backbone.Collection.extend({
 	//is out of the bounds for the days of a month
 	//returns an array of the models on that particular day
 	getClassesForDay: function(day) {
+
+	},
+	//increments the date by a month and resets the models in the 
+	//collection to correspond with the new month
+	incrementMonth: function() {
+
+	},
+	//decrements the month and seeks for new models using url query
+	decrementMonth: function() {
 
 	}
 
