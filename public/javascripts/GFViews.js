@@ -302,6 +302,8 @@ var GFClassForm = Backbone.View.extend({
 	validateSubmission: function() {
 		if ($('#formWindow-newClass-className-input').val() === '') {
 			return "You need to enter a name";
+		} else if ($('#formWindow-newClass-instructorName-input').val() === '') {
+			return "You need to enter an instructor";
 		}
 
 		return true;
@@ -316,6 +318,8 @@ var GFClassForm = Backbone.View.extend({
 			//construct a data object with the correct fields
 			var data = {};
 			data.className = $('#formWindow-newClass-className-input').val();
+			data.instructor = $('#formWindow-newClass-instructorName-input').val();
+
 			data.timeRange = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
 			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
 			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text()+' - '+
@@ -345,7 +349,7 @@ var GFClassForm = Backbone.View.extend({
 			} else {
 				data.endDate = data.startDate;
 			}
-			
+			console.log(data);
 
 		} else {
 			//present the error message
