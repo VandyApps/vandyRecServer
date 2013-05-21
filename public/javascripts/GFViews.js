@@ -147,7 +147,7 @@ var MonthView = Backbone.View.extend({
 	initialize: function(options) {
 		this.month = options.month;
 		this.year = options.year;
-		this.fitnessClasses = new FitnessClasses({month: this.month, year: this.year});
+		
 		this.render();
 	},
 	render: function() {

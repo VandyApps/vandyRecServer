@@ -123,7 +123,8 @@ var fieldsToRender = {
 					instructor: true,
 					startDate: true,
 					endDate: true,
-					dayOfWeek: true
+					dayOfWeek: true,
+					timeRange: true
 				};
 
 exports.allGFObjects = function(callback) {

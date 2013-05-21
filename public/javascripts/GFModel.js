@@ -1,6 +1,6 @@
 
 
-window.FitnessClass = Backbone.Model.extend({
+var FitnessClass = Backbone.Model.extend({
 
 	//timeRange is in the form 12:30pm - 1:30pm
 	//note that there is no spaces in between a single
@@ -19,6 +19,13 @@ window.FitnessClass = Backbone.Model.extend({
 	startDate: '',
 	endDate: '',
 	
+	initialize: function(modelData) {
+		this.set('timeRange', modelData.timeRange);
+		this.set('instructor', modelData.instructor);
+		this.set('dayOfWeek', modelData.dayOfWeek);
+		this.set('startDate', modelData.startDate);
+		this.set('endDate', modelData.endDate);
+	},
 	//dateString in the format MM/DD/YYYY
 	//where month is 1-based indexed
 	isOnDay: function(year, monthIndex, day) {
@@ -39,11 +46,6 @@ window.FitnessClass = Backbone.Model.extend({
 			return false;
 		}
 
-		//check if the date is an exception date
-		if (this.isExceptionDate(date)) {
-			return false;
-		}
-
 		return true;
 
 	},
@@ -51,6 +53,12 @@ window.FitnessClass = Backbone.Model.extend({
 	//returns the day of the week the class exists
 	getDayOfWeek: function() {
 		return this.get('dayofWeek');
+	},
+	getClassName: function() {
+		return this.get('className');
+	},
+	getInstructor: function() {
+		return this.get('instructor');
 	},
 	//takes a parameters of a date and sets the date range
 	//so that the end date is before the date passed in
@@ -63,7 +71,7 @@ window.FitnessClass = Backbone.Model.extend({
 	//before returning the value
 	getStartDate: function() {
 		if (typeof this.get('startDate') === 'undefined') {
-			return 'undefined';
+			return undefined;
 		}
 		var startDateArray = this.get('startDate').split('/');
 		//convert month from 1-based to 0-based indexing when 
@@ -74,7 +82,7 @@ window.FitnessClass = Backbone.Model.extend({
 	//before returning the value
 	getEndDate: function() {
 		if (typeof this.get('endDate') === 'undefined') {
-			return 'undefined';
+			return undefined;
 		}
 		var endDateArray = this.get('endDate').split('/');
 		return new Date(parseInt(endDateArray[2],10), parseInt(endDateArray[0]-1, 10), parseInt(endDateArray[1],10), 0, 0 , 0, 0);
@@ -84,7 +92,7 @@ window.FitnessClass = Backbone.Model.extend({
 
 //set of all classes within a given month
 //used to put classes into views displayed to user
-window.FitnessClasses = Backbone.Collection.extend({
+var FitnessClasses = Backbone.Collection.extend({
 	model: FitnessClass,
 	idAttribute: '_id',
 	url: function() {
@@ -105,7 +113,7 @@ window.FitnessClasses = Backbone.Collection.extend({
 	initialize: function(options) {
 		this.month = options.month;
 		this.year = options.year;
-		this.fetch({async: false});
+		this.fetch();
 	},
 	//get all the classes that are on a particular day
 	//day is the day of the month, 1-based indexing, 2 is the second
@@ -113,7 +121,13 @@ window.FitnessClasses = Backbone.Collection.extend({
 	//is out of the bounds for the days of a month
 	//returns an array of the models on that particular day
 	getClassesForDay: function(day) {
-
+		var classes = [];
+		this.models.forEach(function(fitnessClass) {
+			if (fitnessClass.isOnDay(this.year, this.month, day)) {
+				classes.push(fitnessClass);
+			}
+		});
+		return classes;
 	},
 	//increments the date by a month and resets the models in the 
 	//collection to correspond with the new month
@@ -123,7 +137,7 @@ window.FitnessClasses = Backbone.Collection.extend({
 			this.month = 0;
 			this.year += 1;
 		}
-		this.fetch({reset: true, async: false});
+		this.fetch({reset: true});
 	},
 	//decrements the month and seeks for new models using url query
 	decrementMonth: function() {
@@ -132,7 +146,7 @@ window.FitnessClasses = Backbone.Collection.extend({
 			this.month = 11;
 			this.year -=1;
 		}
-		this.fetch({reset: true, async: false});
+		this.fetch({reset: true});
 	}
 
 
