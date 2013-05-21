@@ -306,7 +306,18 @@ var GFClassForm = Backbone.View.extend({
 			$('#formWindow-newClass-error').hide();
 			//submission process
 
-			console.log("Submitting");
+
+			//construct a data object with the correct fields
+			var data = {};
+			data.className = $('#formWindow-newClass-className-input').val();
+			data.timeRange = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
+			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
+			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text()+' - '+
+			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
+			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
+			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
+			
+
 		} else {
 			//present the error message
 			$('#formWindow-newClass-error').text(validation);
