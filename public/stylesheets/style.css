@@ -437,6 +437,20 @@ textarea {
     display: none;
     padding-top: 20px;
 }
+
+#formWindow-newClass-error {
+    display:none;
+    border: solid red 2px;
+    border-radius: 7px;
+    margin: 0 auto;
+    line-height: 20px;
+    height: 20px;
+    width: 400px;
+    background-color: #ff4944;
+    font-size: 10pt;
+    text-align: center;
+}
+
 #formWindow-newClass-className {
    margin: 15px;
     

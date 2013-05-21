@@ -265,9 +265,11 @@ var GFClassForm = Backbone.View.extend({
 
 	events: {
 
-		//need an event for clicking submit on the form
-		'click #formWindow-newClass-title': 'toggleForm'
+		'click #formWindow-newClass-title': 'toggleForm',
+		'click #formWindow-newClass-submitNewClass': 'submit'
 		//need events to manage selections and changes to existing classes
+		//event for submission
+		//event for changing select elements
 	},
 
 
@@ -286,6 +288,28 @@ var GFClassForm = Backbone.View.extend({
 	//this toggles the appearance of the new class form
 	toggleForm: function() {
 		$('#formWindow-newClass-form').slideToggle();
+	},
+	//returns true if document is ready
+	//to be submitted, returns error message
+	//if the document is not ready to be submitted
+	validateSubmission: function() {
+		if ($('#formWindow-newClass-className-input').val() === '') {
+			return "You need to enter a name";
+		}
+		return true;
+	},
+	//called when the submit button is hit
+	submit: function() {
+		var validation = this.validateSubmission();
+		if (validation === true) {
+			//submission process
+
+			console.log("Submitting");
+		} else {
+			//present the error message
+
+			console.log("Present an error message: " +validation);
+		}
 	}
 });
 
@@ -313,9 +337,9 @@ var GFClassView = Backbone.View.extend({
 
 	}
 	
+	
 
 });
-
 
 //set up other events
 $('#leftArrow').click(function() {
