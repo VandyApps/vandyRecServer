@@ -110,7 +110,8 @@ window.FitnessClassesByMonth = Backbone.Collection.extend({
 	model: FitnessClass,
 	idAttribute: '_id',
 	url: function() {
-		return '/JSON/GF?month='+this.get('month')+'&year='+this.get('year');
+		console.log("Query: "+ '/JSON/GF?month='+this.month+'&year='+this.year);
+		return '/JSON/GF?month='+this.month+'&year='+this.year;
 	},
 	//index of the month
 	month: 0,
