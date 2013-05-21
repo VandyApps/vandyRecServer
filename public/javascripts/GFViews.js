@@ -118,7 +118,8 @@ var BlockView = Backbone.View.extend({
 			var dayOfWeekIndex = parseInt($(event.delegateTarget).parent().attr('id').charAt(11), 10);
 
 			
-			var windowTitle = DateHelper.weekDayAsString(dayOfWeekIndex) +', '+$('#month').text()+' '+$('.dayIndicator' , event.delegateTarget).text()+' '+$('#year').text();
+			var windowTitle = DateHelper.weekDayAsString(dayOfWeekIndex) +', '+DateHelper.monthNameForIndex(parseInt($('#monthIndex').text(),10))+' '+$('.dayIndicator' , event.delegateTarget).text()+' '+$('#yearIndex').text();
+
 			$('#formWindow-title').text(windowTitle);
 			$('#windowPrimer').fadeIn(400, function() {
 				$('#formWindow').show();
@@ -166,8 +167,13 @@ var MonthView = Backbone.View.extend({
 		
 		//set the display to the month and year indication outside of
 		//calendar element
+		//month and year index tags are used for holding data that is not 
+		//meant to be displayed, but used for rendering other elements
+		//and creating models
 		$('#month').text(DateHelper.monthNameForIndex(this.month));
+		$('#monthIndex').text(this.month);
 		$('#year').text(this.year.toString());
+		$('#yearIndex').text(this.year.toString());
 		//construct date
 		//set iterationDate to the first of the month
 		var foundFirstDay = false;
@@ -315,14 +321,17 @@ var GFClassForm = Backbone.View.extend({
 			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
 			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
 			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
-			var dateString = $('#formWindow-title').text();
-			var dateArray = dateString.split(',');
 			
-			data.dayOfWeek = DateHelper.weekAsInt(dateArray[0]);
-			//remove the space before the date
-			var calDateArray = dateArray[1].substr(1, dateArray[1].length - 1).split(' ');
-			console.log(calDateArray[2]);
-			var date = new Date(parseInt(calDateArray[2], 10), DateHelper.monthIndexForName(calDateArray[0], parseInt(calDateArray[1], 10), 0,0,0,0));
+			var monthString;
+			if ($('#monthIndex').text().length === 1) {
+				monthString = '0' + $('#monthIndex').text();
+			} else {
+				monthString = $('#monthIndex').text();
+			}
+
+			var dayString;
+
+			var yearString = $('#yearIndex').text();
 			
 
 		} else {
