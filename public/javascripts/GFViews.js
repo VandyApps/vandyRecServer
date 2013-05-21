@@ -318,11 +318,6 @@ var GFClassView = Backbone.View.extend({
 });
 
 
-
-//setup the MonthView instance
-var currentDate = new Date();
-var monthView = new MonthView({month: currentDate.getMonth(), year: currentDate.getYear() + 1900});
-
 //set up other events
 $('#leftArrow').click(function() {
 	monthView.decrementMonth();
