@@ -159,6 +159,7 @@ var FitnessClasses = Backbone.Collection.extend({
 			startDate: data.startDate,
 			endDate: data.endDate,
 			dayOfWeek: data.dayOfWeek,
+			instructor: data.instructor
 		});
 		//add to server side database
 		//call post

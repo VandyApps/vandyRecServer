@@ -122,6 +122,7 @@ var BlockView = Backbone.View.extend({
 
 			$('#formWindow-title').text(windowTitle);
 			$('#formWindow-dayIndex').text(this.day.toString());
+			$('#formWindow-dayOfWeekIndex').text(dayOfWeekIndex.toString());
 			$('#windowPrimer').fadeIn(400, function() {
 				$('#formWindow').show();
 			});
@@ -319,7 +320,7 @@ var GFClassForm = Backbone.View.extend({
 			var data = {};
 			data.className = $('#formWindow-newClass-className-input').val();
 			data.instructor = $('#formWindow-newClass-instructorName-input').val();
-
+			data.dayOfWeek = parseInt($('#formWindow-dayOfWeekIndex').text(), 10);
 			data.timeRange = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
 			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
 			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text()+' - '+
