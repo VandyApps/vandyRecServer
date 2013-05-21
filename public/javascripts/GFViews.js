@@ -202,11 +202,9 @@ var MonthView = Backbone.View.extend({
 					
 					//create an empty element
 					if (typeof this.dayBlocks[row][column] === 'undefined') {
-						console.log("First time creation");
 
 						this.dayBlocks[row][column] = new BlockView({row: row, column: column, empty: true});
 					} else {
-						console.log("Resetting");
 
 						this.dayBlocks[row][column].reset({row: row, column: column, empty: true});
 					}
@@ -242,8 +240,8 @@ var MonthView = Backbone.View.extend({
 			this.year += 1;
 			
 		}
-		//this.fitnessClasses.incrementMonth();
-		this.render();
+		this.fitnessClasses.incrementMonth();
+	
 	},
 	decrementMonth: function() {
 		this.month -= 1;
@@ -252,8 +250,8 @@ var MonthView = Backbone.View.extend({
 			this.year -= 1;
 
 		}
-		//this.fitnessClasses.decrementMonth();
-		this.render();
+		//calls reset and renders new calendar
+		this.fitnessClasses.decrementMonth();
 	}
 });
 

@@ -51,8 +51,8 @@ var FitnessClass = Backbone.Model.extend({
 	},
 	
 	//returns the day of the week the class exists
-	getDayOfWeek: function() {
-		return this.get('dayofWeek');
+	getWeekDay: function() {
+		return this.get('dayOfWeek');
 	},
 	getClassName: function() {
 		return this.get('className');
@@ -96,7 +96,7 @@ var FitnessClasses = Backbone.Collection.extend({
 	model: FitnessClass,
 	idAttribute: '_id',
 	url: function() {
-		console.log("Query: "+ '/JSON/GF?month='+this.month+'&year='+this.year);
+		
 		return '/JSON/GF?month='+this.month+'&year='+this.year;
 	},
 	//index of the month
@@ -120,9 +120,12 @@ var FitnessClasses = Backbone.Collection.extend({
 	//is out of the bounds for the days of a month
 	//returns an array of the models on that particular day
 	getClassesForDay: function(day) {
+		var collection = this;
 		var classes = [];
-		this.models.forEach(function(fitnessClass) {
-			if (fitnessClass.isOnDay(this.year, this.month, day)) {
+		this.forEach(function(fitnessClass) {
+			
+			if (fitnessClass.isOnDay(collection.year, collection.month, day)) {
+				
 				classes.push(fitnessClass);
 			}
 		});
@@ -131,7 +134,7 @@ var FitnessClasses = Backbone.Collection.extend({
 	//increments the date by a month and resets the models in the 
 	//collection to correspond with the new month
 	incrementMonth: function() {
-		this.month += 1;
+		this.month+= 1;
 		if (this.month > 11) {
 			this.month = 0;
 			this.year += 1;
