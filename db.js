@@ -148,6 +148,21 @@ exports.allGFObjects = function(callback) {
 exports.GFObjectsForDates = function(monthIndex, year, callback) {
 
 	var dateQuery = {
-
+		'SD.year': {$lte: year},
+		'SD.month': {$lte: monthIndex},
+		'ED.year': {$gte: year},
+		'ED.month': {$gte: monthIndex}
 	};
+
+	Db.connect(MONGODB_URL, function(error, db) {
+
+		db.collection(Collections.groupFitness, function(err, collection) {
+			collection.find(dateQuery, fieldsToRender, function(err, cursor) {
+				cursor.toArray(function(err, collection) {
+					callback(err, collection);
+					db.close();
+				});
+			});
+		});
+	});
 }
