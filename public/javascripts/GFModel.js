@@ -13,10 +13,6 @@ window.FitnessClass = Backbone.Model.extend({
 	//0-based index of the day of the week that this class is in
 	dayOfWeek: 0,
 
-	//all dates should be dates with zeroed out time
-	//so the time is all set to 12:00:00 am of that day
-	//for simplicity
-
 	//if the class is a 1-time occurence, then 
 	//the start and end dates are the same
 	//if the class keeps going, then the end date is blank
@@ -26,13 +22,15 @@ window.FitnessClass = Backbone.Model.extend({
 	//dateString in the format MM/DD/YYYY
 	//where month is 1-based indexed
 	isOnDay: function(year, monthIndex, day) {
+
 		var date = new Date(year, monthIndex, day, 0,0,0,0);
-		if (date.getDay() !== this.get('dayOfWeek')) {
+
+		if (date.getDay() !== this.get('dayOfWeek') ) {
 			return false;
 		}
 
 		//check if the date is after the end date
-		if (typeof this.getEndDate() !== 'undefined' && DateHelper.earlierDate(this.getEndDate(), date) {
+		if (typeof this.getEndDate() !== 'undefined' && DateHelper.earlierDate(this.getEndDate(), date)) {
 			return false;
 		}
 
@@ -49,6 +47,7 @@ window.FitnessClass = Backbone.Model.extend({
 		return true;
 
 	},
+	
 	//returns the day of the week the class exists
 	getDayOfWeek: function() {
 		return this.get('dayofWeek');
@@ -107,9 +106,12 @@ window.fitnessClasses = new FitnessClasses();
 
 //set of all classes within a given month
 //used to put classes into views displayed to user
-var FitnessClassesByMonth = Backbone.Collection.extend({
+window.FitnessClassesByMonth = Backbone.Collection.extend({
 	model: FitnessClass,
-
+	idAttribute: '_id',
+	url: function() {
+		return '/JSON/GF?month='+this.get('month')+'&year='+this.get('year');
+	},
 	//index of the month
 	month: 0,
 	//full year i.e. 2013
