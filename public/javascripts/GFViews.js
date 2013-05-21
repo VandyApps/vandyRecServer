@@ -306,7 +306,6 @@ var GFClassForm = Backbone.View.extend({
 			$('#formWindow-newClass-error').hide();
 			//submission process
 
-
 			//construct a data object with the correct fields
 			var data = {};
 			data.className = $('#formWindow-newClass-className-input').val();
@@ -316,6 +315,14 @@ var GFClassForm = Backbone.View.extend({
 			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
 			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
 			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
+			var dateString = $('#formWindow-title').text();
+			var dateArray = dateString.split(',');
+			
+			data.dayOfWeek = DateHelper.weekAsInt(dateArray[0]);
+			//remove the space before the date
+			var calDateArray = dateArray[1].substr(1, dateArray[1].length - 1).split(' ');
+			console.log(calDateArray[2]);
+			var date = new Date(parseInt(calDateArray[2], 10), DateHelper.monthIndexForName(calDateArray[0], parseInt(calDateArray[1], 10), 0,0,0,0));
 			
 
 		} else {
