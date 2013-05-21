@@ -214,13 +214,14 @@ var MonthView = Backbone.View.extend({
 					
 					//create a filled column
 					//set the number of fitness classes to 0 initially
+					
 					if (typeof this.dayBlocks[row][column] === 'undefined') {
 						
-						this.dayBlocks[row][column] = new BlockView({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: 0});
+						this.dayBlocks[row][column] = new BlockView({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: this.fitnessClasses.getClassesForDay(iterationDate.getDate()).length});
 					} else {
 						
 
-						this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: 0});
+						this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: this.fitnessClasses.getClassesForDay(iterationDate.getDate()).length});
 					}
 					
 					iterationDate.setDate(iterationDate.getDate() + 1);
