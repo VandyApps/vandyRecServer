@@ -169,3 +169,27 @@ exports.GFObjectsForDates = function(monthCount, callback) {
 		});
 	});
 }
+
+//inserts the object then returns the object as a mongodb object
+//with a server_size _id attribute, the callback function takes the arguments
+//of any error and the returned mongodb object
+exports.insertGFObject = function(object, callback) {
+	Db.connect(MONGODB_URL, function(err, db) {
+		db.collection(Collections.groupFitness, function(err, collection) {
+			collection.insert(object, {w:1}, function(err, docs) {
+				var visibleDoc = {
+					_id: doc[0]._id,
+					className: doc[0].className,
+					timeRange: doc[0].timeRange,
+					instructor: doc[0].instructor,
+					startDate: doc[0].startDate,
+					endDate: doc[0].endDate,
+					dayOfWeek: doc[0].dayOfWeek
+				};
+				callback(err, visibleDoc);
+				db.close();
+
+			});
+		});
+	});
+}

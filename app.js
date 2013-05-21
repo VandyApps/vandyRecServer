@@ -64,14 +64,19 @@ app.post('/', passport.authenticate('local', {failureRedirect: '/login'}) , rout
 
 app.get('/home', routes.index);
 app.get('/login', routes.loginError);
+
 //client routing
 app.get('/news', routes.news);
 app.put('/news', routes.updateNews);
 app.post('/news', routes.createNews);
 app.delete('/news', routes.deleteNews);
 
-app.get('/hours', routes.hours);
 app.get('/groupFitness', routes.groupFitness);
+//app.put('/groupFitness', routes.updateGF);
+app.post('/groupFitness', routes.createGF);
+//app.delete('/groupFitness', routes.deleteGF);
+
+app.get('/hours', routes.hours);
 app.get('/traffic', routes.traffic);
 app.get('/intramurals', routes.intramurals);
 app.get('/programs', routes.programs);

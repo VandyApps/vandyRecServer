@@ -53,8 +53,7 @@ exports.updateNews = function(req, res) {
 
 
 exports.deleteNews = function(req, res) {
-	//should return JSON serialization of the element that was deleted to indicate
-	//a successful deletion
+	//should return _id of the element that was deleted
 	var removedDoc = db.removeNewsElementWithID(req.headers._id, function(err, deletedID) {
 
 		if (err || typeof deletedID === null) {
@@ -68,6 +67,21 @@ exports.deleteNews = function(req, res) {
 	
 
 }
+
+exports.createGF = function(req, res) {
+	var data = req.body;
+	//add data that can be used for server side querying
+	var startDateArray = data.startDate.split('/');
+	data.SD_monthCount = parseInt(startDateArray[2], 10) * 12 + parseInt(startDateArray[0], 10);
+
+	var endDateArray = data.endDate.split('/');
+	data.ED_monthCount = parseInt(endDateArray[2], 10) * 12 + parseInt(endDateArray[0], 10);
+
+	db.insertGFObject(data, function(err, document) {
+		console.log(document);
+	});
+}
+
 exports.hours = function(req, res) {
 
 	res.render('hours')
