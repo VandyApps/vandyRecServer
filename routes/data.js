@@ -15,7 +15,10 @@ exports.groupFitness = function(req, res) {
 	} else {
 		var monthIndex = parseInt(req.query.month,10);
 		var year = parseInt(req.query.year, 10);
-		db.GFObjectsForDates(monthIndex, year, function(err, collection) {
+		//calculate the month for the value passed in
+		var monthCount = (year - 1970) * 12 + monthIndex; 
+		console.log(monthCount);
+		db.GFObjectsForDates(monthCount, function(err, collection) {
 			res.send(collection);
 		});
 	}

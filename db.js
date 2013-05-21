@@ -121,10 +121,11 @@ exports.updateNewsElement = function(model, callback) {
 var fieldsToRender = {
 					className: true,
 					instructor: true,
+					timeRange: true,
 					startDate: true,
 					endDate: true,
-					dayOfWeek: true,
-					timeRange: true
+					dayOfWeek: true
+					
 				};
 
 exports.allGFObjects = function(callback) {
@@ -145,13 +146,11 @@ exports.allGFObjects = function(callback) {
 }
 
 
-exports.GFObjectsForDates = function(monthIndex, year, callback) {
+exports.GFObjectsForDates = function(monthCount, callback) {
 
 	var dateQuery = {
-		'SD.year': {$lte: year},
-		'SD.month': {$lte: monthIndex},
-		'ED.year': {$gte: year},
-		'ED.month': {$gte: monthIndex}
+		'SD_monthCount': {$lte: monthCount},
+		'ED_monthCount': {$gte: monthCount}
 	};
 
 	Db.connect(MONGODB_URL, function(error, db) {
