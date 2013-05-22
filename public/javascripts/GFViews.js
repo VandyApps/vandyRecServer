@@ -288,7 +288,11 @@ var GFClassForm = Backbone.View.extend({
 
 
 	initialize: function(options) {
-		$('#windowPrimer').click($.proxy(this.exit, this));
+
+		//binding events that are not within the view
+		$('#windowPrimer, #formWindow-exit').click($.proxy(this.exit, this));
+		$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
+		$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
 	},
 	render: function() {
 
@@ -402,6 +406,12 @@ var GFClassForm = Backbone.View.extend({
 		$('#formWindow-newClass-form').hide();
 		//remove all exsiting class list items
 		$('.formWindow-existingClass').remove();
+	},
+	hoverOnExit: function() {
+		$('#formWindow-exit').animate({backgroundColor: '#cb7c01'}, 200);
+	},
+	hoverOffExit: function() {
+		$('#formWindow-exit').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
 	}
 });
 
@@ -448,12 +458,13 @@ $('#windowPrimer,#formWindow-exit').click(function() {
 	//hide the form if it was open
 	$('#formWindow-newClass-form').hide();
 });
-*/
+
 $('#formWindow-exit').mouseover(function() {
 	$(this).animate({backgroundColor: '#cb7c01'}, 200);
 });
 $('#formWindow-exit').mouseout(function() {
 	$(this).animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
 });
+*/
 
 
