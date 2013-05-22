@@ -411,7 +411,7 @@ textarea {
     display: block;
     height: 430px;
     margin: 0;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x:hidden;
 }
 
