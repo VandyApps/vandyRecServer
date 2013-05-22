@@ -219,10 +219,8 @@ var MonthView = Backbone.View.extend({
 					
 
 				} else {
-					
 					//create a filled column
 					//set the number of fitness classes to 0 initially
-					
 					if (typeof this.dayBlocks[row][column] === 'undefined') {
 						
 						this.dayBlocks[row][column] = new BlockView({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: this.fitnessClasses.getClassesForDay(iterationDate.getDate()).length});
@@ -234,13 +232,9 @@ var MonthView = Backbone.View.extend({
 					
 					iterationDate.setDate(iterationDate.getDate() + 1);
 					counter++;
-				}
-
-				
+				}	
 			}
-
 		}
-		
 	},
 	incrementMonth: function() {
 		this.month += 1;
@@ -289,9 +283,37 @@ var GFClassForm = Backbone.View.extend({
 	},
 	//adds class that was submitted by the form
 	//and appends it immediately after the class creation
-	//form
-	addClass: function() {
+	//form, data should be passed from the form
+	addClass: function(data, animate) {
+		if (animate) {
+			$('<li class="formWindow-existingClass" style="display: none;"></li>').insertAfter('#formWindow-newClass');
+		} else {
+			$('<li class="formWindow-existingClass"></li>').insertAfter('#formWindow-newClass');
+		}
+		
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-className">'+data.className+'</div>');
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-instructor">'+data.instructor+'</div>');
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-times">'+data.timeRange+'</div>');
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-deleteOptions"><input id="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" /><input id="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" /></div>');
 
+		if (animate) {
+			$('#formWindow-newClass').next().slideDown();
+		}
+
+
+		/*
+			<li class="formWindow-existingClass">
+				<div id="formWindow-existingClass-className">Yoga</div>
+				<div id="formWindow-existingClass-instructor">Brendan McNamara</div>
+				<div id="formWindow-existingClass-times">12:00pm - 1:00pm</div>
+
+				<div id="formWindow-existingClass-deleteOptions">
+					
+					<input id="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" />
+					<input id="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" />
+				</div>
+			</li>
+		*/
 	},
 	//this toggles the appearance of the new class form
 	toggleForm: function() {
@@ -352,6 +374,8 @@ var GFClassForm = Backbone.View.extend({
 			} else {
 				data.endDate = data.startDate;
 			}
+			//for now, set animated to true
+			this.addClass(data, true);
 			fitnessClasses.addNewClass(data);
 
 		} else {

@@ -366,7 +366,7 @@ textarea {
     border-radius: 15px;
     position: fixed;
     background-color: #dedede;
-    top: 50%;
+    top: 30%;
     left: 50%;
     margin: auto 0;
     height: 500px;
@@ -546,24 +546,35 @@ textarea {
 .formWindow-existingClass {
     position: relative;
     display: block;
-    height: 100px;
+    height: 140px;
 }
 #formWindow-existingClass-className {
     
-    margin: 20px 0px 2px 25px;
-    font-size: 14pt;
-    padding-left: 15px;
+    margin: 20px 0px 2px 0px;
+    font-size: 16pt;
+    color: blue;
+    text-align: center;
 }
 #formWindow-existingClass-times {
+    
     font-size: 10pt;
     position: absolute;
+    top: 60px;
     left: 40px;
+}
+#formWindow-existingClass-instructor {
+    margin-top: 10px;
+    display: block;
+    position: absolute;
+    display: block;
+    left: 40px;
+    font-size: 10pt;
 }
 
 #formWindow-existingClass-deleteOptions {
     position: absolute;
     
-    top: 60px;
+    top: 100px;
     width: 440px;
     margin-left: -220px;
     left: 50%;
@@ -577,7 +588,7 @@ textarea {
     background-color: red;
     height: 30px;
     line-height: 30px;
-    
+    margin: 0px 10px;
 }
 
 
