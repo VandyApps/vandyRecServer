@@ -9,6 +9,7 @@ var FitnessClass = Backbone.Model.extend({
 	timeRange: '',
 	instructor: '',
 	className: '',
+	idAttribute: '_id',
 	//url for POST and PUT
 	url: '/groupFitness', 
 	//0-based index of the day of the week that this class is in

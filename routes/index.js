@@ -76,16 +76,15 @@ exports.createGF = function(req, res) {
 	var startDateArray = data.startDate.split('/');
 	data.SD_monthCount = (parseInt(startDateArray[2], 10) -1970) * 12 + (parseInt(startDateArray[0], 10) - 1);
 	if (data.endDate === '*') {
+		//monthCount of 0 indicates that it goes infinitely
 		data.ED_monthCount = 0;
 	} else {
 		var endDateArray = data.endDate.split('/');
 		data.ED_monthCount = (parseInt(endDateArray[2], 10) - 1970) * 12 + (parseInt(endDateArray[0], 10) - 1);
 	}
-	
-
-	console.log(data);
 	db.insertGFObject(data, function(err, document) {
-		console.log(document);
+		res.statusCode = 200;
+		res.send(document);
 	});
 }
 
