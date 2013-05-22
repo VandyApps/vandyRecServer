@@ -126,13 +126,8 @@ var BlockView = Backbone.View.extend({
 			$('#formWindow-dayOfWeekIndex').text(dayOfWeekIndex.toString());
 			this.fitnessClassesForBlock.forEach(function(fitnessClass) {
 				
-				var data = {
-					className: fitnessClass.getClassName(),
-					instructor: fitnessClass.getInstructor(),
-					timeRange: fitnessClass.get('timeRange')
-				};
 				//false for no animation
-				formWindowView.addClass(data, false);
+				formWindowView.addClass(fitnessClass, false);
 			});
 			$('#windowPrimer').fadeIn(400, function() {
 				$('#formWindow').show();
@@ -269,6 +264,33 @@ var MonthView = Backbone.View.extend({
 	}
 });
 
+//this backbone view does take a model of a single class
+//that it renders to a li
+var GFClassView = Backbone.View.extend({
+
+	className: 'formWindow-existingClass',
+
+	events: {
+		
+	},
+	//render the list item with necessary forms for
+	//changing options
+	render: function() {
+
+	},
+	//for deleting a single instance
+	deleteOne: function() {
+
+	},
+	//for deleting many instances
+	deleteMany:function() {
+
+	}
+	
+	
+
+});
+
 //does not have a single model that it renders
 //manages the creation and deletion of models
 //that are being rendered in the window form
@@ -300,16 +322,16 @@ var GFClassForm = Backbone.View.extend({
 	//adds class that was submitted by the form
 	//and appends it immediately after the class creation
 	//form, data should be passed from the form
-	addClass: function(data, animate) {
+	addClass: function(model, animate) {
 		if (animate) {
 			$('<li class="formWindow-existingClass" style="display: none;"></li>').insertAfter('#formWindow-newClass');
 		} else {
 			$('<li class="formWindow-existingClass"></li>').insertAfter('#formWindow-newClass');
 		}
 		
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-className">'+data.className+'</div>');
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-instructor">'+data.instructor+'</div>');
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-times">'+data.timeRange+'</div>');
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-className">'+model.getClassName()+'</div>');
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-instructor">'+model.getInstructor()+'</div>');
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-times">'+model.get('timeRange')+'</div>');
 		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-deleteOptions"><input id="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" /><input id="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" /></div>');
 
 		if (animate) {
@@ -390,7 +412,7 @@ var GFClassForm = Backbone.View.extend({
 				data.endDate = data.startDate;
 			}
 			//for now, set animated to true
-			this.addClass(data, true);
+			this.addClass(new FitnessClass(data), true);
 			fitnessClasses.addNewClass(data);
 
 		} else {
@@ -416,32 +438,6 @@ var GFClassForm = Backbone.View.extend({
 });
 
 var formWindowView = new GFClassForm();
-//this backbone view does take a model of a single class
-//that it renders to a li
-var GFClassView = Backbone.View.extend({
-
-	className: 'formWindow-existingClass',
-
-	events: {
-		
-	},
-	//render the list item with necessary forms for
-	//changing options
-	render: function() {
-
-	},
-	//for deleting a single instance
-	deleteOne: function() {
-
-	},
-	//for deleting many instances
-	deleteMany:function() {
-
-	}
-	
-	
-
-});
 
 //set up other events
 $('#leftArrow').click(function() {
