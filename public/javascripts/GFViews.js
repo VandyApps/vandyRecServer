@@ -11,7 +11,8 @@ var BlockView = Backbone.View.extend({
 	//empty means that this block does not represent a valid date
 	empty: false,
 	//the number of fitness classes to be held on this day
-	numberOfFitnessClasses: 0,
+	fitnessClassesForBlock: [],
+
 	events: {
 
 		'mouseenter.dayBlock': 'hoverOn',
@@ -33,7 +34,7 @@ var BlockView = Backbone.View.extend({
 		} else {
 			this.empty = false;
 			this.day = options.day;
-			this.numberOfFitnessClasses = options.numberOfFitnessClasses;
+			this.fitnessClassesForBlock = options.fitnessClassesForBlock;
 		}
 		this.render();
 		
@@ -45,12 +46,12 @@ var BlockView = Backbone.View.extend({
 		}
 
 		this.$el.append('<div class="dayIndicator">'+this.day+'</div>');
-		if (this.numberOfFitnessClasses === 1) {
+		if (this.fitnessClassesForBlock.length === 1) {
 
 			this.$el.append('<div class="classCountIndicator">1 Class</div>');
 
-		} else if (this.numberOfFitnessClasses > 1) {
-			this.$el.append('<div class="classCountIndicator">'+this.numberOfFitnessClasses+" Classes</div>");
+		} else if (this.fitnessClassesForBlock.length > 1) {
+			this.$el.append('<div class="classCountIndicator">'+this.fitnessClassesForBlock.length+" Classes</div>");
 
 		} else {
 			this.$el.append('<div class="classCountIndicator"><div>');
@@ -73,7 +74,7 @@ var BlockView = Backbone.View.extend({
 		} else {
 			this.empty = false;
 			this.day = options.day;
-			this.numberOfFitnessClasses = options.numberOfFitnessClasses;
+			this.fitnessClassesForBlock = options.fitnessClassesForBlock;
 		}
 		
 		this.rerender();
@@ -89,13 +90,13 @@ var BlockView = Backbone.View.extend({
 		}
 
 		this.$('.dayIndicator').text(this.day.toString());
-		if (this.numberOfFitnessClasses === 1) {
+		if (this.fitnessClassesForBlock.length === 1) {
 
 			this.$('.classCountIndicator').text('1 Class');
 
-		} else if (this.numberOfFitnessClasses > 1) {
+		} else if (this.fitnessClassesForBlock.length > 1) {
 
-			this.$('.classCountIndicator').text(this.numberOfFitnessClasses+' Classes');
+			this.$('.classCountIndicator').text(this.fitnessClassesForBlock.length+' Classes');
 		} else { //0 classes
 			this.$('.classCountIndicator').text('');
 			
@@ -223,11 +224,11 @@ var MonthView = Backbone.View.extend({
 					//set the number of fitness classes to 0 initially
 					if (typeof this.dayBlocks[row][column] === 'undefined') {
 						
-						this.dayBlocks[row][column] = new BlockView({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: this.fitnessClasses.getClassesForDay(iterationDate.getDate()).length});
+						this.dayBlocks[row][column] = new BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
 					} else {
 						
 
-						this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), numberOfFitnessClasses: this.fitnessClasses.getClassesForDay(iterationDate.getDate()).length});
+						this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
 					}
 					
 					iterationDate.setDate(iterationDate.getDate() + 1);
