@@ -38,12 +38,12 @@ var FitnessClass = Backbone.Model.extend({
 		}
 
 		//check if the date is after the end date
-		if (typeof this.getEndDate() !== 'undefined' && DateHelper.earlierDate(this.getEndDate(), date)) {
+		if (typeof this.getEndDate() !== 'undefined' && !DateHelper.earlierDate(date, this.getEndDate())) {
 			return false;
 		}
 
 		//check if the date is before the start date
-		if (DateHelper.earlierDate(date, this.getStartDate())) {
+		if (!DateHelper.earlierDate(this.getStartDate(), date)) {
 			return false;
 		}
 
@@ -152,6 +152,7 @@ var FitnessClasses = Backbone.Collection.extend({
 		this.fetch({reset: true});
 	},
 	addNewClass: function(data) {
+		console.log("Adding a new class");
 		//create
 		var newFitnessClass = new FitnessClass({
 			className: data.className, 

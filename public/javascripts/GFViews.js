@@ -329,10 +329,12 @@ var GFClassForm = Backbone.View.extend({
 			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
 			
 			var monthString;
-			if ($('#monthIndex').text().length === 1) {
-				monthString = '0' + $('#monthIndex').text();
+			//convert month to 1-based for date string
+			var monthIndex = parseInt($('#monthIndex').text(), 10) + 1;
+			if (monthIndex < 10) {
+				monthString = '0'+ monthIndex.toString();
 			} else {
-				monthString = $('#monthIndex').text();
+				monthString = monthIndex.toString();
 			}
 
 			var dayString;
