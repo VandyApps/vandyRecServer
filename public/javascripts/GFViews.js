@@ -124,6 +124,16 @@ var BlockView = Backbone.View.extend({
 			$('#formWindow-title').text(windowTitle);
 			$('#formWindow-dayIndex').text(this.day.toString());
 			$('#formWindow-dayOfWeekIndex').text(dayOfWeekIndex.toString());
+			this.fitnessClassesForBlock.forEach(function(fitnessClass) {
+				
+				var data = {
+					className: fitnessClass.getClassName(),
+					instructor: fitnessClass.getInstructor(),
+					timeRange: fitnessClass.get('timeRange')
+				};
+				//false for no animation
+				formWindowView.addClass(data, false);
+			});
 			$('#windowPrimer').fadeIn(400, function() {
 				$('#formWindow').show();
 			});
