@@ -123,7 +123,8 @@ DateHelper.daysForMonth = function(monthIndex, year) {
 }
 //sets the date so that the date is the same
 //with the exception of the time, which is 
-//12:00:00 am
+//12:00:00 am, makes changes to the date that is 
+//passed in
 DateHelper.dateWithEmptyTime = function(date) {
 	date.setHours(0);
 	date.setMinutes(0);
@@ -153,4 +154,26 @@ DateHelper.setDateToWeekDayAfterDate = function(dateToSet, comparisonDate) {
 	while (DateHelper.earlierDate(dateToSet, comparisonDate)) {
 		DateHelper.addWeekToDate(dateToSet);
 	};
+}
+
+//converts the date into a dateString of the form MM/DD/YYYY where month, day, and year
+//are all 1-based indexed
+DateHelper.getDateString = function(date) {
+	var monthString;
+	var dayString;
+	var yearString = date.getYear() + 1900;
+
+	var monthIndex = date.getMonth() + 1;
+	if (monthIndex < 10) {
+		monthString = '0' + monthIndex.toString();
+	} else {
+		monthString = monthIndex.toString();
+	}
+
+	if (date.getDate() < 10) {
+		dayString = '0' + date.getDate().toString();
+	} else {
+		dayString = date.getDate().toString();
+	}
+	return monthString + '/' + dayString +'/' + yearString;
 }

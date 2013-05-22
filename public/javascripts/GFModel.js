@@ -66,8 +66,43 @@ var FitnessClass = Backbone.Model.extend({
 	//so that the end date is before the date passed in
 	//does not do anything if the date passed in is before the 
 	//starting date.  Also removes the date that is passed in
-	sliceFitnessDates: function(sliceDate) {
+	//returns the date 1 week after the date being deleted,
+	//which can be used to create another fitnessClass if needed
+	//with the return date as a start date.  Returns null if 
+	//there is not valid date after the sliced date, and the sliced
+	//date was the last date.  Returns undefined if the sliceDate is 
+	//not in between the start and end dates
+	slice: function(sliceDate) {
+		//check if slice date is out of range of the start and end dates
+		if (DateHelper.earlierDate(sliceDate, this.getStartDate()) && !DateHelper.equalDates(sliceDate, this.getStartDate() && DateHelper.earlierDate(this.getEndDate(), sliceDate) && !DateHelper.equalDates(this.getEndDate(), sliceDate))) {
+			return undefined;
+		}
 
+		//make sure that the slice date is of the same day of the week
+		//and has no time value
+		while (sliceDate.getDay() !== this.getWeekDay()) {
+			sliceDate.setDate(sliceDate.getDate() - 1);
+		}
+		DateHelper.dateWithEmptyTime(sliceDate);
+
+		var returnNull = false;
+		if (DateHelper.equalDates(sliceDate, this.getEndDate())) {
+			returnNull = true;
+		}
+		sliceDate.setDate(sliceDate.getDate() - 7);
+		//construct date string and set it to end date
+		this.set('endDate', DateHelper.getDateString(sliceDate));
+
+		//save the new value of this class
+		//should call PUT
+		
+		if (returnNull) {
+			return null;
+		} else {
+			return new Date(sliceDate.getTime() + (14 * 24 * 60 * 60 * 1000));
+		}
+
+		
 	},
 	//converts the string into a javascript date object
 	//before returning the value
@@ -153,7 +188,6 @@ var FitnessClasses = Backbone.Collection.extend({
 		this.fetch({reset: true});
 	},
 	addNewClass: function(data) {
-		console.log("Adding a new class");
 		//create
 		var newFitnessClass = new FitnessClass({
 			className: data.className, 

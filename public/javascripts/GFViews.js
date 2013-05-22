@@ -310,8 +310,6 @@ var GFClassForm = Backbone.View.extend({
 		if (animate) {
 			$('#formWindow-newClass').next().slideDown();
 		}
-
-
 		/*
 			<li class="formWindow-existingClass">
 				<div id="formWindow-existingClass-className">Yoga</div>
@@ -350,6 +348,7 @@ var GFClassForm = Backbone.View.extend({
 			//submission process
 
 			//construct a data object with the correct fields
+			//move this code to the GFClassView object
 			var data = {};
 			data.className = $('#formWindow-newClass-className-input').val();
 			data.instructor = $('#formWindow-newClass-instructorName-input').val();
