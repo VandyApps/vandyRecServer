@@ -38,13 +38,13 @@ var FitnessClass = Backbone.Model.extend({
 			return false;
 		}
 
-		//check if the date is after the end date
-		if (typeof this.getEndDate() !== 'undefined' && DateHelper.earlierDate(date, this.getStartDate()) && !DateHelper.equalDates(date, this.getStartDate())) {
+		//check if the date is before the start date
+		if (DateHelper.earlierDate(date, this.getStartDate()) && !DateHelper.equalDates(date, this.getStartDate())) {
 			return false;
 		}
 
-		//check if the date is before the start date
-		if (DateHelper.earlierDate(this.getEndDate(), date) && !DateHelper.equalDates(this.getEndDate(), date)) {
+		//check if the date is after the end date
+		if (typeof this.getEndDate() !== 'undefined' && DateHelper.earlierDate(this.getEndDate(), date) && !DateHelper.equalDates(this.getEndDate(), date)) {
 			return false;
 		}
 
@@ -95,7 +95,7 @@ var FitnessClass = Backbone.Model.extend({
 
 		//save the new value of this class
 		//should call PUT
-		
+
 		if (returnNull) {
 			return null;
 		} else {
@@ -118,7 +118,7 @@ var FitnessClass = Backbone.Model.extend({
 	//converts the string into a javascript date object
 	//before returning the value
 	getEndDate: function() {
-		if (typeof this.get('endDate') === 'undefined' || this.getEndDate === '*') {
+		if (typeof this.get('endDate') === 'undefined' || this.get('endDate') === '*') {
 			return undefined;
 		}
 		var endDateArray = this.get('endDate').split('/');
