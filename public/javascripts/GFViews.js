@@ -279,7 +279,8 @@ var GFClassForm = Backbone.View.extend({
 	events: {
 
 		'click #formWindow-newClass-title': 'toggleForm',
-		'click #formWindow-newClass-submitNewClass': 'submit'
+		'click #formWindow-newClass-submitNewClass': 'submit',
+		'click #formWindow-exit': 'exit'
 		//need events to manage selections and changes to existing classes
 		//event for submission
 		//event for changing select elements
@@ -287,7 +288,7 @@ var GFClassForm = Backbone.View.extend({
 
 
 	initialize: function(options) {
-		
+		$('#windowPrimer').click($.proxy(this.exit, this));
 	},
 	render: function() {
 
@@ -393,6 +394,14 @@ var GFClassForm = Backbone.View.extend({
 			$('#formWindow-newClass-error').text(validation);
 			$('#formWindow-newClass-error').show();
 		}
+	},
+	exit: function() {
+		$('#windowPrimer').hide();
+		$('#formWindow').hide();
+		//hide the form if it was open
+		$('#formWindow-newClass-form').hide();
+		//remove all exsiting class list items
+		$('.formWindow-existingClass').remove();
 	}
 });
 
@@ -432,10 +441,14 @@ $('#leftArrow').click(function() {
 $('#rightArrow').click(function() {
 	monthView.incrementMonth();
 });
+/*
 $('#windowPrimer,#formWindow-exit').click(function() {
 	$('#windowPrimer').hide();
 	$('#formWindow').hide();
+	//hide the form if it was open
+	$('#formWindow-newClass-form').hide();
 });
+*/
 $('#formWindow-exit').mouseover(function() {
 	$(this).animate({backgroundColor: '#cb7c01'}, 200);
 });
