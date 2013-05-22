@@ -136,8 +136,14 @@ DateHelper.earlierDate = function(date1, date2) {
 	return date1.getTime() < date2.getTime();
 }
 
+//returns true if the dates are equal without
+//considering the time.  Only takes into account
+//day year, and month
 DateHelper.equalDates = function(date1, date2) {
-	return date1.getTime() === date2.getTime();
+	var firstDate = new Date(date1.getYear(), date1.getMonth(), date1.getDate(), 0,0,0,0);
+	var secondDate = new Date(date2.getYear(), date2.getMonth(), date2.getDate(), 0,0,0,0);
+	
+	return firstDate.getTime() === secondDate.getTime();
 }
 
 //this function set the dateToSet to a date that is on or after the comparison date

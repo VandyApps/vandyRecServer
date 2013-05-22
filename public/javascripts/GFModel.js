@@ -38,12 +38,12 @@ var FitnessClass = Backbone.Model.extend({
 		}
 
 		//check if the date is after the end date
-		if (typeof this.getEndDate() !== 'undefined' && !DateHelper.earlierDate(date, this.getEndDate())) {
+		if (typeof this.getEndDate() !== 'undefined' && DateHelper.earlierDate(date, this.getStartDate()) && !DateHelper.equalDates(date, this.getStartDate())) {
 			return false;
 		}
 
 		//check if the date is before the start date
-		if (!DateHelper.earlierDate(this.getStartDate(), date)) {
+		if (DateHelper.earlierDate(this.getEndDate(), date) && !DateHelper.equalDates(this.getEndDate(), date)) {
 			return false;
 		}
 
