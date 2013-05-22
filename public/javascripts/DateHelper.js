@@ -147,6 +147,26 @@ DateHelper.equalDates = function(date1, date2) {
 	return firstDate.getTime() === secondDate.getTime();
 }
 
+//checks if the compare date is in between date1 and date2
+//returns true if the compare date is in between the two dates
+//or equal to either of the dates
+DateHelper.betweenDates = function(compareDate, date1, date2) {
+	var smallerDate;
+	var largerDate;
+	if (date1.getTime() < date2.getTime()) {
+		smallerDate = date1;
+		largerDate = date2;
+	} else {
+		smallerDate = date2;
+		largerDate = date1;
+	}
+	if (compareDate.getTime() <= largerDate.getTime() && compareDate.getTime() >= smallerDate.getTime()) {
+		return true;
+	}
+	return false;
+
+}
+
 //this function set the dateToSet to a date that is on or after the comparison date
 //but of the same week day as the dateToSet currently is
 

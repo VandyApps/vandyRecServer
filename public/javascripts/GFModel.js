@@ -74,7 +74,7 @@ var FitnessClass = Backbone.Model.extend({
 	//not in between the start and end dates
 	slice: function(sliceDate) {
 		//check if slice date is out of range of the start and end dates
-		if (DateHelper.earlierDate(sliceDate, this.getStartDate()) && !DateHelper.equalDates(sliceDate, this.getStartDate() && DateHelper.earlierDate(this.getEndDate(), sliceDate) && !DateHelper.equalDates(this.getEndDate(), sliceDate))) {
+		if ((typeof this.getEndDate() !== 'undefined' && !DateHelper.betweenDates(sliceDate, this.getStartDate(), this.getEndDate())) || (typeof this.getEndDate() === 'undefined' && DateHelper.earlierDate(sliceDate, this.getStartDate()) ) ) {
 			return undefined;
 		}
 
@@ -86,7 +86,7 @@ var FitnessClass = Backbone.Model.extend({
 		DateHelper.dateWithEmptyTime(sliceDate);
 
 		var returnNull = false;
-		if (DateHelper.equalDates(sliceDate, this.getEndDate())) {
+		if (typeof this.getEndDate() !== 'undefined' && DateHelper.equalDates(sliceDate, this.getEndDate())) {
 			returnNull = true;
 		}
 		sliceDate.setDate(sliceDate.getDate() - 7);
