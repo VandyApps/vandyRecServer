@@ -345,6 +345,8 @@ var GFClassView = Backbone.View.extend({
 		this.$el.slideUp(400, function() {
 			this.remove();
 		});
+		//reload the data
+		fitnessClasses.fetch();
 	}
 	
 	
