@@ -269,7 +269,7 @@ var MonthView = Backbone.View.extend({
 var GFClassView = Backbone.View.extend({
 
 	className: 'formWindow-existingClass',
-
+	tagName: 'li',
 	
 	initialize: function(options) {
 		
@@ -288,10 +288,13 @@ var GFClassView = Backbone.View.extend({
 	//render the list item with necessary forms for
 	//changing options
 	render: function(animate) {
+		
 		if (animate) {
-			$('<li class="formWindow-existingClass" style="display: none;"></li>').insertAfter('#formWindow-newClass');
+			this.$el = $('<li class="formWindow-existingClass" style="display: none;"></li>');
+			this.$el.insertAfter('#formWindow-newClass');
 		} else {
-			$('<li class="formWindow-existingClass"></li>').insertAfter('#formWindow-newClass');
+			this.$el = $('<li class="formWindow-existingClass"></li>')
+			this.$el.insertAfter('#formWindow-newClass');
 		}
 		var endDate;
 		if (typeof this.model.getEndDate() === 'undefined') {
@@ -299,11 +302,11 @@ var GFClassView = Backbone.View.extend({
 		} else {
 			endDate = this.model.get('endDate');
 		}
-		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-className">'+this.model.getClassName()+'</div>');
-		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-instructor">'+this.model.getInstructor()+'</div>');
-		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-times">'+this.model.get('timeRange')+'</div>');
-		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-startDate">Start date: '+this.model.get('startDate')+'</div>');
-		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-endDate">End date: '+endDate+'</div>');
+		this.$el.append('<div class="formWindow-existingClass-className">'+this.model.getClassName()+'</div>');
+		this.$el.append('<div class="formWindow-existingClass-instructor">'+this.model.getInstructor()+'</div>');
+		this.$el.append('<div class="formWindow-existingClass-times">'+this.model.get('timeRange')+'</div>');
+		this.$el.append('<div class="formWindow-existingClass-startDate">Start date: '+this.model.get('startDate')+'</div>');
+		this.$el.append('<div class="formWindow-existingClass-endDate">End date: '+endDate+'</div>');
 
 		//if the date is repeating, should show more than 1 delete options
 		//if the date isn't repeating, then delete simply deletes the 1 instance
@@ -322,17 +325,26 @@ var GFClassView = Backbone.View.extend({
 	},
 	//for deleting a single instance
 	deleteOne: function() {
-
 		/*
-		var newObjData = this.model.slice();
+		var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
+		var newObjData = this.model.slice(currentDate);
 		if (typeof newObjData === 'object') {
-			console.log(newObjData);
+			fitnessClasses.addNewClass(newObjData);
 		}
+		this.$el.slideUp(400, function() {
+			this.remove();
+		});
 		*/
+		
 	},
 	//for deleting many instances
 	deleteMany:function() {
 		//this.model.slice()
+		var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
+		this.model.slice(currentDate);
+		this.$el.slideUp(400, function() {
+			this.remove();
+		});
 	}
 	
 	
