@@ -66,8 +66,10 @@ var FitnessClass = Backbone.Model.extend({
 	//so that the end date is before the date passed in
 	//does not do anything if the date passed in is before the 
 	//starting date.  Also removes the date that is passed in
-	//returns the date 1 week after the date being deleted,
-	//which can be used to create another fitnessClass if needed
+	//returns a js object that has the same variables as the 
+	//fitnessClass object but with the end date 1 week after 
+	//the date being deleted, which can be used to create 
+	//another fitnessClass if needed
 	//with the return date as a start date.  Returns null if 
 	//there is not valid date after the sliced date, and the sliced
 	//date was the last date.  Returns undefined if the sliceDate is 
@@ -83,8 +85,10 @@ var FitnessClass = Backbone.Model.extend({
 	
 			//make sure that the slice date is of the same day of the week
 			//and has no time value
+			var dateChanged = false;
 			while (sliceDate.getDay() !== this.getWeekDay()) {
 				sliceDate.setDate(sliceDate.getDate() - 1);
+				dateChanged = true;
 			}
 			DateHelper.dateWithEmptyTime(sliceDate);
 
@@ -92,8 +96,21 @@ var FitnessClass = Backbone.Model.extend({
 			if (typeof this.getEndDate() !== 'undefined' && DateHelper.equalDates(sliceDate, this.getEndDate())) {
 				returnNull = true;
 			}
-			sliceDate.setDate(sliceDate.getDate() - 7);
+
+			//only reduce the date further if the slice date was not adjusted 
+			//to match the day of the week
+			if (!dateChanged) {
+				sliceDate.setDate(sliceDate.getDate() - 7);
+			}
+			
+			var startDateFactor;
+			if (!dateChanged) {
+				startDateFactor = 14;
+			} else {
+				startDateFactor = 7;
+			}
 			//construct date string and set it to end date
+			var oldEndDate = this.get('endDate');
 			this.set('endDate', DateHelper.getDateString(sliceDate));
 
 			//save the new value of this class
@@ -102,7 +119,17 @@ var FitnessClass = Backbone.Model.extend({
 			if (returnNull) {
 				return null;
 			} else {
-				return new Date(sliceDate.getTime() + (14 * 24 * 60 * 60 * 1000));
+				//create the return object
+				var objectToReturn = {};
+				objectToReturn.className = this.getClassName();
+				objectToReturn.instructor = this.getInstructor();
+				objectToReturn.timeRange = this.get('timeRange');
+				//set the start date as the next valid date after the sliced date
+				objectToReturn.startDate = DateHelper.getDateString(new Date(sliceDate.getTime() + (startDateFactor * 24 * 60 * 60 * 1000)));
+				//set the end date on the return object as the old end date
+				objectToReturn.endDate = oldEndDate;
+				objectToReturn.dayOfWeek = this.getWeekDay();
+				return objectToReturn;
 			}
 
 		} else {
