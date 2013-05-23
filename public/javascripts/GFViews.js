@@ -462,6 +462,7 @@ var GFClassForm = Backbone.View.extend({
 			$('#formWindow-newClass-error').text(validation);
 			$('#formWindow-newClass-error').show();
 		}
+		this.formToDefault();
 	},
 	exit: function() {
 		$('#windowPrimer').hide();
@@ -476,6 +477,20 @@ var GFClassForm = Backbone.View.extend({
 	},
 	hoverOffExit: function() {
 		$('#formWindow-exit').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
+	},
+	//converts the form back to its default values
+	//should be called after submission so that values are cleared
+	//and buttons are reset
+	formToDefault: function() {
+		$('#formWindow-newClass-className-input').val('');
+		$('#formWindow-newClass-instructorName-input').val('');
+		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').val('12');
+		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('00');
+		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').val('am');
+		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').val('1');
+		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('00');
+		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('am');
+
 	}
 });
 
