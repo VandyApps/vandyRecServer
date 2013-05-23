@@ -273,10 +273,26 @@ var GFClassView = Backbone.View.extend({
 	events: {
 		
 	},
+	initialize: function(options) {
+		this.render(options.animate)
+	},
 	//render the list item with necessary forms for
 	//changing options
-	render: function() {
+	render: function(animate) {
+		if (animate) {
+			$('<li class="formWindow-existingClass" style="display: none;"></li>').insertAfter('#formWindow-newClass');
+		} else {
+			$('<li class="formWindow-existingClass"></li>').insertAfter('#formWindow-newClass');
+		}
+		
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-className">'+this.model.getClassName()+'</div>');
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-instructor">'+this.model.getInstructor()+'</div>');
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-times">'+this.model.get('timeRange')+'</div>');
+		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-deleteOptions"><input id="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" /><input id="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" /></div>');
 
+		if (animate) {
+			$('#formWindow-newClass').next().slideDown();
+		}
 	},
 	//for deleting a single instance
 	deleteOne: function() {
@@ -323,20 +339,10 @@ var GFClassForm = Backbone.View.extend({
 	//and appends it immediately after the class creation
 	//form, data should be passed from the form
 	addClass: function(model, animate) {
-		if (animate) {
-			$('<li class="formWindow-existingClass" style="display: none;"></li>').insertAfter('#formWindow-newClass');
-		} else {
-			$('<li class="formWindow-existingClass"></li>').insertAfter('#formWindow-newClass');
-		}
 		
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-className">'+model.getClassName()+'</div>');
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-instructor">'+model.getInstructor()+'</div>');
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-times">'+model.get('timeRange')+'</div>');
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-deleteOptions"><input id="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" /><input id="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" /></div>');
-
-		if (animate) {
-			$('#formWindow-newClass').next().slideDown();
-		}
+		var classView = new GFClassView({model: model, animate: animate});
+		//slide animation
+		this.$('#formWindow-newClass-form').slideUp();
 		/*
 			<li class="formWindow-existingClass">
 				<div id="formWindow-existingClass-className">Yoga</div>
