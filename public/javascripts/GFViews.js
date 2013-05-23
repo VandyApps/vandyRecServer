@@ -270,11 +270,15 @@ var GFClassView = Backbone.View.extend({
 
 	className: 'formWindow-existingClass',
 
-	events: {
-		
-	},
+	
 	initialize: function(options) {
-		this.render(options.animate)
+		
+		this.render(options.animate);
+		//dynamically bind events to elements that are dynamically rendered
+		$('.formWindow-existingClass-deleteMultiple').click($.proxy(this.deleteMany, this));
+		$('.formWindow-existingClass-deleteOne').click($.proxy(this.deleteOne, this));
+		
+
 	},
 	//render the list item with necessary forms for
 	//changing options
@@ -295,19 +299,21 @@ var GFClassView = Backbone.View.extend({
 		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-times">'+this.model.get('timeRange')+'</div>');
 		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-startDate">Start date: '+this.model.get('startDate')+'</div>');
 		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-endDate">End date: '+endDate+'</div>');
-		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-deleteOptions"><input id="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" /><input id="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" /></div>');
+		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-deleteOptions"><input class="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" /><input class="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" /></div>');
+		//dynamically add events to elements that were created
 
 		if (animate) {
 			$('#formWindow-newClass').next().slideDown();
 		}
+		
 	},
 	//for deleting a single instance
 	deleteOne: function() {
-
+		console.log("deleteOne has been called");
 	},
 	//for deleting many instances
 	deleteMany:function() {
-
+		console.log("delete many has been called");
 	}
 	
 	

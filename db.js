@@ -200,7 +200,9 @@ exports.updateGFObject = function(object, callback) {
 							timeRange: object.timeRange
 						});
 					}
+					db.close();
 				});
+
 		});
 	});
 }
