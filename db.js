@@ -170,6 +170,41 @@ exports.GFObjectsForDates = function(monthCount, callback) {
 	});
 }
 
+//for updating a GF object
+//returns err and the updated object to the callback function
+exports.updateGFObject = function(object, callback) {
+	var parsedID = new ObjectID.createFromHexString(object._id);
+	Db.connect(MONGODB_URL, function(err, db) {
+		db.collection(Collections.groupFitness, function(collection) {
+			collection.update({_id: parsedID},
+				{
+					className: object.className,
+					instructor: object.instructor,
+					startDate: object.startDate,
+					endDate: object.endDate,
+					SD_monthCount: object.SD_monthCount,
+					ED_monthCount: object.ED_monthCount,
+					dayOfWeek: object.dayOfWeek,
+					timeRange: object.timeRange
+
+				}, function(err, numberUpdated) {
+					if (err) {
+						callback(err, null);
+					} else {
+						callback(null, {
+							className: object.className,
+							instructor: object.instructor,
+							startDate: object.startDate,
+							endDate: object.endDate,
+							dayOfWeek: object.dayOfWeek,
+							timeRange: object.timeRange
+						});
+					}
+				});
+		});
+	});
+}
+
 //inserts the object then returns the object as a mongodb object
 //with a server_size _id attribute, the callback function takes the arguments
 //of any error and the returned mongodb object

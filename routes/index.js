@@ -68,6 +68,30 @@ exports.deleteNews = function(req, res) {
 
 }
 
+exports.updateGF = function(req, res) {
+
+	var data = req.body;
+	//add data that can be used for server side querying
+	var startDateArray = data.startDate.split('/');
+	data.SD_monthCount = (parseInt(startDateArray[2], 10) -1970) * 12 + (parseInt(startDateArray[0], 10) - 1);
+	if (data.endDate === '*') {
+		//monthCount of 0 indicates that it goes infinitely
+		data.ED_monthCount = 0;
+	} else {
+		var endDateArray = data.endDate.split('/');
+		data.ED_monthCount = (parseInt(endDateArray[2], 10) - 1970) * 12 + (parseInt(endDateArray[0], 10) - 1);
+	}
+
+	db.updateGFObject(object, function(err, doc) {
+		if (err) {
+			res.statusCode = 500;
+			res.send(err);
+		} else {
+			res.statusCode = 200;
+			res.send(doc);
+		}
+	});
+}
 exports.createGF = function(req, res) {
 
 	var data = req.body;

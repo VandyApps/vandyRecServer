@@ -72,7 +72,7 @@ app.post('/news', routes.createNews);
 app.delete('/news', routes.deleteNews);
 
 app.get('/groupFitness', routes.groupFitness);
-//app.put('/groupFitness', routes.updateGF);
+app.put('/groupFitness', routes.updateGF);
 app.post('/groupFitness', routes.createGF);
 app.delete('/groupFitness', routes.deleteGF);
 
