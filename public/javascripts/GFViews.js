@@ -325,7 +325,7 @@ var GFClassView = Backbone.View.extend({
 	},
 	//for deleting a single instance
 	deleteOne: function() {
-		/*
+	
 		var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
 		var newObjData = this.model.slice(currentDate);
 		if (typeof newObjData === 'object') {
@@ -334,12 +334,12 @@ var GFClassView = Backbone.View.extend({
 		this.$el.slideUp(400, function() {
 			this.remove();
 		});
-		*/
+		
 		
 	},
 	//for deleting many instances
 	deleteMany:function() {
-		//this.model.slice()
+		
 		var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
 		this.model.slice(currentDate);
 		this.$el.slideUp(400, function() {
