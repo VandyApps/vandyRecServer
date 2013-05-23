@@ -423,12 +423,19 @@ textarea {
 
 #formWindow-newClass-title {
     display: block;
-    padding: 20px;
+    
+    padding: 10px;
     text-align: center;
-    color: red;
-    width: 400px;
-    margin: 0 auto;
+    
+    width: 200px;
+    height: 10px;
+    line-height: 10px;
+    margin: 10px auto;
     border-bottom: solid black 1px;
+    border: solid green;
+    background-color: #49e45a;
+    color: green;
+    border-radius: 10px;
     cursor: pointer;
 }
 
