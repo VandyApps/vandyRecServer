@@ -275,8 +275,11 @@ var GFClassView = Backbone.View.extend({
 		
 		this.render(options.animate);
 		//dynamically bind events to elements that are dynamically rendered
-		$('.formWindow-existingClass-deleteMultiple').click($.proxy(this.deleteMany, this));
-		$('.formWindow-existingClass-deleteOne').click($.proxy(this.deleteOne, this));
+		if (this.model.isRepeating()) {
+			$('.formWindow-existingClass-deleteMultiple').click($.proxy(this.deleteMany, this));
+			$('.formWindow-existingClass-deleteOne').click($.proxy(this.deleteOne, this));
+		}
+		
 		
 
 	},
@@ -299,7 +302,15 @@ var GFClassView = Backbone.View.extend({
 		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-times">'+this.model.get('timeRange')+'</div>');
 		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-startDate">Start date: '+this.model.get('startDate')+'</div>');
 		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-endDate">End date: '+endDate+'</div>');
-		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-deleteOptions"><input class="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" /><input class="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" /></div>');
+
+		//if the date is repeating, should show more than 1 delete options
+		//if the date isn't repeating, then delete simply deletes the 1 instance
+		if (this.model.isRepeating()) {
+			$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-deleteOptions"><input class="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" /><input class="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" /></div>');
+		} else {
+			$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-deleteOptions"><input class="formWindow-existingClass-deleteWhole" type="button" value= "DELETE" /></div>');
+		}
+		
 		//dynamically add events to elements that were created
 
 		if (animate) {

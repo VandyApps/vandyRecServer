@@ -182,7 +182,8 @@ var FitnessClasses = Backbone.Collection.extend({
 		
 		return '/JSON/GF?month='+this.month+'&year='+this.year;
 	},
-	//index of the month
+	//index of the month,
+	//0-based index
 	month: 0,
 	//full year i.e. 2013
 	year: 0, 
