@@ -175,7 +175,7 @@ exports.GFObjectsForDates = function(monthCount, callback) {
 exports.updateGFObject = function(object, callback) {
 	var parsedID = new ObjectID.createFromHexString(object._id);
 	Db.connect(MONGODB_URL, function(err, db) {
-		db.collection(Collections.groupFitness, function(collection) {
+		db.collection(Collections.groupFitness, function(err, collection) {
 			collection.update({_id: parsedID},
 				{
 					className: object.className,

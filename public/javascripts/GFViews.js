@@ -375,19 +375,7 @@ var GFClassForm = Backbone.View.extend({
 		var classView = new GFClassView({model: model, animate: animate});
 		//slide animation
 		this.$('#formWindow-newClass-form').slideUp();
-		/*
-			<li class="formWindow-existingClass">
-				<div id="formWindow-existingClass-className">Yoga</div>
-				<div id="formWindow-existingClass-instructor">Brendan McNamara</div>
-				<div id="formWindow-existingClass-times">12:00pm - 1:00pm</div>
-
-				<div id="formWindow-existingClass-deleteOptions">
-					
-					<input id="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" />
-					<input id="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" />
-				</div>
-			</li>
-		*/
+		
 	},
 	//this toggles the appearance of the new class form
 	toggleForm: function() {

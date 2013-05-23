@@ -82,7 +82,7 @@ exports.updateGF = function(req, res) {
 		data.ED_monthCount = (parseInt(endDateArray[2], 10) - 1970) * 12 + (parseInt(endDateArray[0], 10) - 1);
 	}
 
-	db.updateGFObject(object, function(err, doc) {
+	db.updateGFObject(data, function(err, doc) {
 		if (err) {
 			res.statusCode = 500;
 			res.send(err);

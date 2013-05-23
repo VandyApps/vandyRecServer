@@ -126,8 +126,12 @@ var FitnessClass = Backbone.Model.extend({
 
 			//save the new value of this class
 			//should call PUT
-
+			this.save({
+				success: function() {console.log("saved");},
+				error: function() {console.log("something went wrong");}
+			});
 			if (returnNull) {
+
 				return null;
 			} else {
 				//create the return object
