@@ -78,31 +78,39 @@ var FitnessClass = Backbone.Model.extend({
 			return undefined;
 		}
 
-		//make sure that the slice date is of the same day of the week
-		//and has no time value
-		while (sliceDate.getDay() !== this.getWeekDay()) {
-			sliceDate.setDate(sliceDate.getDate() - 1);
-		}
-		DateHelper.dateWithEmptyTime(sliceDate);
+		if (!DateHelper.equalDates(sliceDate, this.getStartDate())) {
 
-		var returnNull = false;
-		if (typeof this.getEndDate() !== 'undefined' && DateHelper.equalDates(sliceDate, this.getEndDate())) {
-			returnNull = true;
-		}
-		sliceDate.setDate(sliceDate.getDate() - 7);
-		//construct date string and set it to end date
-		this.set('endDate', DateHelper.getDateString(sliceDate));
+	
+			//make sure that the slice date is of the same day of the week
+			//and has no time value
+			while (sliceDate.getDay() !== this.getWeekDay()) {
+				sliceDate.setDate(sliceDate.getDate() - 1);
+			}
+			DateHelper.dateWithEmptyTime(sliceDate);
 
-		//save the new value of this class
-		//should call PUT
+			var returnNull = false;
+			if (typeof this.getEndDate() !== 'undefined' && DateHelper.equalDates(sliceDate, this.getEndDate())) {
+				returnNull = true;
+			}
+			sliceDate.setDate(sliceDate.getDate() - 7);
+			//construct date string and set it to end date
+			this.set('endDate', DateHelper.getDateString(sliceDate));
 
-		if (returnNull) {
-			return null;
+			//save the new value of this class
+			//should call PUT
+
+			if (returnNull) {
+				return null;
+			} else {
+				return new Date(sliceDate.getTime() + (14 * 24 * 60 * 60 * 1000));
+			}
+
 		} else {
-			return new Date(sliceDate.getTime() + (14 * 24 * 60 * 60 * 1000));
+			//should call destroy
+			console.log("deleting an element");
+			this.remove();
 		}
 
-		
 	},
 	//converts the string into a javascript date object
 	//before returning the value
