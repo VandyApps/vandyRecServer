@@ -278,6 +278,8 @@ var GFClassView = Backbone.View.extend({
 		if (this.model.isRepeating()) {
 			$('.formWindow-existingClass-deleteMultiple').click($.proxy(this.deleteMany, this));
 			$('.formWindow-existingClass-deleteOne').click($.proxy(this.deleteOne, this));
+		} else {
+			$('.formWindow-existingClass-deleteWhole').click($.proxy(this.deleteMany, this));
 		}
 		
 		
