@@ -253,8 +253,7 @@ var FitnessClasses = Backbone.Collection.extend({
 		//fetch data, no need to reset because month has not
 		//changes
 		this.fetch({
-			success: function(collection) {console.log("success: " + JSON.stringify(collection))},
-			error: function(collection) {console.log("error: " + JSON.stringify(collection))}
+			error: function(collection) {alert("Error when saving fitness class data to the server")}
 		});
 	}
 
