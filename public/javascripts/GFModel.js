@@ -81,7 +81,7 @@ var FitnessClass = Backbone.Model.extend({
 	//fitnessClass object but with the end date 1 week after 
 	//the date being deleted, which can be used to create 
 	//another fitnessClass if needed
-	//with the return date as a start date.  Returns null if 
+	//with the return date as a start date.  Returns undefined if 
 	//there is not valid date after the sliced date, and the sliced
 	//date was the last date.  Returns undefined if the sliceDate is 
 	//not in between the start and end dates
@@ -103,9 +103,9 @@ var FitnessClass = Backbone.Model.extend({
 			}
 			DateHelper.dateWithEmptyTime(sliceDate);
 
-			var returnNull = false;
+			var returnUndefined = false;
 			if (typeof this.getEndDate() !== 'undefined' && DateHelper.equalDates(sliceDate, this.getEndDate())) {
-				returnNull = true;
+				returnUndefined = true;
 			}
 
 			//only reduce the date further if the slice date was not adjusted 
@@ -130,9 +130,9 @@ var FitnessClass = Backbone.Model.extend({
 				success: function() {console.log("saved");},
 				error: function() {console.log("something went wrong");}
 			});
-			if (returnNull) {
+			if (returnUndefined) {
 
-				return null;
+				return undefined;
 			} else {
 				//create the return object
 				var objectToReturn = {};

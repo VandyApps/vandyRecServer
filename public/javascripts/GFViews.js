@@ -328,7 +328,9 @@ var GFClassView = Backbone.View.extend({
 	
 		var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
 		var newObjData = this.model.slice(currentDate);
+		console.log(typeof newObjData);
 		if (typeof newObjData === 'object') {
+			console.log('found an object');
 			fitnessClasses.addNewClass(newObjData);
 		}
 		this.$el.slideUp(400, function() {
