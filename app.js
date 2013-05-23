@@ -74,7 +74,7 @@ app.delete('/news', routes.deleteNews);
 app.get('/groupFitness', routes.groupFitness);
 //app.put('/groupFitness', routes.updateGF);
 app.post('/groupFitness', routes.createGF);
-//app.delete('/groupFitness', routes.deleteGF);
+app.delete('/groupFitness', routes.deleteGF);
 
 app.get('/hours', routes.hours);
 app.get('/traffic', routes.traffic);

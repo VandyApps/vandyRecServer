@@ -88,6 +88,20 @@ exports.createGF = function(req, res) {
 	});
 }
 
+exports.deleteGF = function(req, res) {
+	db.deleteGFObjectWithID(req.headers._id, function(err, id) {
+
+		if (err) {
+			res.statusCode = 500;
+			res.send({error: new Error("Could not delete element")});
+		} else {
+			res.statusCode = 200;
+			res.send({id: id});
+		}
+		
+	});
+}
+
 exports.hours = function(req, res) {
 
 	res.render('hours')

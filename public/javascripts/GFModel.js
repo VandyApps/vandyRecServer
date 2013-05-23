@@ -107,8 +107,11 @@ var FitnessClass = Backbone.Model.extend({
 
 		} else {
 			//should call destroy
+			var that = this;
 			console.log("deleting an element");
-			this.remove();
+			this.destroy({
+				headers: {_id: that.id }
+			});
 		}
 
 	},

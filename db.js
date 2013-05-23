@@ -193,3 +193,22 @@ exports.insertGFObject = function(object, callback) {
 		});
 	});
 }
+
+exports.deleteGFObjectWithID = function(id, callback) {
+	var parsedID = new ObjectID.createFromHexString(id);
+	Db.connect(MONGODB_URL, function(err, db) {
+		db.collection(Collections.groupFitness, function(err, collection) {
+			collection.remove({_id: parsedID}, {w: 1}, function(err, numberRemoved) {
+				if (err) {
+					console.log(err);
+					callback(err, null);
+				} else if (numberRemoved === 1) {
+					callback(null, id);
+				} else {
+					callback(new Error("did not remove 1 element"), null);
+				}
+				db.close();
+			});
+		});
+	});
+};
