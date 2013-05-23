@@ -284,11 +284,18 @@ var GFClassView = Backbone.View.extend({
 		} else {
 			$('<li class="formWindow-existingClass"></li>').insertAfter('#formWindow-newClass');
 		}
-		
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-className">'+this.model.getClassName()+'</div>');
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-instructor">'+this.model.getInstructor()+'</div>');
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-times">'+this.model.get('timeRange')+'</div>');
-		$('#formWindow-newClass').next().append('<div id="formWindow-existingClass-deleteOptions"><input id="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" /><input id="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" /></div>');
+		var endDate;
+		if (typeof this.model.getEndDate() === 'undefined') {
+			endDate = 'None';
+		} else {
+			endDate = this.model.get('endDate');
+		}
+		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-className">'+this.model.getClassName()+'</div>');
+		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-instructor">'+this.model.getInstructor()+'</div>');
+		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-times">'+this.model.get('timeRange')+'</div>');
+		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-startDate">Start date: '+this.model.get('startDate')+'</div>');
+		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-endDate">End date: '+endDate+'</div>');
+		$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-deleteOptions"><input id="formWindow-existingClass-deleteMultiple" type="button" value="DELETE FUTURE CLASSES" /><input id="formWindow-existingClass-deleteOne" type="button" value="DELETE ONLY THIS" /></div>');
 
 		if (animate) {
 			$('#formWindow-newClass').next().slideDown();
@@ -453,20 +460,5 @@ $('#leftArrow').click(function() {
 $('#rightArrow').click(function() {
 	monthView.incrementMonth();
 });
-/*
-$('#windowPrimer,#formWindow-exit').click(function() {
-	$('#windowPrimer').hide();
-	$('#formWindow').hide();
-	//hide the form if it was open
-	$('#formWindow-newClass-form').hide();
-});
-
-$('#formWindow-exit').mouseover(function() {
-	$(this).animate({backgroundColor: '#cb7c01'}, 200);
-});
-$('#formWindow-exit').mouseout(function() {
-	$(this).animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
-});
-*/
 
 

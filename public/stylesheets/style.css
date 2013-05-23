@@ -548,21 +548,34 @@ textarea {
     display: block;
     height: 140px;
 }
-#formWindow-existingClass-className {
+.formWindow-existingClass-className {
     
     margin: 20px 0px 2px 0px;
     font-size: 16pt;
     color: blue;
     text-align: center;
 }
-#formWindow-existingClass-times {
+.formWindow-existingClass-times {
     
     font-size: 10pt;
     position: absolute;
     top: 60px;
     left: 40px;
 }
-#formWindow-existingClass-instructor {
+.formWindow-existingClass-startDate {
+    position: absolute;
+    left: 300px;
+    top: 40px;
+    font-size: 10pt;
+    
+}
+.formWindow-existingClass-endDate {
+    position: absolute;
+    top: 60px;
+    left: 300px;
+    font-size: 10pt;
+}
+.formWindow-existingClass-instructor {
     margin-top: 10px;
     display: block;
     position: absolute;
@@ -571,7 +584,7 @@ textarea {
     font-size: 10pt;
 }
 
-#formWindow-existingClass-deleteOptions {
+.formWindow-existingClass-deleteOptions {
     position: absolute;
     
     top: 100px;
@@ -581,7 +594,7 @@ textarea {
     text-align: center;
 }
 
-#formWindow-existingClass-deleteOptions input {
+.formWindow-existingClass-deleteOptions input {
     border: solid black 2px;
     width: 200px;
     border-radius: 7px;
