@@ -172,7 +172,7 @@ var MonthView = Backbone.View.extend({
 		
 	},
 	render: function() {
-		
+		console.log("render was called");
 		//set the display to the month and year indication outside of
 		//calendar element
 		//month and year index tags are used for holding data that is not 
