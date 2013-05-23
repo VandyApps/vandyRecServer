@@ -63,6 +63,9 @@ var FitnessClass = Backbone.Model.extend({
 		return this.get('instructor');
 	},
 	isRepeating: function() {
+		if (typeof this.getEndDate() === 'undefined') {
+			return true;
+		}
 		//repeating if the start and end dates are different and the end date is less than 1 week 
 		//greater than the start date
 		if ((this.getStartDate().getTime() + (7 * 24 * 60 * 60 * 1000)) > this.getEndDate().getTime()) {
