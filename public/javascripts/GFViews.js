@@ -122,8 +122,8 @@ var BlockView = Backbone.View.extend({
 			var windowTitle = DateHelper.weekDayAsString(dayOfWeekIndex) +', '+DateHelper.monthNameForIndex(parseInt($('#monthIndex').text(),10))+' '+$('.dayIndicator' , event.delegateTarget).text()+' '+$('#yearIndex').text();
 
 			$('#formWindow-title').text(windowTitle);
-			$('#formWindow-dayIndex').text(this.day.toString());
-			$('#formWindow-dayOfWeekIndex').text(dayOfWeekIndex.toString());
+			$('#dayIndex').text(this.day.toString());
+			$('#dayOfWeekIndex').text(dayOfWeekIndex.toString());
 			this.fitnessClassesForBlock.forEach(function(fitnessClass) {
 				
 				//false for no animation
@@ -322,11 +322,17 @@ var GFClassView = Backbone.View.extend({
 	},
 	//for deleting a single instance
 	deleteOne: function() {
-		console.log("deleteOne has been called");
+
+		/*
+		var newObjData = this.model.slice();
+		if (typeof newObjData === 'object') {
+			console.log(newObjData);
+		}
+		*/
 	},
 	//for deleting many instances
 	deleteMany:function() {
-		console.log("delete many has been called");
+		//this.model.slice()
 	}
 	
 	
@@ -411,7 +417,7 @@ var GFClassForm = Backbone.View.extend({
 			var data = {};
 			data.className = $('#formWindow-newClass-className-input').val();
 			data.instructor = $('#formWindow-newClass-instructorName-input').val();
-			data.dayOfWeek = parseInt($('#formWindow-dayOfWeekIndex').text(), 10);
+			data.dayOfWeek = parseInt($('#dayOfWeekIndex').text(), 10);
 			data.timeRange = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
 			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
 			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text()+' - '+
@@ -429,10 +435,10 @@ var GFClassForm = Backbone.View.extend({
 			}
 
 			var dayString;
-			if ($('#formWindow-dayIndex').text().length === 1) {
-				dayString = '0' + $('#formWindow-dayIndex').text();
+			if ($('#dayIndex').text().length === 1) {
+				dayString = '0' + $('#dayIndex').text();
 			} else {
-				dayString = $('#formWindow-dayIndex').text();
+				dayString = $('#dayIndex').text();
 			}
 
 			var yearString = $('#yearIndex').text();
