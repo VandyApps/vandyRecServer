@@ -17,6 +17,7 @@ var ConfirmationBox = Backbone.View.extend({
 		$('#button2').click($.proxy(this.clickedButton2, this));
 	},
 	render: function() {
+		$('body').append('<div display: none; id="confirmationPrimer" style="position: absolute; background-color: rgba(0,0,0,0); top: 0; left: 0; height: 100%; width: 100%; z-index: 9999;"></div>')
 		this.$el = $('<div id="confirmationBox"></div>');
 
 		this.$el.append('<div id="message">'+this.message+'</div>');
@@ -31,9 +32,10 @@ var ConfirmationBox = Backbone.View.extend({
 		this.$el.children('#inputs').attr('style', this.getButtonWrapperStyle());
 		this.$el.children('#inputs').children('#button1').attr('style', this.getButtonStyle());
 		this.$el.children('#inputs').children('#button2').attr('style', this.getButtonStyle());
-		$('body').append(this.$el);
+		$('#confirmationPrimer').append(this.$el);
 	},
 	show: function(animated) {
+		$('#confirmationPrimer').show();
 		if (animated) {
 			this.$el.fadeIn();
 		} else {
@@ -41,6 +43,7 @@ var ConfirmationBox = Backbone.View.extend({
 		}
 	},
 	hide: function(animated) {
+		$('#confirmationPrimer').hide();
 		if (animated) {
 			this.$el.fadeOut();
 		} else {
@@ -48,7 +51,7 @@ var ConfirmationBox = Backbone.View.extend({
 		}
 	},
 	getBoxStyle: function() {
-		return "display: block; position: fixed;z-index: 10000;margin-top: -200px;margin-left: -150px;top: 50%;left: 50%; background-color: #efefef; border: solid black; height: 200px; border-radius: 10px;width: 300px;"
+		return "display: none; position: fixed;z-index: 10000;margin-top: -200px;margin-left: -150px;top: 50%;left: 50%; background-color: #efefef; border: solid black; height: 200px; border-radius: 10px;width: 300px;"
 	},
 	getMessageStyle: function() {
 		return "display: block; position: absolute; top: 20px; width: 250px; left: 25px; height: 100px; text-align: center;";
