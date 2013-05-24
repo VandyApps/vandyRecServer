@@ -5,6 +5,7 @@ var ConfirmationBox = Backbone.View.extend({
 	button1Name: '',
 	button2Name: '',
 	animate: true,
+	deleteAfterPresent: false,
 	initialize: function(options) {
 		this.message = options.message;
 		this.button1Name = options.button1Name;
@@ -36,7 +37,7 @@ var ConfirmationBox = Backbone.View.extend({
 	},
 	show: function(animated) {
 		$('#confirmationPrimer').show();
-		if (animated) {
+		if ((typeof animated === 'undefined' && this.animated === true) || animated === true) {
 			this.$el.fadeIn();
 		} else {
 			this.$el.show();
@@ -44,10 +45,13 @@ var ConfirmationBox = Backbone.View.extend({
 	},
 	hide: function(animated) {
 		$('#confirmationPrimer').hide();
-		if (animated) {
+		if ((typeof animated === 'undefined' && this.animated === true) || animated === true) {
 			this.$el.fadeOut();
 		} else {
 			this.$el.hide();
+		}
+		if (this.deleteAfterPresent === true) {
+
 		}
 	},
 	getBoxStyle: function() {

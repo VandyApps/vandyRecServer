@@ -155,14 +155,27 @@ NewsView.NewsEventView = Backbone.View.extend({
 	delete: function() {
 		//deletes the model and removes the element from the view
 		//remove the element from the collection
-		eventCollection.delete(this.$el.attr('id'));
-		if (tableView.shouldAnimate()) {
-			this.$el.slideUp(300, function() {
-				$(this).remove();
-			});
-		} else {
-			this.$el.remove();
-		}	
+		var confirm = new ConfirmationBox(
+		{
+			message: 'Are you sure you want to delete this news event?',
+			button1Name: 'YES',
+			button2Name: 'NO',
+			animate: false,
+			deleteAfterPresent: true
+		});
+		confirm.show(true);
+		var that = this;
+		confirm.on('clicked1', function() {
+			eventCollection.delete(that.$el.attr('id'));
+			if (tableView.shouldAnimate()) {
+				this.$el.slideUp(300, function() {
+					$(that).remove();
+				});
+			} else {
+				that.$el.remove();
+			}	
+		});
+		
 	},
 	onEnter: function(event) {
 		if (editMode && event.which === 13) {
