@@ -4,10 +4,14 @@ var ConfirmationBox = Backbone.View.extend({
 	message: '',
 	button1Name: '',
 	button2Name: '',
+	animate: true,
 	initialize: function(options) {
 		this.message = options.message;
 		this.button1Name = options.button1Name;
 		this.button2Name = options.button2Name;
+		if (typeof options.animated !== 'undefined') {
+			this.animated = options.animated;
+		}
 		this.render();
 		$('#button1').click($.proxy(this.clickedButton1, this));
 		$('#button2').click($.proxy(this.clickedButton2, this));
@@ -60,48 +64,11 @@ var ConfirmationBox = Backbone.View.extend({
 	},
 	clickedButton1: function() {
 		this.trigger('clicked1', this);
+		this.hide(this.animate);
 	},
 	clickedButton2: function() {
 		this.trigger('clicked2', this);
+		this.hide(this.animate);
 	}
 });
 
-/*
-		<div id="confirmationBox" style="display: block; 
-									position: fixed;
-									z-index: 10000;
-									margin-top: -200px;
-									margin-left: -150px;
-									top: 50%;
-									left: 50%;
-									border: solid black; 
-									height: 200px; 
-									border-radius: 10px;
-									width: 300px;">
-			<div id="message" style="display: block;
-									position: absolute;
-									top: 20px;
-									width: 250px;
-									left: 25px;
-									height: 100px;
-									text-align: center;">This is the main message.  It should support something relatively long, like this.</div>
-			<div id="inputs" style="display: block;
-									position: absolute;
-									top: 125px;
-									text-align: center;
-									width: 200px;
-									left: 50px;">
-				<input type="button" id="button1" value="Yes" style="margin: 0px 15px; 
-																	width: 60px;
-																	height: 30px;
-																	border: solid black 1px;
-																	border-radius: 10px;"/>
-				<input type="button" id="button2" value="No" style="margin: 0px 15px;
-																	width: 60px;
-																	height: 30px;
-																	border: solid black 1px;
-																	border-radius: 10px;"/>
-			</div>
-		</div>
-
-*/
