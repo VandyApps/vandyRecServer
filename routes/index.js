@@ -21,7 +21,7 @@ exports.loginError = function(req, res) {
 
 exports.news = function(req, res) {
 	db.newsCollection(function(collection) {
-		res.render('news', {news: JSON.stringify(collection)});
+		res.render('news');
 	});
 };
 
