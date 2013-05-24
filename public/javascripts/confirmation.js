@@ -9,6 +9,8 @@ var ConfirmationBox = Backbone.View.extend({
 		this.button1Name = options.button1Name;
 		this.button2Name = options.button2Name;
 		this.render();
+		$('#button1').click($.proxy(this.clickedButton1, this));
+		$('#button2').click($.proxy(this.clickedButton2, this));
 	},
 	render: function() {
 		this.$el = $('<div id="confirmationBox"></div>');
@@ -55,6 +57,12 @@ var ConfirmationBox = Backbone.View.extend({
 	},
 	delete: function() {
 		this.$el.remove();
+	},
+	clickedButton1: function() {
+		this.trigger('clicked1', this);
+	},
+	clickedButton2: function() {
+		this.trigger('clicked2', this);
 	}
 });
 
