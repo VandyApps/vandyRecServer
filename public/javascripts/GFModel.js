@@ -259,6 +259,10 @@ var FitnessClasses = Backbone.Collection.extend({
 		this.fetch({
 			error: function(collection) {alert("Error when saving fitness class data to the server")}
 		});
+	},
+	parse: function(response) {
+		console.log(response);
+		return response;
 	}
 
 

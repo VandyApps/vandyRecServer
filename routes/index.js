@@ -30,8 +30,10 @@ exports.createNews = function(req, res) {
 	db.addNewsElement(req.body, function(err, result) {
 		
 		if (!err) {
+			res.statusCode = 200;
 			res.send(JSON.stringify(result));
 		} else {
+			res.statusCode = 500;
 			res.send(null);
 		}
 		
@@ -43,8 +45,10 @@ exports.updateNews = function(req, res) {
 	console.log(req.body);
 	db.updateNewsElement(req.body, function(err, doc) {
 		if (!err) {
+			res.statusCode = 200;
 			res.send(JSON.stringify(doc));
 		} else {
+			res.statusCode = 500;
 			res.send(null);
 		}
 	});
@@ -57,10 +61,10 @@ exports.deleteNews = function(req, res) {
 	var removedDoc = db.removeNewsElementWithID(req.headers._id, function(err, deletedID) {
 
 		if (err || typeof deletedID === null) {
-			
+			res.statusCode = 500;
 			res.send(new Error("failed to remove document"));
 		} else {
-			
+			res.statusCode = 200;
 			res.send({_id: deletedID});
 		}
 	});
