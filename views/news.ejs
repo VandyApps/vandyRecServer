@@ -11,19 +11,3 @@
 <script type="text/javascript" src="javascripts/News/newsModel.js"></script>
 <script type="text/javascript" src="javascripts/News/newsView.js"></script>
 <script type="text/javascript" src="javascripts/News/newsScript.js"></script>
-<script type="text/javascript">
-	console.log("This method is called");
-	window.confirm = new ConfirmationBox(
-	{
-		message: 'Here is a message that appears here.',
-		button1Name: 'YES',
-		button2Name: 'NO'
-	});
-
-	confirm.on('clicked1', function() {
-		console.log("The first button was clicked");
-	});
-	confirm.on('clicked2', function() {
-		console.log("This second button was clicked");
-	});
-</script>

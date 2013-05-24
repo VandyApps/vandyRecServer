@@ -17,7 +17,7 @@ var ConfirmationBox = Backbone.View.extend({
 		$('#button2').click($.proxy(this.clickedButton2, this));
 	},
 	render: function() {
-		$('body').append('<div display: none; id="confirmationPrimer" style="position: absolute; background-color: rgba(0,0,0,0); top: 0; left: 0; height: 100%; width: 100%; z-index: 9999;"></div>')
+		$('body').append('<div id="confirmationPrimer" style="position: absolute; display: none; background-color: rgba(0,0,0,0); top: 0; left: 0; height: 100%; width: 100%; z-index: 9999;"></div>')
 		this.$el = $('<div id="confirmationBox"></div>');
 
 		this.$el.append('<div id="message">'+this.message+'</div>');
