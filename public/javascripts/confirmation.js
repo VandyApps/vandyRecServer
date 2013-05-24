@@ -1,15 +1,16 @@
 
-var confirmationBox = Backbone.View.extend({
+var ConfirmationBox = Backbone.View.extend({
 
-
-	events: {
-
-	},
+	message: '',
 	initialize: function(options) {
-
+		this.message = options.message;
+		this.render();
 	},
 	render: function() {
-
+		this.$el = $('<div id="confirmationBox"></div>');
+		this.$el.append('<div id="message" style='+this.getMessageStyle()+'>'+this.message+'</div>');
+		this.$el.attr('style', this.getBoxStyle());
+		$('body').append(this.$el);
 	},
 	show: function(animated) {
 
@@ -18,7 +19,7 @@ var confirmationBox = Backbone.View.extend({
 
 	},
 	getBoxStyle: function() {
-		return "display: block; position: fixed;z-index: 10000;margin-top: -200px;margin-left: -150px;top: 50%;left: 50%;border: solid black; height: 200px; border-radius: 10px;width: 300px;"
+		return "display: block; position: fixed;z-index: 10000;margin-top: -200px;margin-left: -150px;top: 50%;left: 50%; background-color: #efefef; border: solid black; height: 200px; border-radius: 10px;width: 300px;"
 	},
 	getMessageStyle: function() {
 		return "display: block; position: absolute; top: 20px; width: 250px; left: 25px; height: 100px; text-align: center;";
