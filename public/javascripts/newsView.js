@@ -7,6 +7,7 @@ var NewsTableView = Backbone.View.extend({
 	el: '#table',
 	animate: true,
 
+
 	initialize: function() {
 		
 		this.$el.sortable();
@@ -24,6 +25,8 @@ var NewsTableView = Backbone.View.extend({
 			}, arrayOfIds);
 			eventCollection.resortArray(arrayOfIds);
 		});
+		//bind edit event 
+
 		
 	},
 	front: function(tableViewElement) {
@@ -128,6 +131,7 @@ var NewsEventView = Backbone.View.extend({
 			
 			this.$el.children('.edit').text('Done');
 			editMode = true;
+			this.trigger('editOn', this);
 			
 		} else {
 			this.$el.children('.edit').text('Edit');
@@ -141,8 +145,12 @@ var NewsEventView = Backbone.View.extend({
 			editMode = false;
 			//wait 1 second before saving to the server, to make sure
 			//everything is set
+			this.trigger('editOff', this);
 		}
 		
+	},
+	isEditing: function() {
+		return this.editMode;
 	},
 	delete: function() {
 		//deletes the model and removes the element from the view

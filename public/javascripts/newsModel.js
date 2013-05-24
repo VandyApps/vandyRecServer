@@ -47,7 +47,7 @@ var NewsEvent = Backbone.Model.extend({
 	//should call this method instead of save
 	//any customization to save process should go in here
 	saveAndUpdate: function() {
-		console.log("save and update was called");
+		
 		this.save(
 		{},
 		{
