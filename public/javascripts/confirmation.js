@@ -28,10 +28,18 @@ var ConfirmationBox = Backbone.View.extend({
 		$('body').append(this.$el);
 	},
 	show: function(animated) {
-
+		if (animated) {
+			this.$el.fadeIn();
+		} else {
+			this.$el.show();
+		}
 	},
 	hide: function(animated) {
-
+		if (animated) {
+			this.$el.fadeOut();
+		} else {
+			this.$el.hide();
+		}
 	},
 	getBoxStyle: function() {
 		return "display: block; position: fixed;z-index: 10000;margin-top: -200px;margin-left: -150px;top: 50%;left: 50%; background-color: #efefef; border: solid black; height: 200px; border-radius: 10px;width: 300px;"
@@ -44,6 +52,9 @@ var ConfirmationBox = Backbone.View.extend({
 	},
 	getButtonWrapperStyle: function() {
 		return "display: block; position: absolute; top: 125px; text-align: center; width: 200px; left: 50px;"
+	},
+	delete: function() {
+		this.$el.remove();
 	}
 });
 
