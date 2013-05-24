@@ -103,8 +103,7 @@ exports.updateNewsElement = function(model, callback) {
 				{_id: parsedID}, //selector
 				{ //updated properties
 					priorityNumber: model.priorityNumber,
-					description: model.description,
-					author: model.author
+					description: model.description
 				},
 				{w: 1, upsert: true}, function(err, doc) {
 

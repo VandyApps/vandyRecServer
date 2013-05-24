@@ -97,7 +97,6 @@ var NewsEventView = Backbone.View.extend({
 		this.$el.attr("id", this.model.cid);
 		this.$el.append("<div class='button edit'>Edit</div>");
 		this.$el.append("<div class='button remove'>Remove</div>");
-		this.$el.append("<div class='author'>" + this.model.get('author') + "</div>");
 		this.$el.append("<div class='description'>" + this.model.getDescription() + '</div>');
 		
 		//note that the new keyword does not make a new instance of 

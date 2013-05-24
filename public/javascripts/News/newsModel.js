@@ -7,7 +7,6 @@ var NewsEvent = Backbone.Model.extend({
 	
 	idAttribute: "_id",
 	description: '',
-	author: '',
 	index: 0,
 	priorityNumber: 0,
 	url: '/news',
@@ -78,12 +77,7 @@ var NewsEvents = Backbone.Collection.extend({
 	//this method is for adding and generating brand new models to the
 	//collection
 	enqueue: function() {
-		var newEvent = new NewsEvent(
-			{
-				description: 'Here is the default adding description',
-				author: 'No author'
-			}
-		);
+		var newEvent = new NewsEvent({description: 'Here is the default adding description'});
 
 		//var newEventView = new NewsEventView({model: newEvent});
 		this.unshift(newEvent);
@@ -154,7 +148,6 @@ var NewsEvents = Backbone.Collection.extend({
 		var newNewsEvent = new NewsEvent(
 			{
 				description: eventData.description,
-				author: eventData.author,
 				priorityNumber: eventData.priorityNumber
 			}
 		)
