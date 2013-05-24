@@ -1,6 +1,8 @@
+var GFView = {};
+
 //this is not really a backbone view in that it has not real models but helps 
 //delegate the display of models in a separate window
-var BlockView = Backbone.View.extend({
+GFView.BlockView = Backbone.View.extend({
 
 	//the day to display
 	day: 0,
@@ -146,7 +148,7 @@ var BlockView = Backbone.View.extend({
 //has no model but contains the collections and has 
 //events that listen to changes in the collection in order to
 //render data on the calendar
-var MonthView = Backbone.View.extend({
+GFView.MonthView = Backbone.View.extend({
 
 	el: '#calendar',
 	//collection that is used by the view
@@ -217,7 +219,7 @@ var MonthView = Backbone.View.extend({
 					//create an empty element
 					if (typeof this.dayBlocks[row][column] === 'undefined') {
 
-						this.dayBlocks[row][column] = new BlockView({row: row, column: column, empty: true});
+						this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, empty: true});
 					} else {
 
 						this.dayBlocks[row][column].reset({row: row, column: column, empty: true});
@@ -229,7 +231,7 @@ var MonthView = Backbone.View.extend({
 					//set the number of fitness classes to 0 initially
 					if (typeof this.dayBlocks[row][column] === 'undefined') {
 						
-						this.dayBlocks[row][column] = new BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
+						this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
 					} else {
 						
 
@@ -266,7 +268,7 @@ var MonthView = Backbone.View.extend({
 
 //this backbone view does take a model of a single class
 //that it renders to a li
-var GFClassView = Backbone.View.extend({
+GFView.ClassView = Backbone.View.extend({
 
 	className: 'formWindow-existingClass',
 	tagName: 'li',
@@ -358,7 +360,7 @@ var GFClassView = Backbone.View.extend({
 //does not have a single model that it renders
 //manages the creation and deletion of models
 //that are being rendered in the window form
-var GFClassForm = Backbone.View.extend({
+GFView.ClassForm = Backbone.View.extend({
 
 	el: '#formWindow-classes',
 
@@ -388,7 +390,7 @@ var GFClassForm = Backbone.View.extend({
 	//form, data should be passed from the form
 	addClass: function(model, animate) {
 		
-		var classView = new GFClassView({model: model, animate: animate});
+		var classView = new GFView.ClassView({model: model, animate: animate});
 		//slide animation
 		this.$('#formWindow-newClass-form').slideUp();
 		
@@ -494,7 +496,7 @@ var GFClassForm = Backbone.View.extend({
 	}
 });
 
-var formWindowView = new GFClassForm();
+var formWindowView = new GFView.ClassForm();
 
 //set up other events
 $('#leftArrow').click(function() {

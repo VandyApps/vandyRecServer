@@ -1,6 +1,6 @@
+var GFModel = {};
 
-
-var FitnessClass = Backbone.Model.extend({
+GFModel.FitnessClass = Backbone.Model.extend({
 
 	//timeRange is in the form 12:30pm - 1:30pm
 	//note that there is no spaces in between a single
@@ -182,8 +182,8 @@ var FitnessClass = Backbone.Model.extend({
 
 //set of all classes within a given month
 //used to put classes into views displayed to user
-var FitnessClasses = Backbone.Collection.extend({
-	model: FitnessClass,
+GFModel.FitnessClasses = Backbone.Collection.extend({
+	model: GFModel.FitnessClass,
 	idAttribute: '_id',
 	url: function() {
 		
@@ -243,7 +243,7 @@ var FitnessClasses = Backbone.Collection.extend({
 	},
 	addNewClass: function(data) {
 		//create
-		var newFitnessClass = new FitnessClass({
+		var newFitnessClass = new GFModel.FitnessClass({
 			className: data.className, 
 			timeRange: data.timeRange,
 			startDate: data.startDate,
