@@ -9,7 +9,7 @@ eventCollection.on('reset', function() {
 
 	//add new elements fetched from the server
 	eventCollection.models.forEach(function(model) {
-		var newViewElement = new NewsEventView({model: model, appendToTableView: true});
+		var newElement = new NewsView.NewsEventView({model: model, appendToTableView: true});
 	});
 
 });

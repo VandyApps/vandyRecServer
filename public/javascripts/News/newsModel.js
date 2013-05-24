@@ -1,8 +1,8 @@
-
+var NewsModel = {};
 
 
 //model
-var NewsEvent = Backbone.Model.extend({
+NewsModel.NewsEvent = Backbone.Model.extend({
 
 	
 	idAttribute: "_id",
@@ -63,8 +63,8 @@ var NewsEvent = Backbone.Model.extend({
 //the first element in the list is at the 0 index
 //of the model and the last element is at the last 
 //index of the model
-var NewsEvents = Backbone.Collection.extend({
-	model: NewsEvent,
+NewsModel.NewsEvents = Backbone.Collection.extend({
+	model: NewsModel.NewsEvent,
 	
 	//url to retrieve data from
 	url: '/JSON/news',
@@ -77,7 +77,7 @@ var NewsEvents = Backbone.Collection.extend({
 	//this method is for adding and generating brand new models to the
 	//collection
 	enqueue: function() {
-		var newEvent = new NewsEvent({description: 'Here is the default adding description'});
+		var newEvent = new NewsModel.NewsEvent({description: 'Here is the default adding description'});
 
 		//var newEventView = new NewsEventView({model: newEvent});
 		this.unshift(newEvent);
@@ -145,7 +145,7 @@ var NewsEvents = Backbone.Collection.extend({
 	//adds the data to the end of the models array
 	create: function(eventData) {
 
-		var newNewsEvent = new NewsEvent(
+		var newNewsEvent = new NewsModel.NewsEvent(
 			{
 				description: eventData.description,
 				priorityNumber: eventData.priorityNumber
@@ -171,7 +171,7 @@ var NewsEvents = Backbone.Collection.extend({
 //script starts here
 
 //create collection variable
-window.eventCollection = new NewsEvents();
+var eventCollection = new NewsModel.NewsEvents();
 
 
 

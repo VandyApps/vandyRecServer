@@ -1,8 +1,8 @@
 
-
+var NewsView = {};
 //view can see the model
 
-var NewsTableView = Backbone.View.extend({
+NewsView.NewsTableView = Backbone.View.extend({
 
 	el: '#table',
 	animate: true,
@@ -64,10 +64,10 @@ var NewsTableView = Backbone.View.extend({
 });
 
 //create the instance of the table view
-var tableView = new NewsTableView();
+var tableView = new NewsView.NewsTableView();
 
 //view
-var NewsEventView = Backbone.View.extend({
+NewsView.NewsEventView = Backbone.View.extend({
 
 	tagName: 'li',
 	id: '',
@@ -186,7 +186,7 @@ addButton.click({collection : eventCollection}, function(event) {
 	//passed in
 
 	var newEvent = event.data.collection.enqueue();
-	var newsEventView = new NewsEventView({model: newEvent});
+	var newsEventView = new NewsView.NewsEventView({model: newEvent});
 });
 
 //add event to animate button
