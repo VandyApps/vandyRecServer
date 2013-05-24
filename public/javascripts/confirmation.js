@@ -10,8 +10,12 @@ var ConfirmationBox = Backbone.View.extend({
 		this.message = options.message;
 		this.button1Name = options.button1Name;
 		this.button2Name = options.button2Name;
+
 		if (typeof options.animated !== 'undefined') {
 			this.animated = options.animated;
+		}
+		if (typeof options.deleteAfterPresent !== 'undefined') {
+			this.deleteAfterPresent = options.deleteAfterPresent;
 		}
 		this.render();
 		$('#button1').click($.proxy(this.clickedButton1, this));
@@ -51,7 +55,7 @@ var ConfirmationBox = Backbone.View.extend({
 			this.$el.hide();
 		}
 		if (this.deleteAfterPresent === true) {
-
+			this.delete();
 		}
 	},
 	getBoxStyle: function() {

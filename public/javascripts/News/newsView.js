@@ -168,7 +168,7 @@ NewsView.NewsEventView = Backbone.View.extend({
 		confirm.on('clicked1', function() {
 			eventCollection.delete(that.$el.attr('id'));
 			if (tableView.shouldAnimate()) {
-				this.$el.slideUp(300, function() {
+				that.$el.slideUp(300, function() {
 					$(that).remove();
 				});
 			} else {
