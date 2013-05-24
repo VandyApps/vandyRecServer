@@ -281,7 +281,7 @@ GFView.ClassView = Backbone.View.extend({
 			$('.formWindow-existingClass-deleteMultiple').click($.proxy(this.deleteMany, this));
 			$('.formWindow-existingClass-deleteOne').click($.proxy(this.deleteOne, this));
 		} else {
-			$('.formWindow-existingClass-deleteWhole').click($.proxy(this.deleteMany, this));
+			$('.formWindow-existingClass-deleteWhole').click($.proxy(this.delete, this));
 		}
 		
 		
@@ -327,30 +327,75 @@ GFView.ClassView = Backbone.View.extend({
 	},
 	//for deleting a single instance
 	deleteOne: function() {
-	
-		var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
-		var newObjData = this.model.slice(currentDate);
-		console.log(typeof newObjData);
-		if (typeof newObjData === 'object') {
-			console.log('found an object');
-			fitnessClasses.addNewClass(newObjData);
-		}
-		this.$el.slideUp(400, function() {
-			this.remove();
+		var confirm = new ConfirmationBox(
+			{
+				message: 'Are you sure you would like to delete the group fitness class for this one date?',
+				button1Name: 'YES',
+				button2Name: 'NO',
+				animate: false,
+				deleteAfterPresent: true
+			});
+		confirm.show(true);
+		var that = this;
+		confirm.on('clicked1', function() {
+			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
+			var newObjData = that.model.slice(currentDate);
+			console.log(typeof newObjData);
+			if (typeof newObjData === 'object') {
+				fitnessClasses.addNewClass(newObjData);
+			}
+			that.$el.slideUp(400, function() {
+				that.remove();
+			});
 		});
+		
 		
 		
 	},
 	//for deleting many instances
 	deleteMany:function() {
-		
-		var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
-		this.model.slice(currentDate);
-		this.$el.slideUp(400, function() {
-			this.remove();
+		var confirm = new ConfirmationBox(
+			{
+				message: "Are you sure you would like to delete this and all future group fitness classes?",
+				button1Name: 'YES',
+				button2Name: 'NO',
+				animate: false,
+				deleteAfterPresent: true
+			});
+		confirm.show(true);
+		var that = this;
+		confirm.on('clicked1', function() {
+			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
+			that.model.slice(currentDate);
+			that.$el.slideUp(400, function() {
+				that.remove();
+			});
+			//reload the data
+			fitnessClasses.fetch();
 		});
-		//reload the data
-		fitnessClasses.fetch();
+		
+	},
+	delete: function() {
+		var confirm = new ConfirmationBox(
+			{
+				message: "Are you sure you want to delete this group fitness class?",
+				button1Name: "YES",
+				button2Name: "NO",
+				animate: false,
+				deleteAfterPresent: true
+			});
+		var that = this;
+		confirm.show(true);
+		confirm.on('clicked1', function() {
+			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
+			that.model.slice(currentDate);
+			that.$el.slideUp(400, function() {
+				that.remove();
+			});
+			//reload the data
+			fitnessClasses.fetch();
+		});
+		
 	}
 	
 	
