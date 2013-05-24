@@ -6,7 +6,9 @@ var NewsTableView = Backbone.View.extend({
 
 	el: '#table',
 	animate: true,
-
+	//this is set to false after the first time
+	//the render method has been called
+	initialLoad: true,
 
 	initialize: function() {
 		
@@ -25,8 +27,7 @@ var NewsTableView = Backbone.View.extend({
 			}, arrayOfIds);
 			eventCollection.resortArray(arrayOfIds);
 		});
-		//bind edit event 
-
+		
 		
 	},
 	front: function(tableViewElement) {
@@ -94,7 +95,6 @@ var NewsEventView = Backbone.View.extend({
 
 		//append adds elements within the li, appended to one another
 		this.$el.attr("id", this.model.cid);
-		this.$el.addClass('tableElement');
 		this.$el.append("<div class='button edit'>Edit</div>");
 		this.$el.append("<div class='button remove'>Remove</div>");
 		this.$el.append("<div class='author'>" + this.model.get('author') + "</div>");
@@ -131,6 +131,7 @@ var NewsEventView = Backbone.View.extend({
 			
 			this.$el.children('.edit').text('Done');
 			editMode = true;
+
 			this.trigger('editOn', this);
 			
 		} else {
