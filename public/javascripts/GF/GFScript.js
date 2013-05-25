@@ -1,3 +1,6 @@
+window.loading = new LoadMessage({deleteWhenDone: false});
+loading.start();
+
 //setup the MonthView instance
 var currentDate = new Date();
 var fitnessClasses = new GFModel.FitnessClasses({month: currentDate.getMonth(), year: currentDate.getYear() + 1900});
