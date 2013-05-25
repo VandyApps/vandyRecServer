@@ -501,7 +501,7 @@ GFView.ClassForm = Backbone.View.extend({
 				data.endDate = data.startDate;
 			}
 			//for now, set animated to true
-			this.addClass(new FitnessClass(data), true);
+			this.addClass(new GFModel.FitnessClass(data), true);
 			fitnessClasses.addNewClass(data);
 
 		} else {
