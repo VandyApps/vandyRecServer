@@ -243,7 +243,7 @@ GFView.MonthView = Backbone.View.extend({
 				}	
 			}
 		}
-		loading.stop();
+		
 	},
 	incrementMonth: function() {
 		this.month += 1;

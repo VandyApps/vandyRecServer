@@ -1,5 +1,4 @@
-window.loading = new LoadMessage({deleteWhenDone: false});
-loading.start();
+
 
 //setup the MonthView instance
 var currentDate = new Date();
