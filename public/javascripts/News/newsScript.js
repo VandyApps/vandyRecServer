@@ -17,8 +17,6 @@ eventCollection.on('reset', function() {
 	
 });
 
-
-loading.start();
 eventCollection.fetch();
 
 
