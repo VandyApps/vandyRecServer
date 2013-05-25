@@ -66,20 +66,20 @@ app.get('/home', routes.index);
 app.get('/login', routes.loginError);
 
 //client routing
-app.get('/news', routes.news);
+//app.get('/news', routes.news);
 app.put('/news', routes.updateNews);
 app.post('/news', routes.createNews);
 app.delete('/news', routes.deleteNews);
 
-app.get('/groupFitness', routes.groupFitness);
+//app.get('/groupFitness', routes.groupFitness);
 app.put('/groupFitness', routes.updateGF);
 app.post('/groupFitness', routes.createGF);
 app.delete('/groupFitness', routes.deleteGF);
 
-app.get('/hours', routes.hours);
-app.get('/traffic', routes.traffic);
-app.get('/intramurals', routes.intramurals);
-app.get('/programs', routes.programs);
+//app.get('/hours', routes.hours);
+//app.get('/traffic', routes.traffic);
+//app.get('/intramurals', routes.intramurals);
+//app.get('/programs', routes.programs);
 
 //JSON data for all the tabs
 app.get('/JSON/news', data.news);
@@ -96,3 +96,14 @@ passport.deserializeUser(function(obj, done) {
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+
+//for routing with the jquery tabs ui
+app.get('/newsRaw', routes.newsRaw);
+app.get('/hoursRaw', routes.hoursRaw);
+app.get('/trafficRaw', routes.trafficRaw);
+app.get('/groupFitnessRaw', routes.groupFitnessRaw);
+app.get('/intramuralsRaw', routes.intramuralsRaw);
+app.get('/programsRaw', routes.programsRaw);
+
+

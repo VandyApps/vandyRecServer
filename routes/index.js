@@ -130,27 +130,22 @@ exports.deleteGF = function(req, res) {
 	});
 }
 
-exports.hours = function(req, res) {
 
-	res.render('hours')
+exports.newsRaw = function(req, res) {
+	res.render('news');
 };
-
-exports.intramurals = function(req, res) {
-
-	res.render('intramurals')
+exports.hoursRaw = function(req, res) {
+	res.render('hours');
 };
-
-exports.groupFitness = function(req, res) {
-
-	res.render('groupFitness');
-};
-
-exports.traffic = function(req, res) {
-
+exports.trafficRaw = function(req, res) {
 	res.render('traffic');
 };
-
-exports.programs = function(req, res) {
-
+exports.groupFitnessRaw = function(req, res) {
+	res.render('groupFitness');
+};
+exports.intramuralsRaw = function(req, res) {
+	res.render('intramurals');
+};
+exports.programsRaw = function(req, res) {
 	res.render('programs');
 };
