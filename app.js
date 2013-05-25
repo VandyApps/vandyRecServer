@@ -66,20 +66,20 @@ app.get('/home', routes.index);
 app.get('/login', routes.loginError);
 
 //client routing
-//app.get('/news', routes.news);
+app.get('/news', routes.news);
 app.put('/news', routes.updateNews);
 app.post('/news', routes.createNews);
 app.delete('/news', routes.deleteNews);
 
-//app.get('/groupFitness', routes.groupFitness);
+app.get('/groupFitness', routes.groupFitness);
 app.put('/groupFitness', routes.updateGF);
 app.post('/groupFitness', routes.createGF);
 app.delete('/groupFitness', routes.deleteGF);
 
-//app.get('/hours', routes.hours);
-//app.get('/traffic', routes.traffic);
-//app.get('/intramurals', routes.intramurals);
-//app.get('/programs', routes.programs);
+app.get('/hours', routes.hours);
+app.get('/traffic', routes.traffic);
+app.get('/intramurals', routes.intramurals);
+app.get('/programs', routes.programs);
 
 //JSON data for all the tabs
 app.get('/JSON/news', data.news);
