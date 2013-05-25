@@ -6,7 +6,7 @@
 var db = require('../db');
 
 exports.index = function(req, res) {
-	res.render('index', {tabName: 'News', tabIndex: 0});
+	res.render('index', {tabIndex: 0});
   	
 };
 
@@ -20,7 +20,7 @@ exports.loginError = function(req, res) {
 };
 
 exports.news = function(req, res) {
-	res.render('index', {tabName: 'News', tabIndex: 0});
+	res.render('index', {tabIndex: 0});
 };
 
 exports.createNews = function(req, res) {
@@ -72,20 +72,20 @@ exports.deleteNews = function(req, res) {
 
 //hours methods
 exports.hours = function(req, res) {
-	res.render('index', {tabName: 'Hours', tabIndex: 1});
+	res.render('index', {tabIndex: 1});
 };
 
 
 //traffic methods 
 exports.traffic = function(req, res) {
-	res.render('index', {tabName: 'Traffic', tabIndex: 2});
+	res.render('index', {tabIndex: 2});
 };
 
 
 
 //group fitness methods
 exports.groupFitness = function(req, res) {
-	res.render('index', {tabName: 'Group Fitness', tabIndex: 3});
+	res.render('index', {tabIndex: 3});
 };
 
 exports.updateGF = function(req, res) {
@@ -148,13 +148,13 @@ exports.deleteGF = function(req, res) {
 
 //intramurals methods
 exports.intramurals = function(req, res) {
-	res.render('index', {tabName: 'Intramurals', tabIndex: 4});
+	res.render('index', {tabIndex: 4});
 };
 
 
 //programs method
 exports.programs = function(req, res) {
-	res.render('index', {tabName: 'Programs', tabIndex: 5});
+	res.render('index', {tabIndex: 5});
 };
 
 
