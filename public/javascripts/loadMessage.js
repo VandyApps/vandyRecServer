@@ -48,5 +48,11 @@ var LoadMessage = Backbone.View.extend({
 	stop: function() {
 		clearInterval(this.timeLoop);
 		this.$el.hide();
+		if (this.deleteWhenDone === true) {
+			this.delete();
+		}
+	},
+	delete: function() {
+		this.$el.remove();
 	}
 });
