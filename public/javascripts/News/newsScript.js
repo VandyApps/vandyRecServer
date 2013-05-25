@@ -16,8 +16,12 @@ eventCollection.on('reset', function() {
 	tableView.animate = currentAnimationValue;
 });
 
-
+window.loading = new LoadMessage();
 eventCollection.fetch();
+
+$('#news').blur(function() {
+	console.log("The news page is unloading");
+});
 
 
 
