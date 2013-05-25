@@ -16,8 +16,6 @@ var express = require('express')
 
 var app = express();
 
-var user = {username: "Brendan",
-        password: "Brendan"};
 
 if (process.env.MONGOHQ_URL) {
 
@@ -50,11 +48,20 @@ app.configure('development', function(){
 
 
 passport.use(new LocalStrategy( function(username, password, done) {
+  db.login(username, password, function(isSuccessful, user) {
+    if (isSuccessful) {
+      return done(null, user);
+    } else {
+      return done(null, false);
+    }
+  });
+  /*
   if (username === user.username && password === user.password) {
 
       return done(null, user);
   }
   return done(null, false);
+  */
 }));
 
 //routes
@@ -71,7 +78,7 @@ app.put('/news', routes.updateNews);
 app.post('/news', routes.createNews);
 app.delete('/news', routes.deleteNews);
 
-app.get('/groupFitness', routes.groupFitness);
+//app.get('/groupFitness', routes.groupFitness);
 app.put('/groupFitness', routes.updateGF);
 app.post('/groupFitness', routes.createGF);
 app.delete('/groupFitness', routes.deleteGF);

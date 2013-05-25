@@ -9,6 +9,7 @@ var MONGODB_URL;
 //other collections to be added later
 var Collections = 
 {
+	users: 'users',
 	news: 'news',
 	groupFitness: 'groupFitness'
 }
@@ -19,6 +20,28 @@ var Collections =
 exports.setURL = function(MONGO_URL) {
 	MONGODB_URL = MONGO_URL;
 }
+
+
+//related to authentication
+exports.login = function(username, password, callback) {
+	console.log(username + " " + password);
+	Db.connect(MONGODB_URL, function(err, db) {
+		db.collection(Collections.users, function(err, collection) {
+			collection.find({username: username}, {username: true, userID: true}, function(err, cursor) {
+				cursor.toArray(function(err, collection) {
+					if (err || collection.length === 0) {
+						console.log("found nothing; error is "+err+" and collection is "+collection);
+						callback(false, null);
+					} else {
+						console.log("found something, collection is "+collection);
+						callback(true, collection[0]);
+					}
+				});
+			});
+		});
+	});
+};
+
 //related to the news collection
 exports.newsCollection = function(callback) {
 	// Set up the connection to the local db
