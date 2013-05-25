@@ -56,6 +56,7 @@ var ConfirmationBox = Backbone.View.extend({
 		}
 		if (this.deleteAfterPresent === true) {
 			this.delete();
+
 		}
 	},
 	getBoxStyle: function() {
@@ -72,6 +73,7 @@ var ConfirmationBox = Backbone.View.extend({
 	},
 	delete: function() {
 		this.$el.remove();
+		$('#confirmationPrimer').remove();
 	},
 	clickedButton1: function() {
 		this.trigger('clicked1', this);
