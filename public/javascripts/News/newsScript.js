@@ -14,14 +14,12 @@ eventCollection.on('reset', function() {
 		var newElement = new NewsView.NewsEventView({model: model, appendToTableView: true});
 	});
 	tableView.animate = currentAnimationValue;
+	loading.stop();
 });
 
 window.loading = new LoadMessage();
+loading.start();
 eventCollection.fetch();
-
-$('#news').blur(function() {
-	console.log("The news page is unloading");
-});
 
 
 
