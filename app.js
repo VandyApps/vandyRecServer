@@ -65,12 +65,11 @@ passport.use(new LocalStrategy( function(username, password, done) {
 }));
 
 //routes
-app.get('/', routes.login);
+app.get('/', routes.index);
 
-app.post('/', passport.authenticate('local', {failureRedirect: '/login'}) , routes.index);
+app.post('/', passport.authenticate('local', {failureRedirect: '/login?failed=true'}) , routes.index);
 
-app.get('/home', routes.index);
-app.get('/login', routes.loginError);
+app.get('/login', routes.login);
 
 //client routing
 app.get('/news', routes.news);
@@ -78,7 +77,7 @@ app.put('/news', routes.updateNews);
 app.post('/news', routes.createNews);
 app.delete('/news', routes.deleteNews);
 
-//app.get('/groupFitness', routes.groupFitness);
+app.get('/groupFitness', routes.groupFitness);
 app.put('/groupFitness', routes.updateGF);
 app.post('/groupFitness', routes.createGF);
 app.delete('/groupFitness', routes.deleteGF);

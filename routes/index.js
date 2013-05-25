@@ -6,21 +6,33 @@
 var db = require('../db');
 
 exports.index = function(req, res) {
-	res.render('index', {tabIndex: 0});
+	if (typeof req.user !== 'undefined') {
+		res.render('index', {tabIndex: 0});
+	} else {
+		res.redirect('/login');
+	}
+	
   	
 };
 
 exports.login = function(req, res) {
-	res.render('login', {warning: ''});
+	if (typeof req.query.failed !== 'undefined' && req.query.failed === 'true') {
+		res.render('login', {warning: 'Incorrect Login Credentials'});
+	} else {
+		res.render('login', {warning: ''});	
+	}
+	
 	
 };
 
-exports.loginError = function(req, res) {
-	res.render('login', {warning: 'Login attempt failed due to incorrect credentials'});
-};
 
 exports.news = function(req, res) {
-	res.render('index', {tabIndex: 0});
+	if (typeof req.user !== 'undefined') {
+		res.render('index', {tabIndex: 0});	
+	} else {
+		res.redirect('/login');
+	}
+	
 };
 
 exports.createNews = function(req, res) {
@@ -72,20 +84,35 @@ exports.deleteNews = function(req, res) {
 
 //hours methods
 exports.hours = function(req, res) {
-	res.render('index', {tabIndex: 1});
+	if (typeof req.user !== 'undefined') {
+		res.render('index', {tabIndex: 1});
+	} else {
+		res.redirect('/login');
+	}
+	
 };
 
 
 //traffic methods 
 exports.traffic = function(req, res) {
-	res.render('index', {tabIndex: 2});
+	if (typeof req.user !== 'undefined') {
+		res.render('index', {tabIndex: 2});
+	} else {
+		res.redirect('/login');
+	}
+	
 };
 
 
 
 //group fitness methods
 exports.groupFitness = function(req, res) {
-	res.render('index', {tabIndex: 3});
+	if (typeof req.user !== 'undefined') {
+		res.render('index', {tabIndex: 3});
+	} else {
+		res.redirect('/login');
+	}
+	
 };
 
 exports.updateGF = function(req, res) {
@@ -148,13 +175,23 @@ exports.deleteGF = function(req, res) {
 
 //intramurals methods
 exports.intramurals = function(req, res) {
-	res.render('index', {tabIndex: 4});
+	if (typeof req.user !== 'undefined') {
+		res.render('index', {tabIndex: 4});
+	} else {
+		res.redirect('/login');
+	}
+	
 };
 
 
 //programs method
 exports.programs = function(req, res) {
-	res.render('index', {tabIndex: 5});
+	if (typeof req.user !== 'undefined') {
+		res.render('index', {tabIndex: 5});
+	} else {
+		res.redirect('/login');
+	}
+	
 };
 
 
