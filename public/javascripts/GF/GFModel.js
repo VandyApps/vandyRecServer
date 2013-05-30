@@ -230,6 +230,12 @@ GFModel.FitnessClasses = Backbone.Collection.extend({
 	//last weekday of the month
 	lastWeekDay: 0,
 
+	//these are dates that are specified for unique scheduling
+	//all normal classes that are held are removed from these
+	//dates and new classes can be created on these dates that
+	//are not held at any other time
+	//there should never be two special dates that overlap
+	specialDates: [],
 	initialize: function(options) {
 		this.month = options.month;
 		this.year = options.year;
