@@ -363,35 +363,63 @@ GFModel.SpecialDate = Backbone.Model.extend({
 	}
 });
 
-GFModel.SpecialDates = Backbone.Collection.extend({
+window.SpecialDates = Backbone.Collection.extend({
 	model: GFModel.SpecialDate,
 	url: '/JSON/GF/SpecialDates',
 
 	//returns the SpecialDate model for the passed in
 	//fitnessClass.  If the fitness class does not
 	//belong to any special dates, then this returns null
-	specialDateForClass: function(fitnessClass) {
-
+	getSpecialDateForClass: function(fitnessClass) {
+		var returnObj = null;
+		this.each(function(SpecialDate) {
+			if (SpecialDate.isMember(fitnessClass)) {
+				returnObj = SpecialDate;
+				return;
+			}
+		});
+		return returnObj;
 	},
 	//returns the special date with the given title
 	//case-insensitive.  Returns null if there
 	//is no special date with the given title
-	specialDateWithTitle: function(title) {
-
+	getSpecialDateWithTitle: function(title) {
+		var returnObj = null;
+		this.each(function(SpecialDate) {
+			if (title.toUpperCase() === SpecialDate.getTitle().toUpperCase()) {
+				returnObj = SpecialDate;
+				return;
+			}
+		});
+		return returnObj;
 	},
 	//accepts a date string or date object
 	//and returns the SpecialDate model
 	//that includes this date
 	//returns null if there is no special date
 	//that has the parameter date within its bounds
-	specialDateForDate: function(date) {
-
+	getSpecialDateForDate: function(date) {
+		var returnObj = null;
+		this.each(function(SpecialDate) {
+			if (SpecialDate.includesDate(date)) {
+				returnObj = specialDate;
+				return;
+			}
+		});
+		return returnObj;
 	},
 	//accepts a date string or a date object
 	//and returns true if the date is within any
 	//special date
 	includesDate: function(date) {
-
+		var includesDate = false;
+		this.each(function(SpecialDate) {
+			if (SpecialDate.includesDate(date)) {
+				includesDate = true;
+				return;
+			}
+		});
+		return includesDate;
 	}
 
 });
