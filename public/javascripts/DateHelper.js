@@ -178,7 +178,7 @@ DateHelper.setDateToWeekDayAfterDate = function(dateToSet, comparisonDate) {
 
 //converts the date into a dateString of the form MM/DD/YYYY where month, day, and year
 //are all 1-based indexed
-DateHelper.getDateString = function(date) {
+DateHelper.dateStringFromDate = function(date) {
 	var monthString;
 	var dayString;
 	var yearString = date.getYear() + 1900;

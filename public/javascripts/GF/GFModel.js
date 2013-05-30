@@ -151,7 +151,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 			}
 			//construct date string and set it to end date
 			var oldEndDate = this.get('endDate');
-			this.set('endDate', DateHelper.getDateString(sliceDate));
+			this.set('endDate', DateHelper.dateStringFromDate(sliceDate));
 
 			//save the new value of this class
 			//should call PUT
@@ -169,7 +169,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 				objectToReturn.instructor = this.getInstructor();
 				objectToReturn.timeRange = this.get('timeRange');
 				//set the start date as the next valid date after the sliced date
-				objectToReturn.startDate = DateHelper.getDateString(new Date(sliceDate.getTime() + (startDateFactor * 24 * 60 * 60 * 1000)));
+				objectToReturn.startDate = DateHelper.dateStringFromDate(new Date(sliceDate.getTime() + (startDateFactor * 24 * 60 * 60 * 1000)));
 				//set the end date on the return object as the old end date
 				objectToReturn.endDate = oldEndDate;
 				objectToReturn.dayOfWeek = this.getWeekDay();
