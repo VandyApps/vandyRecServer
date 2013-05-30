@@ -208,7 +208,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 	},
 	//returns true if this class is a class within a special date
 	isSpecialDateClass: function() {
-
+		this.get('specialDateClass');
 	}
 
 });
@@ -320,41 +320,46 @@ GFModel.SpecialDate = Backbone.Model.extend({
 
 	//this method takes the fitness class that is to be included and slices
 	//the end date so that the ending date of the fitness class is still within
-	//the bounds of the special date
+	//the bounds of the special date.  This method assumes that the starting date
+	//is within the bounds of the special date already.  Only makes changes to the 
+	//end date
 	includeFitnessClass: function(fitnessClass) {
-
-	},
-	//this returns true if the fitness class exists within the bounds of the special date
-	withinBounds: function(fitnessClass) {
-
+		fitnessClass.slice(this.getEndDate());
 	},
 	//returns true if the start date of the fitness class is within bounds
 	//of the special date
 	startDateWithinBounds: function(fitnessClass) {
-
+		return this.includesDate(fitnessClass.getStartDate());
 	},
 	//returns true if this fitness class is a member of the 
 	//Special Date
 	isMember: function(fitnessClass) {
-
+		return (fitnessClass.isSpecialDateClass() && this.includesDate(fitnessClass.getStartDate())); 
 	},
 	//either pass in a date or a date string
 	//checks if the date is within the bounds of the 
 	//special date
 	includesDate: function(date) {
-
+		var dateValue;
+		if (typeof date === 'string') {
+			//parameter is a date string
+			dateValue = DateHelper.dateFromDateString(date);
+		} else {
+			dateValue = date;
+		}
+		return DateHelper.betweenDates(dateValue, this.getStartDate(), this.getEndDate());
 	},
 	//getters for the start and end dates of the special dates
 	//converts the date string into date object before returning 
 	//value (returns Date objects, not Strings)
 	getStartDate: function() {
-
+		return DateHelper.dateFromDateString(this.get('startDate'));
 	},
 	getEndDate: function() {
-
+		return DateHelper.dateFromDateString(this.get('endDate'));
 	},
 	getTitle: function() {
-
+		this.get('title');
 	}
 });
 
