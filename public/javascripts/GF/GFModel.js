@@ -1,4 +1,4 @@
-var GFModel = {};
+window.GFModel = {};
 
 GFModel.FitnessClass = Backbone.Model.extend({
 
@@ -192,10 +192,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 		if (typeof this.get('startDate') === 'undefined') {
 			return undefined;
 		}
-		var startDateArray = this.get('startDate').split('/');
-		//convert month from 1-based to 0-based indexing when 
-		//representing as date
-		return new Date(parseInt(startDateArray[2],10), parseInt(startDateArray[0]-1, 10), parseInt(startDateArray[1],10), 0, 0 , 0, 0);
+		return DateHelper.dateFromDateString(this.get('startDate'));
 	},
 	//converts the string into a javascript date object
 	//before returning the value
@@ -203,12 +200,11 @@ GFModel.FitnessClass = Backbone.Model.extend({
 		if (typeof this.get('endDate') === 'undefined' || this.get('endDate') === '*') {
 			return undefined;
 		}
-		var endDateArray = this.get('endDate').split('/');
-		return new Date(parseInt(endDateArray[2],10), parseInt(endDateArray[0]-1, 10), parseInt(endDateArray[1],10), 0, 0 , 0, 0);
+		return DateHelper.dateFromDateString(this.get('endDate'));
 	},
 	//returns true if this class is a class within a special date
 	isSpecialDateClass: function() {
-		this.get('specialDateClass');
+		return this.get('specialDateClass');
 	}
 
 });
@@ -322,8 +318,9 @@ GFModel.SpecialDate = Backbone.Model.extend({
 	//the end date so that the ending date of the fitness class is still within
 	//the bounds of the special date.  This method assumes that the starting date
 	//is within the bounds of the special date already.  Only makes changes to the 
-	//end date
+	//end date. Also assumes that the variable specialDateClass is set to true
 	includeFitnessClass: function(fitnessClass) {
+		console.log("include fitness class was called");
 		fitnessClass.slice(this.getEndDate());
 	},
 	//returns true if the start date of the fitness class is within bounds
@@ -359,11 +356,11 @@ GFModel.SpecialDate = Backbone.Model.extend({
 		return DateHelper.dateFromDateString(this.get('endDate'));
 	},
 	getTitle: function() {
-		this.get('title');
+		return this.get('title');
 	}
 });
 
-window.SpecialDates = Backbone.Collection.extend({
+GFModel.SpecialDates = Backbone.Collection.extend({
 	model: GFModel.SpecialDate,
 	url: '/JSON/GF/SpecialDates',
 
