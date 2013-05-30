@@ -1,3 +1,4 @@
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -9,6 +10,26 @@ a {
 textarea {
     resize: none;
 }
+
+/* logout button */
+#logoutButton {
+    position: relative;
+    top: -15px;
+    left:  1000px;
+    display: block;
+    border: solid #EB8F00 1px;
+    color: black;
+    background-color: #ff9c02;
+    width: 70px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    
+    
+}
+
+
 
 /* styling for login tab */
 #loginWrapper {
