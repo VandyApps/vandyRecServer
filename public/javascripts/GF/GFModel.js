@@ -205,6 +205,10 @@ GFModel.FitnessClass = Backbone.Model.extend({
 		}
 		var endDateArray = this.get('endDate').split('/');
 		return new Date(parseInt(endDateArray[2],10), parseInt(endDateArray[0]-1, 10), parseInt(endDateArray[1],10), 0, 0 , 0, 0);
+	},
+	//returns true if this class is a class within a special date
+	isSpecialDateClass: function() {
+
 	}
 
 });
@@ -230,12 +234,7 @@ GFModel.FitnessClasses = Backbone.Collection.extend({
 	//last weekday of the month
 	lastWeekDay: 0,
 
-	//these are dates that are specified for unique scheduling
-	//all normal classes that are held are removed from these
-	//dates and new classes can be created on these dates that
-	//are not held at any other time
-	//there should never be two special dates that overlap
-	specialDates: [],
+	
 	initialize: function(options) {
 		this.month = options.month;
 		this.year = options.year;
@@ -302,4 +301,95 @@ GFModel.FitnessClasses = Backbone.Collection.extend({
 
 
 });
+
+//these are dates that are specified for unique scheduling
+//all normal classes that are held are removed from these
+//dates and new classes can be created on these dates that
+//are not held at any other time
+//there should never be two special dates that overlap
+GFModel.SpecialDate = Backbone.Model.extend({
+
+	idAttribute: '_id',
+	type: 'GFSpecialDate',
+	title: '',
+	url: '/groupFitness',
+
+	//represented as date strings
+	startDate: '',
+	endDate: '',
+
+	//this method takes the fitness class that is to be included and slices
+	//the end date so that the ending date of the fitness class is still within
+	//the bounds of the special date
+	includeFitnessClass: function(fitnessClass) {
+
+	},
+	//this returns true if the fitness class exists within the bounds of the special date
+	withinBounds: function(fitnessClass) {
+
+	},
+	//returns true if the start date of the fitness class is within bounds
+	//of the special date
+	startDateWithinBounds: function(fitnessClass) {
+
+	},
+	//returns true if this fitness class is a member of the 
+	//Special Date
+	isMember: function(fitnessClass) {
+
+	},
+	//either pass in a date or a date string
+	//checks if the date is within the bounds of the 
+	//special date
+	includesDate: function(date) {
+
+	},
+	//getters for the start and end dates of the special dates
+	//converts the date string into date object before returning 
+	//value (returns Date objects, not Strings)
+	getStartDate: function() {
+
+	},
+	getEndDate: function() {
+
+	},
+	getTitle: function() {
+
+	}
+});
+
+GFModel.SpecialDates = Backbone.Collection.extend({
+	model: GFModel.SpecialDate,
+	url: '/JSON/GF/SpecialDates',
+
+	//returns the SpecialDate model for the passed in
+	//fitnessClass.  If the fitness class does not
+	//belong to any special dates, then this returns null
+	specialDateForClass: function(fitnessClass) {
+
+	},
+	//returns the special date with the given title
+	//case-insensitive.  Returns null if there
+	//is no special date with the given title
+	specialDateWithTitle: function(title) {
+
+	},
+	//accepts a date string or date object
+	//and returns the SpecialDate model
+	//that includes this date
+	//returns null if there is no special date
+	//that has the parameter date within its bounds
+	specialDateForDate: function(date) {
+
+	},
+	//accepts a date string or a date object
+	//and returns true if the date is within any
+	//special date
+	includesDate: function(date) {
+
+	}
+
+});
+
+
 
