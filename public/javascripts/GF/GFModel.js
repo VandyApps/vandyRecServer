@@ -2,11 +2,27 @@ var GFModel = {};
 
 GFModel.FitnessClass = Backbone.Model.extend({
 
+	//this property is used by other web clients 
+	//to differentiate between models of this type
+	//and models of other types when retrieving
+	//JSON data
+	type: 'GFClass',
 	//timeRange is in the form 12:30pm - 1:30pm
 	//note that there is no spaces in between a single
 	//time elements but there is a space-dash-space between 
 	//two different time elements
 	timeRange: '',
+
+	//timeRange is in the process of becoming deprecated and
+	//replaced by these two properties
+	startTime: '',
+	endTime: '',
+
+	//an array of dateStrings for dates where the classes have been
+	//cancelled.  The classes that have been cancelled are still retreived
+	//from methods such as isOnDay
+	canceledDates: [],
+
 	instructor: '',
 	className: '',
 	idAttribute: '_id',
@@ -20,6 +36,9 @@ GFModel.FitnessClass = Backbone.Model.extend({
 	//if the class keeps going, then the end date is blank
 	startDate: '',
 	endDate: '',
+
+	//defaults to false
+	specialDateClass: false,
 	
 	initialize: function(modelData) {
 		this.set('timeRange', modelData.timeRange);
@@ -27,6 +46,16 @@ GFModel.FitnessClass = Backbone.Model.extend({
 		this.set('dayOfWeek', modelData.dayOfWeek);
 		this.set('startDate', modelData.startDate);
 		this.set('endDate', modelData.endDate);
+		this.set('startTime', modelData.startTime);
+		this.set('endTime', modelData.endTime);
+
+		if (typeof modelData.canceledDates !== 'undefined') {
+			this.set('canceledDates', modelData.canceledDates);
+		}
+
+		if (typeof modelData.specialDateClass !== 'undefined') {
+			this.set('specialDateClass', modelData.specialDateClass);
+		}
 	},
 	//dateString in the format MM/DD/YYYY
 	//where month is 1-based indexed
