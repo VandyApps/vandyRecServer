@@ -70,7 +70,10 @@ app.get('/', routes.index);
 app.post('/', passport.authenticate('local', {failureRedirect: '/login?failed=true'}) , routes.index);
 
 app.get('/login', routes.login);
-
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/login');
+});
 //client routing
 app.get('/news', routes.news);
 app.put('/news', routes.updateNews);
