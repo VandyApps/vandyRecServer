@@ -197,3 +197,8 @@ DateHelper.getDateString = function(date) {
 	}
 	return monthString + '/' + dayString +'/' + yearString;
 }
+
+DateHelper.dateFromDateString = function(dateString) {
+	var dateArray = dateString.split('/');
+	return new Date(parseInt(dateArray[2], 10), parseInt(dateArray[0], 10), parseInt(dateArray[1], 10), 0,0,0,0);
+}
