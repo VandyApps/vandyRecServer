@@ -106,13 +106,15 @@ GFView.BlockView = Backbone.View.extend({
 	},
 	hoverOn: function(event) {
 		
-		var partialSelector = $(event.delegateTarget).attr('class');
+		//var partialSelector = $(event.delegateTarget).attr('class');
 		
-		$(event.delegateTarget).not('[empty]').animate({backgroundColor: 'rgba(200,200,200,1)'}, 200);
+		$(event.delegateTarget).not('[empty]').not('.specialDay').animate({backgroundColor: 'rgba(200,200,200,1)'}, 200);
+		$(event.delegateTarget).not('[empty]').filter('.specialDay').animate({backgroundColor: 'rgba(255, 166, 109, 1)'}, 200);
 	},
 	hoverOff: function(event) {
 		
-		$(event.delegateTarget).not('[empty]').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
+		$(event.delegateTarget).not('[empty]').not('.specialDay').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
+		$(event.delegateTarget).not('[empty]').filter('.specialDay').animate({backgroundColor: 'rgba(255, 193, 57, 1)'}, 200);
 	},
 	showForm: function(event) {
 		
@@ -470,7 +472,7 @@ GFView.ClassForm = Backbone.View.extend({
 			data.className = $('#formWindow-newClass-className-input').val();
 			data.instructor = $('#formWindow-newClass-instructorName-input').val();
 			data.dayOfWeek = parseInt($('#dayOfWeekIndex').text(), 10);
-			
+
 			data.startTime = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
 			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
 			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();

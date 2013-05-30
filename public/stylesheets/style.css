@@ -317,6 +317,9 @@ textarea {
     cursor: pointer;   
 }
 
+.specialDay {
+    background-color: #ffc139;
+}
 .dayBlock[empty] {
     background-color: #898989;
     cursor: auto;
