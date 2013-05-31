@@ -426,7 +426,7 @@ GFView.ClassForm = Backbone.View.extend({
 	initialize: function(options) {
 
 		//binding events that are not within the view
-		$('#windowPrimer, #formWindow-exit').click($.proxy(this.exit, this));
+		$('#formWindow-exit').click($.proxy(this.exit, this));
 		$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
 		$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
 	},
@@ -550,6 +550,154 @@ GFView.ClassForm = Backbone.View.extend({
 
 var formWindowView = new GFView.ClassForm();
 
+
+//duplication starts here
+
+//does not have a single model that it renders
+//manages the creation and deletion of models
+//that are being rendered in the window form
+GFView.SpecialDayForm = Backbone.View.extend({
+
+	el: '#formWindow-classes',
+
+	events: {
+
+		'click #specialDayWindow-newDate-title': 'toggleForm',
+		//'click #specialDayWindow-newDate-submitNewDate': 'submit',
+		'click #specialDateWindow-exit': 'exit'
+		//need events to manage selections and changes to existing classes
+		//event for submission
+		//event for changing select elements
+	},
+
+
+	initialize: function(options) {
+
+		//binding events that are not within the view
+		$('#windowPrimer, #formWindow-exit').click($.proxy(this.exit, this));
+		$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
+		$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
+	},
+	render: function() {
+
+	},
+	//adds class that was submitted by the form
+	//and appends it immediately after the class creation
+	//form, data should be passed from the form
+	addClass: function(model, animate) {
+		
+		var classView = new GFView.ClassView({model: model, animate: animate});
+		//slide animation
+		this.$('#formWindow-newClass-form').slideUp();
+		
+	},
+	//this toggles the appearance of the new class form
+	toggleForm: function() {
+		$('#formWindow-newClass-form').slideToggle();
+	},
+	//returns true if document is ready
+	//to be submitted, returns error message
+	//if the document is not ready to be submitted
+	validateSubmission: function() {
+		if ($('#formWindow-newClass-className-input').val() === '') {
+			return "You need to enter a name";
+		} else if ($('#formWindow-newClass-instructorName-input').val() === '') {
+			return "You need to enter an instructor";
+		}
+
+		return true;
+	},
+	//called when the submit button is hit
+	submit: function() {
+		var validation = this.validateSubmission();
+		if (validation === true) {
+			$('#formWindow-newClass-error').hide();
+			//submission process
+
+			//construct a data object with the correct fields
+			//move this code to the GFClassView object
+			var data = {};
+			data.className = $('#formWindow-newClass-className-input').val();
+			data.instructor = $('#formWindow-newClass-instructorName-input').val();
+			data.dayOfWeek = parseInt($('#dayOfWeekIndex').text(), 10);
+
+			data.startTime = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
+			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
+			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
+
+			data.endTime = $('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
+			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
+			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
+
+			data.timeRange = data.startTime + " - " + data.endTime;
+			
+			var monthString;
+			//convert month to 1-based for date string
+			var monthIndex = parseInt($('#monthIndex').text(), 10) + 1;
+			if (monthIndex < 10) {
+				monthString = '0'+ monthIndex.toString();
+			} else {
+				monthString = monthIndex.toString();
+			}
+
+			var dayString;
+			if ($('#dayIndex').text().length === 1) {
+				dayString = '0' + $('#dayIndex').text();
+			} else {
+				dayString = $('#dayIndex').text();
+			}
+
+			var yearString = $('#yearIndex').text();
+			
+			data.startDate = monthString + '/' + dayString + '/' + yearString;
+			if ($("input[name='isRepeated']:checked", '#formWindow-newClass-repeatSelections').val() === 'true') {
+				data.endDate = '*';
+			} else {
+				data.endDate = data.startDate;
+			}
+			//for now, set animated to true
+			this.addClass(new GFModel.FitnessClass(data), true);
+			fitnessClasses.addNewClass(data);
+
+		} else {
+			//present the error message
+			$('#formWindow-newClass-error').text(validation);
+			$('#formWindow-newClass-error').show();
+		}
+		this.formToDefault();
+	},
+	exit: function() {
+		$('#windowPrimer').hide();
+		$('#formWindow').hide();
+		//hide the form if it was open
+		$('#formWindow-newClass-form').hide();
+		//remove all exsiting class list items
+		$('.formWindow-existingClass').remove();
+	},
+	hoverOnExit: function() {
+		$('#formWindow-exit').animate({backgroundColor: '#cb7c01'}, 200);
+	},
+	hoverOffExit: function() {
+		$('#formWindow-exit').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
+	},
+	//converts the form back to its default values
+	//should be called after submission so that values are cleared
+	//and buttons are reset
+	formToDefault: function() {
+		$('#formWindow-newClass-className-input').val('');
+		$('#formWindow-newClass-instructorName-input').val('');
+		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').val('12');
+		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('00');
+		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').val('am');
+		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').val('1');
+		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('00');
+		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('am');
+
+	}
+});
+
+
+
 //set up other events
 $('#leftArrow').click(function() {
 	monthView.decrementMonth();
@@ -557,6 +705,18 @@ $('#leftArrow').click(function() {
 
 $('#rightArrow').click(function() {
 	monthView.incrementMonth();
+});
+
+$('#windowPrimer').click(function() {
+	$('#specialDayWindow, #formWindow').hide();
+	$(this).hide();
+});
+
+$('#specialDaysButton').click(function() {
+			
+	$('#windowPrimer').fadeIn(400, function() {
+		$('#specialDayWindow').show();
+	});
 });
 
 
