@@ -564,7 +564,7 @@ GFView.SpecialDayForm = Backbone.View.extend({
 
 		'click #specialDayWindow-newDate-title': 'toggleForm',
 		//'click #specialDayWindow-newDate-submitNewDate': 'submit',
-		'click #specialDateWindow-exit': 'exit'
+		'click #specialDayWindow-exit': 'exit'
 		//need events to manage selections and changes to existing classes
 		//event for submission
 		//event for changing select elements
@@ -574,9 +574,9 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	initialize: function(options) {
 
 		//binding events that are not within the view
-		$('#windowPrimer, #formWindow-exit').click($.proxy(this.exit, this));
-		$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
-		$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
+		$('#specialDayWindow-exit').click($.proxy(this.exit, this));
+		$('#specialDayWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
+		$('#specialDayWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
 	},
 	render: function() {
 
@@ -668,35 +668,27 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	},
 	exit: function() {
 		$('#windowPrimer').hide();
-		$('#formWindow').hide();
+		$('#specialDayWindow').hide();
 		//hide the form if it was open
-		$('#formWindow-newClass-form').hide();
+		$('#specialDayWindow-newDate-form').hide();
 		//remove all exsiting class list items
-		$('.formWindow-existingClass').remove();
+		$('.specialDayWindow-existingDate').remove();
 	},
 	hoverOnExit: function() {
-		$('#formWindow-exit').animate({backgroundColor: '#cb7c01'}, 200);
+		$('#specialDayWindow-exit').animate({backgroundColor: '#cb7c01'}, 200);
 	},
 	hoverOffExit: function() {
-		$('#formWindow-exit').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
+		$('#specialDayWindow-exit').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
 	},
 	//converts the form back to its default values
 	//should be called after submission so that values are cleared
 	//and buttons are reset
 	formToDefault: function() {
-		$('#formWindow-newClass-className-input').val('');
-		$('#formWindow-newClass-instructorName-input').val('');
-		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').val('12');
-		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('00');
-		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').val('am');
-		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').val('1');
-		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('00');
-		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('am');
-
+		
 	}
 });
 
-
+var specialDayForm = new GFView.SpecialDayForm();
 
 //set up other events
 $('#leftArrow').click(function() {
