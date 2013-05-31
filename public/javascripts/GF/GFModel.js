@@ -442,6 +442,11 @@ GFModel.SpecialDates = Backbone.Collection.extend({
 			};
 		});
 		return isMember;
+	},
+	addNewSpecialDate: function(specialDate) {
+		this.add(specialDate);
+		//save the model
+		//fetch the new data
 	}
 
 });

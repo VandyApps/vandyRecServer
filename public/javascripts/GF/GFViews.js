@@ -740,6 +740,7 @@ GFView.SpecialDateForm = Backbone.View.extend({
 
 			//true for animation
 			this.addDates(model, true);
+			specialDates.addNewSpecialDate(model);
 			this.formToDefault();
 
 		} else {
