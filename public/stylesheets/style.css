@@ -642,4 +642,56 @@ textarea {
     cursor: pointer;
 }
 
+#specialDayWindow-newDate-nameInput span {
+    margin: 0px 25px 0px 70px;
+}
+
+#specialDayWindow-newDate-nameInput input {
+    border: solid black 1px;
+    border-radius: 10px;
+    width: 190px;
+    height: 23px;
+    padding-left: 10px;
+}
+
+#specialDayWindow-newDate-startDate {
+    position: relative;
+    display: block;
+    top: 30px;
+    width: 240px;
+    height: 60px;
+}
+
+#specialDayWindow-newDate-startDate, #specialDayWindow-newDate-endDate {
+    text-align: center;
+}
+
+#specialDayWindow-newDate-startDate div, #specialDayWindow-newDate-endDate div {
+    margin-bottom: 15px;
+}
+
+#specialDayWindow-newDate-endDate {
+    position: relative;
+    width: 240px;
+    height: 60px;
+    top: -30px;
+    left: 245px;
+}
+
+#specialDayWindow-newDate-submitButton {
+    
+    text-align: center;
+    display: block;
+    margin-bottom: 30px;
+}
+#specialDayWindow-newDate-submitButton input {
+    border: solid black 1px;
+    border-radius: 5px;
+    height: 30px;
+    width: 80px;
+    cursor: pointer;
+    
+}
+
+
 
