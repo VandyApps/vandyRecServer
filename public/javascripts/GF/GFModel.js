@@ -403,9 +403,10 @@ GFModel.SpecialDates = Backbone.Collection.extend({
 	//returns null if there is no special date
 	//that has the parameter date within its bounds
 	getSpecialDateForDate: function(date) {
+		console.log("In the method");
 		var returnObj = null;
-		this.each(function(SpecialDate) {
-			if (SpecialDate.includesDate(date)) {
+		this.each(function(specialDate) {
+			if (specialDate.includesDate(date)) {
 				returnObj = specialDate;
 				return;
 			}
@@ -428,5 +429,6 @@ GFModel.SpecialDates = Backbone.Collection.extend({
 
 });
 
+var specialDates = new GFModel.SpecialDates();
 
 

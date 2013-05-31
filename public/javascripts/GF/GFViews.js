@@ -176,7 +176,6 @@ GFView.MonthView = Backbone.View.extend({
 		
 	},
 	render: function() {
-		console.log("render was called: " + this.fitnessClasses.models.length);
 		//set the display to the month and year indication outside of
 		//calendar element
 		//month and year index tags are used for holding data that is not 
@@ -212,7 +211,7 @@ GFView.MonthView = Backbone.View.extend({
 				} else if (foundLastDay) {
 
 					passedLastDay = true;
-				}else if (!foundLastDay && DateHelper.daysForMonth(iterationDate.getMonth(), this.year) === iterationDate.getDate()) {
+				} else if (!foundLastDay && DateHelper.daysForMonth(iterationDate.getMonth(), this.year) === iterationDate.getDate()) {
 					foundLastDay = true;
 				}
 
@@ -229,15 +228,22 @@ GFView.MonthView = Backbone.View.extend({
 					
 
 				} else {
+					var specialDate;
+					//check if this is a special date
+					if (specialDates.includesDate(iterationDate)) {
+						console.log("Found special date "+iterationDate);
+						specialDate = specialDates.getSpecialDateForDate(iterationDate);
+					}
+
 					//create a filled column
 					//set the number of fitness classes to 0 initially
 					if (typeof this.dayBlocks[row][column] === 'undefined') {
 						
-						this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
+						this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDate});
 					} else {
 						
 
-						this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
+						this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDate});
 					}
 					
 					iterationDate.setDate(iterationDate.getDate() + 1);
