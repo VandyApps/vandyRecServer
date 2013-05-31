@@ -583,14 +583,26 @@ GFView.SpecialDayForm = Backbone.View.extend({
 		var startYear = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10);
 		var startDays = DateHelper.daysForMonth(startMonth, startYear);
 		for (var i = 0; i < startDays; ++i) {
-			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value="'+(i+1)+'">'+(i+1)+'</option>');
+			if (i < 9) {
+				currentDay = '0'+(i+1).toString();;
+			} else {
+				currentDay = (i+1).toString();
+			}
+			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
 		}
 
 		var endMonth = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10);
 		var endYear = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10);
 		var endDays = DateHelper.daysForMonth(endMonth, endYear);
 		for (var i = 0; i < startDays; ++i) {
-			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').append('<option value="'+(i+1)+'">'+(i+1)+'</option>');
+			var currentDay;
+			if (i < 9) {
+				currentDay = '0'+(i+1).toString();;
+			} else {
+				currentDay = (i+1).toString();
+			}
+
+			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
 		}
 	},
 	//adds class that was submitted by the form
@@ -612,7 +624,8 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	//to be submitted, returns error message
 	//if the document is not ready to be submitted
 	validateSubmission: function() {
-		
+		var startDateString = 	$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector')+'/'+
+								$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector');
 	},
 	//called when the submit button is hit
 	submit: function() {
@@ -653,12 +666,26 @@ GFView.SpecialDayForm = Backbone.View.extend({
 		while (day > daysInMonth) {
 			day -= 1;
 		}
+		var dayAsString;
+		if (day < 10) {
+			dayAsString = '0'+day.toString();
+		} else {
+			dayAsString = day.toString();
+		}
+
+
 		//remove all options currently within day selector
 		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option').remove();
 		for (var i = 0; i < daysInMonth; ++i) {
-			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value="'+(i+1)+'">'+(i+1)+'</option>');
+			var currentDay;
+			if (i < 9) {
+				currentDay = '0'+(i+1).toString();;
+			} else {
+				currentDay = (i+1).toString();
+			}
+			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
 		}
-		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option[value="'+day+'"]').attr('selected', 'selected');
+		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option[value='+dayAsString+']').attr('selected', 'selected');
 
 	},
 	//for making modification to the select tags of endDate
@@ -674,12 +701,24 @@ GFView.SpecialDayForm = Backbone.View.extend({
 			day -= 1;
 		}
 
+		var dayAsString;
+		if (day < 10) {
+			dayAsString = '0'+day.toString();
+		} else {
+			dayAsString = day.toString();
+		}
 		//remove all options currently within day selector
 		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option').remove();
 		for (var i = 0; i < daysInMonth; ++i) {
-			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').append('<option value="'+(i+1)+'">'+(i+1)+'</option>');
+			var currentDay;
+			if (i < 9) {
+				currentDay = '0'+(i+1).toString();;
+			} else {
+				currentDay = (i+1).toString();
+			}
+			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
 		}
-		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option[value="'+day+'"]').attr('selected', 'selected');
+		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option[value='+dayAsString+']').attr('selected', 'selected');
 
 	}
 });
