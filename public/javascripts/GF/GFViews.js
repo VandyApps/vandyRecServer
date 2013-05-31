@@ -563,10 +563,6 @@ GFView.SpecialDateView = Backbone.View.extend({
 		
 		this.render(options.animate);
 		//dynamically bind events to elements that are dynamically rendered
-		
-		
-		
-
 	},
 	//render the list item with necessary forms for
 	//changing options
@@ -574,15 +570,15 @@ GFView.SpecialDateView = Backbone.View.extend({
 		
 		if (animate) {
 			this.$el = $('<li class="specialDayWindow-existingDate" style="display: none;"></li>');
-			this.$el.insertAfter('#formWindow-newDate');
+			this.$el.insertAfter('#specialDayWindow-newDate');
 		} else {
 			this.$el = $('<li class="specialDayWindow-existingDate"></li>');
-			this.$el.insertAfter('#formWindow-newDate');
+			this.$el.insertAfter('#specialDayWindow-newDate');
 		}
 
 		this.$el.append('<div class="specialDayWindow-existingDate-title">'+this.model.getTitle()+'</div>');
 		this.$el.append('<div class="specialDayWindow-existingDate-startDate">Start date: '+this.model.get('startDate')+'</div>');
-		this.$el.append('<div class="specialDayWindow-existingClass-endDate">End date: '+this.model.get('endDate')+'</div>');
+		this.$el.append('<div class="specialDayWindow-existingDate-endDate">End date: '+this.model.get('endDate')+'</div>');
 		
 		this.$el.append('<div class="specialDayWindow-existingDate-navigateToDate">Go To Dates</div>');
 		this.$el.append('<div class="specialDayWindow-existingDate-delete">Delete</div>');
@@ -604,7 +600,7 @@ GFView.SpecialDateView = Backbone.View.extend({
 //does not have a single model that it renders
 //manages the creation and deletion of models
 //that are being rendered in the window form
-GFView.SpecialDayForm = Backbone.View.extend({
+GFView.SpecialDateForm = Backbone.View.extend({
 
 	el: '#specialDayWindow-classes',
 
@@ -662,9 +658,11 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	//form, data should be passed from the form
 	addDates: function(model, animate) {
 		
-		var classView = new GFView.ClassView({model: model, animate: animate});
-		//slide animation
-		this.$('#specialDayWindow-newDate-form').slideUp();
+		//this initialzation of new view automatically adds the view to the 
+		//list and renders html
+		var dateView = new GFView.SpecialDateView({model: model, animate: animate});
+		//slide animation for form
+		$('#specialDayWindow-newDate-form').slideUp();
 		
 	},
 	//this toggles the appearance of the new class form
@@ -698,8 +696,21 @@ GFView.SpecialDayForm = Backbone.View.extend({
 		var validate = this.validateSubmission();
 		if (validate === true) {
 			$('#specialDayWindow-newDate-error').hide();
-			console.log("do submission stuff");
-			this.toggleForm();
+			var data = {};
+			data.title = $('#specialDayWindow-newDate-nameInput input').val();
+
+			data.startDate = $('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
+							$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
+							$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option:selected').val();
+		
+			data.endDate = 	$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
+							$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
+							$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option:selected').val();
+
+			var model = new GFModel.SpecialDate(data);
+
+			//true for animation
+			this.addDates(model, true);
 			this.formToDefault();
 
 		} else {
@@ -771,8 +782,6 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	//for making modification to the select tags of endDate
 	changeEndSelect: function() {
 
-		
-
 		var month = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1;
 		var year = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10);
 		var day = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').val(), 10);
@@ -803,7 +812,7 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	}
 });
 
-var specialDayForm = new GFView.SpecialDayForm();
+var specialDateForm = new GFView.SpecialDateForm();
 //set up other events
 $('#leftArrow').click(function() {
 	monthView.decrementMonth();
