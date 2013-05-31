@@ -558,7 +558,7 @@ var formWindowView = new GFView.ClassForm();
 //that are being rendered in the window form
 GFView.SpecialDayForm = Backbone.View.extend({
 
-	el: '#formWindow-classes',
+	el: '#specialDayWindow-classes',
 
 	events: {
 
@@ -584,87 +584,30 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	//adds class that was submitted by the form
 	//and appends it immediately after the class creation
 	//form, data should be passed from the form
-	addClass: function(model, animate) {
+	addDates: function(model, animate) {
 		
 		var classView = new GFView.ClassView({model: model, animate: animate});
 		//slide animation
-		this.$('#formWindow-newClass-form').slideUp();
+		this.$('#specialDayWindow-newDate-form').slideUp();
 		
 	},
 	//this toggles the appearance of the new class form
 	toggleForm: function() {
-		$('#formWindow-newClass-form').slideToggle();
+		$('#specialDayForm-newDate-form').slideToggle();
 	},
 	//returns true if document is ready
 	//to be submitted, returns error message
 	//if the document is not ready to be submitted
 	validateSubmission: function() {
-		if ($('#formWindow-newClass-className-input').val() === '') {
-			return "You need to enter a name";
-		} else if ($('#formWindow-newClass-instructorName-input').val() === '') {
-			return "You need to enter an instructor";
-		}
-
-		return true;
+		
 	},
 	//called when the submit button is hit
 	submit: function() {
-		var validation = this.validateSubmission();
-		if (validation === true) {
-			$('#formWindow-newClass-error').hide();
-			//submission process
+		var validate = this.validateSubmission();
+		if (validate) {
 
-			//construct a data object with the correct fields
-			//move this code to the GFClassView object
-			var data = {};
-			data.className = $('#formWindow-newClass-className-input').val();
-			data.instructor = $('#formWindow-newClass-instructorName-input').val();
-			data.dayOfWeek = parseInt($('#dayOfWeekIndex').text(), 10);
-
-			data.startTime = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
-			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
-			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
-
-			data.endTime = $('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
-			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
-			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
-
-			data.timeRange = data.startTime + " - " + data.endTime;
-			
-			var monthString;
-			//convert month to 1-based for date string
-			var monthIndex = parseInt($('#monthIndex').text(), 10) + 1;
-			if (monthIndex < 10) {
-				monthString = '0'+ monthIndex.toString();
-			} else {
-				monthString = monthIndex.toString();
-			}
-
-			var dayString;
-			if ($('#dayIndex').text().length === 1) {
-				dayString = '0' + $('#dayIndex').text();
-			} else {
-				dayString = $('#dayIndex').text();
-			}
-
-			var yearString = $('#yearIndex').text();
-			
-			data.startDate = monthString + '/' + dayString + '/' + yearString;
-			if ($("input[name='isRepeated']:checked", '#formWindow-newClass-repeatSelections').val() === 'true') {
-				data.endDate = '*';
-			} else {
-				data.endDate = data.startDate;
-			}
-			//for now, set animated to true
-			this.addClass(new GFModel.FitnessClass(data), true);
-			fitnessClasses.addNewClass(data);
-
-		} else {
-			//present the error message
-			$('#formWindow-newClass-error').text(validation);
-			$('#formWindow-newClass-error').show();
 		}
-		this.formToDefault();
+
 	},
 	exit: function() {
 		$('#windowPrimer').hide();
