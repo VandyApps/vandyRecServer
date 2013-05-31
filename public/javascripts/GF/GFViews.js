@@ -53,8 +53,10 @@ GFView.BlockView = Backbone.View.extend({
 
 		if (typeof this.specialDate !== 'undefined') {
 			this.$el.addClass('specialDay');
+			this.$el.append('<div class="specialDayIndicator">'+this.specialDate.getTitle()+'</div>');
 		} else {
 			this.$el.removeClass('specialDay');
+			$('.specialDayIndicator', this.$el).remove();
 		}
 
 		this.$el.append('<div class="dayIndicator">'+this.day+'</div>');
@@ -102,9 +104,11 @@ GFView.BlockView = Backbone.View.extend({
 		}
 
 		if (typeof this.specialDate !== 'undefined') {
+			this.$el.append('<div class="specialDayIndicator">'+this.specialDate.getTitle()+'</div>');
 			this.$el.addClass('specialDay');
 		} else {
 			this.$el.removeClass('specialDay');
+			$('.specialDayIndicator', this.$el).remove();
 		}
 
 		this.$('.dayIndicator').text(this.day.toString());
