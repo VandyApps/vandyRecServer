@@ -314,6 +314,13 @@ GFModel.SpecialDate = Backbone.Model.extend({
 	startDate: '',
 	endDate: '',
 
+	initialize: function(options) {
+		this.set('startDate', options.startDate);
+		this.set('endDate', options.endDate);
+		this.set('title', options.title);
+
+		//SAVE THE MODEL HERE/ADD TO COLLECTION
+	},
 	//this method takes the fitness class that is to be included and slices
 	//the end date so that the ending date of the fitness class is still within
 	//the bounds of the special date.  This method assumes that the starting date
