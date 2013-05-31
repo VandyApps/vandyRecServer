@@ -553,6 +553,54 @@ var formWindowView = new GFView.ClassForm();
 
 //duplication starts here
 
+//takes a model of a SpecialDate
+GFView.SpecialDateView = Backbone.View.extend({
+
+	className: 'specialDayWindow-existingDate',
+	tagName: 'li',
+	
+	initialize: function(options) {
+		
+		this.render(options.animate);
+		//dynamically bind events to elements that are dynamically rendered
+		
+		
+		
+
+	},
+	//render the list item with necessary forms for
+	//changing options
+	render: function(animate) {
+		
+		if (animate) {
+			this.$el = $('<li class="specialDayWindow-existingDate" style="display: none;"></li>');
+			this.$el.insertAfter('#formWindow-newDate');
+		} else {
+			this.$el = $('<li class="specialDayWindow-existingDate"></li>');
+			this.$el.insertAfter('#formWindow-newDate');
+		}
+
+		this.$el.append('<div class="specialDayWindow-existingDate-title">'+this.model.getTitle()+'</div>');
+		this.$el.append('<div class="specialDayWindow-existingDate-startDate">Start date: '+this.model.get('startDate')+'</div>');
+		this.$el.append('<div class="specialDayWindow-existingClass-endDate">End date: '+this.model.get('endDate')+'</div>');
+		
+		this.$el.append('<div class="specialDayWindow-existingDate-navigateToDate">Go To Dates</div>');
+		this.$el.append('<div class="specialDayWindow-existingDate-delete">Delete</div>');
+
+
+		if (animate) {
+			$('#specialDayWindow-newDate').next().slideDown();
+		}
+		
+	},
+	delete: function() { 
+
+	}
+	
+	
+
+});
+
 //does not have a single model that it renders
 //manages the creation and deletion of models
 //that are being rendered in the window form
