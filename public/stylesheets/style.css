@@ -695,5 +695,59 @@ textarea {
     
 }
 
+.specialDayWindow-existingDate-startDate {
+    position: relative;
+    width: 200px;
+    height: 20px;
+    top: 0px;
+    left: 10px;
+    margin-top: 20px;
+    text-align: center;
+    color:#EB8F00;
+}
+
+
+.specialDayWindow-existingDate-endDate {
+
+    position: relative;
+    top: -20px;
+    width: 200px;
+    height: 20px;
+    left: 260px;
+    top: -20px;
+    text-align: center;
+    color: #EB8F00;
+}
+
+.specialDayWindow-existingDate-navigateToDate {
+    border: solid black 1px;
+    position: relative;
+    top: 10px;
+    left: 90px;
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    display: block;
+    border-radius: 10px;
+    background-color: #49e45a;
+    color: green;
+    cursor: pointer;
+}
+
+.specialDayWindow-existingDate-delete {
+    border: solid black 1px;
+    width: 100px;
+    text-align: center;
+    border-radius: 10px;
+    height: 20px;
+    position: relative;
+    top: -12px; /*add 2 for border*/
+    left: 280px;
+    background-color: red;
+    cursor: pointer;
+}
+
+
+
 
 
