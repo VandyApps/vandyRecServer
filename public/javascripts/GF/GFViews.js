@@ -14,6 +14,7 @@ GFView.BlockView = Backbone.View.extend({
 	empty: false,
 	//the number of fitness classes to be held on this day
 	fitnessClassesForBlock: [],
+	specialDate: undefined,
 
 	events: {
 
@@ -38,6 +39,9 @@ GFView.BlockView = Backbone.View.extend({
 			this.day = options.day;
 			this.fitnessClassesForBlock = options.fitnessClassesForBlock;
 		}
+
+		this.specialDate = options.specialDate;
+		console.log(options.specialDate);
 		this.render();
 		
 	},
@@ -45,6 +49,12 @@ GFView.BlockView = Backbone.View.extend({
 	render: function() {
 		if (this.empty) {
 			this.$el.attr('empty', 'empty');
+		}
+
+		if (typeof this.specialDate !== 'undefined') {
+			this.$el.addClass('specialDay');
+		} else {
+			this.$el.removeClass('specialDay');
 		}
 
 		this.$el.append('<div class="dayIndicator">'+this.day+'</div>');
@@ -78,7 +88,7 @@ GFView.BlockView = Backbone.View.extend({
 			this.day = options.day;
 			this.fitnessClassesForBlock = options.fitnessClassesForBlock;
 		}
-		
+		this.specialDate = options.specialDate;
 		this.rerender();
 
 	},
@@ -89,6 +99,12 @@ GFView.BlockView = Backbone.View.extend({
 			this.$el.attr('empty', 'empty');
 		} else {
 			this.$el.removeAttr('empty');
+		}
+
+		if (typeof this.specialDate !== 'undefined') {
+			this.$el.addClass('specialDay');
+		} else {
+			this.$el.removeClass('specialDay');
 		}
 
 		this.$('.dayIndicator').text(this.day.toString());
@@ -114,7 +130,7 @@ GFView.BlockView = Backbone.View.extend({
 	hoverOff: function(event) {
 		
 		$(event.delegateTarget).not('[empty]').not('.specialDay').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
-		$(event.delegateTarget).not('[empty]').filter('.specialDay').animate({backgroundColor: 'rgba(255, 193, 57, 1)'}, 200);
+		$(event.delegateTarget).not('[empty]').filter('.specialDay').animate({backgroundColor: '#EECBAD'}, 200);
 	},
 	showForm: function(event) {
 		
@@ -228,22 +244,25 @@ GFView.MonthView = Backbone.View.extend({
 					
 
 				} else {
-					var specialDate;
-					//check if this is a special date
-					if (specialDates.includesDate(iterationDate)) {
-						console.log("Found special date "+iterationDate);
-						specialDate = specialDates.getSpecialDateForDate(iterationDate);
-					}
 
 					//create a filled column
 					//set the number of fitness classes to 0 initially
 					if (typeof this.dayBlocks[row][column] === 'undefined') {
 						
-						this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDate});
+						if (specialDates.includesDate(iterationDate)) {
+							this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
+					
+						} else {
+							this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
+					
+						}
 					} else {
-						
+						if (specialDates.includesDate(iterationDate)) {
+							this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
+						} else {
+							this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
+						}
 
-						this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDate});
 					}
 					
 					iterationDate.setDate(iterationDate.getDate() + 1);
