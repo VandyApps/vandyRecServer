@@ -415,8 +415,7 @@ GFView.ClassForm = Backbone.View.extend({
 	events: {
 
 		'click #formWindow-newClass-title': 'toggleForm',
-		'click #formWindow-newClass-submitNewClass': 'submit',
-		'click #formWindow-exit': 'exit'
+		'click #formWindow-newClass-submitNewClass': 'submit'
 		//need events to manage selections and changes to existing classes
 		//event for submission
 		//event for changing select elements
@@ -429,6 +428,7 @@ GFView.ClassForm = Backbone.View.extend({
 		$('#formWindow-exit').click($.proxy(this.exit, this));
 		$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
 		$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
+
 	},
 	render: function() {
 
@@ -561,13 +561,7 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	el: '#specialDayWindow-classes',
 
 	events: {
-
-		'click #specialDayWindow-newDate-title': 'toggleForm',
-		//'click #specialDayWindow-newDate-submitNewDate': 'submit',
-		'click #specialDayWindow-exit': 'exit'
-		//need events to manage selections and changes to existing classes
-		//event for submission
-		//event for changing select elements
+		//why are events not firing here
 	},
 
 
@@ -576,7 +570,8 @@ GFView.SpecialDayForm = Backbone.View.extend({
 		//binding events that are not within the view
 		$('#specialDayWindow-exit').click($.proxy(this.exit, this));
 		$('#specialDayWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
-		$('#specialDayWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
+		$('#specialDayWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));
+		$('#specialDayWindow-newDate-title').click($.proxy(this.toggleForm, this));	
 	},
 	render: function() {
 
@@ -593,7 +588,8 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	},
 	//this toggles the appearance of the new class form
 	toggleForm: function() {
-		$('#specialDayForm-newDate-form').slideToggle();
+		console.log("This method is called");
+		$('#specialDayWindow-newDate-form').slideToggle();
 	},
 	//returns true if document is ready
 	//to be submitted, returns error message
@@ -632,7 +628,6 @@ GFView.SpecialDayForm = Backbone.View.extend({
 });
 
 var specialDayForm = new GFView.SpecialDayForm();
-
 //set up other events
 $('#leftArrow').click(function() {
 	monthView.decrementMonth();
