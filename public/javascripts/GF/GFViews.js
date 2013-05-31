@@ -510,13 +510,13 @@ GFView.ClassForm = Backbone.View.extend({
 			//for now, set animated to true
 			this.addClass(new GFModel.FitnessClass(data), true);
 			fitnessClasses.addNewClass(data);
-
+			this.formToDefault();
 		} else {
 			//present the error message
 			$('#formWindow-newClass-error').text(validation);
 			$('#formWindow-newClass-error').show();
 		}
-		this.formToDefault();
+		
 	},
 	exit: function() {
 		$('#windowPrimer').hide();
@@ -621,7 +621,6 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	},
 	//this toggles the appearance of the new class form
 	toggleForm: function() {
-		console.log("This method is called");
 		$('#specialDayWindow-newDate-form').slideToggle();
 	},
 	//returns true if document is ready
@@ -639,7 +638,7 @@ GFView.SpecialDayForm = Backbone.View.extend({
 		var endDateString = 	$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
 								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
 								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option:selected').val();
-								
+
 		if (DateHelper.dateFromDateString(startDateString).getTime() > DateHelper.dateFromDateString(endDateString)) {
 			return 'The end date needs to come after the start date';
 		}
@@ -651,10 +650,14 @@ GFView.SpecialDayForm = Backbone.View.extend({
 		var validate = this.validateSubmission();
 		if (validate === true) {
 			$('#specialDayWindow-newDate-error').hide();
-			alert('validation succeeded');
+			console.log("do submission stuff");
+			this.toggleForm();
+			this.formToDefault();
+
 		} else {
 			$('#specialDayWindow-newDate-error').text(validate);
 			$('#specialDayWindow-newDate-error').show();
+
 		}
 
 	},
@@ -676,7 +679,13 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	//should be called after submission so that values are cleared
 	//and buttons are reset
 	formToDefault: function() {
-		
+		$('#specialDayWindow-newDate-nameInput input').val('');
+		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option[value="01"]').attr('selected', 'selected');
+		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option[value="01"]').attr('selected', 'selected');
+		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option[value="2013"]').attr('selected', 'selected');
+		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option[value="01"]').attr('selected', 'selected');
+		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option[value="01"]').attr('selected', 'selected');
+		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option[value=2013]').attr('selected', 'selected');
 	},
 	//for making modification to the select tags of startDate
 	changeStartSelect: function() {
