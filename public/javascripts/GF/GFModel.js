@@ -276,6 +276,12 @@ GFModel.FitnessClasses = Backbone.Collection.extend({
 		}
 		this.fetch({reset: true});
 	},
+	getCalendar: function(month, year) {
+		//for getting month and year over 
+		this.month = month;
+		this.year = year;
+		this.fetch({reset: true});
+	},
 	addNewClass: function(data) {
 		//create
 		var newFitnessClass = new GFModel.FitnessClass({

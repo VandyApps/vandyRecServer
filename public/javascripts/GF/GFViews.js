@@ -1,4 +1,4 @@
-var GFView = {};
+window.GFView = {};
 
 //this is not really a backbone view in that it has not real models but helps 
 //delegate the display of models in a separate window
@@ -295,6 +295,11 @@ GFView.MonthView = Backbone.View.extend({
 		}
 		//calls reset and renders new calendar
 		this.fitnessClasses.decrementMonth();
+	},
+	getCalendar: function(month, year) {
+		this.month = month;
+		this.year = year;
+		this.fitnessClasses.getCalendar(month,year);
 	}
 });
 
