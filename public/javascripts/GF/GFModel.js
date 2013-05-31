@@ -77,6 +77,11 @@ GFModel.FitnessClass = Backbone.Model.extend({
 			return false;
 		}
 
+		if (specialDates.includesDate(date) && !specialDates.isMember(this)) {
+			return false;
+		} else if (!specialDates.includesDate(date) && specialDates.isMember(this)) {
+			return false;
+		}
 		return true;
 
 	},
@@ -425,6 +430,18 @@ GFModel.SpecialDates = Backbone.Collection.extend({
 			}
 		});
 		return includesDate;
+	},
+	//returns true if the fitness class that is passed in as 
+	//a parameter is a member of any special date in the collection
+	isMember: function(fitnessClass) {
+		var isMember = false;
+		this.each(function(specialDate) {
+			if (specialDate.isMember(fitnessClass)) {
+				isMember = true;
+				return;
+			};
+		});
+		return isMember;
 	}
 
 });

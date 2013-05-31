@@ -41,7 +41,7 @@ GFView.BlockView = Backbone.View.extend({
 		}
 
 		this.specialDate = options.specialDate;
-		console.log(options.specialDate);
+		
 		this.render();
 		
 	},
@@ -183,7 +183,7 @@ GFView.MonthView = Backbone.View.extend({
 	dayBlocks: [],
 
 	initialize: function(options) {
-		console.log("initialize");
+		
 		this.month = options.month;
 		this.year = options.year;
 		//this is a collection of backbone models
@@ -372,7 +372,7 @@ GFView.ClassView = Backbone.View.extend({
 		confirm.on('clicked1', function() {
 			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
 			var newObjData = that.model.slice(currentDate);
-			console.log(typeof newObjData);
+			
 			if (typeof newObjData === 'object') {
 				fitnessClasses.addNewClass(newObjData);
 			}
