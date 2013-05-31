@@ -202,7 +202,7 @@ textarea {
 
 /* styling for groupFitness*/
 
-#addSpecialDays {
+#specialDaysButton {
     position: absolute;
     display: block;
     width: 150px;
@@ -390,7 +390,7 @@ textarea {
     background-color: black;
     opacity: .55;
 }
-#formWindow {
+#formWindow, #specialDayWindow {
     display: none;
     border: solid black 1px;
     border-radius: 15px;
@@ -407,7 +407,7 @@ textarea {
 }
 
 
-#formWindow-exit {
+#formWindow-exit, #specialDayWindow-exit {
     position: absolute;
     display: block;
     margin: 0;
@@ -424,7 +424,7 @@ textarea {
     cursor: pointer;
     
 }
-#formWindow-title {
+#formWindow-title, #specialDayWindow-title {
     display: block;
     border-bottom: solid black 1px;
     height: 55px;
@@ -436,7 +436,7 @@ textarea {
     text-align: center;
 }
 
-#formWindow-classes {
+#formWindow-classes, #specialDayWindow-dates {
     list-style: none;
     display: block;
     height: 430px;
@@ -445,13 +445,13 @@ textarea {
     overflow-x:hidden;
 }
 
-#formWindow-classes li {
+#formWindow-classes li, #specialDayWindow-dates li {
     border-bottom: solid black 1px;
     margin-left: -40px;
     
 }
 
-#formWindow-newClass-title {
+#formWindow-newClass-title, #specialDayWindow-newDate-title {
     display: block;
     
     padding: 10px;
@@ -470,12 +470,12 @@ textarea {
 }
 
 
-#formWindow-newClass-form {
+#formWindow-newClass-form, #specialDayWindow-newDate-form {
     display: none;
     padding-top: 20px;
 }
 
-#formWindow-newClass-error {
+#formWindow-newClass-error, #specialDayWindow-newDate-error {
     display:none;
     border: solid red 2px;
     border-radius: 7px;
@@ -580,12 +580,12 @@ textarea {
     
 }
 
-.formWindow-existingClass {
+.formWindow-existingClass, .specialDayWindow-existingDate {
     position: relative;
     display: block;
     height: 140px;
 }
-.formWindow-existingClass-className {
+.formWindow-existingClass-className, .specialDayWindow-existingDate-title {
     
     margin: 20px 0px 2px 0px;
     font-size: 16pt;
