@@ -641,6 +641,9 @@ textarea {
     margin: 0px 10px;
     cursor: pointer;
 }
+#specialDayWindow-newDate-nameInput {
+    margin-top: 20px;
+}
 
 #specialDayWindow-newDate-nameInput span {
     margin: 0px 25px 0px 70px;
@@ -689,7 +692,6 @@ textarea {
     border-radius: 5px;
     height: 30px;
     width: 80px;
-    cursor: pointer;
     
 }
 

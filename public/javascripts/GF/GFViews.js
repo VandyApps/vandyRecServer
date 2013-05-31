@@ -567,11 +567,12 @@ GFView.SpecialDayForm = Backbone.View.extend({
 
 	initialize: function(options) {
 
-		//binding events that are not within the view
+		//binding events 
 		$('#specialDayWindow-exit').click($.proxy(this.exit, this));
 		$('#specialDayWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
 		$('#specialDayWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));
 		$('#specialDayWindow-newDate-title').click($.proxy(this.toggleForm, this));
+		$('#specialDayWindow-newDate-submitButton').click($.proxy(this.submit, this));
 		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').change($.proxy(this.changeStartSelect, this));
 		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').change($.proxy(this.changeEndSelect, this));	
 
@@ -579,7 +580,9 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	},
 	render: function() {
 		//set up the initial form
-		var startMonth = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10);
+
+		//must also convert month from 1-based to 0-based
+		var startMonth = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1;
 		var startYear = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10);
 		var startDays = DateHelper.daysForMonth(startMonth, startYear);
 		for (var i = 0; i < startDays; ++i) {
@@ -591,7 +594,8 @@ GFView.SpecialDayForm = Backbone.View.extend({
 			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
 		}
 
-		var endMonth = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10);
+		//must convert month from 1-based to 0-based
+		var endMonth = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1;
 		var endYear = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10);
 		var endDays = DateHelper.daysForMonth(endMonth, endYear);
 		for (var i = 0; i < startDays; ++i) {
@@ -624,14 +628,33 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	//to be submitted, returns error message
 	//if the document is not ready to be submitted
 	validateSubmission: function() {
-		var startDateString = 	$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector')+'/'+
-								$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector');
+		if ($('#specialDayWindow-newDate-nameInput input').val() === '') {
+			return 'Need to include a name for the Special Dates';
+		}
+
+		var startDateString = 	$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option:selected').val();
+	
+		var endDateString = 	$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option:selected').val();
+								
+		if (DateHelper.dateFromDateString(startDateString).getTime() > DateHelper.dateFromDateString(endDateString)) {
+			return 'The end date needs to come after the start date';
+		}
+		return true;
+	
 	},
 	//called when the submit button is hit
 	submit: function() {
 		var validate = this.validateSubmission();
-		if (validate) {
-
+		if (validate === true) {
+			$('#specialDayWindow-newDate-error').hide();
+			alert('validation succeeded');
+		} else {
+			$('#specialDayWindow-newDate-error').text(validate);
+			$('#specialDayWindow-newDate-error').show();
 		}
 
 	},
@@ -658,7 +681,7 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	//for making modification to the select tags of startDate
 	changeStartSelect: function() {
 
-		var month = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10);
+		var month = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1;
 		var year = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10);
 		var day = parseInt( $('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val(), 10);
 		var daysInMonth = DateHelper.daysForMonth(month, year);
@@ -693,7 +716,7 @@ GFView.SpecialDayForm = Backbone.View.extend({
 
 		
 
-		var month = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10);
+		var month = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1;
 		var year = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10);
 		var day = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').val(), 10);
 		var daysInMonth = DateHelper.daysForMonth(month, year);
