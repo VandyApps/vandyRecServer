@@ -104,7 +104,7 @@ DateHelper.monthIndexForName = function(monthName) {
 	}
 }
 
-//get the number of days for a month index
+//get the number of days for a month index and year
 DateHelper.daysForMonth = function(monthIndex, year) {
 	switch(monthIndex) {
 		case 0: return 31;

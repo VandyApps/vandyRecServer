@@ -571,10 +571,27 @@ GFView.SpecialDayForm = Backbone.View.extend({
 		$('#specialDayWindow-exit').click($.proxy(this.exit, this));
 		$('#specialDayWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
 		$('#specialDayWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));
-		$('#specialDayWindow-newDate-title').click($.proxy(this.toggleForm, this));	
+		$('#specialDayWindow-newDate-title').click($.proxy(this.toggleForm, this));
+		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').change($.proxy(this.changeStartSelect, this));
+		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').change($.proxy(this.changeEndSelect, this));	
+
+		this.render();
 	},
 	render: function() {
+		//set up the initial form
+		var startMonth = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10);
+		var startYear = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10);
+		var startDays = DateHelper.daysForMonth(startMonth, startYear);
+		for (var i = 0; i < startDays; ++i) {
+			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value="'+(i+1)+'">'+(i+1)+'</option>');
+		}
 
+		var endMonth = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10);
+		var endYear = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10);
+		var endDays = DateHelper.daysForMonth(endMonth, endYear);
+		for (var i = 0; i < startDays; ++i) {
+			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').append('<option value="'+(i+1)+'">'+(i+1)+'</option>');
+		}
 	},
 	//adds class that was submitted by the form
 	//and appends it immediately after the class creation
@@ -624,6 +641,46 @@ GFView.SpecialDayForm = Backbone.View.extend({
 	//and buttons are reset
 	formToDefault: function() {
 		
+	},
+	//for making modification to the select tags of startDate
+	changeStartSelect: function() {
+
+		var month = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10);
+		var year = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10);
+		var day = parseInt( $('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val(), 10);
+		var daysInMonth = DateHelper.daysForMonth(month, year);
+		
+		while (day > daysInMonth) {
+			day -= 1;
+		}
+		//remove all options currently within day selector
+		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option').remove();
+		for (var i = 0; i < daysInMonth; ++i) {
+			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value="'+(i+1)+'">'+(i+1)+'</option>');
+		}
+		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option[value="'+day+'"]').attr('selected', 'selected');
+
+	},
+	//for making modification to the select tags of endDate
+	changeEndSelect: function() {
+
+		
+
+		var month = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10);
+		var year = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10);
+		var day = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').val(), 10);
+		var daysInMonth = DateHelper.daysForMonth(month, year);
+		while (day > daysInMonth) {
+			day -= 1;
+		}
+
+		//remove all options currently within day selector
+		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option').remove();
+		for (var i = 0; i < daysInMonth; ++i) {
+			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').append('<option value="'+(i+1)+'">'+(i+1)+'</option>');
+		}
+		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option[value="'+day+'"]').attr('selected', 'selected');
+
 	}
 });
 
