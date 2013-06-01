@@ -316,7 +316,10 @@ GFView.ClassView = Backbone.View.extend({
 	initialize: function(options) {
 		
 		this.render(options.animate);
+
+
 		//dynamically bind events to elements that are dynamically rendered
+		$('.formWindow-existingClass-cancel', this.$el).click($.proxy(this.cancel, this));
 		if (this.model.isRepeating()) {
 			$('.formWindow-existingClass-deleteMultiple', this.$el).click($.proxy(this.deleteMany, this));
 			$('.formWindow-existingClass-deleteOne', this.$el).click($.proxy(this.deleteOne, this));
@@ -364,6 +367,12 @@ GFView.ClassView = Backbone.View.extend({
 			$('#formWindow-newClass').next().slideDown();
 		}
 		
+	},
+	cancel: function() {
+		console.log("Cancel button clicked");
+	},
+	addCancelLayover: function() {
+		this.$el.append('<div class="formWindow-existingClass-cancelLayover">Cancelled</div>');
 	},
 	//for deleting a single instance
 	deleteOne: function() {
