@@ -349,7 +349,7 @@ GFView.ClassView = Backbone.View.extend({
 		this.$el.append('<div class="formWindow-existingClass-times">'+this.model.get('timeRange')+'</div>');
 		this.$el.append('<div class="formWindow-existingClass-startDate">Start date: '+this.model.get('startDate')+'</div>');
 		this.$el.append('<div class="formWindow-existingClass-endDate">End date: '+endDate+'</div>');
-
+		this.$el.append('<div class="formWindow-existingClass-cancel">Cancel</div>');
 		//if the date is repeating, should show more than 1 delete options
 		//if the date isn't repeating, then delete simply deletes the 1 instance
 		if (this.model.isRepeating()) {

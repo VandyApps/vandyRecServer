@@ -319,10 +319,16 @@ GFModel.FitnessClasses = Backbone.Collection.extend({
 			cancelledDates: []
 			
 		});
-		//clip the end date if this is a special date
-		//setSpecialDateBoundary autmatically calls the save
-		//method so the model is persisted to the database
-		newFitnessClass.setSpecialDateBoundary();
+
+		if (newFitnessClass.isSpecialDateClass()) {
+			//clip the end date if this is a special date
+			//setSpecialDateBoundary autmatically calls the save
+			//method so the model is persisted to the database
+			newFitnessClass.setSpecialDateBoundary();
+		} else {
+			newFitnessClass.save();
+		}
+		
 		
 		
 		//fetch data, no need to reset because month has not
