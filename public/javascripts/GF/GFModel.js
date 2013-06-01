@@ -232,7 +232,7 @@ GFModel.FitnessClasses = Backbone.Collection.extend({
 	idAttribute: '_id',
 	url: function() {
 		
-		return '/JSON/GF?month='+this.month+'&year='+this.year;
+		return '/JSON/GF?type=GFClass&month='+this.month+'&year='+this.year;
 	},
 	//index of the month,
 	//0-based index
