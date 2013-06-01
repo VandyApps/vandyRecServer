@@ -597,6 +597,7 @@ GFView.SpecialDateView = Backbone.View.extend({
 		
 		this.render(options.animate);
 		//dynamically bind events to elements that are dynamically rendered
+		$('.specialDayWindow-existingDate-navigateToDate', this.$el).click($.proxy(this.goToDate, this));
 	},
 	//render the list item with necessary forms for
 	//changing options
@@ -625,6 +626,11 @@ GFView.SpecialDateView = Backbone.View.extend({
 	},
 	delete: function() { 
 
+	},
+	goToDate: function() {
+		var date = this.model.getStartDate();
+		monthView.getCalendar(date.getMonth(), date.getYear() + 1900);
+		this.$el.trigger('exit');
 	}
 	
 	
@@ -695,6 +701,7 @@ GFView.SpecialDateForm = Backbone.View.extend({
 		//this initialzation of new view automatically adds the view to the 
 		//list and renders html
 		var dateView = new GFView.SpecialDateView({model: model, animate: animate});
+		dateView.$el.on('exit', $.proxy(this.exit,this));
 		//slide animation for form
 		$('#specialDayWindow-newDate-form').slideUp();
 		
