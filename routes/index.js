@@ -145,24 +145,38 @@ exports.updateGF = function(req, res) {
 			res.send(doc);
 		}
 	});
-}
+};
+
 exports.createGF = function(req, res) {
-	console.log(JSON.stringify(req.body));
-	var data = req.body;
-	//add data that can be used for server side querying
-	var startDateArray = data.startDate.split('/');
-	data.SD_monthCount = (parseInt(startDateArray[2], 10) -1970) * 12 + (parseInt(startDateArray[0], 10) - 1);
-	if (data.endDate === '*') {
-		//monthCount of 0 indicates that it goes infinitely
-		data.ED_monthCount = 0;
+	if (req.body.type === 'GFClass') {
+		var data = req.body;
+		//add data that can be used for server side querying
+		var startDateArray = data.startDate.split('/');
+		data.SD_monthCount = (parseInt(startDateArray[2], 10) -1970) * 12 + (parseInt(startDateArray[0], 10) - 1);
+		if (data.endDate === '*') {
+			//monthCount of 0 indicates that it goes infinitely
+			data.ED_monthCount = 0;
+		} else {
+			var endDateArray = data.endDate.split('/');
+			data.ED_monthCount = (parseInt(endDateArray[2], 10) - 1970) * 12 + (parseInt(endDateArray[0], 10) - 1);
+		}
+		db.insertGFClass(data, function(err, document) {
+			res.statusCode = 200;
+			res.send(document);
+		});
+
+	//must be a special date	
+	} else if (req.body.type === 'GFSpecialDate') {
+		db.insertGFSpecialDate(req.body, function(err, document) {
+			res.statusCode = 200;
+			res.send(document);
+		});
 	} else {
-		var endDateArray = data.endDate.split('/');
-		data.ED_monthCount = (parseInt(endDateArray[2], 10) - 1970) * 12 + (parseInt(endDateArray[0], 10) - 1);
+		//something is wrong with the sent data
+		res.statusCode = 409;
+		res.send("The data that was received is missing a valid type parameter");
 	}
-	db.insertGFClass(data, function(err, document) {
-		res.statusCode = 200;
-		res.send(document);
-	});
+	
 }
 
 exports.deleteGF = function(req, res) {

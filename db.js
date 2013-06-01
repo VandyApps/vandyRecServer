@@ -198,8 +198,23 @@ exports.GFClassesForDates = function(monthCount, callback) {
 			});
 		});
 	});
-}
+};
 
+exports.GFSpecialDates = function(callback) {
+
+	var SDQuery = {'type': 'GFSpecialDate'};
+
+	Db.connect(MONGODB_URL, function(err, db) {
+		db.collection(Collections.groupFitness, function(err, collection) {
+			collection.find(SDQuery, fieldsToRender, function(err, cursor) {
+				cursor.toArray(function(err, collection) {
+					callback(err, collection);
+					db.close();
+				});
+			});
+		});
+	});
+};
 //for updating a GF object
 //returns err and the updated object to the callback function
 exports.updateGFClass = function(object, callback) {
@@ -259,6 +274,20 @@ exports.insertGFClass = function(object, callback) {
 				callback(err, visibleDoc);
 				db.close();
 
+			});
+		});
+	});
+}
+
+exports.insertGFSpecialDate = function(object, callback) {
+	Db.connect(MONGODB_URL, function(err, db) {
+		db.collection(Collections.groupFitness, function(err, collection) {
+			collection.insert(object, {w:1}, function(err, docs) {
+				//unlike GFClasses, the whole document
+				//for a special date will be visible, there are
+				//no special variables used for querying
+				callback(err, docs[0]);
+				db.close();
 			});
 		});
 	});

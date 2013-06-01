@@ -16,6 +16,7 @@ exports.groupFitness = function(req, res) {
 	} else if (req.query.type.toUpperCase() === 'GFCLASS') {
 		if (typeof req.query.month === 'undefined' || req.query.year === 'undefined') {
 
+			//need to change this to only send GFClass data
 			db.allGFObjects(function(err, collection) {
 				res.statusCode = 200;
 				res.send(collection);
@@ -32,7 +33,13 @@ exports.groupFitness = function(req, res) {
 			});
 		}
 	} else if (req.query.type.toUpperCase() === 'GFSPECIALDATE') {
-
+		db.GFSpecialDates(function(err, collection) {
+			res.statusCode = 200;
+			res.send(collection);
+		});
+	} else {
+		res.statusCode = 409;
+		res.send("Type parameter was not recognized by GET method, must be GFSpecialDate or GFClass");
 	}
 	
 }

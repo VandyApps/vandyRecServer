@@ -58,7 +58,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 		} else {
 			this.set('specialDateClass', false);
 		}
-		
+
 		this.set('type', 'GFClass');
 	},
 	//dateString in the format MM/DD/YYYY
@@ -345,8 +345,7 @@ GFModel.SpecialDate = Backbone.Model.extend({
 		this.set('startDate', options.startDate);
 		this.set('endDate', options.endDate);
 		this.set('title', options.title);
-
-		//SAVE THE MODEL HERE/ADD TO COLLECTION
+		this.set('type', 'GFSpecialDate');
 	},
 	//this method takes the fitness class that is to be included and slices
 	//the end date so that the ending date of the fitness class is still within
@@ -399,7 +398,7 @@ GFModel.SpecialDate = Backbone.Model.extend({
 
 GFModel.SpecialDates = Backbone.Collection.extend({
 	model: GFModel.SpecialDate,
-	url: '/JSON/GF/SpecialDates',
+	url: '/JSON/GF?type=GFSpecialDate',
 
 	//returns the SpecialDate model for the passed in
 	//fitnessClass.  If the fitness class does not
@@ -471,7 +470,9 @@ GFModel.SpecialDates = Backbone.Collection.extend({
 	addNewSpecialDate: function(specialDate) {
 		this.add(specialDate);
 		//save the model
+		specialDate.save();
 		//fetch the new data
+		this.fetch();
 	}
 
 });

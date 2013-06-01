@@ -193,7 +193,7 @@ GFView.MonthView = Backbone.View.extend({
 		this.fitnessClasses = options.fitnessClasses;
 		//set the reset event for rendering the calendar
 		this.fitnessClasses.on('reset', this.render, this);
-		
+		specialDates.fetch();
 		this.fitnessClasses.fetch();
 		
 	},
