@@ -227,6 +227,39 @@ GFModel.FitnessClass = Backbone.Model.extend({
 		if (this.isSpecialDateClass()) {
 			specialDates.getSpecialDateForDate(this.getStartDate()).addFitnessClass(this);
 		}
+	},
+	//this function adds a date where this fitness class is cancelled
+	//this function takes a single parameter of either a date object or a date
+	//string of the form MM/DD/YYYY, where MM is the month index, 1-based (01 is January)
+	//note that the function isOnDay does not omit days that the fitness class is cancelled
+	addCancelDate: function(date) {
+		var dateString;
+		if (typeof date === 'object') {
+			dateString = DateHelper.dateStringFromDate(date);
+		} else if (typeof date === 'string') {
+			dateString = date;
+		}
+
+		this.get('cancelledDates').push(dateString);
+	},
+	//checks if the fitness class is cancelled on the date parameter
+	//the date parameter can either be a date string or a date
+	isCancelledForDate: function(date) {
+		var dateString;
+		if (typeof date === 'string') {
+			dateString = date;
+		} else if (typeof date = 'object') {
+			dateString = DateHelper.dateStringFromDate(date);
+		}
+
+		var foundDate = false;
+		this.get('cancelledDates').forEach(function(cancelledDate) {
+			if (cancelledDate === dateString) {
+				foundDate = true;
+				return;
+			}
+		});
+		return foundDate;
 	}
 
 });
