@@ -202,7 +202,7 @@ exports.GFClassesForDates = function(monthCount, callback) {
 
 //for updating a GF object
 //returns err and the updated object to the callback function
-exports.updateGFObject = function(object, callback) {
+exports.updateGFClass = function(object, callback) {
 	var parsedID = new ObjectID.createFromHexString(object._id);
 	Db.connect(MONGODB_URL, function(err, db) {
 		db.collection(Collections.groupFitness, function(err, collection) {
@@ -243,7 +243,7 @@ exports.updateGFObject = function(object, callback) {
 //inserts the object then returns the object as a mongodb object
 //with a server_size _id attribute, the callback function takes the arguments
 //of any error and the returned mongodb object
-exports.insertGFObject = function(object, callback) {
+exports.insertGFClass = function(object, callback) {
 	Db.connect(MONGODB_URL, function(err, db) {
 		db.collection(Collections.groupFitness, function(err, collection) {
 			collection.insert(object, {w:1}, function(err, docs) {

@@ -136,7 +136,7 @@ exports.updateGF = function(req, res) {
 		data.ED_monthCount = (parseInt(endDateArray[2], 10) - 1970) * 12 + (parseInt(endDateArray[0], 10) - 1);
 	}
 
-	db.updateGFObject(data, function(err, doc) {
+	db.updateGFClass(data, function(err, doc) {
 		if (err) {
 			res.statusCode = 500;
 			res.send(err);
@@ -159,7 +159,7 @@ exports.createGF = function(req, res) {
 		var endDateArray = data.endDate.split('/');
 		data.ED_monthCount = (parseInt(endDateArray[2], 10) - 1970) * 12 + (parseInt(endDateArray[0], 10) - 1);
 	}
-	db.insertGFObject(data, function(err, document) {
+	db.insertGFClass(data, function(err, document) {
 		res.statusCode = 200;
 		res.send(document);
 	});
