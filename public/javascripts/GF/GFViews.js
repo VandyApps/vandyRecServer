@@ -317,10 +317,10 @@ GFView.ClassView = Backbone.View.extend({
 		this.render(options.animate);
 		//dynamically bind events to elements that are dynamically rendered
 		if (this.model.isRepeating()) {
-			$('.formWindow-existingClass-deleteMultiple').click($.proxy(this.deleteMany, this));
-			$('.formWindow-existingClass-deleteOne').click($.proxy(this.deleteOne, this));
+			$('.formWindow-existingClass-deleteMultiple', this.$el).click($.proxy(this.deleteMany, this));
+			$('.formWindow-existingClass-deleteOne', this.$el).click($.proxy(this.deleteOne, this));
 		} else {
-			$('.formWindow-existingClass-deleteWhole').click($.proxy(this.delete, this));
+			$('.formWindow-existingClass-deleteWhole', this.$el).click($.proxy(this.delete, this));
 		}
 		
 		
@@ -366,6 +366,7 @@ GFView.ClassView = Backbone.View.extend({
 	},
 	//for deleting a single instance
 	deleteOne: function() {
+		console.log("Delete one was called");
 		var confirm = new ConfirmationBox(
 			{
 				message: 'Are you sure you would like to delete the group fitness class for this one date?',
@@ -387,8 +388,6 @@ GFView.ClassView = Backbone.View.extend({
 				that.remove();
 			});
 		});
-		
-		
 		
 	},
 	//for deleting many instances
@@ -412,6 +411,10 @@ GFView.ClassView = Backbone.View.extend({
 			//reload the data
 			fitnessClasses.fetch();
 		});
+		confirm.on('clicked2', function() {
+			console.log("clicked 2 was called");
+			this.off();
+		});
 		
 	},
 	delete: function() {
@@ -434,6 +437,7 @@ GFView.ClassView = Backbone.View.extend({
 			//reload the data
 			fitnessClasses.fetch();
 		});
+		
 		
 	}
 	
@@ -557,7 +561,7 @@ GFView.ClassForm = Backbone.View.extend({
 
 			var newFitnessClass = new GFModel.FitnessClass(data);
 			newFitnessClass.setSpecialDateBoundary();
-
+			data.endDate = newFitnessClass.get('endDate');
 			this.addClass(newFitnessClass, true);
 			fitnessClasses.addNewClass(data);
 			this.formToDefault();

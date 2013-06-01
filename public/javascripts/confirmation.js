@@ -22,21 +22,35 @@ var ConfirmationBox = Backbone.View.extend({
 		$('#button2').click($.proxy(this.clickedButton2, this));
 	},
 	render: function() {
-		$('body').append('<div id="confirmationPrimer" style="position: absolute; display: none; background-color: rgba(0,0,0,0); top: 0; left: 0; height: 100%; width: 100%; z-index: 9999;"></div>')
-		this.$el = $('<div id="confirmationBox"></div>');
+		console.log("Render was called");
+		if ($('#confirmationPrimer').length !== 1) {
 
-		this.$el.append('<div id="message">'+this.message+'</div>');
-		this.$el.append('<div id="inputs"></div>');
-		this.$el.children('#inputs').append('<input id="button1" type="button" />');
-		this.$el.children('#inputs').children('#button1').val(this.button1Name);
-		this.$el.children('#inputs').append('<input id="button2" type="button" />');
-		this.$el.children('#inputs').children('#button2').val(this.button2Name);
+			$('body').append('<div id="confirmationPrimer" style="position: absolute; display: none; background-color: rgba(0,0,0,0); top: 0; left: 0; height: 100%; width: 100%; z-index: 9999;"></div>');
+		} else {
+			console.log("Confirmation primer already exists");
+		}
+		
+		if ($('#confirmationBox').length === 1) {
+			this.$el = $('#confirmationBox');
+			console.log("Confirmation box already exists");
+		} else {
+			this.$el = $('<div id="confirmationBox"></div>');
 
-		this.$el.attr('style', this.getBoxStyle());
-		$('#message', this.$el).attr('style', this.getMessageStyle());
-		this.$el.children('#inputs').attr('style', this.getButtonWrapperStyle());
-		this.$el.children('#inputs').children('#button1').attr('style', this.getButtonStyle());
-		this.$el.children('#inputs').children('#button2').attr('style', this.getButtonStyle());
+			this.$el.append('<div id="message">'+this.message+'</div>');
+			this.$el.append('<div id="inputs"></div>');
+			this.$el.children('#inputs').append('<input id="button1" type="button" />');
+			this.$el.children('#inputs').children('#button1').val(this.button1Name);
+			this.$el.children('#inputs').append('<input id="button2" type="button" />');
+			this.$el.children('#inputs').children('#button2').val(this.button2Name);
+
+			this.$el.attr('style', this.getBoxStyle());
+			$('#message', this.$el).attr('style', this.getMessageStyle());
+			this.$el.children('#inputs').attr('style', this.getButtonWrapperStyle());
+			this.$el.children('#inputs').children('#button1').attr('style', this.getButtonStyle());
+			this.$el.children('#inputs').children('#button2').attr('style', this.getButtonStyle());
+		}
+		
+
 		$('#confirmationPrimer').append(this.$el);
 	},
 	show: function(animated) {
@@ -72,6 +86,9 @@ var ConfirmationBox = Backbone.View.extend({
 		return "display: block; position: absolute; top: 125px; text-align: center; width: 200px; left: 50px;"
 	},
 	delete: function() {
+		console.log("Delete was called");
+		$('#button1').unbind();
+		$('#button2').unbind();
 		this.$el.remove();
 		$('#confirmationPrimer').remove();
 	},
