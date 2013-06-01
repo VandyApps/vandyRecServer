@@ -20,7 +20,7 @@ exports.groupFitness = function(req, res) {
 		//calculate the month for the value passed in
 		var monthCount = (year - 1970) * 12 + monthIndex; 
 		console.log(monthCount);
-		db.GFObjectsForDates(monthCount, function(err, collection) {
+		db.GFClassesForDates(monthCount, function(err, collection) {
 			res.statusCode = 200;
 			res.send(collection);
 		});

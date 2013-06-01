@@ -141,15 +141,19 @@ exports.updateNewsElement = function(model, callback) {
 
 //related to groupFitness collection
 var fieldsToRender = {
+					//related to both
 					type: true,
+					startDate: true,
+					endDate: true,
+					//related to GFClass
 					className: true,
 					instructor: true,
 					timeRange: true,
-					startDate: true,
-					endDate: true,
 					dayOfWeek: true,
 					cancelledDates: true,
-					specialDateClass: true
+					specialDateClass: true,
+					//related to SpecialDate
+					title: true,
 					
 				};
 
@@ -171,7 +175,7 @@ exports.allGFObjects = function(callback) {
 }
 
 
-exports.GFObjectsForDates = function(monthCount, callback) {
+exports.GFClassesForDates = function(monthCount, callback) {
 
 	var dateQuery = {
 		'SD_monthCount': {$lte: monthCount},
