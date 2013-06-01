@@ -478,5 +478,3 @@ GFModel.SpecialDates = Backbone.Collection.extend({
 });
 
 var specialDates = new GFModel.SpecialDates();
-
-

@@ -193,6 +193,7 @@ GFView.MonthView = Backbone.View.extend({
 		this.fitnessClasses = options.fitnessClasses;
 		//set the reset event for rendering the calendar
 		this.fitnessClasses.on('reset', this.render, this);
+		specialDates.on('reset', this.render, this);
 		specialDates.fetch();
 		this.fitnessClasses.fetch();
 		
@@ -618,6 +619,7 @@ GFView.SpecialDateView = Backbone.View.extend({
 		this.render(options.animate);
 		//dynamically bind events to elements that are dynamically rendered
 		$('.specialDayWindow-existingDate-navigateToDate', this.$el).click($.proxy(this.goToDate, this));
+		$('.specialDayWindow-existingDate-delete', this.$el).click($.proxy(this.delete, this));
 	},
 	//render the list item with necessary forms for
 	//changing options
@@ -645,7 +647,29 @@ GFView.SpecialDateView = Backbone.View.extend({
 		
 	},
 	delete: function() { 
+		var confirm = new ConfirmationBox(
+			{
+				message: "Are you sure you want to delete this group fitness class?",
+				button1Name: "YES",
+				button2Name: "NO",
+				animate: false,
+				deleteAfterPresent: true
+			});
+		confirm.show(false);
+		
+		confirm.on('clicked1', function() {
+			this.model.destroy({
+				headers: {_id: this.model.id}
+			});
+			this.$el.slideUp(function() {
+				$(this).remove();
+			});
+			
+			specialDates.fetch();
+		}, this);
+		
 
+		
 	},
 	goToDate: function() {
 		var date = this.model.getStartDate();
