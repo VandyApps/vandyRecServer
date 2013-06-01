@@ -728,8 +728,15 @@ GFView.SpecialDateForm = Backbone.View.extend({
 								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
 								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option:selected').val();
 
-		if (DateHelper.dateFromDateString(startDateString).getTime() > DateHelper.dateFromDateString(endDateString)) {
+		var startDate = DateHelper.dateFromDateString(startDateString);
+		var endDate = DateHelper.dateFromDateString(endDateString);
+
+		if (startDate.getTime() > endDate.getTime()) {
 			return 'The end date needs to come after the start date';
+		}
+
+		if (specialDates.includesDate(startDate) || specialDates.includesDate(endDate)) {
+			return 'Cannot create special date that overlaps with another special date';
 		}
 		return true;
 	
