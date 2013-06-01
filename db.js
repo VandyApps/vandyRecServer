@@ -141,12 +141,15 @@ exports.updateNewsElement = function(model, callback) {
 
 //related to groupFitness collection
 var fieldsToRender = {
+					type: true,
 					className: true,
 					instructor: true,
 					timeRange: true,
 					startDate: true,
 					endDate: true,
-					dayOfWeek: true
+					dayOfWeek: true,
+					cancelledDates: true,
+					specialDateClass: true
 					
 				};
 

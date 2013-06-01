@@ -21,7 +21,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 	//an array of dateStrings for dates where the classes have been
 	//cancelled.  The classes that have been cancelled are still retreived
 	//from methods such as isOnDay
-	canceledDates: [],
+	cancelledDates: [],
 
 	instructor: '',
 	className: '',
@@ -49,8 +49,8 @@ GFModel.FitnessClass = Backbone.Model.extend({
 		this.set('startTime', modelData.startTime);
 		this.set('endTime', modelData.endTime);
 
-		if (typeof modelData.canceledDates !== 'undefined') {
-			this.set('canceledDates', modelData.canceledDates);
+		if (typeof modelData.cancelledDates !== 'undefined') {
+			this.set('cancelledDates', modelData.cancelledDates);
 		}
 
 		if (typeof modelData.specialDateClass !== 'undefined') {
@@ -210,6 +210,17 @@ GFModel.FitnessClass = Backbone.Model.extend({
 	//returns true if this class is a class within a special date
 	isSpecialDateClass: function() {
 		return this.get('specialDateClass');
+	},
+	//this method does not do anything if the model is
+	//not a member of a special date.  If it is, then
+	//it slices the end date so that the end date ends 
+	//before the special date ends (Keeps the model totally
+	//within the bounds of the special date)
+	//Assumes that the start date is set within the boundaries
+	setSpecialDateBoundary: function() {
+		if (this.isSpecialDateClass()) {
+			specialDates.getSpecialDateForDate(this.getStartDate()).addFitnessClass(this);
+		}
 	}
 
 });
@@ -337,9 +348,12 @@ GFModel.SpecialDate = Backbone.Model.extend({
 	//the bounds of the special date.  This method assumes that the starting date
 	//is within the bounds of the special date already.  Only makes changes to the 
 	//end date. Also assumes that the variable specialDateClass is set to true
-	includeFitnessClass: function(fitnessClass) {
-		console.log("include fitness class was called");
-		fitnessClass.slice(this.getEndDate());
+	addFitnessClass: function(fitnessClass) {
+		var sliceDate = this.getEndDate();
+		//slice the date by the day after the end date so that the end date
+		//is included within the boundaries
+		sliceDate.setDate(sliceDate.getDate() + 1);
+		fitnessClass.slice(sliceDate);
 	},
 	//returns true if the start date of the fitness class is within bounds
 	//of the special date

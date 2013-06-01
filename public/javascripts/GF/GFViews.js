@@ -374,7 +374,7 @@ GFView.ClassView = Backbone.View.extend({
 				animate: false,
 				deleteAfterPresent: true
 			});
-		confirm.show(true);
+		confirm.show(false);
 		var that = this;
 		confirm.on('clicked1', function() {
 			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
@@ -401,7 +401,7 @@ GFView.ClassView = Backbone.View.extend({
 				animate: false,
 				deleteAfterPresent: true
 			});
-		confirm.show(true);
+		confirm.show(false);
 		var that = this;
 		confirm.on('clicked1', function() {
 			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
@@ -424,7 +424,7 @@ GFView.ClassView = Backbone.View.extend({
 				deleteAfterPresent: true
 			});
 		var that = this;
-		confirm.show(true);
+		confirm.show(false);
 		confirm.on('clicked1', function() {
 			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
 			that.model.slice(currentDate);
@@ -464,9 +464,6 @@ GFView.ClassForm = Backbone.View.extend({
 		$('#formWindow-exit').click($.proxy(this.exit, this));
 		$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
 		$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
-
-	},
-	render: function() {
 
 	},
 	//adds class that was submitted by the form
@@ -517,11 +514,16 @@ GFView.ClassForm = Backbone.View.extend({
 			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
 			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
 
+			//to be removed eventually
 			data.timeRange = data.startTime + " - " + data.endTime;
 			
+			//set specialDate variables
+			var startDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10));
+
+
 			var monthString;
 			//convert month to 1-based for date string
-			var monthIndex = parseInt($('#monthIndex').text(), 10) + 1;
+			var monthIndex = startDate.getMonth() + 1;
 			if (monthIndex < 10) {
 				monthString = '0'+ monthIndex.toString();
 			} else {
@@ -543,8 +545,20 @@ GFView.ClassForm = Backbone.View.extend({
 			} else {
 				data.endDate = data.startDate;
 			}
-			//for now, set animated to true
-			this.addClass(new GFModel.FitnessClass(data), true);
+
+			//set special date boolean; the remaining setting
+			//for inclusion into specialDate is done within the
+			//initializer of GFModel.FitnessClass
+			if (specialDates.includesDate(startDate)) {
+				data.specialDateClass = true;
+			} else {
+				data.specialDateClass = false;
+			}
+
+			var newFitnessClass = new GFModel.FitnessClass(data);
+			newFitnessClass.setSpecialDateBoundary();
+
+			this.addClass(newFitnessClass, true);
 			fitnessClasses.addNewClass(data);
 			this.formToDefault();
 		} else {
