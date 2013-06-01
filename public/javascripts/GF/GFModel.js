@@ -51,11 +51,15 @@ GFModel.FitnessClass = Backbone.Model.extend({
 
 		if (typeof modelData.cancelledDates !== 'undefined') {
 			this.set('cancelledDates', modelData.cancelledDates);
-		}
+		} 
 
 		if (typeof modelData.specialDateClass !== 'undefined') {
 			this.set('specialDateClass', modelData.specialDateClass);
+		} else {
+			this.set('specialDateClass', false);
 		}
+		
+		this.set('type', 'GFClass');
 	},
 	//dateString in the format MM/DD/YYYY
 	//where month is 1-based indexed
@@ -301,7 +305,8 @@ GFModel.FitnessClasses = Backbone.Collection.extend({
 			startDate: data.startDate,
 			endDate: data.endDate,
 			dayOfWeek: data.dayOfWeek,
-			instructor: data.instructor
+			instructor: data.instructor,
+			cancelledDates: []
 		});
 		//add to server side database
 		//call post

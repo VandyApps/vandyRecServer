@@ -145,7 +145,7 @@ exports.updateGF = function(req, res) {
 	});
 }
 exports.createGF = function(req, res) {
-
+	console.log(JSON.stringify(req.body));
 	var data = req.body;
 
 	//add data that can be used for server side querying
