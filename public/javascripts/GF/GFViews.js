@@ -499,6 +499,7 @@ GFView.ClassForm = Backbone.View.extend({
 	},
 	//called when the submit button is hit
 	submit: function() {
+		console.log("Submit was called");
 		var validation = this.validateSubmission();
 		if (validation === true) {
 			$('#formWindow-newClass-error').hide();
@@ -560,11 +561,8 @@ GFView.ClassForm = Backbone.View.extend({
 				data.specialDateClass = false;
 			}
 
-			var newFitnessClass = new GFModel.FitnessClass(data);
-			newFitnessClass.setSpecialDateBoundary();
-			data.endDate = newFitnessClass.get('endDate');
+			var newFitnessClass = fitnessClasses.addNewClass(data);
 			this.addClass(newFitnessClass, true);
-			fitnessClasses.addNewClass(data);
 			this.formToDefault();
 		} else {
 			//present the error message
@@ -658,9 +656,10 @@ GFView.SpecialDateView = Backbone.View.extend({
 		confirm.show(false);
 		
 		confirm.on('clicked1', function() {
-			this.model.destroy({
-				headers: {_id: this.model.id}
-			});
+			//delete method calls destroy on the
+			//special date model as well as all
+			//fitness classes within the model
+			this.model.delete();
 			this.$el.slideUp(function() {
 				$(this).remove();
 			});

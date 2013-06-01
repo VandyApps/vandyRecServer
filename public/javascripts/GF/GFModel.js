@@ -54,6 +54,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 		} 
 
 		if (typeof modelData.specialDateClass !== 'undefined') {
+			console.log("Setting SDClass to "+modelData.specialDateClass);
 			this.set('specialDateClass', modelData.specialDateClass);
 		} else {
 			this.set('specialDateClass', false);
@@ -124,6 +125,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 	//date was the last date.  Returns undefined if the sliceDate is 
 	//not in between the start and end dates
 	slice: function(sliceDate) {
+		
 		//check if slice date is out of range of the start and end dates
 		if ((typeof this.getEndDate() !== 'undefined' && !DateHelper.betweenDates(sliceDate, this.getStartDate(), this.getEndDate())) || (typeof this.getEndDate() === 'undefined' && DateHelper.earlierDate(sliceDate, this.getStartDate()) ) ) {
 			return undefined;
@@ -297,6 +299,12 @@ GFModel.FitnessClasses = Backbone.Collection.extend({
 		this.year = year;
 		this.fetch({reset: true});
 	},
+	//creates a new model with the passed in data,
+	//then persists that model to the database
+	//this method then calls fetch to get an updated
+	//set of models from the database after the model
+	//has been added.  The model that was created is then
+	//returned
 	addNewClass: function(data) {
 		//create
 		var newFitnessClass = new GFModel.FitnessClass({
@@ -306,16 +314,32 @@ GFModel.FitnessClasses = Backbone.Collection.extend({
 			endDate: data.endDate,
 			dayOfWeek: data.dayOfWeek,
 			instructor: data.instructor,
+			specialDateClass: data.specialDateClass,
+			//cancelled dates will never be added on initialzation
 			cancelledDates: []
+			
 		});
-		//add to server side database
-		//call post
-		newFitnessClass.save();
+		//clip the end date if this is a special date
+		//setSpecialDateBoundary autmatically calls the save
+		//method so the model is persisted to the database
+		newFitnessClass.setSpecialDateBoundary();
+		
+		
 		//fetch data, no need to reset because month has not
 		//changes
 		this.fetch({
 			error: function(collection) {alert("Error when saving fitness class data to the server")}
 		});
+		return newFitnessClass;
+	},
+	modelsWithinSpecialDate: function(specialDate) {
+		var modelsToReturn = [];
+		this.each(function(model) {
+			if (specialDate.isMember(model)) {
+				modelsToReturn.push(model);
+			}
+		});
+		return modelsToReturn;
 	},
 	parse: function(response) {
 		console.log(response);
@@ -393,6 +417,17 @@ GFModel.SpecialDate = Backbone.Model.extend({
 	},
 	getTitle: function() {
 		return this.get('title');
+	},
+	//should call this method instead of destroy
+	//this makes sure that all the fitnessClasses
+	//that are a member of this special date are 
+	//also destroyed
+	delete: function() {
+		var GFClassesToRemove = fitnessClasses.modelsWithinSpecialDate(this);
+		GFClassesToRemove.forEach(function(model) {
+			model.destroy({headers: {_id: model.id}});
+		});
+		this.destroy({headers: {_id: this.id}});
 	}
 });
 
