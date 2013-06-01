@@ -872,6 +872,9 @@ $('#windowPrimer').click(function() {
 $('#specialDaysButton').click(function() {
 			
 	$('#windowPrimer').fadeIn(400, function() {
+		specialDates.each(function(specialDate) {
+			this.addDates(specialDate, false);
+		}, specialDateForm);
 		$('#specialDayWindow').show();
 	});
 });
