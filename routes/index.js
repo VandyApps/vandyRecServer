@@ -120,6 +120,8 @@ exports.groupFitness = function(req, res) {
 	
 };
 
+//there will never be an update of a special date
+//special dates can only be created and deleted
 exports.updateGF = function(req, res) {
 
 	var data = req.body;
@@ -147,7 +149,6 @@ exports.updateGF = function(req, res) {
 exports.createGF = function(req, res) {
 	console.log(JSON.stringify(req.body));
 	var data = req.body;
-
 	//add data that can be used for server side querying
 	var startDateArray = data.startDate.split('/');
 	data.SD_monthCount = (parseInt(startDateArray[2], 10) -1970) * 12 + (parseInt(startDateArray[0], 10) - 1);

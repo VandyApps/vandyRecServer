@@ -178,6 +178,7 @@ exports.allGFObjects = function(callback) {
 exports.GFClassesForDates = function(monthCount, callback) {
 
 	var dateQuery = {
+		'type': 'GFClass',
 		'SD_monthCount': {$lte: monthCount},
 		$or: [
 			{'ED_monthCount': {$gte: monthCount}},
@@ -207,6 +208,7 @@ exports.updateGFObject = function(object, callback) {
 		db.collection(Collections.groupFitness, function(err, collection) {
 			collection.update({_id: parsedID},
 				{
+					type: object.type,
 					className: object.className,
 					instructor: object.instructor,
 					startDate: object.startDate,
@@ -214,7 +216,9 @@ exports.updateGFObject = function(object, callback) {
 					SD_monthCount: object.SD_monthCount,
 					ED_monthCount: object.ED_monthCount,
 					dayOfWeek: object.dayOfWeek,
-					timeRange: object.timeRange
+					timeRange: object.timeRange,
+					cancelledDates: object.cancelledDates,
+					specialDateClass: object.specialDateClass
 
 				}, function(err, numberUpdated) {
 					if (err) {

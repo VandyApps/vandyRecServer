@@ -8,7 +8,12 @@ exports.news = function(req, res) {
 };
 
 exports.groupFitness = function(req, res) {
-	if (req.query.type.toUpperCase() === 'GFCLASS') {
+	if (typeof req.query.type === 'undefined') {
+		db.allGFObjects(function(err, collection) {
+				res.statusCode = 200;
+				res.send(collection);
+			});
+	} else if (req.query.type.toUpperCase() === 'GFCLASS') {
 		if (typeof req.query.month === 'undefined' || req.query.year === 'undefined') {
 
 			db.allGFObjects(function(err, collection) {
