@@ -360,7 +360,27 @@ GFView.ClassView = Backbone.View.extend({
 		} else {
 			$('#formWindow-newClass').next().append('<div class="formWindow-existingClass-deleteOptions"><input class="formWindow-existingClass-deleteWhole" type="button" value= "DELETE" /></div>');
 		}
-		
+		//display cancellation if needed
+		var dayString;
+		if ($('#dayIndex').text().length === 1) {
+			dayString = '0'+$('#dayIndex').text();
+		} else {
+			dayString = $('#dayIndex').text();
+		}
+
+		var monthString;
+		var month = parseInt($('#monthIndex').text(), 10)+1;
+		if (month < 10) {
+			monthString = '0'+month.toString();
+		} else {
+			monthString = month.toString();
+		}
+
+		var dateString = monthString+'/'+dayString+'/'+$('#yearIndex').text();
+
+		if (this.model.isCancelledForDate(dateString)) {
+			this.addCancelLayover();
+		}
 		//dynamically add events to elements that were created
 
 		if (animate) {
