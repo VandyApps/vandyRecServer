@@ -369,10 +369,59 @@ GFView.ClassView = Backbone.View.extend({
 		
 	},
 	cancel: function() {
-		console.log("Cancel button clicked");
+		var dayString;
+		if ($('#dayIndex').text().length === 1) {
+			dayString = '0'+$('#dayIndex').text();
+		} else {
+			dayString = $('#dayIndex').text();
+		}
+
+		var monthString;
+		if ($('#monthIndex').text().length === 1) {
+			monthString = '0'+$('#monthIndex').text();
+		} else {
+			monthString = $('#monthIndex').text();
+		}
+
+		var dateString = monthString+'/'+dayString+'/'+$('#yearIndex').text();
+
+		this.model.addCancelDate(dateString);   
+		this.addCancelLayover();                                                                                                                                                                                                            
 	},
 	addCancelLayover: function() {
+
 		this.$el.append('<div class="formWindow-existingClass-cancelLayover">Cancelled</div>');
+		//bind event to cancel layover
+		$('.formWindow-existingClass-cancelLayover', this.$el).click($.proxy(this.uncancel, this));
+	},
+	uncancel: function() {
+		var confirm = new ConfirmationBox({
+			message: "Are you sure you want to change this class from cancelled to not cancelled?",
+				button1Name: 'YES',
+				button2Name: 'NO',
+				animate: false,
+				deleteAfterPresent: true
+		});
+		confirm.show(false);
+		confirm.on('clicked1', function() {
+			var dayString;
+			if ($('#dayIndex').text().length === 1) {
+				dayString = '0'+$('#dayIndex').text();
+			} else {
+				dayString = $('#dayIndex').text();
+			}
+
+			var monthString;
+			if ($('#monthIndex').text().length === 1) {
+				monthString = '0'+$('#monthIndex').text();
+			} else {
+				monthString = $('#monthIndex').text();
+			}
+
+			var dateString = monthString+'/'+dayString+'/'+$('#yearIndex').text();
+			$('.formWindow-existingClass-cancelLayover', this.$el).remove();
+			this.model.removeCancelledDate(dateString);      
+		}, this);
 	},
 	//for deleting a single instance
 	deleteOne: function() {

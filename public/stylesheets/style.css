@@ -682,7 +682,8 @@ textarea {
     line-height: 160px;
     text-align: center;
     font-size: 40px;
-    opacity: .6;
+    opacity: .55;
+    cursor: pointer;
     
 }
 

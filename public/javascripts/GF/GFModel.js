@@ -260,6 +260,24 @@ GFModel.FitnessClass = Backbone.Model.extend({
 			}
 		});
 		return foundDate;
+	},
+	//the parameter can either be a dateString
+	//or a date object.  Removes the matching 
+	//date from the date array.  If the date is 
+	//not in the date array, this does nothing
+	removeCancelledDate: function(date) {
+		var dateString;
+		if (typeof date === 'string') {
+			dateString = date;
+		} else if (typeof date === 'object') {
+			dateString = DateHelper.dateStringFromDate(date);
+		}
+
+		for (var index in this.get('cancelledDates')) {
+			if (this.get('cancelledDates')[index] === dateString) {
+				this.get('cancelledDates').splice(index, 1);
+			}
+		}
 	}
 
 });
