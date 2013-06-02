@@ -377,10 +377,11 @@ GFView.ClassView = Backbone.View.extend({
 		}
 
 		var monthString;
-		if ($('#monthIndex').text().length === 1) {
-			monthString = '0'+$('#monthIndex').text();
+		var month = parseInt($('#monthIndex').text(), 10)+1;
+		if (month < 10) {
+			monthString = '0'+month.toString();
 		} else {
-			monthString = $('#monthIndex').text();
+			monthString = month.toString();
 		}
 
 		var dateString = monthString+'/'+dayString+'/'+$('#yearIndex').text();
@@ -412,10 +413,11 @@ GFView.ClassView = Backbone.View.extend({
 			}
 
 			var monthString;
-			if ($('#monthIndex').text().length === 1) {
-				monthString = '0'+$('#monthIndex').text();
+			var month = parseInt($('#monthIndex').text(), 10)+1;
+			if (month < 10) {
+				monthString = '0'+month.toString();
 			} else {
-				monthString = $('#monthIndex').text();
+				monthString = month.toString();
 			}
 
 			var dateString = monthString+'/'+dayString+'/'+$('#yearIndex').text();
