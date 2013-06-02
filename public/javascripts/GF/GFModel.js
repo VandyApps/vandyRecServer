@@ -232,7 +232,8 @@ GFModel.FitnessClass = Backbone.Model.extend({
 	//this function takes a single parameter of either a date object or a date
 	//string of the form MM/DD/YYYY, where MM is the month index, 1-based (01 is January)
 	//note that the function isOnDay does not omit days that the fitness class is cancelled
-	//does not add dates that are already in the cancelled dates array
+	//does not add dates that are already in the cancelled dates array.
+
 	addCancelDate: function(date) {
 		if (!this.isCancelledForDate(date)) {
 			var dateString;

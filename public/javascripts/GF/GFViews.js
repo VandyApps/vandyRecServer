@@ -386,7 +386,8 @@ GFView.ClassView = Backbone.View.extend({
 
 		var dateString = monthString+'/'+dayString+'/'+$('#yearIndex').text();
 
-		this.model.addCancelDate(dateString);   
+		this.model.addCancelDate(dateString);  
+		this.model.save(); 
 		this.addCancelLayover();                                                                                                                                                                                                            
 	},
 	addCancelLayover: function() {
@@ -422,7 +423,8 @@ GFView.ClassView = Backbone.View.extend({
 
 			var dateString = monthString+'/'+dayString+'/'+$('#yearIndex').text();
 			$('.formWindow-existingClass-cancelLayover', this.$el).remove();
-			this.model.removeCancelledDate(dateString);      
+			this.model.removeCancelledDate(dateString); 
+			this.model.save();     
 		}, this);
 	},
 	//for deleting a single instance
