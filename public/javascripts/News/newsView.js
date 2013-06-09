@@ -58,6 +58,19 @@ NewsView.NewsTableView = Backbone.View.extend({
 		} else {
 			this.$el.children().remove();
 		}
+	},
+	//iterate through the elements in order
+	//and perform some operation on them in
+	//the callback function
+	//the callback function is passed the element
+	//as a jquery object
+	iterate: function(callback, receiver) {
+		if (typeof receiver !== "undefined") {
+
+			this.$el.children().toArray().forEach(callback.bind(receiver));
+		} else {
+			this.$el.children().toArray().forEach(callback);
+		}
 	}
 
 
