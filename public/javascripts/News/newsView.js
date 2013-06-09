@@ -163,7 +163,7 @@ NewsView.NewsEventView = Backbone.View.extend({
 			animate: false,
 			deleteAfterPresent: true
 		});
-		confirm.show(true);
+		confirm.show(false);
 		var that = this;
 		confirm.on('clicked1', function() {
 			eventCollection.delete(that.$el.attr('id'));

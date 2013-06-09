@@ -1,3 +1,4 @@
+
 var NewsModel = {};
 
 
@@ -112,7 +113,7 @@ NewsModel.NewsEvents = Backbone.Collection.extend({
 	//array of ids, which are the ids of the current
 	//elements in the li
 	resortArray: function(ids) {
-		console.log(ids);
+		
 		for (var index in ids) {
 			this.setPriorityNumberForEventWithID(ids[index], index);
 		}
