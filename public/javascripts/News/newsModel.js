@@ -107,7 +107,8 @@ NewsModel.NewsEvents = Backbone.Collection.extend({
 	//sets the priority number of the event with the id to
 	//new priority number that is passed in
 	setPriorityNumberForEventWithID: function(id, priorityNumber) {
-		this.getEventWithID(id).setPriorityNumber(priorityNumber);
+		var event = this.getEventWithID(id);
+		if (event !== null) event.setPriorityNumber(priorityNumber);
 	},
 	//redetermines the order of the array based on an
 	//array of ids, which are the ids of the current
@@ -131,8 +132,13 @@ NewsModel.NewsEvents = Backbone.Collection.extend({
 	},
 	delete: function(eventID) {
 		var deletedEvent = this.getEventWithID(eventID);
-		var idToDelete;
-
+		if (deletedEvent !== null) {
+			deletedEvent.destroy(
+			{
+				headers: { _id: deletedEvent.id },
+				error: function() {alert("There was an error when deleting this event from the server");}
+			});
+		}
 		deletedEvent.destroy(
 			{
 				headers: { _id: deletedEvent.id },

@@ -9,6 +9,10 @@ NewsView.NewsTableView = Backbone.View.extend({
 	//this is set to false after the first time
 	//the render method has been called
 	initialLoad: true,
+	//this is a list of all table view elements
+	//these elements are not in any significant
+	//ordering
+	tableViewElements: [],
 
 	initialize: function() {
 		
@@ -27,17 +31,20 @@ NewsView.NewsTableView = Backbone.View.extend({
 			}, arrayOfIds);
 			eventCollection.resortArray(arrayOfIds);
 		});
-		
+	
 		
 	},
 	front: function(tableViewElement) {
 		//adds the table view element to the beginning of the table
 		this.$el.prepend(tableViewElement);
-
+		$(tableViewElement).on('editOn', this.editModeOn, this);
+		this.tableViewElements.push(tableViewElement);
 	},
 	back: function(tableViewElement) {
 		//adds the table view element to the end of the table
 		this.$el.append(tableViewElement);
+		$(tableViewElement).on('editOn', this.editModeOn, this);
+		this.tableViewElements.push(tableViewElement);
 		
 	},
 	toggleAnimate: function() {
@@ -63,7 +70,7 @@ NewsView.NewsTableView = Backbone.View.extend({
 	//and perform some operation on them in
 	//the callback function
 	//the callback function is passed the element
-	//as a jquery object
+	//as a DOM elements
 	iterate: function(callback, receiver) {
 		if (typeof receiver !== "undefined") {
 
@@ -71,9 +78,14 @@ NewsView.NewsTableView = Backbone.View.extend({
 		} else {
 			this.$el.children().toArray().forEach(callback);
 		}
+	},
+	//called when one of the elements enters edit
+	//mode, this method is used to remove any other
+	//element from edit mode so that only 1 element
+	//at a time is in edit mode
+	editModeOn: function() {
+		console.log("Edit mode on was called");
 	}
-
-
 });
 
 //create the instance of the table view
