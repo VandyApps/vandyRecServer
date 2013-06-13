@@ -205,7 +205,7 @@ DateHelper.dateFromDateString = function(dateString) {
 
 
 /*timeString methods*/
-DateHelper.isValidTimeString = function(timeString) {
+DateHelper.isTimeString = function(timeString) {
 	var regexp = new RegExp("^((0\\d)|(1[012])):[012345]\\d[a,A,p,P][m,M]$");
 	return regexp.test(timeString);
 }
