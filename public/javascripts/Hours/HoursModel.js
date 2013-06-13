@@ -12,20 +12,21 @@ HoursModel.Hours = Backbone.Model.extend({
 
 	//methods
 	initialize: function(options) {
-		var noOptions = (options === undefined);
-		var name = (noOptions || options.name === undefined) ? '' : options.name;
-		var startDate = (noOptions || options.startDate === undefined) ? '' : options.startDate;
-		var endDate = (noOptions || options.endDate === undefined) ? '' : options.endDate;
-		var priorityNumber = (noOptions || options.priorityNumber === undefined) ? 0 : options.priorityNumber;
-		var facilityHours = (noOptions || options.facilityHours === undefined) ? false : options.facilityHours;
-		var closedHours = (noOptions || options.closedHours === undefined) ? false : options.closedHours;
-		var times = (noOptions || options.times === undefined) ? [] : options.times;
+		var noOptions = (options === undefined),
+		    name = (noOptions || options.name === undefined) ? '' : options.name,
+		    startDate = (noOptions || options.startDate === undefined) ? '' : options.startDate,
+		    endDate = (noOptions || options.endDate === undefined) ? '' : options.endDate,
+		    priorityNumber = (noOptions || options.priorityNumber === undefined) ? 0 : options.priorityNumber,
+		    facilityHours = (noOptions || options.facilityHours === undefined) ? false : options.facilityHours,
+		    closedHours = (noOptions || options.closedHours === undefined) ? false : options.closedHours,
+		    times = (noOptions || options.times === undefined) ? [] : options.times;
 
 
 		this.set('name', name);
 		this.set('startDate', startDate);
 		this.set('endDate', endDate);
 		this.set("facilityHours", facilityHours);
+                this.set('priorityNumber', priorityNumber);
 		this.set('closedHours', closedHours);
 		this.set('times', times);
 	},
