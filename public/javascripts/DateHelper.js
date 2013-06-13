@@ -202,3 +202,10 @@ DateHelper.dateFromDateString = function(dateString) {
 	var dateArray = dateString.split('/');
 	return new Date(parseInt(dateArray[2], 10), parseInt(dateArray[0], 10) - 1, parseInt(dateArray[1], 10), 0,0,0,0);
 }
+
+
+/*timeString methods*/
+DateHelper.isValidTimeString = function(timeString) {
+	var regexp = new RegExp("^((0\\d)|(1[012])):[012345]\\d[a,A,p,P][m,M]$");
+	return regexp.test(timeString);
+}
