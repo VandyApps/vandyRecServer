@@ -42,13 +42,32 @@ HoursModel.Hours = Backbone.Model.extend({
 	getPriorityNumber: function() {
 		return this.get('priorityNumber');
 	},
+	isFacilityHours: function() {
+		return this.get('facilityHours');
+	},
+	isClosed: function() {
+		return this.get('closedHours');
+	},
 	setTimesForDay: function(weekDay, timeObject) {
 		if (timeObject.startTime !== undefined && timeObject.endTime !== undefined) {
 			if (DateHelper.isTimeString(timeObject.startTime) && DateHelper.isTimeString(timeObject.endTime)) {
 				this.get('times')[weekDay] = timeObject;
 			}
-			console.log("Failed time string");
 		}
-		console.log("failed undefined or time string");
+	},
+	isBaseHours: function() {
+		return this.getPriorityNumber() === 0 && this.isFacilityHours();
+	}
+});
+
+
+HoursModel.HoursCollection = Backbone.Collection.extend({
+	model: HoursModel.Hours,
+	url: '',
+
+	getBaseHours: function() {
+		return [].filter.call(this.models, function(model) {
+			return model.isBaseHours();
+		});
 	}
 });
