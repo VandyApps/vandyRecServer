@@ -69,5 +69,26 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 		return [].filter.call(this.models, function(model) {
 			return model.isBaseHours();
 		});
+	},
+	getOtherHours: function(facilityHours) {
+		//if facility hours is undefined, then
+		//just filter the selection based on 
+		//whether the hours are closed and whether
+		//they are base hours
+		if (facilityHours === undefined) {
+			return [].filter.call(this.models, function(model) {
+				return !model.isBaseHours() && !model.isClosed();
+			});
+		}
+		//otherwise, use the facilityHours boolean value to further
+		//filter the selection beyong just baseHours and isClosed
+		return [].filter.call(this.models, function(model) {
+			return !model.isBaseHours() && !model.isClosed() && (facilityHours === model.isFacilityHours());
+		});
+	},
+	getClosedHours: function() {
+		return [].filter.call(this.models, function(model) {
+			return model.isClosed();
+		});
 	}
 });
