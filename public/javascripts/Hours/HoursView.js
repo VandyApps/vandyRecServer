@@ -1,3 +1,4 @@
+
 var HoursView = {};
 
 HoursView.HoursItem = Backbone.View.extend({
@@ -71,7 +72,7 @@ HoursView.HoursTable = Backbone.View.extend({
         this.views.forEach(function(view) {
             this.$el.append(view.$el);
         }, this);
-    }
+    },
     //adds an HoursItem view to the end of the list and renders the item
     push: function(hoursItem) {
         this.views.push(hoursItem);
