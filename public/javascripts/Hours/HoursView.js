@@ -4,13 +4,13 @@ HoursView.HoursItem = Backbone.View.extend({
     model: HoursModel.Hours,
     tagName: 'li',
 
-    initialize: function() {
+    initialize: function(options) {
         this.render();
     },
     render: function() {
         this.$el.append('<div class="hoursItem-name">'+this.model.getName()+'</div>');
-        this.$el.append('<div class="hoursItem-startDate">'+this.get('startDate')+'</div>');
-        this.$el.append('<div class="hoursItem-endDate">'+this.get('endDate')+'</div>');
+        this.$el.append('<div class="hoursItem-startDate">'+this.model.get('startDate')+'</div>');
+        this.$el.append('<div class="hoursItem-endDate">'+this.model.get('endDate')+'</div>');
     },
     showWindow: function() {
         //window not yet implemented
@@ -32,14 +32,19 @@ HoursView.HoursTable = Backbone.View.extend({
     //an array of HoursItem views within the table
     views: [],
     initialize: function(options) {
-        this.type = (options.type === undefined) ? 0 : options.type;
-        this.views = (options.views === undefined) ? [] : options.views;
+        this.type = (!options || options.type === undefined) ? 0 : options.type;
+        this.views = (! options || options.views === undefined) ? [] : options.views;
         this.render();
     },
     render: function() {
         //set the element to be the hours list at
         //index corresponding to the type number
-        this.$el = $('.hoursList').toArray()[this.type];
+        this.$el = $('.hoursList:eq('+this.type+')');
+
+        //add elements from the views
+        this.views.forEach(function(view) {
+            this.$el.append(view.$el);
+        }, this);
     },
     getName: function() {
         //get the title within the text of the 
@@ -58,12 +63,15 @@ HoursView.HoursTable = Backbone.View.extend({
         });
 
         //rerender all the elements within the view
+        this.views.forEach(function(view) {
+            this.$el.append(view.$el);
+        }, this);
     },
     push: function(hoursItem) {
 
     },
     add: function(hoursItem) {
-        
+
     }
 
 });

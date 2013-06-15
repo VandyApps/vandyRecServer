@@ -34,10 +34,10 @@ HoursModel.Hours = Backbone.Model.extend({
 		return this.get('name');
 	},
 	getStartDate: function() {
-		return this.get('startDate');
+		return DateHelper.dateFromDateString(this.get('startDate'));
 	},
 	getEndDate: function() {
-		return this.get('endDate');
+		return DateHelper.dateFromDateString(this.get('endDate'));
 	},
 	getPriorityNumber: function() {
 		return this.get('priorityNumber');
