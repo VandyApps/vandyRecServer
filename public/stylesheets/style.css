@@ -200,6 +200,82 @@ textarea {
     background-color: #38b331;
 }
 
+
+/* styling for hours */
+
+.hoursSectionHeader {
+    border: solid black 1px;
+    display: block;
+    width: 600px;
+    border-radius: 10px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    margin: 30px auto;
+    font-weight: bold;
+    background-color: #f99902;
+    box-shadow: #888888 6px 5px 4px 0px;
+}
+
+.hoursList {
+    display: block;
+    width: 500px;
+    margin: auto;
+}
+
+.hoursList li {
+    position: relative;
+    list-style: none;
+    display: block;
+    height: 80px;
+    border: solid black 1px;
+    margin: 10px 0px 10px -40px;
+    border-radius: 10px;
+    cursor: pointer;
+    
+    background-image: linear-gradient(bottom, rgb(177,174,181) 10%, rgb(240,240,240) 55%);
+    background-image: -o-linear-gradient(bottom, rgb(177,174,181) 10%, rgb(240,240,240) 55%);
+    background-image: -moz-linear-gradient(bottom, rgb(177,174,181) 10%, rgb(240,240,240) 55%);
+    background-image: -webkit-linear-gradient(bottom, rgb(177,174,181) 10%, rgb(240,240,240) 55%);
+    background-image: -ms-linear-gradient(bottom, rgb(177,174,181) 10%, rgb(240,240,240) 55%);
+
+    background-image: -webkit-gradient(
+	   linear,
+	   left bottom,
+	   left top,
+	   color-stop(0.1, rgb(177,174,181)),
+	   color-stop(0.55, rgb(240,240,240))
+    );
+}
+
+.hoursItem-name {
+    position: absolute;
+    display: block;
+    top: 24px;
+    left: 30px;
+    width: 280px;
+    font-size: 15pt;
+}
+
+.hoursItem-startDate {
+    
+    display: block;
+    position: absolute;
+    display: block;
+    right: 30px;
+    top: 15px;
+    font-size: 10pt;
+}
+
+.hoursItem-endDate {
+    
+    display: block;
+    position: absolute;
+    display: block;
+    right: 30px;
+    bottom: 15px;
+    font-size: 10pt;
+}
 /* styling for groupFitness*/
 
 #specialDaysButton {
