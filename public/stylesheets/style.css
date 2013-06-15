@@ -209,12 +209,12 @@ textarea {
     width: 600px;
     border-radius: 10px;
     text-align: center;
-    height: 30px;
-    line-height: 30px;
+    height: 40px;
+    line-height: 40px;
     margin: 30px auto;
     font-weight: bold;
     background-color: #f99902;
-    box-shadow: #888888 6px 5px 4px 0px;
+    box-shadow: #555555 6px 5px 4px 0px;
 }
 
 .hoursList {
