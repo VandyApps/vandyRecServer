@@ -144,7 +144,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 			DateHelper.dateWithEmptyTime(sliceDate);
 
 			var returnUndefined = false;
-			if (typeof this.getEndDate() !== 'undefined' && DateHelper.equalDates(sliceDate, this.getEndDate())) {
+			if (this.getEndDate() !== undefined && DateHelper.equalDates(sliceDate, this.getEndDate())) {
 				returnUndefined = true;
 			}
 
@@ -253,7 +253,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 		var dateString;
 		if (typeof date === 'string') {
 			dateString = date;
-		} else if (typeof date = 'object') {
+		} else if (typeof date === 'object') {
 			dateString = DateHelper.dateStringFromDate(date);
 		}
 
