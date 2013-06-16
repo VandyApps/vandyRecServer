@@ -42,6 +42,14 @@ HoursModel.Hours = Backbone.Model.extend({
 	getPriorityNumber: function() {
 		return this.get('priorityNumber');
 	},
+	getTimeObjectForDay: function(weekDay) {
+		var timesArray = this.get('times'), timeObject = null;
+		if (timesArray.length > weekDay && timesArray[weekDay] !== undefined) {
+			
+			timeObject = timesArray[weekDay];
+		} 
+		return timeObject;
+	},
 	isFacilityHours: function() {
 		return this.get('facilityHours');
 	},
