@@ -139,7 +139,30 @@ HoursView.HoursWindow = Backbone.View.extend({
     delete: function() {
 
     },
+    //this method makes changes to the model and to 
+    //the view
     setHours: function(weekDay, timeObject) {
-
+        this.model.setTimesForDay(weekDay, timeObject);
+        var listElement = $('#hoursWindow-times-'+weekDay);
+        if (listElement.length === 1) {
+            //element exists
+            console.log("element exists");
+        } else {
+            //element does not exist, must create the entire
+            // element and insert it into the correct slot of the list
+            console.log("Element does not exist");
+        }
+    },
+    //get the week day of the list item at the given index in
+    //the unordered list
+    getDayForItemAtIndex: function(index) {
+        var length = $('#hoursWindow-times').children().length,
+            element = (index < length) ? $('#hoursWindow-times').children().eq(index) : null,
+            elementID = (element) ? element.attr('id') : null;
+            if (elementID) {
+                return +(elementID.substr(elementID.length - 1, 1));
+            } else {
+                throw new Error("Searching for list item in hours of operation list using out of range index");
+            }
     }
 });
