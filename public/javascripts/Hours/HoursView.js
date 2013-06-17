@@ -82,9 +82,9 @@ HoursView.HoursTable = Backbone.View.extend({
     //if the list is not sorted before this method is
     //called, the list is sorted before adding the new element
     add: function(hoursItem) {
+        var itemAdded = false, i;
         if (this.isSorted()) {
-            var itemAdded = false;
-            for (var i = 0; i < this.views; ++i) {
+            for (i = 0; i < this.views; ++i) {
                 if (hoursItem.getSortValue() < this.views[i].getSortValue()) {
                     itemAdded = true;
                     this.views.slice(i, 0, hoursItem);
@@ -106,4 +106,40 @@ HoursView.HoursTable = Backbone.View.extend({
         return true;
     }
 
+});
+
+HoursView.HoursWindow = Backbone.View.extend({
+
+    model: HoursModel.Hours,
+    el: '#hoursWindow',
+    isEditting: false,
+    initialize: function() {
+
+    },
+    render: function() {
+        
+    },
+    //appends new hours to the time object
+    appendHoursToView: function(weekDay, timeObject) {
+        var firstPortion = $("<li class='hoursWindow-listItem' id='hoursWindow-times-"+weekDay+"'></li>")
+                .appendTo('#hoursWindow-times', this.$el)
+                //append these div tags to the element that 
+                //was just created
+                .append("<div class='hoursWindow-listItem-edit'>edit</div>")
+                .append("<div class='hoursWindow-listItem-title'>"+DateHelper.weekDayAsString(weekDay)+"</div>"),
+
+            secondPortion = $("<div class='hoursWindow-listItem-timeRange'></div>").appendTo(firstPortion)
+                .append("<span class='hoursWindow-listItem-startTime'>"+timeObject.startTime+"</span>")
+                .append("<span>-</span>")
+                .append("<span class='hoursWindow-listItem-endTime'>"+timeObject.endTime+"</span>"),
+
+            thirdPortion = $("<div class='hoursWindow-listItem-sameAsAbove'>Same As Above</div>").appendTo(firstPortion);
+        
+    },
+    delete: function() {
+
+    },
+    setHours: function(weekDay, timeObject) {
+
+    }
 });
