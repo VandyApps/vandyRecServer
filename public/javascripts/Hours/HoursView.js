@@ -11,7 +11,7 @@ HoursView.HoursItem = Backbone.View.extend({
     test: function() {
         console.log("The element was clicked");
     },
-    initialize: function(options) {
+    initialize: function() {
         this.render();
 
     },
@@ -22,6 +22,7 @@ HoursView.HoursItem = Backbone.View.extend({
     },
     showWindow: function() {
         //window not yet implemented
+        console.log("Show the window here");
     },
     //sort value that is used to determine 
     //the ordering of the elements in the list
@@ -91,7 +92,7 @@ HoursView.HoursTable = Backbone.View.extend({
     add: function(hoursItem) {
         var itemAdded = false, i;
         if (this.isSorted()) {
-            for (i = 0; i < this.views; ++i) {
+            for (i = 0; i < this.views && !itemAdded; ++i) {
                 if (hoursItem.getSortValue() < this.views[i].getSortValue()) {
                     itemAdded = true;
                     this.views.slice(i, 0, hoursItem);
@@ -105,7 +106,8 @@ HoursView.HoursTable = Backbone.View.extend({
     },
     //checks if the list is sorted
     isSorted: function() {
-        for (var i = 1; i < this.views.length; ++i) {
+        var i = 1;
+        for (i = 1; i < this.views.length; ++i) {
             if (this.views[i].getSortValue() < this.views[i-1].getSortValue()) {
                 return false;
             }
@@ -120,10 +122,10 @@ HoursView.HoursWindow = Backbone.View.extend({
     el: '#hoursWindow',
     isEditting: false,
     initialize: function() {
-
+        this.render();
     },
     render: function() {
-        
+        console.log("Rendering the window here");
     },
     //appends new hours to the time object
     appendHoursToView: function(weekDay, timeObject) {
@@ -132,18 +134,18 @@ HoursView.HoursWindow = Backbone.View.extend({
                 //append these div tags to the element that 
                 //was just created
                 .append("<div class='hoursWindow-listItem-edit'>edit</div>")
-                .append("<div class='hoursWindow-listItem-title'>"+DateHelper.weekDayAsString(weekDay)+"</div>"),
+                .append("<div class='hoursWindow-listItem-title'>"+DateHelper.weekDayAsString(weekDay)+"</div>");
 
-            secondPortion = $("<div class='hoursWindow-listItem-timeRange'></div>").appendTo(firstPortion)
-                .append("<span class='hoursWindow-listItem-startTime'>"+timeObject.startTime+"</span>")
-                .append("<span>-</span>")
-                .append("<span class='hoursWindow-listItem-endTime'>"+timeObject.endTime+"</span>"),
+        $("<div class='hoursWindow-listItem-timeRange'></div>").appendTo(firstPortion)
+            .append("<span class='hoursWindow-listItem-startTime'>"+timeObject.startTime+"</span>")
+            .append("<span>-</span>")
+            .append("<span class='hoursWindow-listItem-endTime'>"+timeObject.endTime+"</span>");
 
-            thirdPortion = $("<div class='hoursWindow-listItem-sameAsAbove'>Same As Above</div>").appendTo(firstPortion);
+        $("<div class='hoursWindow-listItem-sameAsAbove'>Same As Above</div>").appendTo(firstPortion);
         
     },
     delete: function() {
-
+         console.log("Delete element and remove hours window");
     },
     //this method makes changes to the model and to 
     //the view
@@ -167,11 +169,11 @@ HoursView.HoursWindow = Backbone.View.extend({
             elementID = (element) ? element.attr('id') : null;
             if (elementID) {
                 return +(elementID.substr(elementID.length - 1, 1));
-            } else {
-                throw new Error("Searching for list item in hours of operation list using out of range index");
             }
+            throw new Error("Searching for list item in hours of operation list using out of range index");
     },
     edit: function() {
         //show window and bind events to check when to remove window
+        console.log("Editing the time range for a single element in the hours of operation list");
     }
 });
