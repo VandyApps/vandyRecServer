@@ -5,13 +5,20 @@ HoursView.HoursItem = Backbone.View.extend({
     model: HoursModel.Hours,
     tagName: 'li',
 
+    events: {
+        'click': 'test'
+    },
+    test: function() {
+        console.log("The element was clicked");
+    },
     initialize: function(options) {
         this.render();
+
     },
     render: function() {
-        this.$el.append('<div class="hoursItem-name">'+this.model.getName()+'</div>');
-        this.$el.append('<div class="hoursItem-startDate">'+this.model.get('startDate')+'</div>');
-        this.$el.append('<div class="hoursItem-endDate">'+this.model.get('endDate')+'</div>');
+        this.$el.append('<div class="hoursItem-name">'+this.model.getName()+'</div>')
+                .append('<div class="hoursItem-startDate">'+this.model.get('startDate')+'</div>')
+                .append('<div class="hoursItem-endDate">'+this.model.get('endDate')+'</div>');
     },
     showWindow: function() {
         //window not yet implemented
@@ -110,7 +117,6 @@ HoursView.HoursTable = Backbone.View.extend({
 
 HoursView.HoursWindow = Backbone.View.extend({
 
-    model: HoursModel.Hours,
     el: '#hoursWindow',
     isEditting: false,
     initialize: function() {
@@ -164,5 +170,8 @@ HoursView.HoursWindow = Backbone.View.extend({
             } else {
                 throw new Error("Searching for list item in hours of operation list using out of range index");
             }
+    },
+    edit: function() {
+        //show window and bind events to check when to remove window
     }
 });
