@@ -161,8 +161,8 @@ HoursView.HoursWindow = Backbone.View.extend({
         if (this.model.isBaseHours()) {
             $('#hoursWindow-priorityNumberSelect').hide();
             $('#hoursWindow-priorityNumberBase').show();
-            $('hoursWindow-delete').hide();
-            $('hoursWindow-editDates').hide();
+            $('#hoursWindow-delete').hide();
+            $('#hoursWindow-editDates').hide();
         } else {
 
             $('#hoursWindow-priorityNumberSelect').show();
