@@ -137,14 +137,39 @@ HoursView.HoursWindow = Backbone.View.extend({
         console.log("Render was called");
         var times = this.model.get('times'),
             i, n;
+
+        //clear all the existing elements within the hours of operation
+        $('#hoursWindow-times', this.$el).children().remove();
+
         $('#hoursWindow-hoursStartDate', this.$el).text(this.model.get('startDate'));
         $('#hoursWindow-hoursEndDate', this.$el).text(this.model.get('endDate'));
-        $('#hoursWindow-priorityNumber').val(this.model.getPriorityNumber().toString());
+        
+
+
         for (i = 0, n = times.length; i < n; ++i) {
             //must check if the timeObject at the index exists first
             if (times[i] !== undefined) {
                 this.appendHoursToView(i, times[i]);
             }
+        }
+
+        
+        $('#hoursWindow-priorityNumber').hide();
+
+        //render the view differently for baseHours
+        //and non-baseHours
+        if (this.model.isBaseHours()) {
+            $('#hoursWindow-priorityNumberSelect').hide();
+            $('#hoursWindow-priorityNumberBase').show();
+            $('hoursWindow-delete').hide();
+            $('hoursWindow-editDates').hide();
+        } else {
+
+            $('#hoursWindow-priorityNumberSelect').show();
+            $('#hoursWindow-priorityNumberBase').hide();
+            $('#hoursWindow-priorityNumber').val(this.model.getPriorityNumber().toString());
+            $('hoursWindow-delete').show();
+            $('hoursWindow-editDates').show();
         }
     },
     //appends new hours to the time object

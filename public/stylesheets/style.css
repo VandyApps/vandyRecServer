@@ -211,7 +211,7 @@ textarea {
     height: 500px;
     margin-left: -200px;
     margin-top: -250px;
-    top: 30%;
+    top: 70%;
     left: 50%;
     z-index: 1000000;
     background-color: white;
@@ -312,10 +312,13 @@ textarea {
     top: 80px;
     left: 150px;
 }
-#hoursWindow-priorityNumber {
+#hoursWindow-priorityNumberSelect, #hoursWindow-priorityNumberBase {
     position: absolute;
     top: 110px;
     left: 194px;
+}
+#hoursWindow-priorityNumberBase {
+    color: red;
 }
 
 #hoursWindow-timesHeader {
