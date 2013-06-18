@@ -8,6 +8,8 @@
             priorityNumber: 0, 
             startDate: '05/02/2013',
             endDate: '08/17/2013',
+            facilityHours: true,
+            closedHours: false,
             times: 
             [
                 {startTime: '08:30am', endTime: '12:00pm'},
