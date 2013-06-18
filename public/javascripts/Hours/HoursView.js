@@ -90,19 +90,28 @@ HoursView.HoursTable = Backbone.View.extend({
     //if the list is not sorted before this method is
     //called, the list is sorted before adding the new element
     add: function(hoursItem) {
+        console.log("Add was called");
         var itemAdded = false, i;
-        if (this.isSorted()) {
-            for (i = 0; i < this.views && !itemAdded; ++i) {
-                if (hoursItem.getSortValue() < this.views[i].getSortValue()) {
-                    itemAdded = true;
-                    this.views.slice(i, 0, hoursItem);
+        if (this.views.length !== 0) {
+
+            if (this.isSorted()) {
+                for (i = 0; i < this.views && !itemAdded; ++i) {
+                    if (hoursItem.getSortValue() < this.views[i].getSortValue()) {
+                        itemAdded = true;
+                        this.views.slice(i, 0, hoursItem);
+                    }
                 }
+            } else {
+                
+                this.views.push(hoursItem);
+                this.sort();
+                this.reload();
             }
         } else {
             this.views.push(hoursItem);
-            this.sort();
-            this.reload();
+            this.$el.append(hoursItem.$el);
         }
+      
     },
     //checks if the list is sorted
     isSorted: function() {
