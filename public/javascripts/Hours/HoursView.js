@@ -24,7 +24,7 @@ HoursView.HoursItem = Backbone.View.extend({
     //sort value that is used to determine 
     //the ordering of the elements in the list
     getSortValue: function() {
-        return this.model.getStartDate();
+        return this.model.getStartDate().getTime();
     }
 });
 
@@ -87,19 +87,28 @@ HoursView.HoursTable = Backbone.View.extend({
     //if the list is not sorted before this method is
     //called, the list is sorted before adding the new element
     add: function(hoursItem) {
-        console.log("Add was called");
-        var itemAdded = false, i;
+        var itemAdded = false, i, n;
         if (this.views.length !== 0) {
-
             if (this.isSorted()) {
-                for (i = 0; i < this.views && !itemAdded; ++i) {
+                for (i = 0, n = this.views.length; i < n && !itemAdded; ++i) {
+                    
                     if (hoursItem.getSortValue() < this.views[i].getSortValue()) {
+                        
                         itemAdded = true;
-                        this.views.slice(i, 0, hoursItem);
+                        this.views = this.views.slice(0, i).concat([hoursItem]).concat(this.views.slice(i, n - i));
+                        this.$el.children().eq(i).before(hoursItem.$el);
+
                     }
                 }
+                if (!itemAdded) {
+                    //then append the element because it goes
+                    //after all existing elemements
+                    this.views.push(hoursItem);
+                    this.$el.append(hoursItem.$el);
+                }
+
             } else {
-                
+                console.log("The list is already sorted");
                 this.views.push(hoursItem);
                 this.sort();
                 this.reload();
@@ -113,6 +122,10 @@ HoursView.HoursTable = Backbone.View.extend({
     //checks if the list is sorted
     isSorted: function() {
         var i = 1;
+        if (this.views.length === 0 || this.views.length === 1) {
+            return true;
+        }
+
         for (i = 1; i < this.views.length; ++i) {
             if (this.views[i].getSortValue() < this.views[i-1].getSortValue()) {
                 return false;

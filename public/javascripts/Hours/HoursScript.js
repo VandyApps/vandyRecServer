@@ -1,5 +1,5 @@
-(function(global) {
-
+//(function(global) {
+var global = this;
     var hoursCollection = new global.HoursModel.HoursCollection();
 
     var model1 = new HoursModel.Hours(
@@ -62,4 +62,4 @@
     hoursTableView.add(hoursItem2);
     hoursTableView.add(hoursItem3);
 
-})(this);
+//})(this);
