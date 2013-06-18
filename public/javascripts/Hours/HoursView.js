@@ -132,9 +132,7 @@ HoursView.HoursWindow = Backbone.View.extend({
         'mouseenter #hoursWindow-exit': 'hoverOnExit',
         'mouseleave #hoursWindow-exit': 'hoverOffExit'
     },
-    initialize: function() {
-        this.render();
-    },
+    
     render: function() {
         console.log("Rendering the window here");
     },

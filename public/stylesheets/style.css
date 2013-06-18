@@ -269,9 +269,10 @@ textarea {
     text-align: center;
     color: blue;
 }
-#hoursWindow-body>div:nth-child(2), #hoursWindow-body>div:nth-child(4){
+#hoursWindow-body>div:nth-child(2), #hoursWindow-body>div:nth-child(4), #hoursWindow-body>div:nth-child(6){
+    
     width: 100px;
-    text-align: center;
+    text-align: right;
     height: 20px;
     line-height: 20px;
     position: absolute;
@@ -287,24 +288,34 @@ textarea {
     line-height: 20px;
     text-align: center;
     display: block;
+    
 }
 
 #hoursWindow-body>div:nth-child(2) {
-    top: 40px;
+    top: 50px;
     left: 20px;
 }
 
 #hoursWindow-body>div:nth-child(4) {
-    top: 40px;
-    right: 20px;
+    top: 80px;
+    left: 20px;
+}
+#hoursWindow-body>div:nth-child(6) {
+    top: 110px;
+    left: 20px;
 }
 #hoursWindow-hoursStartDate {
-    top: 70px;
-    left: 10px;
+    top: 50px;
+    left: 150px;
 }
 #hoursWindow-hoursEndDate {
-    top: 70px;
-    right: 10px;
+    top: 80px;
+    left: 150px;
+}
+#hoursWindow-priorityNumber {
+    position: absolute;
+    top: 110px;
+    left: 194px;
 }
 
 #hoursWindow-timesHeader {
@@ -313,29 +324,29 @@ textarea {
     border-bottom: solid black 2px;
     position: absolute;
     width: 401px;
-    top: 130px;
+    top: 200px;
     height: 25px;
     line-height: 25px;
     text-align:center;
     background-color: #f99902;
 }
 #hoursWindow-delete {
-    font-size: 10pt;
+    font-size: 12pt;
     border: solid black 1px;
     position: absolute;
     border-radius: 5px;
     text-align: center;
     background-color: red;
-    width: 100px;
-    height: 20px;
-    line-height: 20px;
-    left: 150px;
-    top: 100px;
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    left: 100px;
+    top: 160px;
     cursor: pointer;
 }
 #hoursWindow-times {
     position: absolute;
-    top: 143px;
+    top:213px;
     width: 360px;
     overflow-y: auto;
     overflow-x: hidden;
