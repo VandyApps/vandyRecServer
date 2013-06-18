@@ -211,7 +211,7 @@ textarea {
     height: 500px;
     margin-left: -200px;
     margin-top: -250px;
-    top: 55%;
+    top: 30%;
     left: 50%;
     z-index: 1000000;
     background-color: white;
@@ -345,9 +345,11 @@ textarea {
     cursor: pointer;
 }
 #hoursWindow-times {
+    
     position: absolute;
     top:213px;
-    width: 360px;
+    width: 354px;
+    height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
     
