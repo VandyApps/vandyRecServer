@@ -6,10 +6,7 @@ HoursView.HoursItem = Backbone.View.extend({
     tagName: 'li',
 
     events: {
-        'click': 'test'
-    },
-    test: function() {
-        console.log("The element was clicked");
+        'click': 'showWindow'
     },
     initialize: function() {
         this.render();
@@ -22,7 +19,7 @@ HoursView.HoursItem = Backbone.View.extend({
     },
     showWindow: function() {
         //window not yet implemented
-        console.log("Show the window here");
+        hoursWindowView.show();
     },
     //sort value that is used to determine 
     //the ordering of the elements in the list
@@ -201,8 +198,9 @@ HoursView.HoursWindow = Backbone.View.extend({
          
         $('#windowPrimer').hide();
         this.$el.hide(); 
+        return this;
     }
-    return this;
+    
 });
 
 
