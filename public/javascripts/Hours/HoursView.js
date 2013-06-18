@@ -194,14 +194,15 @@ HoursView.HoursWindow = Backbone.View.extend({
             $('#windowPrimer').css({'z-index': 100}).show();
             this.$el.show();
         }
+        return this;
         
     },
     hide: function() {
          
         $('#windowPrimer').hide();
-        this.$el.hide();
-        
+        this.$el.hide(); 
     }
+    return this;
 });
 
 
