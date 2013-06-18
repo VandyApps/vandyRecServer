@@ -108,7 +108,7 @@ HoursView.HoursTable = Backbone.View.extend({
                 }
 
             } else {
-                console.log("The list is already sorted");
+                
                 this.views.push(hoursItem);
                 this.sort();
                 this.reload();
