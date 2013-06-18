@@ -19,7 +19,7 @@ HoursView.HoursItem = Backbone.View.extend({
     },
     showWindow: function() {
         //window not yet implemented
-        hoursWindowView.show().displayModel();
+        hoursWindowView.show().displayModel(this.model);
     },
     //sort value that is used to determine 
     //the ordering of the elements in the list
@@ -134,7 +134,18 @@ HoursView.HoursWindow = Backbone.View.extend({
     },
     
     render: function() {
-        console.log("Rendering the window here");
+        console.log("Render was called");
+        var times = this.model.get('times'),
+            i, n;
+        $('#hoursWindow-hoursStartDate', this.$el).text(this.model.get('startDate'));
+        $('#hoursWindow-hoursEndDate', this.$el).text(this.model.get('endDate'));
+        $('#hoursWindow-priorityNumber').val(this.model.getPriorityNumber().toString());
+        for (i = 0, n = times.length; i < n; ++i) {
+            //must check if the timeObject at the index exists first
+            if (times[i] !== undefined) {
+                this.appendHoursToView(i, times[i]);
+            }
+        }
     },
     //appends new hours to the time object
     appendHoursToView: function(weekDay, timeObject) {
@@ -159,6 +170,7 @@ HoursView.HoursWindow = Backbone.View.extend({
     //for rendering new models
     displayModel: function(model) {
         this.model = model;
+        console.log("Model was just set "+this.model);
         this.render();
         return this;
     },
