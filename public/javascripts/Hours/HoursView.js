@@ -19,7 +19,7 @@ HoursView.HoursItem = Backbone.View.extend({
     },
     showWindow: function() {
         //window not yet implemented
-        hoursWindowView.show();
+        hoursWindowView.show().displayModel();
     },
     //sort value that is used to determine 
     //the ordering of the elements in the list
@@ -153,6 +153,12 @@ HoursView.HoursWindow = Backbone.View.extend({
     delete: function() {
          console.log("Delete element and remove hours window");
     },
+    //for rendering new models
+    displayModel: function(model) {
+        this.model = model;
+        this.render();
+        return this;
+    },
     //this method makes changes to the model and to 
     //the view
     setHours: function(weekDay, timeObject) {
@@ -200,6 +206,7 @@ HoursView.HoursWindow = Backbone.View.extend({
         this.$el.hide(); 
         return this;
     }
+
     
 });
 
