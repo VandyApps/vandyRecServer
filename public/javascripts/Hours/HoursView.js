@@ -184,5 +184,27 @@ HoursView.HoursWindow = Backbone.View.extend({
     edit: function() {
         //show window and bind events to check when to remove window
         console.log("Editing the time range for a single element in the hours of operation list");
+    },
+    show: function(animate) {
+        if (animate) {
+            $('#windowPrimer').css({'z-index': 100}).fadeIn(400, function() {
+                this.$el.show();
+            }.bind(this));
+        } else {
+            $('#windowPrimer').css({'z-index': 100}).show();
+            this.$el.show();
+        }
+        
+    },
+    hide: function() {
+         
+        $('#windowPrimer').hide();
+        this.$el.hide();
+        
     }
 });
+
+
+//global variables related to the view
+//are defined here
+var hoursWindowView = new HoursView.HoursWindow();

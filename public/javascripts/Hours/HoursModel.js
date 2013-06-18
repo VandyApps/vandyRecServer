@@ -108,3 +108,6 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 		});
 	}
 });
+
+//global variables related to
+//the model are defined here
