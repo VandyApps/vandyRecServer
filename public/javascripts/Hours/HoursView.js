@@ -127,6 +127,11 @@ HoursView.HoursWindow = Backbone.View.extend({
 
     el: '#hoursWindow',
     isEditting: false,
+    events: {
+        'click #hoursWindow-exit': 'hide',
+        'mouseenter #hoursWindow-exit': 'hoverOnExit',
+        'mouseleave #hoursWindow-exit': 'hoverOffExit'
+    },
     initialize: function() {
         this.render();
     },
@@ -205,6 +210,12 @@ HoursView.HoursWindow = Backbone.View.extend({
         $('#windowPrimer').hide();
         this.$el.hide(); 
         return this;
+    },
+    hoverOnExit: function() {
+        $('#hoursWindow-exit').animate({backgroundColor: '#c97b01'}, 400);
+    },
+    hoverOffExit: function() {
+        $('#hoursWindow-exit').animate({backgroundColor: 'rgba(0,0,0,0)'}, 400);
     }
 
     
