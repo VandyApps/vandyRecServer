@@ -204,6 +204,7 @@ textarea {
 /* styling for hours */
 
 #hoursWindow {
+    display: none;
     position: fixed;
     border: solid black 2px;
     width: 400px;
