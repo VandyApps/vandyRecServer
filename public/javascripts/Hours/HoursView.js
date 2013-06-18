@@ -134,10 +134,12 @@ HoursView.HoursWindow = Backbone.View.extend({
     },
     
     render: function() {
-        console.log("Render was called");
+        
         var times = this.model.get('times'),
             i, n;
 
+        console.log("Dont forget to fill in the table section in the category at the top right corner");
+        $('#hoursWindow-title').text(this.model.getName());
         //clear all the existing elements within the hours of operation
         $('#hoursWindow-times', this.$el).children().remove();
 
