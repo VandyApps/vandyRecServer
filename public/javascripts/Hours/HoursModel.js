@@ -71,7 +71,7 @@ HoursModel.Hours = Backbone.Model.extend({
 
 HoursModel.HoursCollection = Backbone.Collection.extend({
 	model: HoursModel.Hours,
-	url: '',
+	url: '/JSON/hours',
 
 	getBaseHours: function() {
 		return [].filter.call(this.models, function(model) {
