@@ -700,7 +700,7 @@ textarea {
     font-size: 9pt;
 }
 
-#windowPrimer {
+.windowPrimer {
     display: none;
     position: absolute;
     

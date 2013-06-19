@@ -248,11 +248,11 @@ HoursView.HoursWindow = Backbone.View.extend({
     },
     show: function(animate) {
         if (animate) {
-            $('#windowPrimer').css({'z-index': 100}).fadeIn(400, function() {
+            $('#hoursWindowPrimer').css({'z-index': 100}).fadeIn(400, function() {
                 this.$el.show();
             }.bind(this));
         } else {
-            $('#windowPrimer').css({'z-index': 100}).show();
+            $('#hoursWindowPrimer').css({'z-index': 100}).show();
             this.$el.show();
         }
         return this;
@@ -260,7 +260,7 @@ HoursView.HoursWindow = Backbone.View.extend({
     },
     hide: function() {
          
-        $('#windowPrimer').hide();
+        $('#hoursWindowPrimer').hide();
         this.$el.hide(); 
         return this;
     },

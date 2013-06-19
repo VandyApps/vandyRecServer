@@ -154,7 +154,7 @@ GFView.BlockView = Backbone.View.extend({
 				//false for no animation
 				formWindowView.addClass(fitnessClass, false);
 			});
-			$('#windowPrimer').fadeIn(400, function() {
+			$('#GFWindowPrimer').fadeIn(400, function() {
 				$('#formWindow').show();
 			});
 		}
@@ -657,7 +657,7 @@ GFView.ClassForm = Backbone.View.extend({
 		
 	},
 	exit: function() {
-		$('#windowPrimer').hide();
+		$('#GFWindowPrimer').hide();
 		$('#formWindow').hide();
 		//hide the form if it was open
 		$('#formWindow-newClass-form').hide();
@@ -900,7 +900,7 @@ GFView.SpecialDateForm = Backbone.View.extend({
 
 	},
 	exit: function() {
-		$('#windowPrimer').hide();
+		$('#GFWindowPrimer').hide();
 		$('#specialDayWindow').hide();
 		//hide the form if it was open
 		$('#specialDayWindow-newDate-form').hide();
@@ -1001,14 +1001,14 @@ $('#rightArrow').click(function() {
 	monthView.incrementMonth();
 });
 
-$('#windowPrimer').click(function() {
+$('#GFWindowPrimer').click(function() {
 	$('#specialDayWindow, #formWindow').hide();
 	$(this).hide();
 });
 
 $('#specialDaysButton').click(function() {
 			
-	$('#windowPrimer').fadeIn(400, function() {
+	$('#GFWindowPrimer').fadeIn(400, function() {
 		specialDates.each(function(specialDate) {
 			this.addDates(specialDate, false);
 		}, specialDateForm);
