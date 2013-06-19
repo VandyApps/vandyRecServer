@@ -3,7 +3,9 @@
     //create the table views for backbone
     var tableViews = [],
         hoursCollection = new global.HoursModel.HoursCollection();
-      
+    
+    global.hoursCollection = hoursCollection;
+
     hoursCollection.fetch();
     hoursCollection.on('reset' , function() {
         var i, views;
@@ -20,17 +22,17 @@
             });
             break;
         case 2:
-            view = hoursCollection.getClosedHours().map(function(model) {
+            views = hoursCollection.getClosedHours().map(function(model) {
                 return new this.HoursView.HoursItem({model: model});
             });
             break;
         case 3:
-            view = hoursCollection.getOtherHours(false).map(function(model) {
+            views = hoursCollection.getOtherHours(false).map(function(model) {
                 return new this.HoursView.HoursItem({model: model});
             });
             break;
         default:
-            console.log("The iterator for creating Table views in hours passed index 3");
+            console.log("The iterator for creating Table views in hours passed index 3. Should never happen");
             break;
         }
         tableViews.push(new global.HoursView.HoursTable({type: i, views: views}));
