@@ -80,18 +80,24 @@ app.put('/news', routes.updateNews);
 app.post('/news', routes.createNews);
 app.delete('/news', routes.deleteNews);
 
+app.get('/hours', routes.hours);
+app.put('/hours', routes.updateHours);
+app.post('/hours', routes.createHours);
+app.delete('/hours', routes.deleteHours);
+
 app.get('/groupFitness', routes.groupFitness);
 app.put('/groupFitness', routes.updateGF);
 app.post('/groupFitness', routes.createGF);
 app.delete('/groupFitness', routes.deleteGF);
 
-app.get('/hours', routes.hours);
+
 app.get('/traffic', routes.traffic);
 app.get('/intramurals', routes.intramurals);
 app.get('/programs', routes.programs);
 
 //JSON data for all the tabs
 app.get('/JSON/news', data.news);
+app.get('/JSON/hours', data.hours);
 app.get('/JSON/GF', data.groupFitness);
 
 passport.serializeUser(function(user, done) {

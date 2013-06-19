@@ -7,6 +7,10 @@ exports.news = function(req, res) {
 	});
 };
 
+exports.hours = function(req, res) {
+	res.send("JSON rendering of hours has not yet been setup");
+};
+
 exports.groupFitness = function(req, res) {
 	if (typeof req.query.type === 'undefined') {
 		db.allGFObjects(function(err, collection) {
@@ -42,4 +46,4 @@ exports.groupFitness = function(req, res) {
 		res.send("Type parameter was not recognized by GET method, must be GFSpecialDate or GFClass");
 	}
 	
-}
+};

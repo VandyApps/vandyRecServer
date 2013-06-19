@@ -97,6 +97,17 @@ exports.hours = function(req, res) {
 	
 };
 
+exports.updateHours = function(req, res) {
+	res.send("Updating the hours here");
+};
+
+exports.createHours = function(req, res) {
+	res.send("Creating new hours here");
+};
+
+exports.deleteHours = function(req, res) {
+	res.send("Deleting hours here");
+};
 
 //traffic methods 
 exports.traffic = function(req, res) {
@@ -191,7 +202,7 @@ exports.deleteGF = function(req, res) {
 		}
 		
 	});
-}
+};
 
 //intramurals methods
 exports.intramurals = function(req, res) {
