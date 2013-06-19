@@ -8,7 +8,10 @@ exports.news = function(req, res) {
 };
 
 exports.hours = function(req, res) {
-	res.send("JSON rendering of hours has not yet been setup");
+	db.hoursCollection(function(collection) {
+		res.statusCode = 200;
+		res.send(collection);
+	});
 };
 
 exports.groupFitness = function(req, res) {

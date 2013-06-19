@@ -156,10 +156,20 @@
 				});
 			});
 		});
-	}
+	};
 
 
-	
+	exports.hoursCollection = function(callback) {
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.hours, function(err, collection) {
+				collection.find(function(err, cursor) {
+					cursor.toArray(function(err, collection) {
+						callback(collection);
+					});
+				});
+			}); 
+		});
+	};
 
 	exports.allGFObjects = function(callback) {
 		Db.connect(MONGODB_URL, function(err, db) {
