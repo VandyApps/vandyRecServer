@@ -1,7 +1,13 @@
-//(function(global) {
-var global = this;
-    
+(function(global) {
 
+    //create the table views for backbone
+    var tableViews = [], i;
+    for (i = 0; i < 4; ++i) {
+        tableViews.push(new global.HoursView.hoursTable({type: i}));
+    }
+    //fetch the data from the server and sort the data into the correct tables
+
+    //demo data
     var model1 = new HoursModel.Hours(
         {
             name: 'Summer Hours', 
@@ -136,7 +142,6 @@ var global = this;
                 {startTime: '06:00am', endTime: '06:00pm'}
             ]
         });
-    //global.hoursCollection.add(model1);
 
     var hoursItem1 = new global.HoursView.HoursItem({model: model1});
     var hoursItem2 = new global.HoursView.HoursItem({model: model2});
@@ -147,4 +152,4 @@ var global = this;
     hoursTableView.add(hoursItem2);
     hoursTableView.add(hoursItem3);
 
-//})(this);
+})(this);
