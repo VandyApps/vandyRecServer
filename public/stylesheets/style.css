@@ -424,6 +424,21 @@ textarea {
     background-color: #f99902;
     box-shadow: #555555 6px 5px 4px 0px;
 }
+.hoursSectionHeader-add {
+    background-color: black;
+    color: white;
+    position: relative;
+    margin-bottom: -40px;
+    top: -66px;
+    border-radius: 15px;
+    left: 770px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 18pt;
+    cursor: pointer;
+}
 .hoursWindow-listItem-sameAsAbove {
     border: solid black 1px;
     position: absolute;
