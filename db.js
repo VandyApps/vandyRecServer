@@ -47,7 +47,7 @@
 		console.log(username + " " + password);
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collections.users, function(err, collection) {
-				collection.find({username: username}, {username: true, userID: true}, function(err, cursor) {
+				collection.find({username: username, password: password}, {username: true, userID: true}, function(err, cursor) {
 					cursor.toArray(function(err, collection) {
 						if (err || collection.length === 0) {
 							console.log("found nothing; error is "+err+" and collection is "+collection);
@@ -159,23 +159,7 @@
 	}
 
 
-	//related to groupFitness collection
-	var fieldsToRender = {
-						//related to both
-						type: true,
-						startDate: true,
-						endDate: true,
-						//related to GFClass
-						className: true,
-						instructor: true,
-						timeRange: true,
-						dayOfWeek: true,
-						cancelledDates: true,
-						specialDateClass: true,
-						//related to SpecialDate
-						title: true
-						
-					};
+	
 
 	exports.allGFObjects = function(callback) {
 		Db.connect(MONGODB_URL, function(err, db) {
@@ -184,7 +168,7 @@
 				//only want to render some of the stored JSON
 				//other JSON that is not rendered is in place 
 				//to make queries easier
-				collection.find({}, fieldsToRender, function(err, cursor) {
+				collection.find({}, renderProperties.GF, function(err, cursor) {
 					cursor.toArray(function(err, collection) {
 						callback(err, collection);
 						db.close();
@@ -210,7 +194,7 @@
 		Db.connect(MONGODB_URL, function(error, db) {
 
 			db.collection(Collections.groupFitness, function(err, collection) {
-				collection.find(dateQuery, fieldsToRender, function(err, cursor) {
+				collection.find(dateQuery, renderProperties.GF, function(err, cursor) {
 					cursor.toArray(function(err, collection) {
 						callback(err, collection);
 						db.close();
@@ -226,7 +210,7 @@
 
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collections.groupFitness, function(err, collection) {
-				collection.find(SDQuery, fieldsToRender, function(err, cursor) {
+				collection.find(SDQuery, renderProperties.GF, function(err, cursor) {
 					cursor.toArray(function(err, collection) {
 						callback(err, collection);
 						db.close();
