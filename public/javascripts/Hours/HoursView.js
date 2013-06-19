@@ -49,6 +49,7 @@ HoursView.HoursTable = Backbone.View.extend({
 
         //add elements from the views
         this.views.forEach(function(view) {
+            console.log("Appending view");
             this.$el.append(view.$el);
         }, this);
     },
