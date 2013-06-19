@@ -47,9 +47,11 @@ HoursView.HoursTable = Backbone.View.extend({
         //index corresponding to the type number
         this.$el = $('.hoursList:eq('+this.type+')');
 
+        //remove any children that might be in the view already
+        this.$el.children().remove();
+
         //add elements from the views
         this.views.forEach(function(view) {
-            console.log("Appending view");
             this.$el.append(view.$el);
         }, this);
     },
