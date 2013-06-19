@@ -3,7 +3,7 @@
     //create the table views for backbone
     var tableViews = [], i;
     for (i = 0; i < 4; ++i) {
-        tableViews.push(new global.HoursView.hoursTable({type: i}));
+        tableViews.push(new global.HoursView.HoursTable({type: i}));
     }
     //fetch the data from the server and sort the data into the correct tables
 
