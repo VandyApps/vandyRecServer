@@ -1,22 +1,38 @@
 //closure to protect namespace
 (function(exports) {
 
+	//import modules
 	var mongodb = require('mongodb'),
 	Db = require('mongodb').Db,
 	MongoClient = require('mongodb').MongoClient,
 	Server = require('mongodb').Server,
-	ObjectID = require('mongodb').ObjectID;
+	ObjectID = require('mongodb').ObjectID,
 
-	var MONGODB_URL;
-
-	//other collections to be added later
-	var Collections = 
-	{
+	//other variables
+	MONGODB_URL,
+	Collections = {
 		users: 'users',
 		news: 'news',
 		hours: 'hours',
 		groupFitness: 'groupFitness'
-	}
+	},
+	renderProperties = {
+		GF: {
+		 	//related to both
+			type: true,
+			startDate: true,
+			endDate: true,
+			//related to GFClass
+			className: true,
+			instructor: true,
+			timeRange: true,
+			dayOfWeek: true,
+			cancelledDates: true,
+			specialDateClass: true,
+			//related to SpecialDate
+			title: true
+		}
+	};
 
 
 	//this function must be called before any subsequent function in this module
@@ -157,7 +173,7 @@
 						cancelledDates: true,
 						specialDateClass: true,
 						//related to SpecialDate
-						title: true,
+						title: true
 						
 					};
 
@@ -315,4 +331,5 @@
 			});
 		});
 	};
+
 })(exports);
