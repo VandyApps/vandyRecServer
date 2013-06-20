@@ -27,22 +27,58 @@
 </div>
 
 
-<div id="hoursEdit-editTimes" class="hoursEdit">
+<div id="hoursEdit-editTimes" class="hoursEdit" style="display: none;">
     <div class="hoursEdit-title">Title</div>
     <div class="hoursEdit-body">
-        <div id="hoursEdit-startTimeTitle">Opens:</div>
-        <div id="hoursEdit-startTimeSelect"> 
-            <select></select>
-            <span>:</span>
-            <select></select>
-            <select></select>
+        <div class="hoursEdit-startTitle">Opens:</div>
+        <div class="hoursEdit-startSelect"> 
+            <select>
+                <option value="01">1</option>
+                <option value="02">2</option>
+                <option value="03">3</option>
+                <option value="04">4</option>
+                <option value="05">5</option>
+                <option value="06">6</option>
+                <option value="07">7</option>
+                <option value="08">8</option>
+                <option value="09">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>:
+            <select>
+                <option value="00">00</option>
+                <option value="30">30</option>
+            </select>
+            <select>
+                <option value="am">am</option>
+                <option value="pm">pm</option>
+            </select>
         </div>
-        <div id="hoursEdit-endTimeTitle">Closes:</div>
-        <div id="hoursEdit-endTimeSelect">
-            <select></select>
-            <span>:</span>
-            <select></select>
-            <select></select>
+        <div class="hoursEdit-endTitle">Closes:</div>
+        <div class="hoursEdit-endSelect">
+            <select>
+                <option value="01">1</option>
+                <option value="02">2</option>
+                <option value="03">3</option>
+                <option value="04">4</option>
+                <option value="05">5</option>
+                <option value="06">6</option>
+                <option value="07">7</option>
+                <option value="08">8</option>
+                <option value="09">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>:
+            <select>
+                <option value="00">00</option>
+                <option value="30">30</option>
+            </select>
+            <select>
+                <option value="am">am</option>
+                <option value="pm">pm</option>
+            </select>
         </div>
     </div>
     <div class="hoursEdit-done">
@@ -50,10 +86,69 @@
         <input type="button" name="cancel" value="cancel" />
     </div>
 </div>
-<div id="hoursEdit-editDates" class="hoursEdit" style="display: none;">
-    <div class="hoursEdit-title"></div>
-    <div class="hoursEdit-body"></div>
-    <div class="hoursEdit-done"></div>
+
+
+<div id="hoursEdit-editDates" class="hoursEdit" >
+    <div class="hoursEdit-title">Title</div>
+    <div class="hoursEdit-body">
+        <div class="hoursEdit-startTitle">Starts:</div>
+        <div class="hoursEdit-startSelect">
+            <select>
+                <option value="01">Jan</option>
+                <option value="02">Feb</option>
+                <option value="03">March</option>
+                <option value="04">Apr</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">Aug</option>
+                <option value="09">Sept</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
+            </select>
+            <select>
+                <option value="01">1</option>
+            </select>
+            <select>
+                <option value="2013">2013</option>
+                <option value="2014">2014</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+            </select>
+        </div>
+
+        <div class="hoursEdit-endTitle">Ends:</div>
+        <div class="hoursEdit-endSelect">
+            <select>
+                <option value="01">Jan</option>
+                <option value="02">Feb</option>
+                <option value="03">March</option>
+                <option value="04">Apr</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">Aug</option>
+                <option value="09">Sept</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
+            </select>
+            <select>
+                <option value="01">1</option>
+            </select>
+            <select>
+                <option value="2013">2013</option>
+                <option value="2014">2014</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+            </select>
+        </div>
+    </div>
+    <div class="hoursEdit-done">
+        <input type="button" name="done" value="done" />
+        <input type="button" name="cancel" value="cancel" />
+    </div>
 </div>
 
 <div id="hoursWrapper">
