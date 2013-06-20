@@ -452,6 +452,102 @@ textarea {
     right: 10px;
     background-color: #008fff;
 }
+
+.hoursEdit {
+    border: solid black;
+    position: fixed;
+    display: block;
+    width: 400px;
+    height: 200px;
+    z-index: 1000000;
+    margin-left: -200px;
+    margin-top: -100px;
+    top: 50%;
+    left: 50%;
+    border-radius: 5px;
+    background-color: black;
+    opacity: .85;
+    color: orange;
+}
+
+.hoursEdit-title {
+    position: absolute;
+    text-align:center;
+    width: 200px;
+    margin-left: -100px;
+    left: 50%;
+    height: 20px;
+    line-height: 20px;
+    top: 5%;
+}
+
+.hoursEdit-body {
+    
+    position: absolute;
+    width: 300px;
+    height: 90px;
+    top: 55px;
+    margin-left: -150px;
+    left: 50%;
+    
+}
+
+.hoursEdit-done {
+    
+    width: 300px;
+    margin-left: -150px;
+    left: 50%;
+    position: absolute;
+    bottom: 10px;
+    height: 30px;
+}
+
+.hoursEdit-done input {
+    border: solid orange 2px;
+    color: orange;
+    background-color: black;
+    border-radius: 5px;
+    position: absolute;
+    width: 80px;
+    text-align: center;
+}
+
+.hoursEdit-done input:nth-child(2) {
+    right: 50px;
+}
+.hoursEdit-done input:nth-child(1) {
+    left: 50px;
+}
+
+#hoursEdit-startTimeTitle {
+    position: absolute;
+    top: 10px;
+    width: 80px;
+    text-align: right;
+    left: 5px;
+}
+#hoursEdit-endTimeTitle {
+    position: absolute;
+    top: 50px;
+    width: 80px;
+    text-align: right;
+    left: 5px;
+}
+#hoursEdit-startTimeSelect {
+    position: absolute;
+    width: 180px;
+    display: block;
+    top: 10px;
+    right: 10px;
+}
+
+#hoursEdit-endTimeSelect {
+    position: absolute;
+    width: 180px;
+    display: block;
+    top: 50px;
+    right: 10px;
+}
 .hoursList {
     display: block;
     width: 500px;
