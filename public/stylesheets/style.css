@@ -454,9 +454,9 @@ textarea {
 }
 
 .hoursEdit {
-    border: solid black;
+    display: none;
     position: fixed;
-    display: block;
+    
     width: 400px;
     height: 200px;
     z-index: 1000000;
