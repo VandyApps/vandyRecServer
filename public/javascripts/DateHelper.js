@@ -209,3 +209,45 @@ DateHelper.isTimeString = function(timeString) {
 	var regexp = new RegExp("^((0\\d)|(1[012])):[012345]\\d[a,A,p,P][m,M]$");
 	return regexp.test(timeString);
 }
+
+//date can either be a date or a date string
+//the date is split into an array of 3 elements
+//at index 0 is the month, at index 1 is the day,
+//and at index 2 is the year.  An optional 2nd 
+//parameter can be passed, which is a boolean.  
+//if the boolean is true, the elements in the array are
+//parsed into numbers (instead of strings)
+DateHelper.splitDate = function(date, coerce) {
+	var dateString;
+	if (typeof date === 'string') {
+		dateString = date;
+	} else {
+		dateString = DateHelper.dateStringFromDate(date);
+	}
+
+	if (!!coerce) {
+		return dateString.split('/').map(function(element) {
+			return +element;
+		});
+	}
+	return dateString.split('/');
+	
+}
+
+//a time string is passed in and an array is returned
+//index 0 contains the hours, index 1 contains the minutes, 
+//and index 2 contains the am/pm indicator.  Coerce is an optionnal
+//parameter, and if coerce is true, then the values at index 0
+//and index 1 are set to true
+DateHelper.splitTime = function(time, coerce) {
+	var firstSplit = time.split(':'),
+	    finalSplit = [firstSplit[0], firstSplit[1].substr(0,2), firstSplit[1].substr(2,2)];
+
+	if (!!coerce) {
+		return finalSplit.map(function(el, index) {
+			return (index !== 2) ? +el : el;
+		});
+	}
+	return finalSplit;
+	
+}
