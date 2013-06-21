@@ -274,81 +274,89 @@ HoursView.HoursWindow = Backbone.View.extend({
     
 });
 
-HoursView.HoursEdit = Backbone.View.extend({
-    editDates: false,
-    startDate: '01/01/2013',
-    endDate: '01/02/2013',
-    startTime: '12:00am',
-    endTime: '08:00pm',
 
-    render: function() {
-        var startSelect, endSelect,
-            startArray, endArray,
-            i;
-        //set the correct $el
-        this.$el = (this.editDates) ? $('#hoursEdit-editDates') : $('#hoursEdit-editTimes');
-        startSelect = $('.hoursEdit-startSelect', this.$el);
-        endSelect = $('.hoursEdit-endSelect', this.$el);
-        
-        if (this.editDates) {
-            startArray = DateHelper.splitDate(this.startDate);
-            endArray = DateHelper.splitDate(this.endDate);
+var hoursEditView = (function() {
+
+    HoursView.HoursEdit = Backbone.View.extend({
+        editDates: false,
+        startDate: '01/01/2013',
+        endDate: '01/02/2013',
+        startTime: '12:00am',
+        endTime: '08:00pm',
+
+        render: function() {
+            var startSelect, endSelect,
+                startArray, endArray,
+                i;
+            //set the correct $el
+            this.$el = (this.editDates) ? $('#hoursEdit-editDates') : $('#hoursEdit-editTimes');
+            startSelect = $('.hoursEdit-startSelect', this.$el);
+            endSelect = $('.hoursEdit-endSelect', this.$el);
+            
+            if (this.editDates) {
+                startArray = DateHelper.splitDate(this.startDate);
+                endArray = DateHelper.splitDate(this.endDate);
 
 
-        } else {
-            startArray = DateHelper.splitTime(this.startTime);
-            endArray = DateHelper.splitTime(this.endTime);
+            } else {
+                startArray = DateHelper.splitTime(this.startTime);
+                endArray = DateHelper.splitTime(this.endTime);
+            }
+
+            for (i = 0; i < 3; ++i) {
+                startSelect.children().eq(i).val(startArray[i]);
+                endSelect.children().eq(i).val(endArray[i]);
+            }
+        },
+        //setting up that requires render to have been
+        //called.  This includes binding events to dynamically
+        //bound $el
+        bindEvents: function() {
+            $('.hoursEdit-done input[value="done"]', this.$el).click($.proxy(this.didEdit, this));
+            $('.hoursEdit-done input[value="cancel"]', this.$el).click($.proxy(this.didCancel, this));
+        },
+        reset: function(options) {
+            this.editDates = options.editDates;
+            if (this.editDates) {
+                this.startDate = options.startDate;
+                this.endDate = options.endDate;
+            } else {
+                this.startTime = options.startTime;
+                this.endTime = options.endTime;
+
+            }
+            this.render();
+        },
+        didEdit: function() {
+            
+            this.hide();
+            this.trigger('doneEdit');
+            
+        },
+        didCancel: function() {
+            
+            this.hide();
+            this.trigger('cancelEdit');
+            
+        },
+        show: function() {
+            this.$el.show();
+            this.bindEvents();
+        },
+        hide: function() {
+            this.$el.hide();
+            $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
+            $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
+        },
+        addDateChangeEvents: function() {
+
         }
+    });
+    
+    return new HoursView.HoursEdit();
 
-        for (i = 0; i < 3; ++i) {
-            startSelect.children().eq(i).val(startArray[i]);
-            endSelect.children().eq(i).val(endArray[i]);
-        }
-    },
-    //setting up that requires render to have been
-    //called.  This includes binding events to dynamically
-    //bound $el
-    bindEvents: function() {
-        $('.hoursEdit-done input[value="done"]', this.$el).click($.proxy(this.didEdit, this));
-        $('.hoursEdit-done input[value="cancel"]', this.$el).click($.proxy(this.didCancel, this));
-    },
-    reset: function(options) {
-        this.editDates = options.editDates;
-        if (this.editDates) {
-            this.startDate = options.startDate;
-            this.endDate = options.endDate;
-        } else {
-            this.startTime = options.startTime;
-            this.endTime = options.endTime;
+})();
 
-        }
-        this.render();
-    },
-    didEdit: function() {
-        
-        this.hide();
-        this.trigger('doneEdit');
-        
-    },
-    didCancel: function() {
-        
-        this.hide();
-        this.trigger('cancelEdit');
-        
-    },
-    show: function() {
-        this.$el.show();
-        this.bindEvents();
-    },
-    hide: function() {
-        this.$el.hide();
-        $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
-        $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
-    },
-    addDateChangeEvents: function() {
-
-    }
-});
 
 
 //global variables related to the view
