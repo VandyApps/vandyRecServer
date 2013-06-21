@@ -231,7 +231,6 @@ HoursView.HoursWindow = Backbone.View.extend({
             startTimeEl, endTimeEl;
         if (listElement.length === 1) {
             //element exists
-            console.log("Element exists");
             startTimeEl = listElement.find('.hoursWindow-listItem-startTime');
             endTimeEl = listElement.find('.hoursWindow-listItem-endTime');
 
@@ -338,9 +337,34 @@ var hoursEditView = (function() {
         //setting up that requires render to have been
         //called.  This includes binding events to dynamically
         //bound $el
+        //THIS METHOD IS NOT YET ADDED TO THE DOCUMENTATION
         bindEvents: function() {
             $('.hoursEdit-done input[value="done"]', this.$el).click($.proxy(this.didEdit, this));
             $('.hoursEdit-done input[value="cancel"]', this.$el).click($.proxy(this.didCancel, this));
+
+            //bind change event
+            if (this.editDates) {
+                //change the start and end date properties
+                //every time the select elements change
+            } else {
+                //change the start and end time properties
+                //every time the select elements change
+                $('.hoursEdit-startSelect select').change(function() {
+
+                    this.startTime =    $('.hoursEdit-startSelect select:nth-child(1)').val() + ':' +
+                                        $('.hoursEdit-startSelect select:nth-child(2)').val() + 
+                                        $('.hoursEdit-startSelect select:nth-child(3)').val();
+
+                }.bind(this));
+
+                $('.hoursEdit-endSelect select').change(function() {
+
+                     this.endTime =     $('.hoursEdit-endSelect select:nth-child(1)').val() + ':' +
+                                        $('.hoursEdit-endSelect select:nth-child(2)').val() + 
+                                        $('.hoursEdit-endSelect select:nth-child(3)').val();
+
+                }.bind(this));
+            }
         },
         reset: function(options) {
             this.editDates = options.editDates;
@@ -375,6 +399,9 @@ var hoursEditView = (function() {
             $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
             $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
         },
+        //for changing the number of days available
+        // when a month or year is selected
+        //THIS METHOD HAS NOT YET BEEN ADDED TO THE DOCUMENTATION
         addDateChangeEvents: function() {
 
         }
