@@ -304,13 +304,11 @@ HoursView.HoursEdit = Backbone.View.extend({
             startSelect.children().eq(i).val(startArray[i]);
             endSelect.children().eq(i).val(endArray[i]);
         }
-
-        this.postRenderSetup();
     },
     //setting up that requires render to have been
     //called.  This includes binding events to dynamically
     //bound $el
-    postRenderSetup: function() {
+    bindEvents: function() {
         $('.hoursEdit-done input[value="done"]', this.$el).click($.proxy(this.didEdit, this));
         $('.hoursEdit-done input[value="cancel"]', this.$el).click($.proxy(this.didCancel, this));
     },
@@ -327,24 +325,25 @@ HoursView.HoursEdit = Backbone.View.extend({
         this.render();
     },
     didEdit: function() {
-        console.log("Did edit");
-
-        //remove bound events
-        $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
-        $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
+        
+        this.hide();
+        this.trigger('doneEdit');
+        
     },
     didCancel: function() {
-        console.log("Did cancel");
-
-        //remove bound events
-        $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
-        $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
+        
+        this.hide();
+        this.trigger('cancelEdit');
+        
     },
     show: function() {
         this.$el.show();
+        this.bindEvents();
     },
     hide: function() {
         this.$el.hide();
+        $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
+        $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
     },
     addDateChangeEvents: function() {
 
