@@ -274,6 +274,66 @@ HoursView.HoursWindow = Backbone.View.extend({
     
 });
 
+HoursView.HoursEdit = Backbone.View.extend({
+    editDates: false,
+    startDate: '01/01/2013',
+    endDate: '01/02/2013',
+    startTime: '12:00am',
+    endTime: '08:00pm',
+
+    render: function() {
+        var startSelect, endSelect,
+            startArray, endArray,
+            i;
+        //set the correct $el
+        this.$el = (this.editDates) ? $('#hoursEdit-editDates') : $('#hoursEdit-editTimes');
+        startSelect = $('.hoursEdit-startSelect', this.$el);
+        endSelect = $('.hoursEdit-endSelect', this.$el);
+        
+        if (this.editDates) {
+            startArray = DateHelper.splitDate(this.startDate);
+            endArray = DateHelper.splitDate(this.endDate);
+
+
+        } else {
+            startArray = DateHelper.splitTime(this.startTime);
+            endArray = DateHelper.splitTime(this.endTime);
+        }
+
+        for (i = 0; i < 3; ++i) {
+            startSelect.children().eq(i).val(startArray[i]);
+            endSelect.children().eq(i).val(endArray[i]);
+        }
+    },
+    reset: function(options) {
+        this.editDates = options.editDates;
+        if (this.editDates) {
+            this.startDate = options.startDate;
+            this.endDate = options.endDate;
+        } else {
+            this.startTime = options.startTime;
+            this.endTime = options.endTime;
+
+        }
+        this.render();
+    },
+    didEdit: function() {
+
+    },
+    didCancel: function() {
+
+    },
+    show: function() {
+        this.$el.show();
+    },
+    hide: function() {
+        this.$el.hide();
+    },
+    addDateChangeEvents: function() {
+
+    }
+});
+
 
 //global variables related to the view
 //are defined here
