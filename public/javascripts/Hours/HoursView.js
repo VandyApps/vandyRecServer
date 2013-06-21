@@ -328,9 +328,17 @@ HoursView.HoursEdit = Backbone.View.extend({
     },
     didEdit: function() {
         console.log("Did edit");
+
+        //remove bound events
+        $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
+        $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
     },
     didCancel: function() {
         console.log("Did cancel");
+
+        //remove bound events
+        $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
+        $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
     },
     show: function() {
         this.$el.show();
