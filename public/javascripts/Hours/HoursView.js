@@ -304,6 +304,15 @@ HoursView.HoursEdit = Backbone.View.extend({
             startSelect.children().eq(i).val(startArray[i]);
             endSelect.children().eq(i).val(endArray[i]);
         }
+
+        this.postRenderSetup();
+    },
+    //setting up that requires render to have been
+    //called.  This includes binding events to dynamically
+    //bound $el
+    postRenderSetup: function() {
+        $('.hoursEdit-done input[value="done"]', this.$el).click($.proxy(this.didEdit, this));
+        $('.hoursEdit-done input[value="cancel"]', this.$el).click($.proxy(this.didCancel, this));
     },
     reset: function(options) {
         this.editDates = options.editDates;
@@ -318,10 +327,10 @@ HoursView.HoursEdit = Backbone.View.extend({
         this.render();
     },
     didEdit: function() {
-
+        console.log("Did edit");
     },
     didCancel: function() {
-
+        console.log("Did cancel");
     },
     show: function() {
         this.$el.show();
