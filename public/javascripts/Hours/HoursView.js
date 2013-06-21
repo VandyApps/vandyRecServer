@@ -192,19 +192,25 @@ HoursView.HoursWindow = Backbone.View.extend({
     },
     //appends new hours to the time object
     appendHoursToView: function(weekDay, timeObject) {
-        var firstPortion = $("<li class='hoursWindow-listItem' id='hoursWindow-times-"+weekDay+"'></li>")
+        var hours = $("<li class='hoursWindow-listItem' id='hoursWindow-times-"+weekDay+"'></li>")
                 .appendTo('#hoursWindow-times', this.$el)
                 //append these div tags to the element that 
                 //was just created
                 .append("<div class='hoursWindow-listItem-edit'>edit</div>")
                 .append("<div class='hoursWindow-listItem-title'>"+DateHelper.weekDayAsString(weekDay)+"</div>");
 
-        $("<div class='hoursWindow-listItem-timeRange'></div>").appendTo(firstPortion)
+        $("<div class='hoursWindow-listItem-timeRange'></div>").appendTo(hours)
             .append("<span class='hoursWindow-listItem-startTime'>"+timeObject.startTime+"</span>")
             .append("<span>-</span>")
             .append("<span class='hoursWindow-listItem-endTime'>"+timeObject.endTime+"</span>");
 
-        $("<div class='hoursWindow-listItem-sameAsAbove'>Same As Above</div>").appendTo(firstPortion);
+        $("<div class='hoursWindow-listItem-sameAsAbove'>Same As Above</div>").appendTo(hours);
+
+        //bind events to the element
+
+        //edit events
+        $('.hoursWindow-listItem-edit', hours).click($.proxy(this.edit, this));
+        //same as above events
         
     },
     delete: function() {
