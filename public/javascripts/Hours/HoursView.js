@@ -227,10 +227,16 @@ HoursView.HoursWindow = Backbone.View.extend({
     //the view
     setHours: function(weekDay, timeObject) {
         this.model.setTimesForDay(weekDay, timeObject);
-        var listElement = $('#hoursWindow-times-'+weekDay);
+        var listElement = $('#hoursWindow-times-'+weekDay),
+            startTimeEl, endTimeEl;
         if (listElement.length === 1) {
             //element exists
-            console.log("element exists");
+            console.log("Element exists");
+            startTimeEl = listElement.find('.hoursWindow-listItem-startTime');
+            endTimeEl = listElement.find('.hoursWindow-listItem-endTime');
+
+            startTimeEl.text(timeObject.startTime);
+            endTimeEl.text(timeObject.endTime);
         } else {
             //element does not exist, must create the entire
             // element and insert it into the correct slot of the list
@@ -258,9 +264,14 @@ HoursView.HoursWindow = Backbone.View.extend({
         hoursEditView.reset({editDates: false, startTime: startTime, endTime: endTime});
         hoursEditView.show();
         hoursEditView.on('doneEdit', function() {
-            startTimeEl.text(this.startTime);
-            endTimeEl.text(this.endTime);
-        });
+            console.log("Event called");
+            this.setHours($(event.delegateTarget).parent().index(),
+                {
+                    startTime: hoursEditView.startTime, 
+                    endTime: hoursEditView.endTime
+                });
+
+        }.bind(this));
     },
     show: function(animate) {
         if (animate) {
