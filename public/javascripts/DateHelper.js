@@ -38,19 +38,19 @@ DateHelper.weekDayAsString = function(date) {
 DateHelper.weekAsInt = function(dayOfWeek) {
 	var stringDate = dayOfWeek.toUpperCase();
 	if (stringDate === "MONDAY") {
-		return 1;
+		return 0;
 	} else if (stringDate === "TUESDAY") {
-		return 2;
+		return 1;
 	} else if (stringDate === "WEDNESDAY") {
-		return 3;
+		return 2;
 	} else if (stringDate === "THURSDAY") {
-		return 4;
+		return 3;
 	} else if (stringDate === "FRIDAY") {
-		return 5;
+		return 4;
 	} else if (stringDate === "SATURDAY") {
-		return 6;
+		return 5;
 	} else if (stringDate === "SUNDAY") {
-		return 7;
+		return 6;
 	} 
  }
 
