@@ -248,9 +248,19 @@ HoursView.HoursWindow = Backbone.View.extend({
             }
             throw new Error("Searching for list item in hours of operation list using out of range index");
     },
-    edit: function() {
+    edit: function(event) {
         //show window and bind events to check when to remove window
-        console.log("Editing the time range for a single element in the hours of operation list");
+        var startTimeEl = $(event.delegateTarget).parent().find('.hoursWindow-listItem-startTime'),
+            endTimeEl = $(event.delegateTarget).parent().find('.hoursWindow-listItem-endTime'),
+            startTime = startTimeEl.text(),
+            endTime = endTimeEl.text();
+
+        hoursEditView.reset({editDates: false, startTime: startTime, endTime: endTime});
+        hoursEditView.show();
+        hoursEditView.on('doneEdit', function() {
+            startTimeEl.text(this.startTime);
+            endTimeEl.text(this.endTime);
+        });
     },
     show: function(animate) {
         if (animate) {
