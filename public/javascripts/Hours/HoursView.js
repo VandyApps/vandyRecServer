@@ -263,14 +263,25 @@ HoursView.HoursWindow = Backbone.View.extend({
         hoursEditView.reset({editDates: false, startTime: startTime, endTime: endTime});
         hoursEditView.show();
         hoursEditView.on('doneEdit', function() {
-            console.log("Event called");
+        
             this.setHours($(event.delegateTarget).parent().index(),
                 {
                     startTime: hoursEditView.startTime, 
                     endTime: hoursEditView.endTime
                 });
 
+            //unbind all the events
+            hoursEditView.unbind('doneEdit');
+            hoursEditView.unbind('cancelEdit');
         }.bind(this));
+
+
+        hoursEditView.on('cancelEdit', function() {
+
+            //unbind all the events
+            hoursEditView.unbind('doneEdit');
+            hoursEditView.unbind('cancelEdit');
+        });
     },
     show: function(animate) {
         if (animate) {
