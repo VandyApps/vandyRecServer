@@ -12,14 +12,18 @@ HoursModel.Hours = Backbone.Model.extend({
 
 	//methods
 	initialize: function(options) {
-		var noOptions = (options === undefined),
+		var defaultTimeObject = {startTime: '12:00am', endTime: '1:00am'},
+		    noOptions = (options === undefined),
 		    name = (noOptions || options.name === undefined) ? '' : options.name,
 		    startDate = (noOptions || options.startDate === undefined) ? '' : options.startDate,
 		    endDate = (noOptions || options.endDate === undefined) ? '' : options.endDate,
 		    priorityNumber = (noOptions || options.priorityNumber === undefined) ? 0 : options.priorityNumber,
 		    facilityHours = (noOptions || options.facilityHours === undefined) ? false : options.facilityHours,
 		    closedHours = (noOptions || options.closedHours === undefined) ? false : options.closedHours,
-		    times = (noOptions || options.times === undefined) ? [] : options.times;
+		    times = options.times || [];
+		    if (times.length === 0 && startDate !== '' && endDate !== '') {
+		    	//set blank objects for all valid days
+		    }
 
 
 		this.set('name', name);
@@ -65,6 +69,21 @@ HoursModel.Hours = Backbone.Model.extend({
 	},
 	isBaseHours: function() {
 		return this.getPriorityNumber() === 0 && this.isFacilityHours();
+	},
+	configureTimes: function() {
+		//uses the start and end time of the array 
+
+	},
+	iterateTimes: function(callback, context) {
+		var i, n, 
+		    times = this.get('times'), 
+		    context = context || this;
+
+		for (i = 0, n = times.length; i < n; ++i) {
+			if (times[i]) {
+				callback.call(context, times[i], i);
+			}
+		}
 	}
 });
 
