@@ -71,8 +71,57 @@ HoursModel.Hours = Backbone.Model.extend({
 		return this.getPriorityNumber() === 0 && this.isFacilityHours();
 	},
 	configureTimes: function() {
-		//uses the start and end time of the array 
+		//uses the start and end time of the array
+		//this method does nothing if the start or end times are not set
+		var startDate = this.get('startDate'),
+		    endDate = this.get('endDate'),
+		    times = this.get('times'),
+		    defaultObj = {startTime: '12:00am', endTime: '01:00am'},
+		    loopDone, endDateFound, 
+		    firstIteration, i;
 
+		if ((startDate && startDate !== '') && (endDate && endDate !== '')) {
+
+			if ((this.getEndDate().getTime() - this.getStartDate().getTime()) / (24*60*60*1000) >= 6) {
+				//then all the days of the week are represented
+				for (i = 0; i < 7; ++i) {
+					if (!times[i]) {
+						times[i] = defaultObj;
+					}
+				}
+
+			} else {
+				
+				//there are days of the week that should not be represented
+				for (i = this.getStartDate().getDay(), firstIteration = true, endDateFound = false, loopDone = false; !loopDone; i = (i+1) % 7) {
+					
+					if (i === this.getStartDate().getDay() && !firstIteration) {
+
+						loopDone = true;
+					} else {
+
+						if (!endDateFound && !times[i]) {
+
+							times[i] = defaultObj;
+
+						} else if (endDateFound) {
+							times[i] = undefined;
+						}
+
+						if (i === this.getEndDate().getDay()) {
+							
+							endDateFound = true;
+						}
+						
+
+						firstIteration = false;
+						
+					}
+					
+				}
+			}
+
+		}
 	},
 	iterateTimes: function(callback, context) {
 		var i, n, 
