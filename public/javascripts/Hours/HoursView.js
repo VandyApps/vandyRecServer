@@ -162,14 +162,12 @@ HoursView.HoursWindow = Backbone.View.extend({
         $('#hoursWindow-hoursStartDate', this.$el).text(this.model.get('startDate'));
         $('#hoursWindow-hoursEndDate', this.$el).text(this.model.get('endDate'));
         
+        //append the times from the model to the view
+        this.model.iterateTimes(function(obj, index) {
 
+            this.appendHoursToView(index, obj);
 
-        for (i = 0, n = times.length; i < n; ++i) {
-            //must check if the timeObject at the index exists first
-            if (times[i] !== undefined) {
-                this.appendHoursToView(i, times[i]);
-            }
-        }
+        }, this);
 
         
         $('#hoursWindow-priorityNumber').hide();
