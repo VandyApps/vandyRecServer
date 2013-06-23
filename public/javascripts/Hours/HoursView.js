@@ -209,7 +209,7 @@ HoursView.HoursWindow = Backbone.View.extend({
         //edit events
         $('.hoursWindow-listItem-edit', hours).click($.proxy(this.edit, this));
         //same as above events
-        
+        $('.hoursWindow-listItem-sameAsAbove', hours).click($.proxy(this.sameAsAbove, this));
     },
     delete: function() {
          console.log("Delete element and remove hours window");
@@ -226,7 +226,9 @@ HoursView.HoursWindow = Backbone.View.extend({
     setHours: function(weekDay, timeObject) {
         this.model.setTimesForDay(weekDay, timeObject);
         var listElement = $('#hoursWindow-times-'+weekDay),
-            startTimeEl, endTimeEl;
+            startTimeEl, endTimeEl,
+            foundPredecessor, predecessorIndex;
+
         if (listElement.length === 1) {
             //element exists
             startTimeEl = listElement.find('.hoursWindow-listItem-startTime');
@@ -235,9 +237,37 @@ HoursView.HoursWindow = Backbone.View.extend({
             startTimeEl.text(timeObject.startTime);
             endTimeEl.text(timeObject.endTime);
         } else {
+            //the model should be responsible for creating the correct weekdays
+            //necessary for the hours
+            console.log("The element does not exist yet.  Might have this throw an error");
+            /*
             //element does not exist, must create the entire
             // element and insert it into the correct slot of the list
-            console.log("Element does not exist");
+            hours = $("<li class='hoursWindow-listItem' id='hoursWindow-times-"+weekDay+"'></li>")
+                //append these div tags to the element that 
+                //was just created
+                .append("<div class='hoursWindow-listItem-edit'>edit</div>")
+                .append("<div class='hoursWindow-listItem-title'>"+DateHelper.weekDayAsString(weekDay)+"</div>");
+
+            $("<div class='hoursWindow-listItem-timeRange'></div>").appendTo(hours)
+                .append("<span class='hoursWindow-listItem-startTime'>"+timeObject.startTime+"</span>")
+                .append("<span>-</span>")
+                .append("<span class='hoursWindow-listItem-endTime'>"+timeObject.endTime+"</span>");
+
+            $("<div class='hoursWindow-listItem-sameAsAbove'>Same As Above</div>").appendTo(hours);
+
+            //bind events to the element
+
+            //edit events
+            $('.hoursWindow-listItem-edit', hours).click($.proxy(this.edit, this));
+            //same as above events
+
+            //insert the html tag into the correct slot within the unordered list
+            foundPredecessor = false;
+            while(!foundPredecessor) {
+
+            }
+            */
         }
     },
     //get the week day of the list item at the given index in
@@ -280,6 +310,26 @@ HoursView.HoursWindow = Backbone.View.extend({
             hoursEditView.unbind('doneEdit');
             hoursEditView.unbind('cancelEdit');
         });
+    },
+    //NOT YET DOCUMENTED
+    //this method does not do anything if the element is the 
+    //first element in the list
+    sameAsAbove: function(event) {
+        var currentEl = $(event.delegateTarget).parent(),
+            currentID = currentEl.attr('id'),
+            currentDay = +(currentID.substr(currentID.length - 1, 1)),
+            previousEl = currentEl.prev(),
+            previousID, previousDay;
+
+            if (previousEl.length === 1) {
+                previousID = previousEl.attr('id');
+                previousDay = +(previousID.substr(previousID.length - 1, 1));
+
+                this.setHours(currentDay, this.model.getTimeObjectForDay(previousDay));
+            }
+             
+
+
     },
     show: function(animate) {
         if (animate) {
