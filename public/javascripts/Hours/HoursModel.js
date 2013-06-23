@@ -21,7 +21,7 @@ HoursModel.Hours = Backbone.Model.extend({
 		    facilityHours = (noOptions || options.facilityHours === undefined) ? false : options.facilityHours,
 		    closedHours = (noOptions || options.closedHours === undefined) ? false : options.closedHours,
 		    times = options.times || [];
-		    if (times.length === 0 && startDate !== '' && endDate !== '') {
+		    if (times.length === 0) {
 		    	//set blank objects for all valid days
 		    }
 
@@ -59,6 +59,19 @@ HoursModel.Hours = Backbone.Model.extend({
 	},
 	isClosed: function() {
 		return this.get('closedHours');
+	},
+	//should be called instead of the backbone setter
+	//for additional configurations to be done
+	setStartDate: function(startDate) {
+		this.set('startDate', startDate);
+		this.configureTimes();
+	},
+	//should be called instead of the backbone setter
+	//for additional configurations to be done
+	setEndDate: function(endDate) {
+		this.set('endDate', endDate);
+		this.configureTimes();
+
 	},
 	setTimesForDay: function(weekDay, timeObject) {
 		if (timeObject.startTime !== undefined && timeObject.endTime !== undefined) {
