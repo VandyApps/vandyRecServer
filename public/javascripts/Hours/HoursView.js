@@ -44,7 +44,7 @@ HoursView.HoursTable = Backbone.View.extend({
         if (!this.isSorted()) {
             this.sort();
         }
-        
+
         this.render();
     },
     render: function() {
@@ -189,8 +189,8 @@ HoursView.HoursWindow = Backbone.View.extend({
             $('#hoursWindow-priorityNumberSelect').show();
             $('#hoursWindow-priorityNumberBase').hide();
             $('#hoursWindow-priorityNumber').val(this.model.getPriorityNumber().toString());
-            $('hoursWindow-delete').show();
-            $('hoursWindow-editDates').show();
+            $('#hoursWindow-delete').show();
+            $('#hoursWindow-editDates').show();
         }
     },
     //appends new hours to the time object
