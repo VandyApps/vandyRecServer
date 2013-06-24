@@ -151,7 +151,8 @@ HoursView.HoursWindow = Backbone.View.extend({
     events: {
         'click #hoursWindow-exit': 'hide',
         'mouseenter #hoursWindow-exit': 'hoverOnExit',
-        'mouseleave #hoursWindow-exit': 'hoverOffExit'
+        'mouseleave #hoursWindow-exit': 'hoverOffExit',
+        'click #hoursWindow-editDates': 'editDates'
     },
     
     render: function() {
@@ -212,7 +213,7 @@ HoursView.HoursWindow = Backbone.View.extend({
         //bind events to the element
 
         //edit events
-        $('.hoursWindow-listItem-edit', hours).click($.proxy(this.edit, this));
+        $('.hoursWindow-listItem-edit', hours).click($.proxy(this.editTimes, this));
         //same as above events
         $('.hoursWindow-listItem-sameAsAbove', hours).click($.proxy(this.sameAsAbove, this));
     },
@@ -259,7 +260,7 @@ HoursView.HoursWindow = Backbone.View.extend({
             }
             throw new Error("Searching for list item in hours of operation list using out of range index");
     },
-    edit: function(event) {
+    editTimes: function(event) {
         //show window and bind events to check when to remove window
         var startTimeEl = $(event.delegateTarget).parent().find('.hoursWindow-listItem-startTime'),
             endTimeEl = $(event.delegateTarget).parent().find('.hoursWindow-listItem-endTime'),
@@ -288,6 +289,10 @@ HoursView.HoursWindow = Backbone.View.extend({
             hoursEditView.unbind('doneEdit');
             hoursEditView.unbind('cancelEdit');
         });
+    },
+    editDates: function() {
+        console.log("edit dates");
+
     },
     //NOT YET DOCUMENTED
     //this method does not do anything if the element is the 
