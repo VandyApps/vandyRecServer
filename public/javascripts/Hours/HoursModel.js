@@ -158,7 +158,7 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 		return [].filter.call(this.models, function(model) {
 			return model.isBaseHours();
 		}).sort(function(model1, model2) {
-			return model2.getStartDate().getTime() - model1.getStartDate().getTime();
+			return model1.getStartDate().getTime() - model2.getStartDate().getTime();
 		});
 	},
 	getOtherHours: function(facilityHours) {
@@ -170,7 +170,7 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 			return [].filter.call(this.models, function(model) {
 				return !model.isBaseHours() && !model.isClosed();
 			}).sort(function(model1, model2) {
-				return model2.getStartDate().getTime() - model1.getStartDate().getTime();
+				return model1.getStartDate().getTime() - model2.getStartDate().getTime();
 			});
 		}
 		//otherwise, use the facilityHours boolean value to further
@@ -178,7 +178,7 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 		return [].filter.call(this.models, function(model) {
 			return !model.isBaseHours() && !model.isClosed() && (facilityHours === model.isFacilityHours());
 		}).sort(function(model1, model2) {
-			return model2.getStartDate().getTime() - model1.getStartDate().getTime();
+			return model1.getStartDate().getTime() - model2.getStartDate().getTime();
 		});
 	},
 	getClosedHours: function() {

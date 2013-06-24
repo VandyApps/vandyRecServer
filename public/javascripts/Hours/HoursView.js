@@ -40,6 +40,11 @@ HoursView.HoursTable = Backbone.View.extend({
     initialize: function(options) {
         this.type = (!options || options.type === undefined) ? 0 : options.type;
         this.views = (! options || options.views === undefined) ? [] : options.views;
+
+        if (!this.isSorted()) {
+            this.sort();
+        }
+        
         this.render();
     },
     render: function() {
@@ -66,7 +71,7 @@ HoursView.HoursTable = Backbone.View.extend({
         //sort the elements based on their sort values 
         //elements are in ascending sortValue order
         this.views.sort(function(view1, view2) {
-            return view2.getSortValue() - view1.getSortValue();
+            return view1.getSortValue() - view2.getSortValue();
         });
     },
     //reloads the views within the views array
@@ -240,34 +245,7 @@ HoursView.HoursWindow = Backbone.View.extend({
             //the model should be responsible for creating the correct weekdays
             //necessary for the hours
             console.log("The element does not exist yet.  Might have this throw an error");
-            /*
-            //element does not exist, must create the entire
-            // element and insert it into the correct slot of the list
-            hours = $("<li class='hoursWindow-listItem' id='hoursWindow-times-"+weekDay+"'></li>")
-                //append these div tags to the element that 
-                //was just created
-                .append("<div class='hoursWindow-listItem-edit'>edit</div>")
-                .append("<div class='hoursWindow-listItem-title'>"+DateHelper.weekDayAsString(weekDay)+"</div>");
-
-            $("<div class='hoursWindow-listItem-timeRange'></div>").appendTo(hours)
-                .append("<span class='hoursWindow-listItem-startTime'>"+timeObject.startTime+"</span>")
-                .append("<span>-</span>")
-                .append("<span class='hoursWindow-listItem-endTime'>"+timeObject.endTime+"</span>");
-
-            $("<div class='hoursWindow-listItem-sameAsAbove'>Same As Above</div>").appendTo(hours);
-
-            //bind events to the element
-
-            //edit events
-            $('.hoursWindow-listItem-edit', hours).click($.proxy(this.edit, this));
-            //same as above events
-
-            //insert the html tag into the correct slot within the unordered list
-            foundPredecessor = false;
-            while(!foundPredecessor) {
-
-            }
-            */
+             
         }
     },
     //get the week day of the list item at the given index in
