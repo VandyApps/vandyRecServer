@@ -230,12 +230,14 @@ HoursView.HoursWindow = Backbone.View.extend({
         this.model = model;
         this.render();
 
-        this.model.on('change', function() {
-            console.log("change in the start date event");
-        });
+        this.model.on('change:startDate', function() {
+            console.log("Changing the start date: " + this.model.get('startDate'));
+            $('#hoursWindow-hoursStartDate', this.$el).text(this.model.get('startDate'));
+        }.bind(this));
         this.model.on('change:endDate', function() {
-            console.log("Change in the end date event");
-        });  
+            console.log("Changing the end date");
+            $('#hoursWindow-hoursEndDate', this.$el).text(this.model.get('endDate'));
+        }.bind(this));  
 
         return this;
     },
