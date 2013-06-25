@@ -88,8 +88,9 @@ HoursModel.Hours = Backbone.Model.extend({
 		//this method does nothing if the start or end times are not set
 		var startDate = this.get('startDate'),
 		    endDate = this.get('endDate'),
-		    times = this.get('times'),
+		    times = [].slice.call(this.get('times')),
 		    defaultObj = {startTime: '12:00am', endTime: '01:00am'},
+		    timesChanged = false,
 		    loopDone, endDateFound, 
 		    firstIteration, i;
 
@@ -99,6 +100,7 @@ HoursModel.Hours = Backbone.Model.extend({
 				//then all the days of the week are represented
 				for (i = 0; i < 7; ++i) {
 					if (!times[i]) {
+						timesChanged = true;
 						times[i] = defaultObj;
 					}
 				}
@@ -114,10 +116,11 @@ HoursModel.Hours = Backbone.Model.extend({
 					} else {
 
 						if (!endDateFound && !times[i]) {
-
+							timesChanged = true;
 							times[i] = defaultObj;
 
-						} else if (endDateFound) {
+						} else if (endDateFound && times[i]) {
+							timesChanged = true;
 							times[i] = undefined;
 						}
 
@@ -133,8 +136,11 @@ HoursModel.Hours = Backbone.Model.extend({
 					
 				}
 			}
-
 		}
+		if (timesChanged) {
+			this.set('times', times);
+		}
+		
 	},
 	iterateTimes: function(callback, context) {
 		var i, n, 
