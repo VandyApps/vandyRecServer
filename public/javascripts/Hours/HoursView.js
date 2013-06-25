@@ -64,8 +64,6 @@ HoursView.HoursTable = Backbone.View.extend({
                 if (!this.isSorted()) {
                     this.sort();
                     this.reload();
-                } else {
-                    console.log("Is sorted");
                 }
 
             }.bind(this));
@@ -269,7 +267,6 @@ HoursView.HoursWindow = Backbone.View.extend({
 
         //changing the times array
         this.model.on('change:times', function() { 
-            console.log("Changing the times");
             //remove all the children and refresh the elements
             $('#hoursWindow-times', this.$el).children().remove();
             this.model.iterateTimes(function(obj, weekDay) {
@@ -343,7 +340,7 @@ HoursView.HoursWindow = Backbone.View.extend({
         });
     },
     editDates: function() {
-        console.log("edit dates");
+        
         hoursEditView.reset(
             {
                 editDates: true, 
@@ -366,7 +363,6 @@ HoursView.HoursWindow = Backbone.View.extend({
         }.bind(this));
 
         hoursEditView.on('cancelEdit', function() {
-            console.log("Cancel editting dates");
 
             //remove binding after either the done or cancel button
             //is pressed
@@ -440,7 +436,6 @@ var hoursEditView = (function() {
             this.$el = (this.editDates) ? $('#hoursEdit-editDates') : $('#hoursEdit-editTimes');
             startSelect = $('.hoursEdit-startSelect', this.$el);
             endSelect = $('.hoursEdit-endSelect', this.$el);
-            console.log("Element is set to: " + this.$el.attr('id'));
             if (this.editDates) {
                 
 
