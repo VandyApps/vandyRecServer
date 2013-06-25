@@ -331,7 +331,7 @@ HoursView.HoursWindow = Backbone.View.extend({
         }.bind(this));
 
     },
-    //NOT YET DOCUMENTED
+    //NOT DOCUMENTED
     //this method does not do anything if the element is the 
     //first element in the list
     sameAsAbove: function(event) {
@@ -445,7 +445,7 @@ var hoursEditView = (function() {
         //setting up that requires render to have been
         //called.  This includes binding events to dynamically
         //bound $el
-        //THIS METHOD IS NOT YET ADDED TO THE DOCUMENTATION
+        //NOT DOCUMENTED
         bindEvents: function() {
             $('.hoursEdit-done input[value="done"]', this.$el).click($.proxy(this.didEdit, this));
             $('.hoursEdit-done input[value="cancel"]', this.$el).click($.proxy(this.didCancel, this));
@@ -571,7 +571,7 @@ var hoursEditView = (function() {
         },
         //for changing the number of days available
         // when a month or year is selected
-        //THIS METHOD HAS NOT YET BEEN ADDED TO THE DOCUMENTATION
+        //NOT DOCUMENTED
         addDateChangeEvents: function() {
 
         }
