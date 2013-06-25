@@ -1,8 +1,8 @@
 (function(global) {
 
     //create the table views for backbone
-    var tableViews = [],
-        hoursCollection = new global.HoursModel.HoursCollection();
+    global.tableViews = [];
+        var hoursCollection = new global.HoursModel.HoursCollection();
     
     global.hoursCollection = hoursCollection;
 
@@ -35,7 +35,7 @@
             console.log("The iterator for creating Table views in hours passed index 3. Should never happen");
             break;
         }
-        tableViews.push(new global.HoursView.HoursTable({type: i, views: views}));
+        global.tableViews.push(new global.HoursView.HoursTable({type: i, views: views}));
     }
     }.bind(global));
 

@@ -58,12 +58,16 @@ HoursView.HoursTable = Backbone.View.extend({
         this.render();
         //register all the views for events
         this.views.forEach(function(view) {
-            console.log("this is " + this);
+            
             view.on('startDateChange', function() {
 
-                this.sort();
-                this.reload();
-                
+                if (!this.isSorted()) {
+                    this.sort();
+                    this.reload();
+                } else {
+                    console.log("Is sorted");
+                }
+
             }.bind(this));
 
         }.bind(this));
@@ -105,6 +109,8 @@ HoursView.HoursTable = Backbone.View.extend({
         //rerender all the elements within the view
         this.views.forEach(function(view) {
             this.$el.append(view.$el);
+            //must rebind events
+            view.$el.click(view.showWindow.bind(view));
         }, this);
     },
     //adds an HoursItem view to the end of the list and renders the item
