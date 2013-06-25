@@ -10,6 +10,9 @@ HoursView.HoursItem = Backbone.View.extend({
     },
     initialize: function() {
         this.render();
+        //add events
+        this.model.on('change:startDate', function() {console.log("Change the order of the table");});
+        this.model.on('change:endDate', function() {console.log('Change the display of end date');});
 
     },
     render: function() {
@@ -222,9 +225,18 @@ HoursView.HoursWindow = Backbone.View.extend({
     },
     //for rendering new models
     displayModel: function(model) {
+
+
         this.model = model;
-        console.log("Model was just set "+this.model);
         this.render();
+
+        this.model.on('change', function() {
+            console.log("change in the start date event");
+        });
+        this.model.on('change:endDate', function() {
+            console.log("Change in the end date event");
+        });  
+
         return this;
     },
     //this method makes changes to the model and to 
@@ -282,7 +294,6 @@ HoursView.HoursWindow = Backbone.View.extend({
             hoursEditView.unbind('cancelEdit');
         }.bind(this));
 
-
         hoursEditView.on('cancelEdit', function() {
 
             //unbind all the events
@@ -292,6 +303,32 @@ HoursView.HoursWindow = Backbone.View.extend({
     },
     editDates: function() {
         console.log("edit dates");
+        hoursEditView.reset(
+            {
+                editDates: true, 
+                startDate: this.model.get('startDate'), 
+                endDate: this.model.get('endDate')
+            });
+
+        hoursEditView.show();
+
+        hoursEditView.on('doneEdit', function() {
+            console.log("done editting dates");
+            console.log("start: " + hoursEditView.startDate + " end: " + hoursEditView.endDate);
+            this.model.set('startDate', hoursEditView.startDate);
+            this.model.set('endDate', hoursEditView.endDate);
+            
+            hoursEditView.unbind('doneEdit');
+            hoursEditView.unbind('cancelEdit');
+
+        }.bind(this));
+
+        hoursEditView.on('cancelEdit', function() {
+            console.log("Cancel editting dates");
+            hoursEditView.unbind('doneEdit');
+            hoursEditView.unbind('cancelEdit');
+
+        }.bind(this));
 
     },
     //NOT YET DOCUMENTED
@@ -310,8 +347,6 @@ HoursView.HoursWindow = Backbone.View.extend({
 
                 this.setHours(currentDay, this.model.getTimeObjectForDay(previousDay));
             }
-             
-
 
     },
     show: function(animate) {
@@ -388,6 +423,68 @@ var hoursEditView = (function() {
             if (this.editDates) {
                 //change the start and end date properties
                 //every time the select elements change
+                $('.hoursEdit-startSelect select:nth-child(2)').change(function() {
+                     this.startDate =   $('.hoursEdit-startSelect select:nth-child(1)').val() + '/' +
+                                        $('.hoursEdit-startSelect select:nth-child(2)').val() +  '/' +
+                                        $('.hoursEdit-startSelect select:nth-child(3)').val();
+
+                }.bind(this));
+
+                 $('.hoursEdit-endSelect select:nth-child(2)').change(function() {
+                     this.endDate =     $('.hoursEdit-startSelect select:nth-child(1)').val() + '/' +
+                                        $('.hoursEdit-startSelect select:nth-child(2)').val() + '/' +
+                                        $('.hoursEdit-startSelect select:nth-child(3)').val();
+
+                }.bind(this));
+
+                 //also bind events for generating the correct number of days when the month
+                 //or year changes
+                 $('.hoursEdit-endSelect select:nth-child(1), .hoursEdit-endSelect select:nth-child(3), .hoursEdit-startSelect select:nth-child(1), .hoursEdit-startSelect select:nth-child(3)')
+                    .change(function(event) {
+
+                        var monthStr = $(event.delegateTarget).parent().children(':nth-child(1)').val(),
+                            yearStr = $(event.delegateTarget).parent().children(':nth-child(3)').val(),
+                            daysEl = $(event.delegateTarget).parent().children(':nth-child(2)'),
+                            dayStr = daysEl.val(),
+                            days = DateHelper.daysForMonth(+monthStr - 1, +yearStr),
+                            newDay = +dayStr, 
+                            i;
+
+                        //if the old day is greater than the
+                        //total number of days in the month,
+                        //then set the new day value to the last
+                        //day of the month
+                        while (newDay > days) {
+                            newDay--;
+                        }
+                        //reset the dayStr to the newDay value
+                        //that has just been set
+                        dayStr = (newDay < 10) ? '0' + newDay.toString() : newDay.toString();
+
+                        daysEl.children().remove();
+
+                        for (i = 1; i <= days; ++i) {
+                            if (i < 10) {
+                                daysEl.append('<option value="0'+i+'">'+i+'</option>');
+                            } else {
+                                daysEl.append('<option value="'+i+'">'+i+'</option>');
+                            }  
+                        }
+                        daysEl.val(dayStr);
+
+                        this.startDate= $('.hoursEdit-startSelect select:nth-child(1)').val() + '/' +
+                                        $('.hoursEdit-startSelect select:nth-child(2)').val() +  '/' +
+                                        $('.hoursEdit-startSelect select:nth-child(3)').val();
+
+
+                        this.endDate =  $('.hoursEdit-startSelect select:nth-child(1)').val() + '/' +
+                                        $('.hoursEdit-startSelect select:nth-child(2)').val() + '/' +
+                                        $('.hoursEdit-startSelect select:nth-child(3)').val();
+
+                     });
+
+
+
             } else {
                 //change the start and end time properties
                 //every time the select elements change
