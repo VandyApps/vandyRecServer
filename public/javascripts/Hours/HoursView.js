@@ -11,8 +11,15 @@ HoursView.HoursItem = Backbone.View.extend({
     initialize: function() {
         this.render();
         //add events
-        this.model.on('change:startDate', function() {console.log("Change the order of the table");});
-        this.model.on('change:endDate', function() {console.log('Change the display of end date');});
+        this.model.on('change:startDate', function() {
+            $('.hoursItem-startDate', this.$el).text(this.model.get('startDate'));
+            this.trigger('startDateChange');
+        }.bind(this));
+
+        this.model.on('change:endDate', function() {
+            $('.hoursItem-endDate', this.$el).text(this.model.get('endDate'));
+
+        }.bind(this));
 
     },
     render: function() {
@@ -42,13 +49,24 @@ HoursView.HoursTable = Backbone.View.extend({
     views: [],
     initialize: function(options) {
         this.type = (!options || options.type === undefined) ? 0 : options.type;
-        this.views = (! options || options.views === undefined) ? [] : options.views;
+        this.views = (! options || !Array.isArray(options.views)) ? [] : options.views;
 
         if (!this.isSorted()) {
             this.sort();
         }
 
         this.render();
+        //register all the views for events
+        this.views.forEach(function(view) {
+            console.log("this is " + this);
+            view.on('startDateChange', function() {
+
+                this.sort();
+                this.reload();
+                
+            }.bind(this));
+
+        }.bind(this));
     },
     render: function() {
         //set the element to be the hours list at
