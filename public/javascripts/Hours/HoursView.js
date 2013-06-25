@@ -406,7 +406,7 @@ var hoursEditView = (function() {
                 $('.hoursEdit-startSelect select:nth-child(2), .hoursEdit-endSelect select:nth-child(2)', this.$el).children().remove();
 
                 //create start date elements
-                daysEl = $('.hoursEdit-startSelect select:nth-child(2)');
+                daysEl = $('.hoursEdit-startSelect select:nth-child(2)', this.$el);
                 daysInMonth = DateHelper.daysForMonth(+startArray[0] - 1, +startArray[2]);
                 for (i = 1; i <= daysInMonth; ++i) {
                     
@@ -418,7 +418,7 @@ var hoursEditView = (function() {
                 }
 
                 //create end date elements
-                daysEl = $('.hoursEdit-endSelect select:nth-child(2)');
+                daysEl = $('.hoursEdit-endSelect select:nth-child(2)', this.$el);
                 daysInMonth = DateHelper.daysForMonth(+endArray[0] - 1, +endArray[2]);
                 for (i = 1; i <= daysInMonth; ++i) {
                     
@@ -512,8 +512,7 @@ var hoursEditView = (function() {
                         this.endDate =  $('.hoursEdit-endSelect select:nth-child(1)', this.$el).val() + '/' +
                                         $('.hoursEdit-endSelect select:nth-child(2)', this.$el).val() + '/' +
                                         $('.hoursEdit-endSelect select:nth-child(3)', this.$el).val();
-                        console.log("Setting new start: " + this.startDate + " and end: " + this.endDate);
-                        console.log("Element: " + this.$el.attr('id'));
+                        
                      }.bind(this));
 
 
@@ -570,12 +569,6 @@ var hoursEditView = (function() {
             this.$el.hide();
             $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
             $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
-        },
-        //for changing the number of days available
-        // when a month or year is selected
-        //NOT DOCUMENTED
-        addDateChangeEvents: function() {
-
         }
     });
     
