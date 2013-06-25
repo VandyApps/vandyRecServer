@@ -390,21 +390,52 @@ var hoursEditView = (function() {
         render: function() {
             var startSelect, endSelect,
                 startArray, endArray,
-                i;
+                i, daysInMonth, daysEl;
             //set the correct $el
             this.$el = (this.editDates) ? $('#hoursEdit-editDates') : $('#hoursEdit-editTimes');
             startSelect = $('.hoursEdit-startSelect', this.$el);
             endSelect = $('.hoursEdit-endSelect', this.$el);
             
             if (this.editDates) {
+                
+
                 startArray = DateHelper.splitDate(this.startDate);
                 endArray = DateHelper.splitDate(this.endDate);
 
+                //set the options for the day select tags
+                $('.hoursEdit-startSelect select:nth-child(2), .hoursEdit-endSelect select:nth-child(2)', this.$el).children().remove();
+
+                //create start date elements
+                daysEl = $('.hoursEdit-startSelect select:nth-child(2)');
+                daysInMonth = DateHelper.daysForMonth(+startArray[0] - 1, +startArray[2]);
+                for (i = 1; i <= daysInMonth; ++i) {
+                    
+                    if (i < 10) {
+                        daysEl.append('<option value="0'+i+'">'+i+'</option>');
+                    } else {
+                        daysEl.append('<option value="'+i+'">'+i+'</option>');
+                    }  
+                }
+
+                //create end date elements
+                daysEl = $('.hoursEdit-endSelect select:nth-child(2)');
+                daysInMonth = DateHelper.daysForMonth(+endArray[0] - 1, +endArray[2]);
+                for (i = 1; i <= daysInMonth; ++i) {
+                    
+                    if (i < 10) {
+                        daysEl.append('<option value="0'+i+'">'+i+'</option>');
+                    } else {
+                        daysEl.append('<option value="'+i+'">'+i+'</option>');
+                    }  
+                }
 
             } else {
                 startArray = DateHelper.splitTime(this.startTime);
                 endArray = DateHelper.splitTime(this.endTime);
             }
+
+            
+
 
             for (i = 0; i < 3; ++i) {
                 startSelect.children().eq(i).val(startArray[i]);
