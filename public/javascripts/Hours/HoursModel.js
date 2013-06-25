@@ -152,6 +152,10 @@ HoursModel.Hours = Backbone.Model.extend({
 				callback.call(context, times[i], i);
 			}
 		}
+	},
+	//temporarily set to true to for client-side testing
+	isNew: function() {
+		return true;
 	}
 });
 

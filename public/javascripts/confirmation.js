@@ -25,7 +25,7 @@ var ConfirmationBox = Backbone.View.extend({
 		console.log("Render was called");
 		if ($('#confirmationPrimer').length !== 1) {
 
-			$('body').append('<div id="confirmationPrimer" style="position: absolute; display: none; background-color: rgba(0,0,0,0); top: 0; left: 0; height: 100%; width: 100%; z-index: 9999;"></div>');
+			$('body').append('<div id="confirmationPrimer" style="position: absolute; display: none; background-color: rgba(0,0,0,0); top: 0; left: 0; height: 100%; width: 100%; z-index: 100000000;"></div>');
 		} else {
 			console.log("Confirmation primer already exists");
 		}
@@ -74,7 +74,7 @@ var ConfirmationBox = Backbone.View.extend({
 		}
 	},
 	getBoxStyle: function() {
-		return "display: none; position: fixed;z-index: 10000;margin-top: -200px;margin-left: -150px;top: 50%;left: 50%; background-color: #efefef; border: solid black; height: 200px; border-radius: 10px;width: 300px;"
+		return "display: none; position: fixed;z-index: 1000000000;margin-top: -200px;margin-left: -150px;top: 50%;left: 50%; background-color: #efefef; border: solid black; height: 200px; border-radius: 10px;width: 300px;"
 	},
 	getMessageStyle: function() {
 		return "display: block; position: absolute; top: 20px; width: 250px; left: 25px; height: 100px; text-align: center;";

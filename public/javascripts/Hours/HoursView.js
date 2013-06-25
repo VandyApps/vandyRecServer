@@ -177,7 +177,8 @@ HoursView.HoursWindow = Backbone.View.extend({
         'click #hoursWindow-exit': 'hide',
         'mouseenter #hoursWindow-exit': 'hoverOnExit',
         'mouseleave #hoursWindow-exit': 'hoverOffExit',
-        'click #hoursWindow-editDates': 'editDates'
+        'click #hoursWindow-editDates': 'editDates',
+        'click #hoursWindow-delete': 'delete'
     },
     
     render: function() {
@@ -243,7 +244,32 @@ HoursView.HoursWindow = Backbone.View.extend({
         $('.hoursWindow-listItem-sameAsAbove', hours).click($.proxy(this.sameAsAbove, this));
     },
     delete: function() {
-         console.log("Delete element and remove hours window");
+        var confirm = new ConfirmationBox(
+            {
+                animate: false,
+                button1Name: 'YES',
+                button2Name: 'NO',
+                message: 'Are you sure you want to delete these hours?',
+                deleteAfterPresent: true
+            });
+
+        confirm.show();
+        confirm.on('clicked1', function() {
+
+            console.log("clicked YES");
+            confirm.unbind('clicked1');
+            confirm.unbind('clicked2');
+
+        }.bind(this));
+
+        confirm.on('clicked2', function() {
+
+            console.log("clicked NO");
+            confirm.unbind('clicked1');
+            confirm.unbind('clicked2');
+
+        }.bind(this));
+         this.model.destroy();
     },
     //for rendering new models
     displayModel: function(model) {
