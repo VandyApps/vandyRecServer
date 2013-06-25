@@ -231,14 +231,15 @@ HoursView.HoursWindow = Backbone.View.extend({
         this.render();
 
         this.model.on('change:startDate', function() {
-            console.log("Changing the start date: " + this.model.get('startDate'));
+            
             $('#hoursWindow-hoursStartDate', this.$el).text(this.model.get('startDate'));
         }.bind(this));
         this.model.on('change:endDate', function() {
-            console.log("Changing the end date");
+            
             $('#hoursWindow-hoursEndDate', this.$el).text(this.model.get('endDate'));
         }.bind(this));  
 
+        //support method chaining
         return this;
     },
     //this method makes changes to the model and to 
@@ -315,11 +316,12 @@ HoursView.HoursWindow = Backbone.View.extend({
         hoursEditView.show();
 
         hoursEditView.on('doneEdit', function() {
-            console.log("done editting dates");
-            console.log("start: " + hoursEditView.startDate + " end: " + hoursEditView.endDate);
-            this.model.set('startDate', hoursEditView.startDate);
-            this.model.set('endDate', hoursEditView.endDate);
             
+            this.model.setStartDate(hoursEditView.startDate);
+            this.model.setEndDate(hoursEditView.endDate);
+            
+            //remove binding after either the done or cancel button
+            //is pressed
             hoursEditView.unbind('doneEdit');
             hoursEditView.unbind('cancelEdit');
 
@@ -327,6 +329,9 @@ HoursView.HoursWindow = Backbone.View.extend({
 
         hoursEditView.on('cancelEdit', function() {
             console.log("Cancel editting dates");
+
+            //remove binding after either the done or cancel button
+            //is pressed
             hoursEditView.unbind('doneEdit');
             hoursEditView.unbind('cancelEdit');
 
