@@ -395,7 +395,7 @@ var hoursEditView = (function() {
             this.$el = (this.editDates) ? $('#hoursEdit-editDates') : $('#hoursEdit-editTimes');
             startSelect = $('.hoursEdit-startSelect', this.$el);
             endSelect = $('.hoursEdit-endSelect', this.$el);
-            
+            console.log("Element is set to: " + this.$el.attr('id'));
             if (this.editDates) {
                 
 
@@ -455,16 +455,17 @@ var hoursEditView = (function() {
                 //change the start and end date properties
                 //every time the select elements change
                 $('.hoursEdit-startSelect select:nth-child(2)', this.$el).change(function() {
-                     this.startDate =   $('.hoursEdit-startSelect select:nth-child(1)', this.$el).val() + '/' +
+                    this.startDate =    $('.hoursEdit-startSelect select:nth-child(1)', this.$el).val() + '/' +
                                         $('.hoursEdit-startSelect select:nth-child(2)', this.$el).val() +  '/' +
                                         $('.hoursEdit-startSelect select:nth-child(3)', this.$el).val();
+
 
                 }.bind(this));
 
                  $('.hoursEdit-endSelect select:nth-child(2)', this.$el).change(function() {
-                     this.endDate =     $('.hoursEdit-startSelect select:nth-child(1)', this.$el).val() + '/' +
-                                        $('.hoursEdit-startSelect select:nth-child(2)', this.$el).val() + '/' +
-                                        $('.hoursEdit-startSelect select:nth-child(3)', this.$el).val();
+                    this.endDate =  $('.hoursEdit-endSelect select:nth-child(1)', this.$el).val() + '/' +
+                                    $('.hoursEdit-endSelect select:nth-child(2)', this.$el).val() + '/' +
+                                    $('.hoursEdit-endSelect select:nth-child(3)', this.$el).val();
 
                 }.bind(this));
 
@@ -508,11 +509,12 @@ var hoursEditView = (function() {
                                         $('.hoursEdit-startSelect select:nth-child(3)', this.$el).val();
 
 
-                        this.endDate =  $('.hoursEdit-startSelect select:nth-child(1)', this.$el).val() + '/' +
-                                        $('.hoursEdit-startSelect select:nth-child(2)', this.$el).val() + '/' +
-                                        $('.hoursEdit-startSelect select:nth-child(3)', this.$el).val();
-
-                     });
+                        this.endDate =  $('.hoursEdit-endSelect select:nth-child(1)', this.$el).val() + '/' +
+                                        $('.hoursEdit-endSelect select:nth-child(2)', this.$el).val() + '/' +
+                                        $('.hoursEdit-endSelect select:nth-child(3)', this.$el).val();
+                        console.log("Setting new start: " + this.startDate + " and end: " + this.endDate);
+                        console.log("Element: " + this.$el.attr('id'));
+                     }.bind(this));
 
 
 
