@@ -20,6 +20,11 @@ HoursView.HoursItem = Backbone.View.extend({
             $('.hoursItem-endDate', this.$el).text(this.model.get('endDate'));
 
         }.bind(this));
+        this.model.on('remove', function() {
+            
+            this.trigger('remove');
+
+        }.bind(this));
 
     },
     render: function() {
@@ -66,6 +71,13 @@ HoursView.HoursTable = Backbone.View.extend({
                     this.reload();
                 }
 
+            }.bind(this));
+            view.on('remove', function() {
+                this.views.forEach(function(aView, index) {
+                    if (aView === view) {
+                        this.removeView(aView, index);
+                    }
+                }.bind(this))
             }.bind(this));
 
         }.bind(this));
@@ -165,6 +177,15 @@ HoursView.HoursTable = Backbone.View.extend({
             }
         }
         return true;
+    },
+    //NOT YET DOCUMENTED
+    //for removing views within the array
+    //and from the display
+    removeView: function(view, index) {
+        
+        var length = this.views.length;
+        this.views = this.views.slice(0, index).concat(this.views.slice(index, length - index));
+        view.$el.remove();
     }
 
 });
@@ -256,20 +277,19 @@ HoursView.HoursWindow = Backbone.View.extend({
         confirm.show();
         confirm.on('clicked1', function() {
 
-            console.log("clicked YES");
             confirm.unbind('clicked1');
             confirm.unbind('clicked2');
+            this.model.destroy();
 
         }.bind(this));
 
         confirm.on('clicked2', function() {
 
-            console.log("clicked NO");
             confirm.unbind('clicked1');
             confirm.unbind('clicked2');
 
         }.bind(this));
-         this.model.destroy();
+         
     },
     //for rendering new models
     displayModel: function(model) {
@@ -300,6 +320,11 @@ HoursView.HoursWindow = Backbone.View.extend({
             }, this);
 
         }.bind(this));
+        this.model.on('remove', function() {
+            this.model = null;
+            this.hide();
+        }.bind(this));
+
         //support method chaining
         return this;
     },

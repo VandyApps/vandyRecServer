@@ -22,7 +22,6 @@ var ConfirmationBox = Backbone.View.extend({
 		$('#button2').click($.proxy(this.clickedButton2, this));
 	},
 	render: function() {
-		console.log("Render was called");
 		if ($('#confirmationPrimer').length !== 1) {
 
 			$('body').append('<div id="confirmationPrimer" style="position: absolute; display: none; background-color: rgba(0,0,0,0); top: 0; left: 0; height: 100%; width: 100%; z-index: 100000000;"></div>');
@@ -86,7 +85,7 @@ var ConfirmationBox = Backbone.View.extend({
 		return "display: block; position: absolute; top: 125px; text-align: center; width: 200px; left: 50px;"
 	},
 	delete: function() {
-		console.log("Delete was called");
+		
 		$('#button1').unbind();
 		$('#button2').unbind();
 		this.$el.remove();
