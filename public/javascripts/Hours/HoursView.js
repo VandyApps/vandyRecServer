@@ -667,8 +667,32 @@ var hoursEditView = (function() {
 
 })();
 
+//other events
 
+$('.hoursSectionHeader-add').click(function() {
+    var id = $(this).attr('id'),
+        length = id.length,
+        setNumber = +id.charAt(length - 1),
+        facilityHours = (setNumber !== 3),
+        closedHours = (setNumber === 2);
+
+        /*
+    hoursCollection.add(new HoursMode.Hours({
+
+        priorityNumber: 1,
+        facilityHours: facilityHours,
+        closedHours: closedHours,
+        name: 'New Hours',
+        startDate: DateHelper.dateStringFromDate(new Date()),
+        endDate: DateHelper.dateStringFromDate(new Date())
+
+    }));
+*/
+
+});
 
 //global variables related to the view
 //are defined here
 var hoursWindowView = new HoursView.HoursWindow();
+
+
