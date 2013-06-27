@@ -156,6 +156,7 @@ HoursView.HoursTable = Backbone.View.extend({
     //this method adds a view to the correct slot within the list
     //if the list is not sorted before this method is
     //called, the list is sorted before adding the new element
+    //also binds events to the views that are being added
     add: function(hoursItem) {
         var itemAdded = false, i, n;
         if (this.views.length !== 0) {
@@ -187,7 +188,23 @@ HoursView.HoursTable = Backbone.View.extend({
             this.views.push(hoursItem);
             this.$el.append(hoursItem.$el);
         }
-      
+
+        hoursItem.on('startDateChange', function() {
+
+            if (!this.isSorted()) {
+                this.sort();
+                this.reload();
+            }
+
+        }.bind(this));
+        hoursItem.on('remove', function() {
+            this.views.forEach(function(aView, index) {
+                if (aView === hoursItem) {
+                    this.removeView(aView, index);
+                }
+            }.bind(this))
+        }.bind(this));
+  
     },
     //checks if the list is sorted
     isSorted: function() {
@@ -346,6 +363,7 @@ HoursView.HoursWindow = Backbone.View.extend({
 
         }.bind(this));
         this.model.on('remove', function() {
+
             this.model = null;
             this.hide();
         }.bind(this));

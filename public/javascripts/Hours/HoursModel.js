@@ -206,7 +206,7 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 	//NOT YET DOCUMENTED
 	addModel: function(model) {
 		console.log(model);
-		this.models.push(model);
+		this.add(model);
 		//throw an event
 		if (model.isClosed()) {
 
