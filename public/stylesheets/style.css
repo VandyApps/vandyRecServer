@@ -211,7 +211,7 @@ textarea {
     height: 500px;
     margin-left: -200px;
     margin-top: -250px;
-    top: 50%;
+    top: 70%;
     left: 50%;
     z-index: 1000000;
     background-color: white;
@@ -228,6 +228,15 @@ textarea {
 }
 #hoursWindow-body {
     position: relative;
+}
+#hoursWindow-editName {
+    font-size: 10pt;
+    color: blue;
+    position: absolute;
+    display: block;
+    text-decoration: underline;
+    top: 15px;
+    left: 10px;
 }
 #hoursWindow-title {
     
