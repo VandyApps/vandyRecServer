@@ -8,7 +8,8 @@ HoursView.HoursItem = Backbone.View.extend({
     events: {
         'click': 'showWindow'
     },
-    initialize: function() {
+    initialize: function(options) {
+
         this.render();
         //add events
         this.model.on('change:startDate', function() {
@@ -89,9 +90,13 @@ HoursView.HoursTable = Backbone.View.extend({
         //be added or removed
 
         
-        
+        //abstracts the adding of the model
+        //by placing the model in a view and 
+        //calling add on the new view
         function addModel(model) {
-            console.log("Adding model " + this.type);
+            
+            this.add(new HoursView.HoursItem({model: model}));
+            this.reload();
         }
 
         if (this.type === 1) {
