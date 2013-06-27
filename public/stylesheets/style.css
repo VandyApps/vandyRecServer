@@ -211,7 +211,7 @@ textarea {
     height: 500px;
     margin-left: -200px;
     margin-top: -250px;
-    top: 70%;
+    top: 50%;
     left: 50%;
     z-index: 1000000;
     background-color: white;
@@ -594,6 +594,18 @@ textarea {
 	   color-stop(0.1, rgb(177,174,181)),
 	   color-stop(0.55, rgb(240,240,240))
     );
+}
+
+.hoursEdit .hoursEdit-body input {
+    background-color: orange;
+    height: 20px;
+    width: 180px;
+    border-radius: 5px;
+    position: absolute;
+    margin-left: -90px;
+    margin-top: -10px;
+    left: 50%;
+    top: 50%;
 }
 
 .hoursItem-name {
