@@ -23,6 +23,7 @@ HoursModel.Hours = Backbone.Model.extend({
 		    times = options.times || [];
 		    if (times.length === 0) {
 		    	//set blank objects for all valid days
+		    	this.configureTimes();
 		    }
 
 
@@ -32,7 +33,7 @@ HoursModel.Hours = Backbone.Model.extend({
 		this.set("facilityHours", facilityHours);
                 this.set('priorityNumber', priorityNumber);
 		this.set('closedHours', closedHours);
-		this.set('times', times);
+		
 	},
 	getName: function() {
 		return this.get('name');
@@ -88,7 +89,7 @@ HoursModel.Hours = Backbone.Model.extend({
 		//this method does nothing if the start or end times are not set
 		var startDate = this.get('startDate'),
 		    endDate = this.get('endDate'),
-		    times = [].slice.call(this.get('times')),
+		    times = (this.get('times') !== undefined) ? [].slice.call(this.get('times')) : new Array(7),
 		    defaultObj = {startTime: '12:00am', endTime: '01:00am'},
 		    timesChanged = false,
 		    loopDone, endDateFound, 
@@ -102,6 +103,7 @@ HoursModel.Hours = Backbone.Model.extend({
 					if (!times[i]) {
 						timesChanged = true;
 						times[i] = defaultObj;
+						
 					}
 				}
 
@@ -110,20 +112,21 @@ HoursModel.Hours = Backbone.Model.extend({
 				//there are days of the week that should not be represented
 				for (i = this.getStartDate().getDay(), firstIteration = true, endDateFound = false, loopDone = false; !loopDone; i = (i+1) % 7) {
 					
-					if (i === this.getStartDate().getDay() && !firstIteration) {
+					if ((i === this.getStartDate().getDay() && !firstIteration) || endDateFound)  {
 
 						loopDone = true;
 					} else {
 
 						if (!endDateFound && !times[i]) {
+							
 							timesChanged = true;
 							times[i] = defaultObj;
+							
 
 						} else if (endDateFound && times[i]) {
 							timesChanged = true;
 							times[i] = undefined;
 						}
-
 						if (i === this.getEndDate().getDay()) {
 							
 							endDateFound = true;
@@ -138,6 +141,7 @@ HoursModel.Hours = Backbone.Model.extend({
 			}
 		}
 		if (timesChanged) {
+			
 			this.set('times', times);
 		}
 		
