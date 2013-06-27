@@ -210,11 +210,11 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 		//throw an event
 		if (model.isClosed()) {
 
-			this.trigger('addClosedHours', [model]);
+			this.trigger('addClosedHours', model);
 		} else if (model.isFacilityHours()) {
-			this.trigger('addFacilityHours', [model]);
+			this.trigger('addFacilityHours', model);
 		} else {
-			this.trigger('addOtherHours', [model]);
+			this.trigger('addOtherHours', model);
 
 		}
 	}
