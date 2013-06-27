@@ -157,6 +157,7 @@ HoursView.HoursTable = Backbone.View.extend({
     //if the list is not sorted before this method is
     //called, the list is sorted before adding the new element
     //also binds events to the views that are being added
+    //NOT COMPLETELY DOCUMENTED
     add: function(hoursItem) {
         var itemAdded = false, i, n;
         if (this.views.length !== 0) {
@@ -241,7 +242,9 @@ HoursView.HoursWindow = Backbone.View.extend({
         'mouseenter #hoursWindow-exit': 'hoverOnExit',
         'mouseleave #hoursWindow-exit': 'hoverOffExit',
         'click #hoursWindow-editDates': 'editDates',
-        'click #hoursWindow-delete': 'delete'
+        'click #hoursWindow-delete': 'delete',
+        'click #hoursWindow-editName': 'editName',
+        'change #hoursWindow-priorityNumber': 'changePriorityNumber'
     },
     
     render: function() {
@@ -250,6 +253,7 @@ HoursView.HoursWindow = Backbone.View.extend({
             i, n;
 
         console.log("Dont forget to fill in the table section in the category at the top right corner");
+
         $('#hoursWindow-title').text(this.model.getName());
         //clear all the existing elements within the hours of operation
         $('#hoursWindow-times', this.$el).children().remove();
@@ -362,6 +366,7 @@ HoursView.HoursWindow = Backbone.View.extend({
             }, this);
 
         }.bind(this));
+
         this.model.on('remove', function() {
 
             this.model = null;
@@ -404,7 +409,21 @@ HoursView.HoursWindow = Backbone.View.extend({
             }
             throw new Error("Searching for list item in hours of operation list using out of range index");
     },
+    //NOT YET DOCUMENTED
+    editName: function() {
+        this.isEditting = true;
+        //display edit window
+
+    },
+    //NOT YET DOCUMENTED
+    changePriorityNumber: function() {
+
+    },
     editTimes: function(event) {
+        this.isEditting = true;
+        //toggle isEditting
+        var isEditting = (this.isEditting = !this.isEditting);
+
         //show window and bind events to check when to remove window
         var startTimeEl = $(event.delegateTarget).parent().find('.hoursWindow-listItem-startTime'),
             endTimeEl = $(event.delegateTarget).parent().find('.hoursWindow-listItem-endTime'),
@@ -434,7 +453,7 @@ HoursView.HoursWindow = Backbone.View.extend({
         });
     },
     editDates: function() {
-        
+        this.isEditting = true;
         hoursEditView.reset(
             {
                 editDates: true, 
@@ -513,6 +532,39 @@ HoursView.HoursWindow = Backbone.View.extend({
 });
 
 
+//NOT YET DOCUMENTED
+HoursView.HoursNameEdit = Backbone.View.extend({
+
+    name: '',
+    events: {
+        'click .hoursEdit-done input[value="done"]': 'done',
+        'click .hoursEdit-done input[value="cancel"]': 'cancel'
+    },
+    initialize: function(options) {
+        this.name = (options && options.name) ? options.name : 'Name Here';
+        this.render();
+    },
+    render: function() {
+        this.$el = $('#hoursEdit-editName');
+        $('.hoursEdit-body input', this.$el).val(this.name);
+    },
+    show: function() {
+        this.$el.show();
+    },
+    hide: function() {
+        this.$el.hide();
+    },
+    done: function() {
+        this.trigger('doneEdit');
+        this.hide();
+    },
+    cancel: function() {
+        this.trigger('cancelEdit');
+        this.hide();
+    }
+});
+
+
 var hoursEditView = (function() {
 
     HoursView.HoursEdit = Backbone.View.extend({
@@ -579,7 +631,7 @@ var hoursEditView = (function() {
         //setting up that requires render to have been
         //called.  This includes binding events to dynamically
         //bound $el
-        //NOT DOCUMENTED
+        //NOT YET DOCUMENTED
         bindEvents: function() {
             $('.hoursEdit-done input[value="done"]', this.$el).click($.proxy(this.didEdit, this));
             $('.hoursEdit-done input[value="cancel"]', this.$el).click($.proxy(this.didCancel, this));
