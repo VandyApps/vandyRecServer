@@ -209,7 +209,7 @@ HoursView.HoursTable = Backbone.View.extend({
     removeView: function(view, index) {
         
         var length = this.views.length;
-        this.views = this.views.slice(0, index).concat(this.views.slice(index, length - index));
+        this.views = this.views.slice(0, index).concat(this.views.slice(index+1, length - index));
         view.$el.remove();
     }
 
