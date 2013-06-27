@@ -81,6 +81,26 @@ HoursView.HoursTable = Backbone.View.extend({
             }.bind(this));
 
         }.bind(this));
+
+        //bind events for adding new events
+        //the view responds to different events
+        //depending on the type of table view it is
+        //type 0 has no associated events because models cannot
+        //be added or removed
+
+        
+        
+        function addModel(model) {
+            console.log("Adding model " + this.type);
+        }
+
+        if (this.type === 1) {
+            hoursCollection.on('addFacilityHours', addModel.bind(this));
+        } else if (this.type === 2) {
+            hoursCollection.on('addClosedHours', addModel.bind(this));
+        } else if (this.type === 3) {
+            hoursCollection.on('addOtherHours', addModel.bind(this));
+        }
     },
     render: function() {
         //set the element to be the hours list at
@@ -676,8 +696,8 @@ $('.hoursSectionHeader-add').click(function() {
         facilityHours = (setNumber !== 3),
         closedHours = (setNumber === 2);
 
-        /*
-    hoursCollection.add(new HoursMode.Hours({
+        
+    hoursCollection.addModel(new HoursModel.Hours({
 
         priorityNumber: 1,
         facilityHours: facilityHours,
@@ -687,7 +707,7 @@ $('.hoursSectionHeader-add').click(function() {
         endDate: DateHelper.dateStringFromDate(new Date())
 
     }));
-*/
+
 
 });
 

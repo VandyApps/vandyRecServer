@@ -197,6 +197,22 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 		}).sort(function(model1, model2) {
 			return model1.getStartDate().getTime() - model2.getStartDate().getTime();
 		});
+	},
+	//adds model and throws event
+	//NOT YET DOCUMENTED
+	addModel: function(model) {
+		console.log(model);
+		this.models.push(model);
+		//throw an event
+		if (model.isClosed()) {
+
+			this.trigger('addClosedHours', [model]);
+		} else if (model.isFacilityHours()) {
+			this.trigger('addFacilityHours', [model]);
+		} else {
+			this.trigger('addOtherHours', [model]);
+
+		}
 	}
 });
 
