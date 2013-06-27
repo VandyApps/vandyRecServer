@@ -278,6 +278,7 @@ HoursView.HoursWindow = Backbone.View.extend({
             $('#hoursWindow-priorityNumberBase').show();
             $('#hoursWindow-delete').hide();
             $('#hoursWindow-editDates').hide();
+            $('#hoursWindow-editName').hide();
         } else {
 
             $('#hoursWindow-priorityNumberSelect').show();
@@ -285,6 +286,7 @@ HoursView.HoursWindow = Backbone.View.extend({
             $('#hoursWindow-priorityNumber').val(this.model.getPriorityNumber().toString());
             $('#hoursWindow-delete').show();
             $('#hoursWindow-editDates').show();
+            $('#hoursWindow-editName').show();
         }
     },
     //appends new hours to the time object
@@ -345,6 +347,10 @@ HoursView.HoursWindow = Backbone.View.extend({
         this.render();
 
         //bind events related to the model
+
+        this.model.on('change:name', function() {
+            $('#hoursWindow-title', this.$el).text(this.model.getName());
+        }.bind(this));
 
         //changing the start and end dates
         this.model.on('change:startDate', function() {
@@ -411,8 +417,24 @@ HoursView.HoursWindow = Backbone.View.extend({
     },
     //NOT YET DOCUMENTED
     editName: function() {
+        console.log("Edit name called");
         this.isEditting = true;
         //display edit window
+        hoursNameEdit.setName(this.model.getName());
+        hoursNameEdit.show();
+        hoursNameEdit.on('doneEdit', function() {
+            this.model.set('name', hoursNameEdit.name);
+
+            hoursNameEdit.unbind('doneEdit');
+            hoursNameEdit.unbind('cancelEdit');
+        }.bind(this));
+
+        hoursNameEdit.on('cancelEdit', function() {
+
+
+            hoursNameEdit.unbind('doneEdit');
+            hoursNameEdit.unbind('cancelEdit');
+        });
 
     },
     //NOT YET DOCUMENTED
@@ -561,8 +583,13 @@ HoursView.HoursNameEdit = Backbone.View.extend({
     cancel: function() {
         this.trigger('cancelEdit');
         this.hide();
+    },
+    setName: function(name) {
+        this.name = name;
+        $('.hoursEdit.body input').val(name);
     }
 });
+
 
 
 var hoursEditView = (function() {
@@ -789,5 +816,6 @@ $('.hoursSectionHeader-add').click(function() {
 //global variables related to the view
 //are defined here
 var hoursWindowView = new HoursView.HoursWindow();
+var hoursNameEdit = new HoursView.HoursNameEdit();
 
 

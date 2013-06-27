@@ -237,7 +237,9 @@ textarea {
     text-decoration: underline;
     top: 15px;
     left: 10px;
+    cursor: pointer;
 }
+
 #hoursWindow-title {
     
     position: absolute;
@@ -266,18 +268,7 @@ textarea {
     top: 5px;
     cursor: pointer;
 }
-#hoursWindow-sectionTitle {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    font-size: 10pt;
-    display: block;
-    width: 80px;
-    height: 30px;
-    line-height: 15px;
-    text-align: center;
-    color: blue;
-}
+
 #hoursWindow-body>div:nth-child(2), #hoursWindow-body>div:nth-child(4), #hoursWindow-body>div:nth-child(6){
     
     width: 100px;
