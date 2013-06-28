@@ -293,6 +293,9 @@ HoursView.HoursWindow = Backbone.View.extend({
             $('#hoursWindow-delete').hide();
             $('#hoursWindow-editDates').hide();
             $('#hoursWindow-editName').hide();
+            $('#hoursWindow-closed').hide();
+            $('#hoursWindow-times').show();
+            
         } else {
 
             $('#hoursWindow-priorityNumberSelect').show();
@@ -304,6 +307,14 @@ HoursView.HoursWindow = Backbone.View.extend({
 
             //set the priority number to the priority number of the model
             $('#hoursWindow-priorityNumberSelect', this.$el).val(this.model.getPriorityNumber().toString());
+
+            if (this.model.isClosed()) {
+                $('#hoursWindow-closed').show();
+                $('#hoursWindow-times').hide();
+            } else {
+                $('#hoursWindow-closed').hide();
+                $('#hoursWindow-times').show();
+            }
         }
     },
     //appends new hours to the time object
