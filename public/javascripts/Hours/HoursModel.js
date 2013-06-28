@@ -91,7 +91,6 @@ HoursModel.Hours = Backbone.Model.extend({
 		return this.getPriorityNumber() === 0 && this.isFacilityHours();
 	},
 	configureTimes: function() {
-		console.log("COnfigure times was called");
 		//uses the start and end time of the array
 		//this method does nothing if the start or end times are not set
 		var startDate = this.get('startDate'),
@@ -101,8 +100,11 @@ HoursModel.Hours = Backbone.Model.extend({
 		    timesChanged = false,
 		    loopDone, endDateFound, 
 		    firstIteration, i;
+		    
+		if (this.isClosed()) {
+			this.set('times', null);
 
-		if ((startDate && startDate !== '') && (endDate && endDate !== '')) {
+		} else if ((startDate && startDate !== '') && (endDate && endDate !== '')) {
 
 			if ((this.getEndDate().getTime() - this.getStartDate().getTime()) / (24*60*60*1000) >= 6) {
 				
@@ -146,11 +148,12 @@ HoursModel.Hours = Backbone.Model.extend({
 					
 				}
 			}
-		}
-		if (timesChanged) {
+			if (timesChanged) {
 			
-			this.set('times', times);
+				this.set('times', times);
+			}
 		}
+		
 		
 	},
 	iterateTimes: function(callback, context) {
