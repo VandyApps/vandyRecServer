@@ -77,7 +77,7 @@ HoursModel.Hours = Backbone.Model.extend({
 	},
 	setTimesForDay: function(weekDay, timeObject) {
 		var times;
-		if (timeObject.startTime !== undefined && timeObject.endTime !== undefined) {
+		if ((!this.isClosed()) && (timeObject.startTime !== undefined && timeObject.endTime !== undefined)) {
 			if (DateHelper.isTimeString(timeObject.startTime) && DateHelper.isTimeString(timeObject.endTime)) {
 				//copy the times so that the setter can be called
 				//setter needs to be called for events to propogate
@@ -95,7 +95,7 @@ HoursModel.Hours = Backbone.Model.extend({
 		//this method does nothing if the start or end times are not set
 		var startDate = this.get('startDate'),
 		    endDate = this.get('endDate'),
-		    times = (this.get('times') !== undefined) ? [].slice.call(this.get('times')) : new Array(7),
+		    times = (this.get('times')) ? [].slice.call(this.get('times')) : new Array(7),
 		    defaultObj = {startTime: '12:00am', endTime: '01:00am'},
 		    timesChanged = false,
 		    loopDone, endDateFound, 
@@ -157,11 +157,12 @@ HoursModel.Hours = Backbone.Model.extend({
 		
 	},
 	iterateTimes: function(callback, context) {
-		var i, n, 
-		    times = this.get('times'), 
+		var i, 
+		    times = this.get('times'),
+		    n = (times) ? times.length : 0, 
 		    context = context || this;
 
-		for (i = 0, n = times.length; i < n; ++i) {
+		for (i = 0; i < n; ++i) {
 			if (times[i]) {
 				callback.call(context, times[i], i);
 			}
