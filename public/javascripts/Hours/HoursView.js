@@ -344,7 +344,7 @@ HoursView.HoursWindow = Backbone.View.extend({
 
             confirm.unbind('clicked1');
             confirm.unbind('clicked2');
-            this.model.destroy();
+            this.model.destroy({headers: {_id: this.model.get('_id')}});
 
         }.bind(this));
 
@@ -477,7 +477,6 @@ HoursView.HoursWindow = Backbone.View.extend({
         hoursEditView.reset({editDates: false, startTime: startTime, endTime: endTime});
         hoursEditView.show();
         hoursEditView.on('doneEdit', function() {
-            console.log("Week day is " + weekDay);
             
             this.setHours(weekDay,
                 {

@@ -126,16 +126,17 @@ exports.createHours = function(req, res) {
 };
 
 exports.deleteHours = function(req, res) {
-	var data = req.body;
-	db.deleteHours(data, function(err, id) {
+	
+	db.deleteHours(req.headers._id, function(err, id) {
 		if (err) {
 			res.statusCode = 500;
 			res.send(err);
 		} else {
 			res.statusCode = 200;
-			res.send(doc);
+			res.send(id);
 		}
 	});
+
 };
 
 //traffic methods 

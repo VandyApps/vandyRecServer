@@ -205,8 +205,8 @@
 		});
 	};
 
-	exports.deleteHours = function(hours, callback) {
-		var parsedID = new ObjectID.createFromHexString(hours._id);
+	exports.deleteHours = function(hoursID, callback) {
+		var parsedID = new ObjectID.createFromHexString(hoursID);
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collections.hours, function(err, collection) {
 				collection.remove({_id: parsedID}, {w:1}, function(err, numberRemoved) {
@@ -217,7 +217,7 @@
 						error = new Error("Removed " + numberRemoved + " documents when 1 was supposed to be removed");
 					}
 
-					callback(error, hours._id);
+					callback(error, hoursID);
 					db.close();
 				});
 			});
