@@ -564,7 +564,10 @@ HoursView.HoursWindow = Backbone.View.extend({
          
         $('#hoursWindowPrimer').hide();
         this.$el.hide(); 
-        this.model.save();
+        if (this.didEdit) {
+            this.model.save();
+        }
+        
         return this;
     },
     hoverOnExit: function() {
