@@ -249,10 +249,16 @@ HoursView.HoursWindow = Backbone.View.extend({
         'mouseleave #hoursWindow-exit': 'hoverOffExit',
         'click #hoursWindow-editDates': 'editDates',
         'click #hoursWindow-delete': 'delete',
-        'click #hoursWindow-editName': 'editName',
-        'change #hoursWindow-priorityNumber': 'changePriorityNumber'
+        'click #hoursWindow-editName': 'editName'
     },
     
+    initialize: function() {
+        var self = this;
+        $('#hoursWindow-priorityNumberSelect', this.$el).change(function() {
+
+            self.model.set('priorityNumber', +$(this).val());
+        });
+    },
     render: function() {
         
         var times = this.model.get('times'),
@@ -448,7 +454,7 @@ HoursView.HoursWindow = Backbone.View.extend({
     },
     //NOT YET DOCUMENTED
     changePriorityNumber: function() {
-
+        
     },
     editTimes: function(event) {
         this.isEditting = true;
