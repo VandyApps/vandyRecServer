@@ -186,7 +186,7 @@
 					closedHours: hours.closedHours
 
 				}, function(err, numberUpdated) {
-
+					console.log("About to call callback");
 					callback(err, hours);
 					db.close();
 				});
