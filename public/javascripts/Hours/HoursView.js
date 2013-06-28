@@ -11,21 +11,27 @@ HoursView.HoursItem = Backbone.View.extend({
     initialize: function(options) {
 
         this.render();
+
         //add events
+        var self = this;
+        this.model.on('change:name', function() {
+            $('.hoursItem-name', self.$el).text(self.model.getName())
+        });
         this.model.on('change:startDate', function() {
-            $('.hoursItem-startDate', this.$el).text(this.model.get('startDate'));
+            $('.hoursItem-startDate', self.$el).text(self.model.get('startDate'));
             this.trigger('startDateChange');
-        }.bind(this));
+        });
 
         this.model.on('change:endDate', function() {
-            $('.hoursItem-endDate', this.$el).text(this.model.get('endDate'));
+            $('.hoursItem-endDate', self.$el).text(self.model.get('endDate'));
 
-        }.bind(this));
+        });
         this.model.on('remove', function() {
             
-            this.trigger('remove');
+            self.trigger('remove');
 
-        }.bind(this));
+        });
+
 
     },
     render: function() {
@@ -349,6 +355,8 @@ HoursView.HoursWindow = Backbone.View.extend({
         //bind events related to the model
 
         this.model.on('change:name', function() {
+            console.log("Changing the name: " + this.model.getName());
+
             $('#hoursWindow-title', this.$el).text(this.model.getName());
         }.bind(this));
 
@@ -423,8 +431,9 @@ HoursView.HoursWindow = Backbone.View.extend({
         hoursNameEdit.setName(this.model.getName());
         hoursNameEdit.show();
         hoursNameEdit.on('doneEdit', function() {
+            
             this.model.set('name', hoursNameEdit.name);
-
+            console.log(this.model.getName());
             hoursNameEdit.unbind('doneEdit');
             hoursNameEdit.unbind('cancelEdit');
         }.bind(this));
@@ -577,6 +586,7 @@ HoursView.HoursNameEdit = Backbone.View.extend({
         this.$el.hide();
     },
     done: function() {
+        this.name = $('.hoursEdit-body input', this.$el).val();
         this.trigger('doneEdit');
         this.hide();
     },
