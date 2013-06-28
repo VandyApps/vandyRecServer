@@ -1,6 +1,6 @@
 var HoursModel = {};
 HoursModel.Hours = Backbone.Model.extend({
-
+	idAttribute: '_id',
 	//properties
 	name: '',
 	startDate: '',
@@ -171,9 +171,11 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 	url: '/JSON/hours',
 
 	initialize: function() {
+		var self = this;
 		this.on('change', function(model) {
-			console.log("Hours Collection " + JSON.stringify(model));
+			model.save();
 		});
+
 	},
 	getBaseHours: function() {
 		return [].filter.call(this.models, function(model) {
