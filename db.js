@@ -171,6 +171,59 @@
 		});
 	};
 
+	exports.updateHours = function(hours, callback) {
+		var parsedID = new ObjectID.createFromHexString(hours._id);
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.hours, function(err, collection) {
+				collection.update({_id: parsedID}, 
+				{
+					name: hours.name,
+					priorityNumber: hours.priorityNumber,
+					startDate: hours.startDate,
+					endDate: hours.endDate,
+					times: hours.times,
+					facilityHours: hours.facilityHours,
+					closedHours: hours.closedHours
+
+				}, function(err, numberUpdated) {
+
+					callback(err, hours);
+					db.close();
+				});
+			});
+		});
+	};
+
+	exports.createHours = function(hours, callback) {
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.hours, function(err, collection) {
+				collection.insert(hours, function(err, docs) {
+					callback(err, docs[0]);
+					db.close();
+				});
+			});
+		});
+	};
+
+	exports.deleteHours = function(hours, callback) {
+		var parsedID = new ObjectID.createFromHexString(hours._id);
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.hours, function(err, collection) {
+				collection.remove({_id: parsedID}, {w:1}, function(err, numberRemoved) {
+					var error;
+					if (err) {
+						error = err;
+					} else if (numberRemoved !== 1) {
+						error = new Error("Removed " + numberRemoved + " documents when 1 was supposed to be removed");
+					}
+
+					callback(error, hours._id);
+					db.close();
+				});
+			});
+		});
+	}
+
 	exports.allGFObjects = function(callback) {
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collections.groupFitness, function(err, collection) {

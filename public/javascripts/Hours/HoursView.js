@@ -254,6 +254,7 @@ HoursView.HoursWindow = Backbone.View.extend({
     
     initialize: function() {
         var self = this;
+        //define event here instead of above for the ability to access self
         $('#hoursWindow-priorityNumberSelect', this.$el).change(function() {
 
             self.model.set('priorityNumber', +$(this).val());

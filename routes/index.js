@@ -98,20 +98,49 @@ exports.hours = function(req, res) {
 };
 
 exports.updateHours = function(req, res) {
-	res.send("Updating the hours here");
+	var data = req.body;
+
+	db.updateHours(data, function(err, doc) {
+		if(err) {
+			res.statusCode = 500;
+			res.send(err);
+		} else {
+			res.statusCode = 200;
+			res.send(doc);
+		}
+
+	});
 };
 
 exports.createHours = function(req, res) {
-	res.send("Creating new hours here");
+	var data = req.body;
+	db.createHours(data, function(err, doc) {
+		if (err) {
+			res.statusCode = 500;
+			res.send(err);
+		} else {
+			res.statusCode = 200;
+			res.send(doc);
+		}
+	});
 };
 
 exports.deleteHours = function(req, res) {
-	res.send("Deleting hours here");
+	var data = req.body;
+	db.deleteHours(data, function(err, id) {
+		if (err) {
+			res.statusCode = 500;
+			res.send(err);
+		} else {
+			res.statusCode = 200;
+			res.send(doc);
+		}
+	});
 };
 
 //traffic methods 
 exports.traffic = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		res.redirect('/?entry=2');
 	} else {
 		res.redirect('/login');
