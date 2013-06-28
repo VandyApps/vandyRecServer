@@ -75,9 +75,14 @@ HoursModel.Hours = Backbone.Model.extend({
 
 	},
 	setTimesForDay: function(weekDay, timeObject) {
+		var times;
 		if (timeObject.startTime !== undefined && timeObject.endTime !== undefined) {
 			if (DateHelper.isTimeString(timeObject.startTime) && DateHelper.isTimeString(timeObject.endTime)) {
-				this.get('times')[weekDay] = timeObject;
+				//copy the times so that the setter can be called
+				//setter needs to be called for events to propogate
+				times = this.get('times').slice();
+				times[weekDay] = timeObject;
+				this.set('times', times);
 			}
 		}
 	},

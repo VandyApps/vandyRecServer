@@ -416,7 +416,7 @@ HoursView.HoursWindow = Backbone.View.extend({
         } else {
             //the model should be responsible for creating the correct weekdays
             //necessary for the hours
-            console.log("The element does not exist yet.  Might have this throw an error");
+            throw new Error("Accessing day of the week that does not exist in the model");
              
         }
     },
