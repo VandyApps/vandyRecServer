@@ -90,6 +90,7 @@ HoursModel.Hours = Backbone.Model.extend({
 		return this.getPriorityNumber() === 0 && this.isFacilityHours();
 	},
 	configureTimes: function() {
+		console.log("COnfigure times was called");
 		//uses the start and end time of the array
 		//this method does nothing if the start or end times are not set
 		var startDate = this.get('startDate'),
@@ -103,6 +104,7 @@ HoursModel.Hours = Backbone.Model.extend({
 		if ((startDate && startDate !== '') && (endDate && endDate !== '')) {
 
 			if ((this.getEndDate().getTime() - this.getStartDate().getTime()) / (24*60*60*1000) >= 6) {
+				console.log("Setting all");
 				//then all the days of the week are represented
 				for (i = 0; i < 7; ++i) {
 					if (!times[i]) {
@@ -116,8 +118,8 @@ HoursModel.Hours = Backbone.Model.extend({
 				
 				//there are days of the week that should not be represented
 				for (i = this.getStartDate().getDay(), firstIteration = true, endDateFound = false, loopDone = false; !loopDone; i = (i+1) % 7) {
-					
-					if ((i === this.getStartDate().getDay() && !firstIteration) || endDateFound)  {
+					console.log("Loop");
+					if (i === this.getStartDate().getDay() && !firstIteration)  {
 
 						loopDone = true;
 					} else {
@@ -133,7 +135,7 @@ HoursModel.Hours = Backbone.Model.extend({
 							times[i] = undefined;
 						}
 						if (i === this.getEndDate().getDay()) {
-							
+							console.log("End date found");
 							endDateFound = true;
 						}
 						
