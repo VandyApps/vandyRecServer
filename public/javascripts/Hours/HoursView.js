@@ -454,10 +454,6 @@ HoursView.HoursWindow = Backbone.View.extend({
         });
 
     },
-    //NOT YET DOCUMENTED
-    changePriorityNumber: function() {
-        
-    },
     editTimes: function(event) {
         this.isEditting = true;
         //toggle isEditting
