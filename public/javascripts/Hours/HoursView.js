@@ -239,6 +239,8 @@ HoursView.HoursTable = Backbone.View.extend({
 
 });
 
+//calls save on the model when the window is exitted
+//NOT COMPLETELY DOCUMENTED
 HoursView.HoursWindow = Backbone.View.extend({
 
     el: '#hoursWindow',
@@ -463,18 +465,21 @@ HoursView.HoursWindow = Backbone.View.extend({
         var startTimeEl = $(event.delegateTarget).parent().find('.hoursWindow-listItem-startTime'),
             endTimeEl = $(event.delegateTarget).parent().find('.hoursWindow-listItem-endTime'),
             startTime = startTimeEl.text(),
-            endTime = endTimeEl.text();
+            endTime = endTimeEl.text(),
+            parentID = $(event.delegateTarget).parent().attr('id'),
+            weekDay = +parentID.substr(parentID.length - 1, 1);
 
         hoursEditView.reset({editDates: false, startTime: startTime, endTime: endTime});
         hoursEditView.show();
         hoursEditView.on('doneEdit', function() {
-        
-            this.setHours($(event.delegateTarget).parent().index(),
+            console.log("Week day is " + weekDay);
+            
+            this.setHours(weekDay,
                 {
                     startTime: hoursEditView.startTime, 
                     endTime: hoursEditView.endTime
                 });
-
+            
             //unbind all the events
             hoursEditView.unbind('doneEdit');
             hoursEditView.unbind('cancelEdit');
@@ -554,6 +559,7 @@ HoursView.HoursWindow = Backbone.View.extend({
          
         $('#hoursWindowPrimer').hide();
         this.$el.hide(); 
+        this.model.save();
         return this;
     },
     hoverOnExit: function() {
