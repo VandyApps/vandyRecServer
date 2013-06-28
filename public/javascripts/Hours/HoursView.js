@@ -245,6 +245,7 @@ HoursView.HoursWindow = Backbone.View.extend({
 
     el: '#hoursWindow',
     isEditting: false,
+    didEdit: false,
     events: {
         'click #hoursWindow-exit': 'hide',
         'mouseenter #hoursWindow-exit': 'hoverOnExit',
@@ -360,43 +361,47 @@ HoursView.HoursWindow = Backbone.View.extend({
 
 
         this.model = model;
+        this.didEdit = false;
         this.render();
 
         //bind events related to the model
-
+        var self = this;
         this.model.on('change:name', function() {
-            console.log("Changing the name: " + this.model.getName());
 
-            $('#hoursWindow-title', this.$el).text(this.model.getName());
-        }.bind(this));
+            $('#hoursWindow-title', self.$el).text(self.model.getName());
+        });
 
         //changing the start and end dates
         this.model.on('change:startDate', function() {
             
-            $('#hoursWindow-hoursStartDate', this.$el).text(this.model.get('startDate'));
-        }.bind(this));
+            $('#hoursWindow-hoursStartDate', self.$el).text(self.model.get('startDate'));
+        });
 
         this.model.on('change:endDate', function() {
             
-            $('#hoursWindow-hoursEndDate', this.$el).text(this.model.get('endDate'));
-        }.bind(this));  
+            $('#hoursWindow-hoursEndDate', self.$el).text(self.model.get('endDate'));
+        });  
 
         //changing the times array
         this.model.on('change:times', function() { 
             //remove all the children and refresh the elements
-            $('#hoursWindow-times', this.$el).children().remove();
-            this.model.iterateTimes(function(obj, weekDay) {
+            $('#hoursWindow-times', self.$el).children().remove();
+            self.model.iterateTimes(function(obj, weekDay) {
                 this.appendHoursToView(weekDay, obj);
-            }, this);
+            }, self);
 
-        }.bind(this));
+        });
 
         this.model.on('remove', function() {
 
-            this.model = null;
-            this.hide();
-        }.bind(this));
+            self.model = null;
+            self.hide();
+        });
 
+        //listen for any changes in the model
+        this.model.on('change', function() {
+            self.didEdit = true;
+        });
         //support method chaining
         return this;
     },
