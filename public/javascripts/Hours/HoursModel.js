@@ -156,10 +156,6 @@ HoursModel.Hours = Backbone.Model.extend({
 				callback.call(context, times[i], i);
 			}
 		}
-	},
-	//temporarily set to true to for client-side testing
-	isNew: function() {
-		return true;
 	}
 });
 
@@ -168,6 +164,11 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 	model: HoursModel.Hours,
 	url: '/JSON/hours',
 
+	initialize: function() {
+		this.on('change', function(model) {
+			console.log("Hours Collection " + JSON.stringify(model));
+		});
+	},
 	getBaseHours: function() {
 		return [].filter.call(this.models, function(model) {
 			return model.isBaseHours();
