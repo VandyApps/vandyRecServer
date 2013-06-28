@@ -265,8 +265,6 @@ HoursView.HoursWindow = Backbone.View.extend({
         var times = this.model.get('times'),
             i, n;
 
-        console.log("Dont forget to fill in the table section in the category at the top right corner");
-
         $('#hoursWindow-title').text(this.model.getName());
         //clear all the existing elements within the hours of operation
         $('#hoursWindow-times', this.$el).children().remove();
@@ -300,6 +298,9 @@ HoursView.HoursWindow = Backbone.View.extend({
             $('#hoursWindow-delete').show();
             $('#hoursWindow-editDates').show();
             $('#hoursWindow-editName').show();
+
+            //set the priority number to the priority number of the model
+            $('#hoursWindow-priorityNumberSelect', this.$el).val(this.model.getPriorityNumber().toString());
         }
     },
     //appends new hours to the time object
