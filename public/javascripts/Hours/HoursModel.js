@@ -1,30 +1,21 @@
 var HoursModel = {};
-HoursModel.Hours = Backbone.Model.extend({
-	idAttribute: '_id',
-	url: '/hours',
-	//properties
-	name: '',
-	startDate: '',
-	endDate: '',
-	priorityNumber: 0,
-	facilityHours: false,
-	closedHours: false,
-	times: [],
 
-	//methods
-	initialize: function(options) {
+
+HoursModel.Hours = (function () {
+
+	//method implementations
+	function initialize(options) {
 		var defaultTimeObject = {startTime: '12:00am', endTime: '1:00am'},
-		    noOptions = (options === undefined),
-		    name = (noOptions || options.name === undefined) ? '' : options.name,
-		    startDate = (noOptions || options.startDate === undefined) ? '' : options.startDate,
-		    endDate = (noOptions || options.endDate === undefined) ? '' : options.endDate,
-		    priorityNumber = (noOptions || options.priorityNumber === undefined) ? 0 : options.priorityNumber,
-		    facilityHours = (noOptions || options.facilityHours === undefined) ? false : options.facilityHours,
-		    closedHours = (noOptions || options.closedHours === undefined) ? false : options.closedHours,
+		    name = (!options || options.name === undefined) ? '' : options.name,
+		    startDate = (!options || options.startDate === undefined) ? '' : options.startDate,
+		    endDate = (!options || options.endDate === undefined) ? '' : options.endDate,
+		    priorityNumber = (!options || options.priorityNumber === undefined) ? 0 : options.priorityNumber,
+		    facilityHours = (!options || options.facilityHours === undefined) ? false : options.facilityHours,
+		    closedHours = (!options || options.closedHours === undefined) ? false : options.closedHours,
 		    times = options.times || [];
 		    if (times.length === 0) {
 		    	//set blank objects for all valid days
-		    	this.configureTimes();
+		    	configureTimes.call(this);
 		    }
 
 
@@ -35,47 +26,53 @@ HoursModel.Hours = Backbone.Model.extend({
                 this.set('priorityNumber', priorityNumber);
 		this.set('closedHours', closedHours);
 		
-	},
-	getName: function() {
+	}
+
+	function getName() {
 		return this.get('name');
-	},
-	getStartDate: function() {
+	}
+
+	function getStartDate() {
 		return DateHelper.dateFromDateString(this.get('startDate'));
-	},
-	getEndDate: function() {
+	}
+
+	function getEndDate() {
 		return DateHelper.dateFromDateString(this.get('endDate'));
-	},
-	getPriorityNumber: function() {
+	}
+
+	function getPriorityNumber() {
 		return this.get('priorityNumber');
-	},
-	getTimeObjectForDay: function(weekDay) {
+	}
+
+	function getTimeObjectForDay(weekDay) {
 		var timesArray = this.get('times'), timeObject = null;
 		if (timesArray.length > weekDay && timesArray[weekDay] !== undefined) {
 			
 			timeObject = timesArray[weekDay];
 		} 
 		return timeObject;
-	},
-	isFacilityHours: function() {
-		return this.get('facilityHours');
-	},
-	isClosed: function() {
-		return this.get('closedHours');
-	},
-	//should be called instead of the backbone setter
-	//for additional configurations to be done
-	setStartDate: function(startDate) {
-		this.set('startDate', startDate);
-		this.configureTimes();
-	},
-	//should be called instead of the backbone setter
-	//for additional configurations to be done
-	setEndDate: function(endDate) {
-		this.set('endDate', endDate);
-		this.configureTimes();
+	}
 
-	},
-	setTimesForDay: function(weekDay, timeObject) {
+	function isFacilityHours() {
+		return this.get('facilityHours');
+	}
+
+	function isClosed() {
+		return this.get('closedHours');
+
+	}
+
+	function setStartDate(startDate) {
+		this.set('startDate', startDate);
+		configureTimes.call(this);
+	}
+
+	function setEndDate(endDate) {
+		this.set('endDate', endDate);
+		configureTimes.call(this);
+	}
+
+	function setTimesForDay(weekDay, timeObject) {
 		var times;
 		if ((!this.isClosed()) && (timeObject.startTime !== undefined && timeObject.endTime !== undefined)) {
 			if (DateHelper.isTimeString(timeObject.startTime) && DateHelper.isTimeString(timeObject.endTime)) {
@@ -86,11 +83,27 @@ HoursModel.Hours = Backbone.Model.extend({
 				this.set('times', times);
 			}
 		}
-	},
-	isBaseHours: function() {
+	}
+
+	function isBaseHours() {
 		return this.getPriorityNumber() === 0 && this.isFacilityHours();
-	},
-	configureTimes: function() {
+	}
+
+	function iterateTimes(callback, context) {
+		var i, 
+		    times = this.get('times'),
+		    n = (times) ? times.length : 0, 
+		    context = context || this;
+
+		for (i = 0; i < n; ++i) {
+			if (times[i]) {
+				callback.call(context, times[i], i);
+			}
+		}
+	}
+
+	//private
+	function configureTimes() {
 		//uses the start and end time of the array
 		//this method does nothing if the start or end times are not set
 		var startDate = this.get('startDate'),
@@ -153,22 +166,32 @@ HoursModel.Hours = Backbone.Model.extend({
 				this.set('times', times);
 			}
 		}
-		
-		
-	},
-	iterateTimes: function(callback, context) {
-		var i, 
-		    times = this.get('times'),
-		    n = (times) ? times.length : 0, 
-		    context = context || this;
-
-		for (i = 0; i < n; ++i) {
-			if (times[i]) {
-				callback.call(context, times[i], i);
-			}
-		}
 	}
-});
+ 
+
+
+
+	//method definitions
+	return Backbone.Model.extend({
+		idAttribute: "_id",
+		url: '/hours',
+
+		//methods
+		initialize: initialize,
+		getName: getName,
+		getStartDate: getStartDate,
+		getEndDate: getEndDate,
+		getPriorityNumber: getPriorityNumber,
+		getTimeObjectForDay: getTimeObjectForDay,
+		isFacilityHours: isFacilityHours,
+		isClosed: isClosed,
+		setStartDate: setStartDate,
+		setEndDate: setEndDate,
+		setTimesForDay: setTimesForDay,
+		isBaseHours: isBaseHours,
+		iterateTimes: iterateTimes
+	});
+})();
 
 
 HoursModel.HoursCollection = Backbone.Collection.extend({
@@ -226,6 +249,7 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 		}
 	}
 });
+
 
 //global variables related to
 //the model are defined here
