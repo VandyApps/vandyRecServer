@@ -193,7 +193,75 @@ HoursModel.Hours = (function () {
 	});
 })();
 
+HoursModel.HoursCollection = (function() {
 
+	function getBaseHours() {
+		return [].filter.call(this.models, function(model) {
+			return model.isBaseHours();
+		}).sort(function(model1, model2) {
+			return model1.getStartDate().getTime() - model2.getStartDate().getTime();
+		});
+
+	}
+
+	function getOtherHours(facilityHours) {
+		//if facility hours is undefined, then
+		//just filter the selection based on 
+		//whether the hours are closed and whether
+		//they are base hours
+		if (facilityHours === undefined) {
+			return [].filter.call(this.models, function(model) {
+				return !model.isBaseHours() && !model.isClosed();
+			}).sort(function(model1, model2) {
+				return model1.getStartDate().getTime() - model2.getStartDate().getTime();
+			});
+		}
+		//otherwise, use the facilityHours boolean value to further
+		//filter the selection beyong just baseHours and isClosed
+		return [].filter.call(this.models, function(model) {
+			return !model.isBaseHours() && !model.isClosed() && (facilityHours === model.isFacilityHours());
+		}).sort(function(model1, model2) {
+			return model1.getStartDate().getTime() - model2.getStartDate().getTime();
+		});
+	}
+
+	function getClosedHours() {
+
+		return [].filter.call(this.models, function(model) {
+			return model.isClosed();
+		}).sort(function(model1, model2) {
+			return model1.getStartDate().getTime() - model2.getStartDate().getTime();
+		});
+	}
+
+	function addModel(model) {
+		this.add(model);
+		//throw an event
+		if (model.isClosed()) {
+
+			this.trigger('addClosedHours', model);
+		} else if (model.isFacilityHours()) {
+			this.trigger('addFacilityHours', model);
+		} else {
+			this.trigger('addOtherHours', model);
+
+		}
+	}
+
+	return Backbone.Collection.extend({
+		model: HoursModel.Hours,
+		url: '/JSON/hours',
+
+		//methods
+		getBaseHours: getBaseHours,
+		getOtherHours: getOtherHours,
+		getClosedHours: getClosedHours,
+		addModel: addModel
+	});
+
+})();
+
+/*
 HoursModel.HoursCollection = Backbone.Collection.extend({
 	model: HoursModel.Hours,
 	url: '/JSON/hours',
@@ -249,7 +317,7 @@ HoursModel.HoursCollection = Backbone.Collection.extend({
 		}
 	}
 });
-
+*/
 
 //global variables related to
 //the model are defined here
