@@ -13,10 +13,8 @@ HoursModel.Hours = (function () {
 		    facilityHours = (!options || options.facilityHours === undefined) ? false : options.facilityHours,
 		    closedHours = (!options || options.closedHours === undefined) ? false : options.closedHours,
 		    times = options.times || [];
-		    if (times.length === 0) {
-		    	//set blank objects for all valid days
-		    	configureTimes.call(this);
-		    }
+		    
+		    configureTimes.call(this);
 
 
 		this.set('name', name);
@@ -96,7 +94,7 @@ HoursModel.Hours = (function () {
 		    context = context || this;
 
 		for (i = 0; i < n; ++i) {
-			if (times[i]) {
+			if (times[i] && [].hasOwnProperty.call(times[i], 'startTime')) {
 				callback.call(context, times[i], i);
 			}
 		}
@@ -139,16 +137,18 @@ HoursModel.Hours = (function () {
 						loopDone = true;
 					} else {
 
-						if (!endDateFound && !times[i]) {
+						if (!endDateFound && (!times[i] || ![].hasOwnProperty.call(times[i], 'startTime'))) {
 							
 							timesChanged = true;
 							times[i] = defaultObj;
 							
 
-						} else if (endDateFound && times[i]) {
-							timesChanged = true;
-							times[i] = undefined;
-						}
+						} else if (endDateFound) {
+							times[i] = {};
+							timeChanged = true;
+
+						} 
+
 						if (i === this.getEndDate().getDay()) {
 							
 							endDateFound = true;
