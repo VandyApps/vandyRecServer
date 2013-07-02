@@ -62,6 +62,9 @@ HoursView.HoursTable = Backbone.View.extend({
     //an array of HoursItem views within the table
     views: [],
     initialize: function(options) {
+        //retrieve collection
+        var collection = new HoursModel.HoursCollection();
+
         this.type = (!options || options.type === undefined) ? 0 : options.type;
         this.views = (! options || !Array.isArray(options.views)) ? [] : options.views;
 
@@ -108,11 +111,11 @@ HoursView.HoursTable = Backbone.View.extend({
         }
 
         if (this.type === 1) {
-            hoursCollection.on('addFacilityHours', addModel.bind(this));
+            collection.on('addFacilityHours', addModel.bind(this));
         } else if (this.type === 2) {
-            hoursCollection.on('addClosedHours', addModel.bind(this));
+            collection.on('addClosedHours', addModel.bind(this));
         } else if (this.type === 3) {
-            hoursCollection.on('addOtherHours', addModel.bind(this));
+            collection.on('addOtherHours', addModel.bind(this));
         }
     },
     render: function() {
@@ -832,14 +835,15 @@ var hoursEditView = (function() {
 //other events
 
 $('.hoursSectionHeader-add').click(function() {
-    var id = $(this).attr('id'),
+    var collection = HoursModel.HoursCollection(),
+        id = $(this).attr('id'),
         length = id.length,
         setNumber = +id.charAt(length - 1),
         facilityHours = (setNumber !== 3),
         closedHours = (setNumber === 2);
 
         
-    hoursCollection.addModel(new HoursModel.Hours({
+    collection.addModel(new HoursModel.Hours({
 
         priorityNumber: 1,
         facilityHours: facilityHours,

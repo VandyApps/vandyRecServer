@@ -2,9 +2,7 @@
 
     //create the table views for backbone
     var tableViews = [],
-        hoursCollection = new global.HoursModel.HoursCollection();
-    
-    global.hoursCollection = hoursCollection;
+        hoursCollection = new HoursModel.HoursCollection();
 
     hoursCollection.fetch();
     hoursCollection.on('reset' , function() {
@@ -37,9 +35,6 @@
         }
         tableViews.push(new global.HoursView.HoursTable({type: i, views: views}));
     }
-    }.bind(global));
-
-    
-    
+    }.bind(global));  
 
 })(this);
