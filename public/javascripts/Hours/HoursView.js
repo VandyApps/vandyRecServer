@@ -50,6 +50,8 @@ HoursView.HoursItem = Backbone.View.extend({
     }
 });
 
+
+
 HoursView.HoursTable = Backbone.View.extend({
     //number that maps to a type for the Table
     //0 = BaseHours

@@ -193,73 +193,93 @@ HoursModel.Hours = (function () {
 	});
 })();
 
-HoursModel.HoursCollection = (function() {
+//hours collection
+//SINGLETON pattern...
+HoursModel.HoursCollection = function() {
+	var instance;
 
-	function getBaseHours() {
-		return [].filter.call(this.models, function(model) {
-			return model.isBaseHours();
-		}).sort(function(model1, model2) {
-			return model1.getStartDate().getTime() - model2.getStartDate().getTime();
-		});
+	//reset the HoursCollection function to just return the 
+	//created instance
+	HoursModel.HoursCollection = function() {
+		return instance;
+	};
 
-	}
+	//this is set as a property of the HoursCollection function
+	//in case the collection needs to be called to instantiate 
+	//brand new collections (such as for testing)
+	this.cachedCollection = (function() {
 
-	function getOtherHours(facilityHours) {
-		//if facility hours is undefined, then
-		//just filter the selection based on 
-		//whether the hours are closed and whether
-		//they are base hours
-		if (facilityHours === undefined) {
+		function getBaseHours() {
 			return [].filter.call(this.models, function(model) {
-				return !model.isBaseHours() && !model.isClosed();
+				return model.isBaseHours();
+			}).sort(function(model1, model2) {
+				return model1.getStartDate().getTime() - model2.getStartDate().getTime();
+			});
+
+		}
+
+		function getOtherHours(facilityHours) {
+			//if facility hours is undefined, then
+			//just filter the selection based on 
+			//whether the hours are closed and whether
+			//they are base hours
+			if (facilityHours === undefined) {
+				return [].filter.call(this.models, function(model) {
+					return !model.isBaseHours() && !model.isClosed();
+				}).sort(function(model1, model2) {
+					return model1.getStartDate().getTime() - model2.getStartDate().getTime();
+				});
+			}
+			//otherwise, use the facilityHours boolean value to further
+			//filter the selection beyong just baseHours and isClosed
+			return [].filter.call(this.models, function(model) {
+				return !model.isBaseHours() && !model.isClosed() && (facilityHours === model.isFacilityHours());
 			}).sort(function(model1, model2) {
 				return model1.getStartDate().getTime() - model2.getStartDate().getTime();
 			});
 		}
-		//otherwise, use the facilityHours boolean value to further
-		//filter the selection beyong just baseHours and isClosed
-		return [].filter.call(this.models, function(model) {
-			return !model.isBaseHours() && !model.isClosed() && (facilityHours === model.isFacilityHours());
-		}).sort(function(model1, model2) {
-			return model1.getStartDate().getTime() - model2.getStartDate().getTime();
-		});
-	}
 
-	function getClosedHours() {
+		function getClosedHours() {
 
-		return [].filter.call(this.models, function(model) {
-			return model.isClosed();
-		}).sort(function(model1, model2) {
-			return model1.getStartDate().getTime() - model2.getStartDate().getTime();
-		});
-	}
-
-	function addModel(model) {
-		this.add(model);
-		//throw an event
-		if (model.isClosed()) {
-
-			this.trigger('addClosedHours', model);
-		} else if (model.isFacilityHours()) {
-			this.trigger('addFacilityHours', model);
-		} else {
-			this.trigger('addOtherHours', model);
-
+			return [].filter.call(this.models, function(model) {
+				return model.isClosed();
+			}).sort(function(model1, model2) {
+				return model1.getStartDate().getTime() - model2.getStartDate().getTime();
+			});
 		}
-	}
 
-	return Backbone.Collection.extend({
-		model: HoursModel.Hours,
-		url: '/JSON/hours',
+		function addModel(model) {
+			this.add(model);
+			//throw an event
+			if (model.isClosed()) {
 
-		//methods
-		getBaseHours: getBaseHours,
-		getOtherHours: getOtherHours,
-		getClosedHours: getClosedHours,
-		addModel: addModel
-	});
+				this.trigger('addClosedHours', model);
+			} else if (model.isFacilityHours()) {
+				this.trigger('addFacilityHours', model);
+			} else {
+				this.trigger('addOtherHours', model);
 
-})();
+			}
+		}
+
+		return Backbone.Collection.extend({
+			model: HoursModel.Hours,
+			url: '/JSON/hours',
+
+			//methods
+			getBaseHours: getBaseHours,
+			getOtherHours: getOtherHours,
+			getClosedHours: getClosedHours,
+			addModel: addModel
+		});
+
+	})();
+	//end of collection implementation
+
+	instance = new this.cachedCollection();
+
+	return instance;
+}
 
 //global variables related to
 //the model are defined here
