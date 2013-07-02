@@ -1,15 +1,11 @@
 
 var HoursView = {};
 
-HoursView.HoursItem = Backbone.View.extend({
-    model: HoursModel.Hours,
-    tagName: 'li',
 
-    events: {
-        'click': 'showWindow'
-    },
-    initialize: function(options) {
+HoursView.HoursItem = (function() {
 
+
+    function initialize(options) {
         this.render();
 
         //add events
@@ -31,37 +27,44 @@ HoursView.HoursItem = Backbone.View.extend({
             self.trigger('remove');
 
         });
+    }
 
-
-    },
-    render: function() {
+    function render() {
         this.$el.append('<div class="hoursItem-name">'+this.model.getName()+'</div>')
                 .append('<div class="hoursItem-startDate">'+this.model.get('startDate')+'</div>')
                 .append('<div class="hoursItem-endDate">'+this.model.get('endDate')+'</div>');
-    },
-    showWindow: function() {
+    }
+
+    function showWindow() {
         //window not yet implemented
         hoursWindowView.show().displayModel(this.model);
-    },
-    //sort value that is used to determine 
-    //the ordering of the elements in the list
-    getSortValue: function() {
+    }
+
+    //value that is used to determine the sorted 
+    //order of the hours list items
+    //value must be a number
+    function getSortValue() {
         return this.model.getStartDate().getTime();
     }
-});
+
+    return Backbone.View.extend({
+        model: HoursModel.Hours,
+        tagName: 'li',
+        events: {
+            'click': 'showWindow'
+        },
+        initialize: initialize,
+        render: render,
+        showWindow: showWindow,
+        getSortValue: getSortValue
+    });
+
+})();
 
 
+HoursView.HoursTable = (function() {
 
-HoursView.HoursTable = Backbone.View.extend({
-    //number that maps to a type for the Table
-    //0 = BaseHours
-    //1 = Other Hours
-    //2 = Closed Hours
-    //3 = Other Hours
-    type: 0,
-    //an array of HoursItem views within the table
-    views: [],
-    initialize: function(options) {
+    function initialize(options) {
         //retrieve collection
         var collection = new HoursModel.HoursCollection();
 
@@ -117,8 +120,9 @@ HoursView.HoursTable = Backbone.View.extend({
         } else if (this.type === 3) {
             collection.on('addOtherHours', addModel.bind(this));
         }
-    },
-    render: function() {
+    }
+
+    function render() {
         //set the element to be the hours list at
         //index corresponding to the type number
         this.$el = $('.hoursList:eq('+this.type+')');
@@ -130,24 +134,26 @@ HoursView.HoursTable = Backbone.View.extend({
         this.views.forEach(function(view) {
             this.$el.append(view.$el);
         }, this);
-    },
-    getName: function() {
+    }
+
+    function getName() {
         //get the title within the text of the 
         //section header above the table element
         return this.$el.prev().text();
-    },
+    }
+
     //the sort method sorts the array of views
     //but does not render the new sorted order
-    sort: function() {
+    function sort() {
         //sort the elements based on their sort values 
         //elements are in ascending sortValue order
         this.views.sort(function(view1, view2) {
             return view1.getSortValue() - view2.getSortValue();
         });
-    },
+    }
     //reloads the views within the views array
     //to display in the order they are in the array
-    reload: function() {
+    function reload() {
         //remove all elements inside the table view
         //this method is reloading the table view
         this.$el.children().remove();
@@ -158,18 +164,18 @@ HoursView.HoursTable = Backbone.View.extend({
             //must rebind events
             view.$el.click(view.showWindow.bind(view));
         }, this);
-    },
+    }
     //adds an HoursItem view to the end of the list and renders the item
-    push: function(hoursItem) {
+    function push(hoursItem) {
         this.views.push(hoursItem);
         this.$el.append(hoursItem.$el);
-    },
+    }
     //this method adds a view to the correct slot within the list
     //if the list is not sorted before this method is
     //called, the list is sorted before adding the new element
     //also binds events to the views that are being added
     //NOT COMPLETELY DOCUMENTED
-    add: function(hoursItem) {
+    function add(hoursItem) {
         var itemAdded = false, i, n;
         if (this.views.length !== 0) {
             if (this.isSorted()) {
@@ -217,9 +223,9 @@ HoursView.HoursTable = Backbone.View.extend({
             }.bind(this))
         }.bind(this));
   
-    },
+    }
     //checks if the list is sorted
-    isSorted: function() {
+    function isSorted() {
         var i = 1;
         if (this.views.length === 0 || this.views.length === 1) {
             return true;
@@ -231,18 +237,32 @@ HoursView.HoursTable = Backbone.View.extend({
             }
         }
         return true;
-    },
+    }
     //NOT YET DOCUMENTED
     //for removing views within the array
     //and from the display
-    removeView: function(view, index) {
+    function removeView(view, index) {
         
         var length = this.views.length;
         this.views = this.views.slice(0, index).concat(this.views.slice(index+1, length - index));
         view.$el.remove();
     }
 
-});
+
+    return Backbone.View.extend({
+        type: 0,
+        views: [],
+        initialize: initialize,
+        render: render,
+        sort: sort,
+        reload: reload,
+        push: push,
+        add: add,
+        isSorted: isSorted,
+        removeView: removeView
+    });
+})();
+
 
 //calls save on the model when the window is exitted
 //NOT COMPLETELY DOCUMENTED
