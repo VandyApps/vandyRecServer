@@ -478,28 +478,30 @@ HoursView.HoursWindow = function() {
         }
         //NOT YET DOCUMENTED
         function editName() {
+            var nameEdit = HoursView.HoursEdit().getInstance({type: 'name'});
             console.log("Edit name called");
             this.isEditting = true;
             //display edit window
-            hoursNameEdit.setName(this.model.getName());
-            hoursNameEdit.show();
-            hoursNameEdit.on('doneEdit', function() {
+            nameEdit.setName(this.model.getName());
+            nameEdit.show();
+            nameEdit.on('doneEdit', function() {
                 
-                this.model.set('name', hoursNameEdit.name);
+                this.model.set('name', nameEdit.name);
                 console.log(this.model.getName());
-                hoursNameEdit.unbind('doneEdit');
-                hoursNameEdit.unbind('cancelEdit');
+                nameEdit.unbind('doneEdit');
+                nameEdit.unbind('cancelEdit');
             }.bind(this));
 
-            hoursNameEdit.on('cancelEdit', function() {
+            nameEdit.on('cancelEdit', function() {
 
 
-                hoursNameEdit.unbind('doneEdit');
-                hoursNameEdit.unbind('cancelEdit');
+                nameEdit.unbind('doneEdit');
+                nameEdit.unbind('cancelEdit');
             });
 
         }
         function editTimes(event) {
+            var hoursEdit = new HoursView.HoursEdit(), timeEdit;
             this.isEditting = true;
             //toggle isEditting
             var isEditting = (this.isEditting = !this.isEditting);
@@ -512,58 +514,61 @@ HoursView.HoursWindow = function() {
                 parentID = $(event.delegateTarget).parent().attr('id'),
                 weekDay = +parentID.substr(parentID.length - 1, 1);
 
-            hoursEditView.reset({editDates: false, startTime: startTime, endTime: endTime});
-            hoursEditView.show();
-            hoursEditView.on('doneEdit', function() {
+            timeEdit = hoursEdit.getInstance({type: 'times', startTime: startTime, endTime: endTime});
+            timeEdit.show();
+            timeEdit.on('doneEdit', function() {
                 
                 this.setHours(weekDay,
                     {
-                        startTime: hoursEditView.startTime, 
-                        endTime: hoursEditView.endTime
+                        startTime: timeEdit.startTime, 
+                        endTime: timeEdit.endTime
                     });
                 
                 //unbind all the events
-                hoursEditView.unbind('doneEdit');
-                hoursEditView.unbind('cancelEdit');
+                timeEdit.unbind('doneEdit');
+                timeEdit.unbind('cancelEdit');
             }.bind(this));
 
-            hoursEditView.on('cancelEdit', function() {
+            timeEdit.on('cancelEdit', function() {
 
                 //unbind all the events
-                hoursEditView.unbind('doneEdit');
-                hoursEditView.unbind('cancelEdit');
+                timeEdit.unbind('doneEdit');
+                timeEdit.unbind('cancelEdit');
             });
         }
 
         function editDates() {
+            var hoursEdit = new HoursView.HoursEdit(),
+                datesEdit;
             this.isEditting = true;
-            hoursEditView.reset(
-                {
-                    editDates: true, 
-                    startDate: this.model.get('startDate'), 
-                    endDate: this.model.get('endDate')
-                });
+            datesEdit = hoursEdit.getInstance(
+            {
+                type: 'dates',
+                startDate: this.model.get('startDate'), 
+                endDate: this.model.get('endDate')
+            });
+            
 
-            hoursEditView.show();
+            datesEdit.show();
 
-            hoursEditView.on('doneEdit', function() {
+            datesEdit.on('doneEdit', function() {
                 
-                this.model.setStartDate(hoursEditView.startDate);
-                this.model.setEndDate(hoursEditView.endDate);
+                this.model.setStartDate(datesEdit.startDate);
+                this.model.setEndDate(datesEdit.endDate);
                 
                 //remove binding after either the done or cancel button
                 //is pressed
-                hoursEditView.unbind('doneEdit');
-                hoursEditView.unbind('cancelEdit');
+                datesEdit.unbind('doneEdit');
+                datesEdit.unbind('cancelEdit');
 
             }.bind(this));
 
-            hoursEditView.on('cancelEdit', function() {
+            datesEdit.on('cancelEdit', function() {
 
                 //remove binding after either the done or cancel button
                 //is pressed
-                hoursEditView.unbind('doneEdit');
-                hoursEditView.unbind('cancelEdit');
+                datesEdit.unbind('doneEdit');
+                datesEdit.unbind('cancelEdit');
 
             }.bind(this));
 
@@ -663,241 +668,306 @@ HoursView.HoursWindow = function() {
 };
 
 
-//NOT YET DOCUMENTED
-HoursView.HoursNameEdit = Backbone.View.extend({
-
-    name: '',
-    events: {
-        'click .hoursEdit-done input[value="done"]': 'done',
-        'click .hoursEdit-done input[value="cancel"]': 'cancel'
-    },
-    initialize: function(options) {
-        this.name = (options && options.name) ? options.name : 'Name Here';
-        this.render();
-    },
-    render: function() {
-        this.$el = $('#hoursEdit-editName');
-        $('.hoursEdit-body input', this.$el).val(this.name);
-    },
-    show: function() {
-        this.$el.show();
-    },
-    hide: function() {
-        this.$el.hide();
-    },
-    done: function() {
-        this.name = $('.hoursEdit-body input', this.$el).val();
-        this.trigger('doneEdit');
-        this.hide();
-    },
-    cancel: function() {
-        this.trigger('cancelEdit');
-        this.hide();
-    },
-    setName: function(name) {
-        this.name = name;
-        $('.hoursEdit.body input').val(name);
-    }
-});
 
 
+//NOT COMPLETELY DOCUMENTED
+HoursView.HoursEdit = function() {
+    
 
-var hoursEditView = (function() {
+    //NOT YET DOCUMENTED
+    nameEdit = function() {
 
-    HoursView.HoursEdit = Backbone.View.extend({
-        editDates: false,
-        startDate: '01/01/2013',
-        endDate: '01/02/2013',
-        startTime: '12:00am',
-        endTime: '08:00pm',
+        var instance;
+        nameEdit = function() {
+            return instance;
+        };
 
-        render: function() {
-            var startSelect, endSelect,
-                startArray, endArray,
-                i, daysInMonth, daysEl;
-            //set the correct $el
-            this.$el = (this.editDates) ? $('#hoursEdit-editDates') : $('#hoursEdit-editTimes');
-            startSelect = $('.hoursEdit-startSelect', this.$el);
-            endSelect = $('.hoursEdit-endSelect', this.$el);
-            if (this.editDates) {
+        this.cachedView = (function() {
+
+            //implement methods here
+            return Backbone.View.extend({
+
+                name: '',
+                events: {
+                    'click .hoursEdit-done input[value="done"]': 'done',
+                    'click .hoursEdit-done input[value="cancel"]': 'cancel'
+                },
+                initialize: function(options) {
+                    this.name = (options && options.name) ? options.name : 'Name Here';
+                    this.render();
+                },
+                render: function() {
+                    this.$el = $('#hoursEdit-editName');
+                    $('.hoursEdit-body input', this.$el).val(this.name);
+                },
+                show: function() {
+                    this.$el.show();
+                },
+                hide: function() {
+                    this.$el.hide();
+                },
+                done: function() {
+                    //get the input
+                    this.name = $('.hoursEdit-body input', this.$el).val();
+                    //clear the input
+                    $('.hoursEdit-body input', this.$el).val('');
+                    //trigger event
+                    this.trigger('doneEdit');
+                    this.hide();
+                },
+                cancel: function() {
+                    this.trigger('cancelEdit');
+                    this.hide();
+                },
+                setName: function(name) {
+                    this.name = name;
+                    $('.hoursEdit.body input').val(name);
+                }
+            });
+
+        })();
+
+        instance = new this.cachedView();
+        return instance;
+    };
+
+    var hoursEditView = (function() {
+
+        return hoursEdit = Backbone.View.extend({
+            editDates: false,
+            startDate: '01/01/2013',
+            endDate: '01/02/2013',
+            startTime: '12:00am',
+            endTime: '08:00pm',
+
+            render: function() {
+                var startSelect, endSelect,
+                    startArray, endArray,
+                    i, daysInMonth, daysEl;
+                //set the correct $el
+                this.$el = (this.editDates) ? $('#hoursEdit-editDates') : $('#hoursEdit-editTimes');
+                startSelect = $('.hoursEdit-startSelect', this.$el);
+                endSelect = $('.hoursEdit-endSelect', this.$el);
+                if (this.editDates) {
+                    
+
+                    startArray = DateHelper.splitDate(this.startDate);
+                    endArray = DateHelper.splitDate(this.endDate);
+
+                    //set the options for the day select tags
+                    $('.hoursEdit-startSelect select:nth-child(2), .hoursEdit-endSelect select:nth-child(2)', this.$el).children().remove();
+
+                    //create start date elements
+                    daysEl = $('.hoursEdit-startSelect select:nth-child(2)', this.$el);
+                    daysInMonth = DateHelper.daysForMonth(+startArray[0] - 1, +startArray[2]);
+                    for (i = 1; i <= daysInMonth; ++i) {
+                        
+                        if (i < 10) {
+                            daysEl.append('<option value="0'+i+'">'+i+'</option>');
+                        } else {
+                            daysEl.append('<option value="'+i+'">'+i+'</option>');
+                        }  
+                    }
+
+                    //create end date elements
+                    daysEl = $('.hoursEdit-endSelect select:nth-child(2)', this.$el);
+                    daysInMonth = DateHelper.daysForMonth(+endArray[0] - 1, +endArray[2]);
+                    for (i = 1; i <= daysInMonth; ++i) {
+                        
+                        if (i < 10) {
+                            daysEl.append('<option value="0'+i+'">'+i+'</option>');
+                        } else {
+                            daysEl.append('<option value="'+i+'">'+i+'</option>');
+                        }  
+                    }
+
+                } else {
+                    startArray = DateHelper.splitTime(this.startTime);
+                    endArray = DateHelper.splitTime(this.endTime);
+                }
+
                 
 
-                startArray = DateHelper.splitDate(this.startDate);
-                endArray = DateHelper.splitDate(this.endDate);
 
-                //set the options for the day select tags
-                $('.hoursEdit-startSelect select:nth-child(2), .hoursEdit-endSelect select:nth-child(2)', this.$el).children().remove();
-
-                //create start date elements
-                daysEl = $('.hoursEdit-startSelect select:nth-child(2)', this.$el);
-                daysInMonth = DateHelper.daysForMonth(+startArray[0] - 1, +startArray[2]);
-                for (i = 1; i <= daysInMonth; ++i) {
-                    
-                    if (i < 10) {
-                        daysEl.append('<option value="0'+i+'">'+i+'</option>');
-                    } else {
-                        daysEl.append('<option value="'+i+'">'+i+'</option>');
-                    }  
+                for (i = 0; i < 3; ++i) {
+                    startSelect.children().eq(i).val(startArray[i]);
+                    endSelect.children().eq(i).val(endArray[i]);
                 }
+            },
+            //setting up that requires render to have been
+            //called.  This includes binding events to dynamically
+            //bound $el
+            //NOT YET DOCUMENTED
+            bindEvents: function() {
+                $('.hoursEdit-done input[value="done"]', this.$el).click($.proxy(this.didEdit, this));
+                $('.hoursEdit-done input[value="cancel"]', this.$el).click($.proxy(this.didCancel, this));
 
-                //create end date elements
-                daysEl = $('.hoursEdit-endSelect select:nth-child(2)', this.$el);
-                daysInMonth = DateHelper.daysForMonth(+endArray[0] - 1, +endArray[2]);
-                for (i = 1; i <= daysInMonth; ++i) {
-                    
-                    if (i < 10) {
-                        daysEl.append('<option value="0'+i+'">'+i+'</option>');
-                    } else {
-                        daysEl.append('<option value="'+i+'">'+i+'</option>');
-                    }  
-                }
-
-            } else {
-                startArray = DateHelper.splitTime(this.startTime);
-                endArray = DateHelper.splitTime(this.endTime);
-            }
-
-            
+                //bind change event
+                if (this.editDates) {
+                    //change the start and end date properties
+                    //every time the select elements change
+                    $('.hoursEdit-startSelect select:nth-child(2)', this.$el).change(function() {
+                        this.startDate =    $('.hoursEdit-startSelect select:nth-child(1)', this.$el).val() + '/' +
+                                            $('.hoursEdit-startSelect select:nth-child(2)', this.$el).val() +  '/' +
+                                            $('.hoursEdit-startSelect select:nth-child(3)', this.$el).val();
 
 
-            for (i = 0; i < 3; ++i) {
-                startSelect.children().eq(i).val(startArray[i]);
-                endSelect.children().eq(i).val(endArray[i]);
-            }
-        },
-        //setting up that requires render to have been
-        //called.  This includes binding events to dynamically
-        //bound $el
-        //NOT YET DOCUMENTED
-        bindEvents: function() {
-            $('.hoursEdit-done input[value="done"]', this.$el).click($.proxy(this.didEdit, this));
-            $('.hoursEdit-done input[value="cancel"]', this.$el).click($.proxy(this.didCancel, this));
+                    }.bind(this));
 
-            //bind change event
-            if (this.editDates) {
-                //change the start and end date properties
-                //every time the select elements change
-                $('.hoursEdit-startSelect select:nth-child(2)', this.$el).change(function() {
-                    this.startDate =    $('.hoursEdit-startSelect select:nth-child(1)', this.$el).val() + '/' +
-                                        $('.hoursEdit-startSelect select:nth-child(2)', this.$el).val() +  '/' +
-                                        $('.hoursEdit-startSelect select:nth-child(3)', this.$el).val();
-
-
-                }.bind(this));
-
-                 $('.hoursEdit-endSelect select:nth-child(2)', this.$el).change(function() {
-                    this.endDate =  $('.hoursEdit-endSelect select:nth-child(1)', this.$el).val() + '/' +
-                                    $('.hoursEdit-endSelect select:nth-child(2)', this.$el).val() + '/' +
-                                    $('.hoursEdit-endSelect select:nth-child(3)', this.$el).val();
-
-                }.bind(this));
-
-                 //also bind events for generating the correct number of days when the month
-                 //or year changes
-                 $('.hoursEdit-endSelect select:nth-child(1), .hoursEdit-endSelect select:nth-child(3), .hoursEdit-startSelect select:nth-child(1), .hoursEdit-startSelect select:nth-child(3)', this.$el)
-                    .change(function(event) {
-
-                        var monthStr = $(event.delegateTarget).parent().children(':nth-child(1)').val(),
-                            yearStr = $(event.delegateTarget).parent().children(':nth-child(3)').val(),
-                            daysEl = $(event.delegateTarget).parent().children(':nth-child(2)'),
-                            dayStr = daysEl.val(),
-                            days = DateHelper.daysForMonth(+monthStr - 1, +yearStr),
-                            newDay = +dayStr, 
-                            i;
-
-                        //if the old day is greater than the
-                        //total number of days in the month,
-                        //then set the new day value to the last
-                        //day of the month
-                        while (newDay > days) {
-                            newDay--;
-                        }
-                        //reset the dayStr to the newDay value
-                        //that has just been set
-                        dayStr = (newDay < 10) ? '0' + newDay.toString() : newDay.toString();
-
-                        daysEl.children().remove();
-
-                        for (i = 1; i <= days; ++i) {
-                            if (i < 10) {
-                                daysEl.append('<option value="0'+i+'">'+i+'</option>');
-                            } else {
-                                daysEl.append('<option value="'+i+'">'+i+'</option>');
-                            }  
-                        }
-                        daysEl.val(dayStr);
-
-                        this.startDate= $('.hoursEdit-startSelect select:nth-child(1)', this.$el).val() + '/' +
-                                        $('.hoursEdit-startSelect select:nth-child(2)', this.$el).val() +  '/' +
-                                        $('.hoursEdit-startSelect select:nth-child(3)', this.$el).val();
-
-
+                     $('.hoursEdit-endSelect select:nth-child(2)', this.$el).change(function() {
                         this.endDate =  $('.hoursEdit-endSelect select:nth-child(1)', this.$el).val() + '/' +
                                         $('.hoursEdit-endSelect select:nth-child(2)', this.$el).val() + '/' +
                                         $('.hoursEdit-endSelect select:nth-child(3)', this.$el).val();
-                        
-                     }.bind(this));
+
+                    }.bind(this));
+
+                     //also bind events for generating the correct number of days when the month
+                     //or year changes
+                     $('.hoursEdit-endSelect select:nth-child(1), .hoursEdit-endSelect select:nth-child(3), .hoursEdit-startSelect select:nth-child(1), .hoursEdit-startSelect select:nth-child(3)', this.$el)
+                        .change(function(event) {
+
+                            var monthStr = $(event.delegateTarget).parent().children(':nth-child(1)').val(),
+                                yearStr = $(event.delegateTarget).parent().children(':nth-child(3)').val(),
+                                daysEl = $(event.delegateTarget).parent().children(':nth-child(2)'),
+                                dayStr = daysEl.val(),
+                                days = DateHelper.daysForMonth(+monthStr - 1, +yearStr),
+                                newDay = +dayStr, 
+                                i;
+
+                            //if the old day is greater than the
+                            //total number of days in the month,
+                            //then set the new day value to the last
+                            //day of the month
+                            while (newDay > days) {
+                                newDay--;
+                            }
+                            //reset the dayStr to the newDay value
+                            //that has just been set
+                            dayStr = (newDay < 10) ? '0' + newDay.toString() : newDay.toString();
+
+                            daysEl.children().remove();
+
+                            for (i = 1; i <= days; ++i) {
+                                if (i < 10) {
+                                    daysEl.append('<option value="0'+i+'">'+i+'</option>');
+                                } else {
+                                    daysEl.append('<option value="'+i+'">'+i+'</option>');
+                                }  
+                            }
+                            daysEl.val(dayStr);
+
+                            this.startDate= $('.hoursEdit-startSelect select:nth-child(1)', this.$el).val() + '/' +
+                                            $('.hoursEdit-startSelect select:nth-child(2)', this.$el).val() +  '/' +
+                                            $('.hoursEdit-startSelect select:nth-child(3)', this.$el).val();
+
+
+                            this.endDate =  $('.hoursEdit-endSelect select:nth-child(1)', this.$el).val() + '/' +
+                                            $('.hoursEdit-endSelect select:nth-child(2)', this.$el).val() + '/' +
+                                            $('.hoursEdit-endSelect select:nth-child(3)', this.$el).val();
+                            
+                         }.bind(this));
 
 
 
-            } else {
-                //change the start and end time properties
-                //every time the select elements change
-                $('.hoursEdit-startSelect select', this.$el).change(function() {
+                } else {
+                    //change the start and end time properties
+                    //every time the select elements change
+                    $('.hoursEdit-startSelect select', this.$el).change(function() {
 
-                    this.startTime =    $('.hoursEdit-startSelect select:nth-child(1)', this.$el).val() + ':' +
-                                        $('.hoursEdit-startSelect select:nth-child(2)', this.$el).val() + 
-                                        $('.hoursEdit-startSelect select:nth-child(3)', this.$el).val();
+                        this.startTime =    $('.hoursEdit-startSelect select:nth-child(1)', this.$el).val() + ':' +
+                                            $('.hoursEdit-startSelect select:nth-child(2)', this.$el).val() + 
+                                            $('.hoursEdit-startSelect select:nth-child(3)', this.$el).val();
 
-                }.bind(this));
+                    }.bind(this));
 
-                $('.hoursEdit-endSelect select', this.$el).change(function() {
+                    $('.hoursEdit-endSelect select', this.$el).change(function() {
 
-                     this.endTime =     $('.hoursEdit-endSelect select:nth-child(1)', this.$el).val() + ':' +
-                                        $('.hoursEdit-endSelect select:nth-child(2)', this.$el).val() + 
-                                        $('.hoursEdit-endSelect select:nth-child(3)', this.$el).val();
+                         this.endTime =     $('.hoursEdit-endSelect select:nth-child(1)', this.$el).val() + ':' +
+                                            $('.hoursEdit-endSelect select:nth-child(2)', this.$el).val() + 
+                                            $('.hoursEdit-endSelect select:nth-child(3)', this.$el).val();
 
-                }.bind(this));
+                    }.bind(this));
+                }
+            },
+            reset: function(options) {
+                this.editDates = options.editDates;
+                if (this.editDates) {
+                    this.startDate = options.startDate;
+                    this.endDate = options.endDate;
+                } else {
+                    this.startTime = options.startTime;
+                    this.endTime = options.endTime;
+
+                }
+                this.render();
+                return this;
+            },
+            didEdit: function() {
+                
+                this.hide();
+                this.trigger('doneEdit');
+                
+            },
+            didCancel: function() {
+                
+                this.hide();
+                this.trigger('cancelEdit');
+                
+            },
+            show: function() {
+                this.$el.show();
+                this.bindEvents();
+            },
+            hide: function() {
+                this.$el.hide();
+                $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
+                $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
             }
-        },
-        reset: function(options) {
-            this.editDates = options.editDates;
-            if (this.editDates) {
-                this.startDate = options.startDate;
-                this.endDate = options.endDate;
-            } else {
-                this.startTime = options.startTime;
-                this.endTime = options.endTime;
+        });
 
+    })();
+
+
+    return {
+        //options:
+        //type: can be 'name', 'dates', or 'times'
+        //startDate and endDate are date strings for 'dates' type
+        //startTime and endTime are time strings for 'time' type
+        getInstance: function(options) {
+            if (options) {
+                if (options.type === 'dates') {
+                    //get date instance
+                    return (new hoursEditView()).reset(
+                    {
+                        editDates: true, 
+                        startDate: options.startDate,
+                        endDate: options.endDate
+                    });
+
+                } else if (options.type === 'times') {
+                    //get time instance
+                    return (new hoursEditView()).reset(
+                    {
+                        editDates: false,
+                        startTime: options.startTime,
+                        endTime: options.endTime
+                    });
+
+                } else {
+                    //get name instance
+                    return new nameEdit();
+                }
+            } else {
+                throw new Error('Options are not defined for getInstance method');
             }
-            this.render();
-        },
-        didEdit: function() {
-            
-            this.hide();
-            this.trigger('doneEdit');
-            
-        },
-        didCancel: function() {
-            
-            this.hide();
-            this.trigger('cancelEdit');
-            
-        },
-        show: function() {
-            this.$el.show();
-            this.bindEvents();
-        },
-        hide: function() {
-            this.$el.hide();
-            $('.hoursEdit-done input[value="done"]', this.$el).unbind('click');
-            $('.hoursEdit-done input[value="cancel"]', this.$el).unbind('click');
         }
-    });
-    
-    return new HoursView.HoursEdit();
+    };
 
-})();
+    
+};
+
+
+
 
 //other events
 
@@ -924,8 +994,6 @@ $('.hoursSectionHeader-add').click(function() {
 
 });
 
-//global variables related to the view
-//are defined here
-var hoursNameEdit = new HoursView.HoursNameEdit();
+
 
 
