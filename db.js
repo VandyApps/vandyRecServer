@@ -56,6 +56,7 @@
 							console.log("found something, collection is "+collection);
 							callback(true, collection[0]);
 						}
+						db.close();
 					});
 				});
 			});
