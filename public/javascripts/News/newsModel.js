@@ -7,12 +7,13 @@ NewsModel.NewsEvent = Backbone.Model.extend({
 
 	
 	idAttribute: "_id",
-	description: '',
 	index: 0,
-	priorityNumber: 0,
 	url: '/news',
+	isEditting: false,
 
-	initialization: function() {
+	initialize: function() {
+
+		
 		this.on('change', function() {
 			console.log("do something because of change");
 		});
@@ -31,13 +32,20 @@ NewsModel.NewsEvent = Backbone.Model.extend({
 		this.index = newIndex;
 	},
 	getDescription: function() {
+		if (this.get('description') === undefined) {
+			this.set('description', '');
+		}
 		return this.get('description');
 	},
 	setDescription: function(description) {
 		this.set({'description': description});
 		this.saveAndUpdate();
 	},
+	//lazy instantiation
 	getPriorityNumber: function() {
+		if (this.get('priorityNumber') === undefined) {
+			this.set('priorityNumber', 0);
+		}
 		return this.get('priorityNumber');
 	},
 	setPriorityNumber: function(newPriorityNumber) {
@@ -69,8 +77,11 @@ NewsModel.NewsEvents = Backbone.Collection.extend({
 	
 	//url to retrieve data from
 	url: '/JSON/news',
+	isEditting: false,
 
-
+	initialize: function() {
+		this.on('change')
+	},
 	//comparator for sorting is based on the priority number of the event
 	comparator: function(event) {
 		return event.getPriorityNumber();
