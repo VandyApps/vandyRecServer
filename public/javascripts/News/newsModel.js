@@ -9,14 +9,9 @@ NewsModel.NewsEvent = Backbone.Model.extend({
 	idAttribute: "_id",
 	index: 0,
 	url: '/news',
-	isEditting: false,
 
 	initialize: function() {
 
-		
-		this.on('change', function() {
-			console.log("do something because of change");
-		});
 	},
 	index: function() {
 
@@ -80,11 +75,11 @@ NewsModel.NewsEvents = Backbone.Collection.extend({
 	isEditting: false,
 
 	initialize: function() {
-		this.on('change')
+		
 	},
 	//comparator for sorting is based on the priority number of the event
-	comparator: function(event) {
-		return event.getPriorityNumber();
+	comparator: function(model) {
+		return model.getPriorityNumber();
 	},
 	//this method is for adding and generating brand new models to the
 	//collection
