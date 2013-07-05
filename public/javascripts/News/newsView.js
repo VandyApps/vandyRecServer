@@ -12,7 +12,7 @@ NewsView.NewsTableView = Backbone.View.extend({
 	//this is a list of all table view elements
 	//these elements are not in any significant
 	//ordering
-	tableViewElements: [],
+	items: [],
 
 	initialize: function() {
 		
@@ -34,17 +34,29 @@ NewsView.NewsTableView = Backbone.View.extend({
 	
 		
 	},
-	front: function(tableViewElement) {
+	front: function(view) {
+		if (this.shouldAnimate()) {
+			view.$el.hide();
+		}
 		//adds the table view element to the beginning of the table
-		this.$el.prepend(tableViewElement);
-		$(tableViewElement).on('editOn', this.editModeOn, this);
-		this.tableViewElements.push(tableViewElement);
+		this.$el.prepend(view.$el);
+		if (this.shouldAnimate()) {
+			view.$el.slideDown(300);
+		}
+		view.$el.on('editOn', this.editModeOn, this);
+		this.items.push(view);
 	},
-	back: function(tableViewElement) {
+	back: function(view) {
+		if (this.shouldAnimate()) {
+			view.$el.hide();
+		}
 		//adds the table view element to the end of the table
-		this.$el.append(tableViewElement);
-		$(tableViewElement).on('editOn', this.editModeOn, this);
-		this.tableViewElements.push(tableViewElement);
+		this.$el.append(view);
+		if (this.shouldAnimate()){
+			view.$el.slideDown(300);
+		}
+		$(view).on('editOn', this.editModeOn, this);
+		this.items.push(view);
 		
 	},
 	toggleAnimate: function() {
@@ -127,6 +139,7 @@ NewsView.NewsEventView = Backbone.View.extend({
 		//note that the new keyword does not make a new instance of 
 		//the table view because the table view has an element that 
 		//already exists in the html
+		/*
 		if (tableView.shouldAnimate()) {
 			this.$el.hide();
 		}
@@ -140,7 +153,7 @@ NewsView.NewsEventView = Backbone.View.extend({
 		if (tableView.shouldAnimate()) {
 			this.$el.slideDown({duration:300});
 		}
-		
+		*/
 	},
 	edit: function() {
 		//allows changes to be made to the model's description
@@ -225,7 +238,9 @@ addButton.click({collection : eventCollection}, function(event) {
 
 	var newEvent = event.data.collection.enqueue();
 	var newsEventView = new NewsView.NewsEventView({model: newEvent});
+	tableView.front(newsEventView);
 });
+
 
 //add event to animate button
 var animateButton = $('#animate_news');
