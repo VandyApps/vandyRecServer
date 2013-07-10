@@ -45,6 +45,7 @@ NewsView.NewsTableView = Backbone.View.extend({
 		}
 		view.on('editOn', this.editModeOn, this);
 		this.items.push(view);
+		this.sortItems();
 	},
 	back: function(view) {
 		if (this.shouldAnimate()) {
@@ -57,6 +58,7 @@ NewsView.NewsTableView = Backbone.View.extend({
 		}
 		view.on('editOn', this.editModeOn, this);
 		this.items.push(view);
+		this.sortItems();
 		
 	},
 	toggleAnimate: function() {
@@ -77,6 +79,7 @@ NewsView.NewsTableView = Backbone.View.extend({
 		} else {
 			this.$el.children().remove();
 		}
+		this.items = [];
 	},
 	//iterate through the elements in order
 	//and perform some operation on them in
@@ -84,19 +87,24 @@ NewsView.NewsTableView = Backbone.View.extend({
 	//the callback function is passed the element
 	//as a DOM elements
 	iterate: function(callback, receiver) {
-		if (typeof receiver !== "undefined") {
+		if (receiver !== undefined) {
 
-			this.$el.children().toArray().forEach(callback.bind(receiver));
+			this.items.forEach(callback.bind(receiver));
 		} else {
-			this.$el.children().toArray().forEach(callback);
+			this.items.forEach(callback);
 		}
 	},
 	//called when one of the elements enters edit
 	//mode, this method is used to remove any other
 	//element from edit mode so that only 1 element
 	//at a time is in edit mode
-	editModeOn: function() {
-		console.log("Edit mode on was called");
+	editModeOn: function(view) {
+		console.log("Edit mode on");
+	},
+	sortItems: function() {
+		this.items.sort(function(view1, view2) {
+			return view1.model.getPriorityNumber() - view2.model.getPriorityNumber();
+		});
 	}
 });
 
