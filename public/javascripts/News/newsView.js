@@ -122,8 +122,8 @@ NewsView.NewsEventView = Backbone.View.extend({
 	appendToTableView: false,
 
 	events: {
-		'dblclick .description': 'edit',
-		'click .edit': 'edit',
+		'dblclick .description': 'toggleEdit',
+		'click .edit': 'toggleEdit',
 		'click .remove': 'delete',
 		'keydown .description': 'onEnter'
 	},
@@ -163,7 +163,7 @@ NewsView.NewsEventView = Backbone.View.extend({
 		}
 		*/
 	},
-	edit: function() {
+	toggleEdit: function() {
 		//allows changes to be made to the model's description
 		if (!this.editMode) {
 			this.$el.children('.description').remove();
@@ -225,7 +225,7 @@ NewsView.NewsEventView = Backbone.View.extend({
 	},
 	onEnter: function(event) {
 		if (this.editMode && event.which === 13) {
-			this.edit();
+			this.toggleEdit();
 		}
 	}
 });
