@@ -52,7 +52,7 @@ NewsView.NewsTableView = Backbone.View.extend({
 			view.$el.hide();
 		}
 		//adds the table view element to the end of the table
-		this.$el.append(view);
+		this.$el.append(view.$el);
 		if (this.shouldAnimate()){
 			view.$el.slideDown(300);
 		}
@@ -132,10 +132,6 @@ NewsView.NewsEventView = Backbone.View.extend({
 		'keydown .description': 'onEnter'
 	},
 	initialize: function(attrs) {
-		//is there an alternative to manually setting it
-		if (typeof attrs.appendToTableView !== "undefined") {
-			this.appendToTableView = attrs.appendToTableView;
-		}
 
 		this.render();
 	},
