@@ -157,7 +157,7 @@ NewsView.NewsEventView = Backbone.View.extend({
 	},
 	edit: function() {
 		//allows changes to be made to the model's description
-		if (this.$el.children('.edit').text() === 'Edit') {
+		if (!this.editMode) {
 			this.$el.children('.description').remove();
 
 			this.$el.append("<textarea class='description'>"+this.model.getDescription()+"</textarea>");
@@ -167,7 +167,7 @@ NewsView.NewsEventView = Backbone.View.extend({
 			//bind the edit event to the text area
 			
 			this.$el.children('.edit').text('Done');
-			editMode = true;
+			this.editMode = true;
 
 			this.trigger('editOn', this);
 			
@@ -180,7 +180,7 @@ NewsView.NewsEventView = Backbone.View.extend({
 			textareaElement.remove();
 
 			this.$el.append("<div class='description'>"+textareaText+"</div>");
-			editMode = false;
+			this.editMode = false;
 			//wait 1 second before saving to the server, to make sure
 			//everything is set
 			this.trigger('editOff', this);
@@ -216,7 +216,7 @@ NewsView.NewsEventView = Backbone.View.extend({
 		
 	},
 	onEnter: function(event) {
-		if (editMode && event.which === 13) {
+		if (this.editMode && event.which === 13) {
 			this.edit();
 		}
 	}
