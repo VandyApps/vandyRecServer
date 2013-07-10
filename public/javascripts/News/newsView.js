@@ -43,7 +43,7 @@ NewsView.NewsTableView = Backbone.View.extend({
 		if (this.shouldAnimate()) {
 			view.$el.slideDown(300);
 		}
-		view.$el.on('editOn', this.editModeOn, this);
+		view.on('editOn', this.editModeOn, this);
 		this.items.push(view);
 	},
 	back: function(view) {
@@ -55,7 +55,7 @@ NewsView.NewsTableView = Backbone.View.extend({
 		if (this.shouldAnimate()){
 			view.$el.slideDown(300);
 		}
-		$(view).on('editOn', this.editModeOn, this);
+		view.on('editOn', this.editModeOn, this);
 		this.items.push(view);
 		
 	},
