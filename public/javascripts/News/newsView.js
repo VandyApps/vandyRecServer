@@ -113,6 +113,7 @@ NewsView.NewsTableView = Backbone.View.extend({
 });
 
 //create the instance of the table view
+//eventually make singleton instance
 var tableView = new NewsView.NewsTableView();
 
 //view
