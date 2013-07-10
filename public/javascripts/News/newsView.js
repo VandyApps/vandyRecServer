@@ -99,7 +99,11 @@ NewsView.NewsTableView = Backbone.View.extend({
 	//element from edit mode so that only 1 element
 	//at a time is in edit mode
 	editModeOn: function(view) {
-		console.log("Edit mode on");
+		this.iterate(function(_view) {
+			if (_view !== view && _view.isEditing()) {
+				_view.toggleEdit();
+			}
+		});
 	},
 	sortItems: function() {
 		this.items.sort(function(view1, view2) {
