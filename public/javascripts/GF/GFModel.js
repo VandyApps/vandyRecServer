@@ -7,49 +7,33 @@ GFModel.FitnessClass = Backbone.Model.extend({
 	//and models of other types when retrieving
 	//JSON data
 	type: 'GFClass',
-	//timeRange is in the form 12:30pm - 1:30pm
-	//note that there is no spaces in between a single
-	//time elements but there is a space-dash-space between 
-	//two different time elements
-	timeRange: '',
 
-	//timeRange is in the process of becoming deprecated and
-	//replaced by these two properties
-	startTime: '',
-	endTime: '',
-
-	//an array of dateStrings for dates where the classes have been
-	//cancelled.  The classes that have been cancelled are still retreived
-	//from methods such as isOnDay
-	cancelledDates: [],
-
-	instructor: '',
-	className: '',
-	idAttribute: '_id',
-	//url for POST and PUT
+	//url for POST, PUT, DELETE
 	url: '/groupFitness', 
-	//0-based index of the day of the week that this class is in
-	dayOfWeek: 0,
-
-	//if the class is a 1-time occurence, then 
-	//the start and end dates are the same
-	//if the class keeps going, then the end date is blank
-	startDate: '',
-	endDate: '',
-
-	//defaults to false
-	specialDateClass: false,
 	
 	initialize: function(modelData) {
+
+		//timeRange is in the form 12:30pm - 1:30pm
+		//note that there is no spaces in between a single
+		//time elements but there is a space-dash-space between 
+		//two different time elements
 		this.set('timeRange', modelData.timeRange);
 		this.set('instructor', modelData.instructor);
 		this.set('dayOfWeek', modelData.dayOfWeek);
+		//if the class is a 1-time occurence, then 
+		//the start and end dates are the same
+		//if the class keeps going, then the end date is blank
 		this.set('startDate', modelData.startDate);
 		this.set('endDate', modelData.endDate);
+		//timeRange is in the process of becoming deprecated and
+		//replaced by these two properties
 		this.set('startTime', modelData.startTime);
 		this.set('endTime', modelData.endTime);
 
 		if (typeof modelData.cancelledDates !== 'undefined') {
+			//an array of dateStrings for dates where the classes have been
+			//cancelled.  The classes that have been cancelled are still retreived
+			//from methods such as isOnDay
 			this.set('cancelledDates', modelData.cancelledDates);
 		} 
 
