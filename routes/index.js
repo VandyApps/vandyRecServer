@@ -3,7 +3,8 @@
  * GET home page.
  */
 
-var db = require('../db');
+var db = require('../db'),
+    fileParser = require('../fileParser');
 
 exports.index = function(req, res) {
 	if (typeof req.user !== 'undefined') {
