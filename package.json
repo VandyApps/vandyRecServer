@@ -11,6 +11,8 @@
     "ejs-locals": "*",
     "passport": "*",
     "passport-local": "*",
-    "mongodb": "*"
+    "mongodb": "*",
+    "jsdom": "*",
+    "jQuery": "~1.7.4"
   }
 }
