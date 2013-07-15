@@ -4,6 +4,7 @@
  */
 
 var db = require('../db'),
+	fs = require('fs'),
     fileParser = require('../fileParser');
 
 exports.index = function(req, res) {
@@ -245,6 +246,20 @@ exports.intramurals = function(req, res) {
 	
 };
 
+exports.intramuralFiles = function(req, res) {
+	console.log(req.files);
+	
+	fs.readFile(req.files.testFile.path, function(err, data) {
+		console.log("Read file");
+		fileParser.parseHTML(data, function() {
+			console.log("Here is the callback");
+			res.send("done");
+		});
+	});
+
+	//res.send('done');
+
+};
 
 //programs method
 exports.programs = function(req, res) {

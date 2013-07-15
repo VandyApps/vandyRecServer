@@ -92,7 +92,13 @@ app.delete('/groupFitness', routes.deleteGF);
 
 
 app.get('/traffic', routes.traffic);
+
+
 app.get('/intramurals', routes.intramurals);
+
+app.post('/intramurals/files', routes.intramuralFiles);
+
+
 app.get('/programs', routes.programs);
 
 //JSON data for all the tabs
