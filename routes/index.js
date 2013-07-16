@@ -251,13 +251,12 @@ exports.intramuralFiles = function(req, res) {
 	
 	fs.readFile(req.files.testFile.path, function(err, data) {
 		console.log("Read file");
-		fileParser.parseHTML(data, function() {
+		fileParser.parseHTML(data, function(test) {
 			console.log("Here is the callback");
-			res.send("done");
+			res.statusCode = 200;
+			res.send(test);
 		});
 	});
-
-	//res.send('done');
 
 };
 
