@@ -422,7 +422,7 @@ textarea {
     left: 160px;
     font-size: 10pt;
 }
-.hoursSectionHeader {
+.hoursSectionHeader, .intramuralsSectionHeader {
     border: solid black 1px;
     position: relative;
     display: block;
@@ -435,12 +435,12 @@ textarea {
     background-color: #f99902;
     box-shadow: #555555 6px 5px 4px 0px;
 }
-.hoursSectionHeader-title {
+.hoursSectionHeader-title, .intramuralsSectionHeader-title {
     display: block;
     position: absolute;
     height: 30px;
-    width: 100px;
-    margin-left: -50px;
+    width: 150px;
+    margin-left: -75px;
     margin-top: -15px;
     left: 50%;
     top: 50%;
@@ -448,7 +448,7 @@ textarea {
     margin-left: 
     
 }
-.hoursSectionHeader-add {
+.hoursSectionHeader-add, .intramuralsSectionHeader-add {
     background-color: black;
     color: white;
     margin-bottom: -40px;
