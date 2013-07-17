@@ -1241,11 +1241,37 @@ textarea {
     cursor: pointer;
 }
 
+/*intramurals*/
 
+#intramuralsImport {
+    border: solid black 1px;
+    border-radius: 5px;
+    display: block;
+    width: 500px;
+    padding: 5px;
+    margin: 0 auto;
+    
+}
+#intramuralsImport div {
+    text-align: center;
+    margin: 20px 0px;
+}
+
+#intramuralsImport form {
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+    width: 400px;
+
+}
+
+/*ui help*/
 .line {
     transform-origin: 0 100%;
     height: 3px;
     background: #000;
 }
+
+
 
 
