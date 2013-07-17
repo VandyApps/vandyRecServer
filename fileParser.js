@@ -1,11 +1,27 @@
 var jsdom = require('jsdom');
+	//array of data with all the sports 
+	//that were uploaded in the single document
+	sports = [];
+//sample object in sports
+/*
+	{
+		name: "",
+		//teams should be sorted in 
+		//winning order if the season is done
+		teams: [],
+
+		rank: [],
+		wins: [],
+		loses: [],
+		ties: [],
+		//an array of two values, start date 
+		//string and end date string
+		entryDates: [],
+		dates: []
+	}
+*/
 
 
-//important questions:
-	//need to see a couple of documents with tallies over 5, and over 10 if possible
-	//some documents have 1 sport in them and some have more than 1 sport in them
-
-	
 
 //helper functions for parsing 
 //sports
@@ -99,6 +115,7 @@ function matrixOfScores(window, table) {
 
 
 //export methods
+
 exports.parseHTML = function(html, callback) {
 	var document = jsdom.jsdom(html),
 	    window = document.createWindow();
