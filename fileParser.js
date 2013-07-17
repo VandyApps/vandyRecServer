@@ -21,8 +21,6 @@ var jsdom = require('jsdom');
 	}
 */
 
-
-
 //helper functions for parsing 
 //sports
 
