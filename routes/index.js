@@ -249,10 +249,10 @@ exports.intramurals = function(req, res) {
 exports.intramuralFiles = function(req, res) {
 	console.log(req.files);
 	
-	fs.readFile(req.files.testFile.path, function(err, data) {
-		console.log("Read file");
+	fs.readFile(req.files.intramuralsSport.path, function(err, data) {
+		
 		fileParser.parseHTML(data, function(test) {
-			console.log("Here is the callback");
+			
 			res.statusCode = 200;
 			res.send(test);
 		});
