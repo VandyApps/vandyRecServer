@@ -41,6 +41,7 @@ textarea {
     border-radius: 10px;
     background-color: #dbdbdb;
 }
+
 #title {
     display: block;
     height: 30px;
@@ -580,13 +581,13 @@ textarea {
 }
 
 
-.hoursList {
+.hoursList, .intramuralsList {
     display: block;
     width: 500px;
     margin: auto;
 }
 
-.hoursList li {
+.hoursList li, .intramuralsList li {
     position: relative;
     list-style: none;
     display: block;
@@ -623,7 +624,7 @@ textarea {
     top: 50%;
 }
 
-.hoursItem-name {
+.hoursItem-name, .intramuralsItem-name {
     position: absolute;
     display: block;
     top: 24px;
@@ -632,7 +633,7 @@ textarea {
     font-size: 15pt;
 }
 
-.hoursItem-startDate {
+.hoursItem-startDate, .intramuralsItem-startDate {
     
     display: block;
     position: absolute;
@@ -642,7 +643,7 @@ textarea {
     font-size: 10pt;
 }
 
-.hoursItem-endDate {
+.hoursItem-endDate, .intramuralsItem-endDate {
     
     display: block;
     position: absolute;
