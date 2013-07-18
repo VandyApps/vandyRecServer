@@ -97,7 +97,7 @@ app.get('/traffic', routes.traffic);
 app.get('/intramurals', routes.intramurals);
 
 app.post('/intramurals/files', routes.intramuralFiles);
-
+app.get('/intramurals/details', routes.intramuralsDetails);
 
 app.get('/programs', routes.programs);
 

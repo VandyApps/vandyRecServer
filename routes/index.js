@@ -247,22 +247,30 @@ exports.intramurals = function(req, res) {
 };
 
 exports.intramuralFiles = function(req, res) {
-	console.log(req.files);
-	
-	fs.readFile(req.files.intramuralsSport.path, function(err, data) {
-		
-		fileParser.parseHTML(data, function(test) {
+	if (!req.files) {
+		//should create an error page
+		res.redirect('/intramurals');
+	} else {
+		fs.readFile(req.files.intramuralsSport.path, function(err, data) {
 			
-			res.statusCode = 200;
-			res.send(test);
+			fileParser.parseHTML(data, function(test) {
+				
+				res.statusCode = 200;
+				res.send(test);
+			});
 		});
-	});
+	}
+	
 
+};
+
+exports.intramuralsDetails = function(req, res) {
+	res.render('sportsDetails');
 };
 
 //programs method
 exports.programs = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user) {
 		res.redirect('/?entry=5');
 	} else {
 		res.redirect('/login');
