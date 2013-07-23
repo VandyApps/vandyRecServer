@@ -12,7 +12,9 @@ h3 {
     margin: 50px auto;
 }
 
+
 .sportDates {
+    text-align: center;
     border: solid black 1px;
     position: absolute;
     width: 500px;
@@ -28,19 +30,29 @@ h3 {
     background: #EB8F00;
     color: #0b4158;
     overflow: hidden;
-    text-align: center;
     padding: 5px 0px;
     font-size:13pt;
     
     
 }
 
+.sportDates div:nth-child(1) {
+    margin-bottom: 25px;
+}
+
+.sportDates span {
+    padding: 0px 10px;
+}
+
 #entryDates {
     top: 150px;   
 }
+
 #seasonDates {
     top: 280px;
 }
+
+
 
 #teams, #games {
     border: solid black 2px;
@@ -245,7 +257,8 @@ h3 {
     color:red;
 }
 
-#return, #generateHTML {
+#return, #generateHTML, #delete {
+    font-weight: bold;
     border: solid black 2px;
     display: block;
     width: 400px;
@@ -263,6 +276,10 @@ h3 {
     background: #fc654c;
 }
 
+#delete {
+    top: 460px;
+}
+
 #return {
     top: 440px;
 }
@@ -270,4 +287,6 @@ h3 {
 #generateHTML {
     top: 420px;
 }
+
+
 
