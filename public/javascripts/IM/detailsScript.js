@@ -103,18 +103,19 @@ EditView = (function() {
 			},
 			show: function() {
 				this.$el.show();
+				this.isShowing = true;
 			},
 			hide: function() {
 				this.$el.hide();
-			},
-			test: function() {
-				console.log("Test called");
+				this.isShowing = false;
 			},
 			onSubmit: function() {
-				console.log("On submit called");
+				this.trigger('submit');
+				this.hide();
 			},
 			onCancel: function() {
-				console.log("On cancel called");
+				this.trigger('cancel');
+				this.hide();
 			}
 		}),
 
