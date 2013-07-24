@@ -95,11 +95,19 @@ GamesView.getInstance = function() {
 EditView = (function() {
 
 	var EntryDatesEdit = Backbone.View.extend({
-			'el': '#e_datesEdit',
+			el: '#e_datesEdit',
 			isShowing: false,
-			event: {
-				'click #e_datesEdit > input:nth-child(4)': 'onSubmit',
-				'click #e_datesEdit > input:nth-child(5)': 'onCancel'
+			startDate: '',
+			endDate: '',
+
+			events: {
+				'click input:nth-child(4)': 'onSubmit',
+				'click input:nth-child(5)': 'onCancel',
+				//listen for changes to the start date
+				'change div:nth-child(2) select': 'startChanged',
+				//listen for changes to the end date
+				'change div:nth-child(3) select': 'endChanged'
+				
 			},
 			show: function() {
 				this.$el.show();
@@ -116,10 +124,16 @@ EditView = (function() {
 			onCancel: function() {
 				this.trigger('cancel');
 				this.hide();
+			},
+			startChanged: function() {
+				console.log("Start changed");
+			},
+			endChanged: function() {
+				console.log("End changed");
 			}
 		}),
 
-		StartDatesEdit = Backbone.View.extend({
+		SeasonDatesEdit = Backbone.View.extend({
 			'el': '#s_datesEdit'
 		}),
 
