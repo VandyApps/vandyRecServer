@@ -99,7 +99,16 @@ EditView = (function() {
 			isShowing: false,
 			startDate: '',
 			endDate: '',
-
+			_start: {
+				month: $('div:nth-child(2) select:nth-child(2)', this.$el),
+				day: $('div:nth-child(2) select:nth-child(3)', this.$el),
+				year: $('div:nth-child(2) select:nth-child(4)', this.$el)
+			},
+			_end: {
+				month: $('div:nth-child(3) select:nth-child(2)', this.$el),
+				day: $('div:nth-child(3) select:nth-child(3)', this.$el),
+				year: $('div:nth-child(3) select:nth-child(4)', this.$el)
+			},
 			events: {
 				'click input:nth-child(4)': 'onSubmit',
 				'click input:nth-child(5)': 'onCancel',
@@ -110,6 +119,9 @@ EditView = (function() {
 				
 			},
 			show: function() {
+				
+				this.setStartDateTag();
+				this.setEndDateTag();
 				this.$el.show();
 				this.isShowing = true;
 			},
@@ -118,6 +130,8 @@ EditView = (function() {
 				this.isShowing = false;
 			},
 			onSubmit: function() {
+
+				
 				this.trigger('submit');
 				this.hide();
 			},
@@ -125,8 +139,67 @@ EditView = (function() {
 				this.trigger('cancel');
 				this.hide();
 			},
+			//uses the start and end date properties
+			//to create the tags for the start and end dates
+			setStartDateTag: function() {
+				var startDate, startDays, i, n;
+
+				if (this.startDate === '' ) {
+					throw new Error("the start date is not set correctly within the e_datesEdit");
+				}
+
+				startDate = this.startDate.split('/');
+				startDays = DateHelper.daysForMonth(+startDate[0], +startDate[2]);
+				//remove all currently existing options
+
+				this._start.day.children().remove();
+
+				//fix the options of the start and end days
+				for (i=1, n = startDays; i <= n; ++i) {
+					if (i <= 9) {
+
+						this._start.day.append('<option value="0' + i + '">' + i + '</option>');
+					} else {
+						this._start.day.append('<option value="' + i + '">' + i + '</option>');
+					}
+					
+				}
+
+				this._start.month.val(startDate[0]);
+				this._start.day.val(startDate[1]);
+				this._start.year.val(startDate[2]);
+				
+			},
+			setEndDateTag: function() {
+				var endDate, startDays, endDays, i, n;
+
+				if (this.endDate === '' ) {
+					throw new Error("the end date is not set correctly within the e_datesEdit");
+				}
+
+				endDate = this.endDate.split('/');
+				endDays = DateHelper.daysForMonth(+endDate[0], +endDate[2]);
+				//remove all currently existing options
+
+				this._end.day.children().remove();
+
+				for (i=1, n = endDays; i <= n; ++i) {
+					if (i <= 9) {
+
+						this._end.day.append('<option value="0' + i + '">' + i + '</option>');
+					} else {
+						this._end.day.append('<option value="' + i + '">' + i + '</option>');
+					}
+					
+				}
+
+				this._end.month.val(endDate[0]);
+				this._end.day.val(endDate[1]);
+				this._end.year.val(endDate[2]);
+			},
 			startChanged: function() {
-				console.log("Start changed");
+				
+
 			},
 			endChanged: function() {
 				console.log("End changed");
