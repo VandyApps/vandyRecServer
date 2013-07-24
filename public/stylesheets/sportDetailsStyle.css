@@ -289,4 +289,102 @@ h3 {
 }
 
 
+/*edit window*/
+
+.editWindow {
+    position: fixed;
+    border-radius: 5px;
+    background: black;
+    color: white;
+    opacity: .75;
+    display: block;
+    z-index: 2;
+}
+
+/*the title*/
+.editWindow > div:nth-child(1) {
+    position: absolute;
+    top: 20px;
+    font-size: 15pt;
+    text-align: center;
+    width: 400px;
+}
+
+.editWindow input[value="submit"] {
+    border: solid black 1px;
+    border: solid #EB8F00 2px;
+    border-radius: 2px;
+    width: 80px;
+    height: 25px;
+    line-height: 25px;
+    background: transparent;
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    cursor: pointer;
+}
+
+.editWindow input[value="cancel"] {
+    border: solid #EB8F00 2px;
+    border-radius: 2px;
+    width: 80px;
+    height: 25px;
+    line-height: 25px;
+    background: transparent;
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    cursor: pointer;
+}
+
+#e_datesEdit {
+    width: 500px;
+    height: 200px;
+    margin-left: -250px;
+    left: 50%;
+    margin-top: -100px;
+    top: 50%;
+    
+    
+}
+
+#e_datesEdit > div:nth-child(1) {
+    margin-left: -200px;
+    left: 50%;
+}
+#e_datesEdit > div:nth-child(2), #e_datesEdit > div:nth-child(3) {
+    position: absolute;
+    top: 80px;
+    width: 200px;
+    text-align: center;
+}
+
+#e_datesEdit > input:nth-child(4) {
+    left: 140px;
+}
+
+#e_datesEdit > input:nth-child(5) {
+    right: 140px;
+}
+
+
+#e_datesEdit > div:nth-child(2) {
+    left: 20px;
+}
+
+#e_datesEdit > div:nth-child(3) {
+    right: 20px;
+}
+#s_datesEdit {
+    display: none;
+}
+
+#teamsEdit {
+    display: none;
+}
+
+#gamesEdit {
+    display: none;
+}
+
 
