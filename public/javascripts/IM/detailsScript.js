@@ -93,9 +93,42 @@ GamesView.getInstance = function() {
 //each window has a singleton that can be accessed through
 //this method
 EditView = (function() {
-	
-	return {
 
+	var e_dates_edit = new Backbone.View.extend({
+			'el': '#e_datesEdit'
+		}),
+
+		s_dates_edit = new Backbone.View.extend({
+			'el': '#s_datesEdit'
+		}),
+
+		teams_edit = new Backbone.View.extend({
+			'el': '#teamsEdit'
+		}),
+
+		games_edit = new Backbone.View.extend({
+			'el': '#gamesEdit'
+		});
+
+
+	return {
+		getInstance: function(elName) {
+			var name = elName.toLowerCase();
+			switch(elName) {
+				case: 'e_dates':
+					return e_dates_edit;
+				case: 's_dates':
+					return s_dates_edit;
+				case 'teams':
+					return teams_edit;
+				case: 'games':
+					return games_edit;
+				default: 
+					//error
+					throw new Error("Edit view could not find instance with name " + elName);
+					break;
+			}
+		}
 	};
 
 });
