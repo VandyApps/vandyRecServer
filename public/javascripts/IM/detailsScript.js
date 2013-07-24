@@ -25,7 +25,7 @@ SportDetails.getInstance = function() {
 //Views
 
 E_DatesView = Backbone.View.extend({
-	el: '#entryDates'
+	el: '#entryDates',
 	startDate: '',
 	endDate: '',
 	isHidden: true,
@@ -94,35 +94,69 @@ GamesView.getInstance = function() {
 //this method
 EditView = (function() {
 
-	var e_dates_edit = new Backbone.View.extend({
-			'el': '#e_datesEdit'
+	var EntryDatesEdit = Backbone.View.extend({
+			'el': '#e_datesEdit',
+			isShowing: false,
+			event: {
+				'click #e_datesEdit > input:nth-child(4)': 'onSubmit',
+				'click #e_datesEdit > input:nth-child(5)': 'onCancel'
+			},
+			show: function() {
+				this.$el.show();
+			},
+			hide: function() {
+				this.$el.hide();
+			},
+			test: function() {
+				console.log("Test called");
+			},
+			onSubmit: function() {
+				console.log("On submit called");
+			},
+			onCancel: function() {
+				console.log("On cancel called");
+			}
 		}),
 
-		s_dates_edit = new Backbone.View.extend({
+		StartDatesEdit = Backbone.View.extend({
 			'el': '#s_datesEdit'
 		}),
 
-		teams_edit = new Backbone.View.extend({
+		TeamsEdit = Backbone.View.extend({
 			'el': '#teamsEdit'
 		}),
 
-		games_edit = new Backbone.View.extend({
+		GamesEdit = Backbone.View.extend({
 			'el': '#gamesEdit'
 		});
+
+
 
 
 	return {
 		getInstance: function(elName) {
 			var name = elName.toLowerCase();
 			switch(elName) {
-				case: 'e_dates':
-					return e_dates_edit;
-				case: 's_dates':
-					return s_dates_edit;
+				case 'e_dates':
+					if (!EntryDatesEdit.instance) {
+						EntryDatesEdit.instance = new EntryDatesEdit();
+					}
+					return EntryDatesEdit.instance;
+				case 's_dates':
+					if (!StartDatesEdit.instance) {
+						StartDatesEdit.instance = new StartDatesEdit();
+					}
+					return StartDatesEdit.instance;
 				case 'teams':
-					return teams_edit;
-				case: 'games':
-					return games_edit;
+					if (!TeamsEdit.instance) {
+						TeamsEdit.instance = new TeamsEdit();
+					}
+					return TeamsEdit.instance;
+				case 'games':
+					if (!GamesEdit.instance) {
+						GamesEdit.instance = new GamesEdit();
+					}
+					return GamesEdit.instance;
 				default: 
 					//error
 					throw new Error("Edit view could not find instance with name " + elName);
@@ -131,4 +165,4 @@ EditView = (function() {
 		}
 	};
 
-});
+})();
