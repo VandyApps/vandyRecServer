@@ -149,7 +149,7 @@ EditView = (function() {
 				}
 
 				startDate = this.startDate.split('/');
-				startDays = DateHelper.daysForMonth(+startDate[0], +startDate[2]);
+				startDays = DateHelper.daysForMonth(+startDate[0] - 1, +startDate[2]);
 				//remove all currently existing options
 
 				this._start.day.children().remove();
@@ -178,7 +178,7 @@ EditView = (function() {
 				}
 
 				endDate = this.endDate.split('/');
-				endDays = DateHelper.daysForMonth(+endDate[0], +endDate[2]);
+				endDays = DateHelper.daysForMonth(+endDate[0] - 1, +endDate[2]);
 				//remove all currently existing options
 
 				this._end.day.children().remove();
@@ -198,11 +198,38 @@ EditView = (function() {
 				this._end.year.val(endDate[2]);
 			},
 			startChanged: function() {
+				var startDate = this.startDate.split('/'),
+					month = +this._start.month.val(), 
+					year = +this._start.year.val(), 
+					days = +this._start.day.val(), 
+					changed = false;
+
+				while (days > DateHelper.daysForMonth(month - 1, year)) {
+					days--;
+					changed = true;
+				}
+
+				if (days <= 9) {
+					startDate[1] = '0' + days.toString();
+				} else {
+					startDate[1] = days.toString();
+				}
 				
+				//set the month
+				if (month <= 9) {
+					startDate[0] = '0' + month.toString();
+				} else {
+					startDate[0] = month.toString();
+				}
+				//set the year
+				startDate[2] = year.toString();
+
+				this.startDate = startDate[0] + '/' + startDate[1] + '/' + startDate[2];
+				this.setStartDateTag();
 
 			},
 			endChanged: function() {
-				console.log("End changed");
+				
 			}
 		}),
 
