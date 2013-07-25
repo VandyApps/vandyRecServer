@@ -229,7 +229,34 @@ EditView = (function() {
 
 			},
 			endChanged: function() {
+				var endDate = this.endDate.split('/'),
+					month = +this._end.month.val(), 
+					year = +this._end.year.val(), 
+					days = +this._end.day.val(), 
+					changed = false;
+
+				while (days > DateHelper.daysForMonth(month - 1, year)) {
+					days--;
+					changed = true;
+				}
+
+				if (days <= 9) {
+					endDate[1] = '0' + days.toString();
+				} else {
+					endDate[1] = days.toString();
+				}
 				
+				//set the month
+				if (month <= 9) {
+					endDate[0] = '0' + month.toString();
+				} else {
+					endDate[0] = month.toString();
+				}
+				//set the year
+				endDate[2] = year.toString();
+
+				this.endDate = endDate[0] + '/' + endDate[1] + '/' + endDate[2];
+				this.setEndDateTag();
 			}
 		}),
 
