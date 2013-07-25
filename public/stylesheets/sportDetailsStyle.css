@@ -337,7 +337,7 @@ h3 {
     cursor: pointer;
 }
 
-#e_datesEdit {
+#datesEdit {
     display: none;
     width: 500px;
     height: 200px;
@@ -349,36 +349,34 @@ h3 {
     
 }
 
-#e_datesEdit > div:nth-child(1) {
+#datesEdit > div:nth-child(1) {
     margin-left: -200px;
     left: 50%;
 }
-#e_datesEdit > div:nth-child(2), #e_datesEdit > div:nth-child(3) {
+#datesEdit > div:nth-child(2), #datesEdit > div:nth-child(3) {
     position: absolute;
     top: 80px;
     width: 200px;
     text-align: center;
 }
 
-#e_datesEdit > input:nth-child(4) {
+#datesEdit > input:nth-child(4) {
     left: 140px;
 }
 
-#e_datesEdit > input:nth-child(5) {
+#datesEdit > input:nth-child(5) {
     right: 140px;
 }
 
 
-#e_datesEdit > div:nth-child(2) {
+#datesEdit > div:nth-child(2) {
     left: 20px;
 }
 
-#e_datesEdit > div:nth-child(3) {
+#datesEdit > div:nth-child(3) {
     right: 20px;
 }
-#s_datesEdit {
-    display: none;
-}
+
 
 #teamsEdit {
     display: none;

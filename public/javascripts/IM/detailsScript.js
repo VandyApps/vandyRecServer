@@ -94,8 +94,8 @@ GamesView.getInstance = function() {
 //this method
 EditView = (function() {
 
-	var EntryDatesEdit = Backbone.View.extend({
-			el: '#e_datesEdit',
+	var DatesEdit = Backbone.View.extend({
+			el: '#datesEdit',
 			isShowing: false,
 			startDate: '',
 			endDate: '',
@@ -260,9 +260,6 @@ EditView = (function() {
 			}
 		}),
 
-		SeasonDatesEdit = Backbone.View.extend({
-			'el': '#s_datesEdit'
-		}),
 
 		TeamsEdit = Backbone.View.extend({
 			'el': '#teamsEdit'
@@ -279,16 +276,11 @@ EditView = (function() {
 		getInstance: function(elName) {
 			var name = elName.toLowerCase();
 			switch(elName) {
-				case 'e_dates':
-					if (!EntryDatesEdit.instance) {
-						EntryDatesEdit.instance = new EntryDatesEdit();
+				case 'dates':
+					if (!DatesEdit.instance) {
+						DatesEdit.instance = new DatesEdit();
 					}
-					return EntryDatesEdit.instance;
-				case 's_dates':
-					if (!StartDatesEdit.instance) {
-						StartDatesEdit.instance = new StartDatesEdit();
-					}
-					return StartDatesEdit.instance;
+					return DatesEdit.instance;
 				case 'teams':
 					if (!TeamsEdit.instance) {
 						TeamsEdit.instance = new TeamsEdit();
