@@ -276,30 +276,63 @@ EditView = (function() {
 				'blur div:nth-child(5) input': 'updateTies'
 			},
 			onSubmit: function() {
-				console.log("Submit clicked");
+				this.trigger('submit');
+				this.hide();
 			},
 			onCancel: function() {
-				console.log("Cancel clicked");
+				this.trigger('cancel');
+				this.hide();
 			},
 			updateName: function() {
-				console.log("Updating name");
+				var name = $('input:nth-child(2)', this.$el).val();
+				if (name === "") {
+					name = this.name;
+					$('input:nth-child(2)', this.$el).val(name);
+				} else {
+					this.name = name;
+				}
+				
 			},
 			updateWins: function() {
-				console.log("Updating wins");
+				var wins = $('div:nth-child(3) input').val();
+				if (+wins !== +wins) {
+					wins = "0";
+					$('div:nth-child(3) input').val("0");
+				}
+				this.wins = +wins;
+
 			},
 			updateLosses: function() {
-				console.log("Updating losses");
+				var losses = $('div:nth-child(4) input').val();
+				if (+losses !== +losses) {
+					losses = "0";
+					$('div:nth-child(4) input').val("0");
+				}
+				this.losses = +losses;
 			},
 			updateTies: function() {
-				console.log("Updating ties");
+				var ties = $('div:nth-child(5) input').val();
+				if (+ties !== +ties) {
+					ties = "0";
+					$('div:nth-child(5) input').val("0");
+				}
+				this.ties = +ties;
 			},
+			show: function() {
+				$('input:nth-child(2)', this.$el).val(this.name);
+				$('div:nth-child(3) input', this.$el).val(this.wins.toString());
+				$('div:nth-child(4) input', this.$el).val(this.losses.toString());
+				$('div:nth-child(5) input', this.$el).val(this.ties.toString());
+				this.$el.show();
+			},
+			hide: function() {
+				this.$el.hide();
+			}
 		}),
 
 		GamesEdit = Backbone.View.extend({
 			'el': '#gamesEdit'
 		});
-
-
 
 
 	return {
