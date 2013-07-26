@@ -268,8 +268,8 @@ EditView = (function() {
 			losses: 0,
 			ties: 0,
 			events: {
-				'click input[value="submit"]': 'onSubmit',
-				'click input[value="cancel"]': 'onCancel',
+				'click input[value="submit"][type="button"]': 'onSubmit',
+				'click input[value="cancel"][type="button"]': 'onCancel',
 				'blur input:nth-child(2)': 'updateName',
 				'blur div:nth-child(3) input': 'updateWins',
 				'blur div:nth-child(4) input': 'updateLosses',

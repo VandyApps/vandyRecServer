@@ -319,7 +319,7 @@ input[type="text"] {
     left: 50%;
 }
 
-.editWindow input[value="submit"] {
+.editWindow input[value="submit"][type="button"] {
     border: solid black 1px;
     border: solid #EB8F00 2px;
     border-radius: 2px;
@@ -333,7 +333,7 @@ input[type="text"] {
     cursor: pointer;
 }
 
-.editWindow input[value="cancel"] {
+.editWindow input[value="cancel"][type="button"] {
     border: solid #EB8F00 2px;
     border-radius: 2px;
     width: 80px;
@@ -434,11 +434,11 @@ input[type="text"] {
     top: 150px;
 }
 
-#teamsEdit input[value="submit"] {
+#teamsEdit input[value="submit"][type="button"] {
     left: 100px;
 }
 
-#teamsEdit input[value="cancel"] {
+#teamsEdit input[value="cancel"][type="button"] {
     right: 100px;
 }
 
