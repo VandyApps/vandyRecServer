@@ -268,14 +268,31 @@ EditView = (function() {
 			losses: 0,
 			ties: 0,
 			events: {
-				
+				'click input[value="submit"]': 'onSubmit',
+				'click input[value="cancel"]': 'onCancel',
+				'blur input:nth-child(2)': 'updateName',
+				'blur div:nth-child(3) input': 'updateWins',
+				'blur div:nth-child(4) input': 'updateLosses',
+				'blur div:nth-child(5) input': 'updateTies'
 			},
 			onSubmit: function() {
-
+				console.log("Submit clicked");
 			},
 			onCancel: function() {
-
-			}
+				console.log("Cancel clicked");
+			},
+			updateName: function() {
+				console.log("Updating name");
+			},
+			updateWins: function() {
+				console.log("Updating wins");
+			},
+			updateLosses: function() {
+				console.log("Updating losses");
+			},
+			updateTies: function() {
+				console.log("Updating ties");
+			},
 		}),
 
 		GamesEdit = Backbone.View.extend({
