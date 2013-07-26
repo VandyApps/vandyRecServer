@@ -291,6 +291,13 @@ h3 {
 
 /*edit window*/
 
+input[type="text"] {
+    border: solid #EB8F00 1px;
+    border-radius: 5px;
+    height: 20px;
+    padding: 0px 5px;
+}
+
 .editWindow {
     position: fixed;
     border-radius: 5px;
@@ -308,6 +315,8 @@ h3 {
     font-size: 15pt;
     text-align: center;
     width: 400px;
+    margin-left: -200px;
+    left: 50%;
 }
 
 .editWindow input[value="submit"] {
@@ -349,10 +358,6 @@ h3 {
     
 }
 
-#datesEdit > div:nth-child(1) {
-    margin-left: -200px;
-    left: 50%;
-}
 #datesEdit > div:nth-child(2), #datesEdit > div:nth-child(3) {
     position: absolute;
     top: 80px;
@@ -379,11 +384,67 @@ h3 {
 
 
 #teamsEdit {
-    display: none;
+    display: block;
+    width: 500px;
+    height: 250px;
+    margin-left: -250px;
+    left: 50%;
+    margin-top: -150px;
+    top: 50%;
+}
+
+#teamsEdit input:nth-child(2) {
+    position: absolute;
+    top: 110px;
+    left: 30px;
+    width: 250px;
+}
+
+#teamsEdit div:nth-child(3), #teamsEdit div:nth-child(4), #teamsEdit div:nth-child(5) {
+    position: absolute;
+    display: block;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    right: 70px;
+    
+}
+
+#teamsEdit div:nth-child(3) input, #teamsEdit div:nth-child(4) input, #teamsEdit div:nth-child(5) input {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 20px;
+    margin-top: -10px;
+    top: 50%;
+    width: 20px;
+    text-align: center;
+}
+
+#teamsEdit div:nth-child(3) {
+    top: 70px;
+    
+}
+
+#teamsEdit div:nth-child(4) {
+    top: 110px;
+}
+
+#teamsEdit div:nth-child(5) {
+    top: 150px;
+}
+
+#teamsEdit input[value="submit"] {
+    left: 100px;
+}
+
+#teamsEdit input[value="cancel"] {
+    right: 100px;
 }
 
 #gamesEdit {
     display: none;
 }
+
 
 

@@ -262,7 +262,20 @@ EditView = (function() {
 
 
 		TeamsEdit = Backbone.View.extend({
-			'el': '#teamsEdit'
+			'el': '#teamsEdit',
+			name: '',
+			wins: 0,
+			losses: 0,
+			ties: 0,
+			events: {
+				
+			},
+			onSubmit: function() {
+
+			},
+			onCancel: function() {
+
+			}
 		}),
 
 		GamesEdit = Backbone.View.extend({
