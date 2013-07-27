@@ -260,11 +260,20 @@ DateHelper.splitTime = function(time, coerce) {
 	var firstSplit = time.split(':'),
 	    finalSplit = [firstSplit[0], firstSplit[1].substr(0,2), firstSplit[1].substr(2,2)];
 
-	if (!!coerce) {
+	if (coerce) {
 		return finalSplit.map(function(el, index) {
 			return (index !== 2) ? +el : el;
 		});
 	}
 	return finalSplit;
 	
+}
+
+DateHelper.timeStringInSecs = function(timeString) {
+	var timeArray = this.splitTime(timeString, true),
+		seconds = 0;
+	seconds += (60 * timeArray[0] + timeArray[1]) * 60;
+	seconds += (timeString[2] === 'pm') ? 12 * 60 * 60: 0;
+	return seconds;
+
 }
