@@ -357,22 +357,18 @@ EditView = (function() {
 			},
 			
 			show: function() {
-				var startTime = DateHelper.splitTime(this.startTime, false),
-					endTime = DateHelper.splitTime(this.endTime, false);
+				
 				this.$el.show(); 
 
 				//should create setter methods instead
 				//of using these here
 				this.setDateTag();
+
 				//startTime
-				$('div:nth-child(3) select:nth-child(2)', this.$el).val(startTime[0]);
-				$('div:nth-child(3) select:nth-child(3)', this.$el).val(startTime[1]);
-				$('div:nth-child(3) select:nth-child(4)', this.$el).val(startTime[2]);
+				this.setStartTime(this.startTime);
 
 				//endTime
-				$('div:nth-child(4) select:nth-child(2)', this.$el).val(endTime[0]);
-				$('div:nth-child(4) select:nth-child(3)', this.$el).val(endTime[1]);
-				$('div:nth-child(4) select:nth-child(4)', this.$el).val(endTime[2]);
+				this.setEndTime(this.endTime);
 
 				$('div:nth-child(5) input', this.$el).val(this.homeTeam);
 				$('div:nth-child(6) input', this.$el).val(this.awayTeam);
@@ -417,6 +413,21 @@ EditView = (function() {
 				this.setDateTag();
 				
 			},
+			setStartTime: function(timeString) {
+				var startTime = DateHelper.splitTime(timeString, false);
+				this.startTime = timeString;
+				$('div:nth-child(3) select:nth-child(2)', this.$el).val(startTime[0]);
+				$('div:nth-child(3) select:nth-child(3)', this.$el).val(startTime[1]);
+				$('div:nth-child(3) select:nth-child(4)', this.$el).val(startTime[2]);
+			},
+			setEndTime: function(timeString) {
+				var endTime = DateHelper.splitTime(timeString, false);
+				this.endTime = timeString;
+
+				$('div:nth-child(4) select:nth-child(2)', this.$el).val(endTime[0]);
+				$('div:nth-child(4) select:nth-child(3)', this.$el).val(endTime[1]);
+				$('div:nth-child(4) select:nth-child(4)', this.$el).val(endTime[2]);
+			},
 			setDateTag: function() {
 				var date, days, dayEl = $('div:nth-child(2) select:nth-child(3)', this.$el), i, n;
 
@@ -425,7 +436,7 @@ EditView = (function() {
 				}
 
 				date = this.date.split('/');
-				days = DateHelper.daysForMonth(+date[0] - 1, +date[2]);
+				days = DateHelper.daysForMonth(+date[0] - 1, + date[2]);
 
 				//make the scores readonly if the game date is before 
 				//the current date
@@ -462,11 +473,43 @@ EditView = (function() {
 			//check to make sure that the end time is
 			// after the start time
 			startTimeChanged: function() {
-
+				var startTime, endTime, endTimeString = "";
 				this.startTime = 	$('div:nth-child(3) select:nth-child(2)', this.$el).val() + ':' +
 									$('div:nth-child(3) select:nth-child(3)', this.$el).val() +
 									$('div:nth-child(3) select:nth-child(4)', this.$el).val();
+				//only do this when the start time changes, and not when the end date changes
+				//to avoid being too annoying
+				if (DateHelper.timeStringInSecs(this.startTime) > DateHelper.timeStringInSecs(this.endTime)) {
+					//change the end date
+					startTime = DateHelper.splitTime(this.startTime, true);
+					endTime = DateHelper.splitTime(this.endTime, true);
+					endTime[0] = startTime[0] + 1;
+					endTime[1] = startTime[1];
+					endTime[2] = startTime[2];
+					if (endTime[0] === 13) {
+						endTime[0] = 1;
+						if (endTime[2] === 'am') {
+							endTime[2] = 'pm';
+						} else if (endTime[2] === 'pm') {
+							endTime[2] = 'am';
+						}
+					}
+					if (endTime[0] <= 9) {
+						endTimeString = endTimeString + '0' + endTime[0].toString() + ':';
+					} else {
+						endTimeString = endTimeString + endTime[0].toString() + ':';
+					}
 
+					if (endTime[1] <= 9) {
+						endTimeString = endTimeString + '0' + endTime[1].toString();
+					} else {
+						endTimeString = endTimeString + endTime[1].toString();
+					}
+
+					endTimeString = endTimeString + endTime[2];
+
+					this.setEndTime(endTimeString);
+				}
 			},					
 			//check to make sure that the end time is
 			//after the start time
