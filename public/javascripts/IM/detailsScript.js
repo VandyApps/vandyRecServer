@@ -331,7 +331,68 @@ EditView = (function() {
 		}),
 
 		GamesEdit = Backbone.View.extend({
-			'el': '#gamesEdit'
+			'el': '#gamesEdit',
+			homeTeam: '',
+			awayTeam: '',
+			homeScore: 0,
+			awayScore: 0,
+			date: '',
+			startTime: '',
+			endTime: '',
+			location: '',
+			event: {},
+			
+			show: function() {},
+			hide: function() {},
+			onSubmit: function() {},
+			onCancel: function() {},
+
+			dateChanged: function() {
+				/*
+				var date = this.date.split('/'),
+					month = +this._start.month.val(), 
+					year = +this._start.year.val(), 
+					days = +this._start.day.val(), 
+					changed = false;
+
+				while (days > DateHelper.daysForMonth(month - 1, year)) {
+					days--;
+					changed = true;
+				}
+
+				if (days <= 9) {
+					startDate[1] = '0' + days.toString();
+				} else {
+					startDate[1] = days.toString();
+				}
+				
+				//set the month
+				if (month <= 9) {
+					startDate[0] = '0' + month.toString();
+				} else {
+					startDate[0] = month.toString();
+				}
+				//set the year
+				startDate[2] = year.toString();
+
+				this.startDate = startDate[0] + '/' + startDate[1] + '/' + startDate[2];
+				this.setStartDateTag();
+				*/
+			},
+			//check to make sure that the end time is
+			// after the start time
+			startTimeChanged: function() {},
+			//check to make sure that the end time is
+			//after the start time
+			endTimeChanged: function() {},
+			homeScoreChanged: function() {},
+			awayScoreChanged: function() {},
+			locationChanged: function() {},
+			nameChanged: function() {},
+			//check to see if the home and away scores are
+			//numbers
+			validateHomeScore: function() {},
+			validateAwayScore: function() {}
 		});
 
 
