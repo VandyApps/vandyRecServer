@@ -431,10 +431,27 @@ EditView = (function() {
 			endTimeChanged: function() {console.log("end time changed");},
 			homeTeamChanged: function() {console.log("home team changed");},
 			awayTeamChanged: function() {console.log("away team changed");},
-			homeScoreChanged: function() {console.log("home score changed");},
-			awayScoreChanged: function() {console.log("away score changed");},
+			homeScoreChanged: function() {
+				var scoreEl = $('div:nth-child(7) input:nth-child(1)', this.$el);
+				if (this.validateHomeScore()) {
+					this.homeScore = +scoreEl.val();
+				} else {
+					this.homeScore = 0;
+					scoreEl.val("0");
+				}
+			},
+			awayScoreChanged: function() {
+
+				var scoreEl = $('div:nth-child(7) input:nth-child(2)', this.$el);
+				if (this.validateAwayScore()) {
+					this.awayScore = +scoreEl.val();
+				} else {
+					this.awayScore = 0;
+					scoreEl.val("0");
+				}
+			},
 			locationChanged: function() {console.log("location changed");},
-			nameChanged: function() {console.log("Name changed");},
+
 			//check to see if the home and away scores are
 			//numbers
 			validateHomeScore: function() {
