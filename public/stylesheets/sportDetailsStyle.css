@@ -304,7 +304,7 @@ input[type="text"] {
     background: black;
     color: white;
     opacity: .75;
-    display: block;
+    display: none;
     z-index: 2;
 }
 
@@ -347,7 +347,6 @@ input[type="text"] {
 }
 
 #datesEdit {
-    display: none;
     width: 500px;
     height: 200px;
     margin-left: -250px;
@@ -384,7 +383,6 @@ input[type="text"] {
 
 
 #teamsEdit {
-    display: none;
     width: 500px;
     height: 250px;
     margin-left: -250px;
@@ -402,7 +400,6 @@ input[type="text"] {
 
 #teamsEdit div:nth-child(3), #teamsEdit div:nth-child(4), #teamsEdit div:nth-child(5) {
     position: absolute;
-    display: block;
     width: 100px;
     height: 30px;
     line-height: 30px;
@@ -443,7 +440,6 @@ input[type="text"] {
 }
 
 #gamesEdit {
-    display: block;
     width: 500px;
     height: 400px;
     margin-top: -200px;
