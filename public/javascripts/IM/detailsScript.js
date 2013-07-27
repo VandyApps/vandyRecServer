@@ -446,10 +446,21 @@ EditView = (function() {
 			},
 			//check to make sure that the end time is
 			// after the start time
-			startTimeChanged: function() {console.log("Start time changed");},
+			startTimeChanged: function() {
+
+				this.startTime = 	$('div:nth-child(3) select:nth-child(2)', this.$el).val() + ':' +
+									$('div:nth-child(3) select:nth-child(3)', this.$el).val() +
+									$('div:nth-child(3) select:nth-child(4)', this.$el).val();
+
+			},					
 			//check to make sure that the end time is
 			//after the start time
-			endTimeChanged: function() {console.log("end time changed");},
+			endTimeChanged: function() {
+
+				this.endTime = 	$('div:nth-child(4) select:nth-child(2)', this.$el).val() + ':' +
+								$('div:nth-child(4) select:nth-child(3)', this.$el).val() +
+								$('div:nth-child(4) select:nth-child(4)', this.$el).val();
+			},
 			homeTeamChanged: function() {this.homeTeam = $('div:nth-child(5) input', this.$el).val();},
 			awayTeamChanged: function() {this.awayTeam = $('div:nth-child(6) input', this.$el).val();},
 			homeScoreChanged: function() {
