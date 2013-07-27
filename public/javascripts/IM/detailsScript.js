@@ -21,6 +21,22 @@ SportDetails = Backbone.Model.extend({
 	idAttribute: '_id',
 	intialize: function() {
 
+	},
+	//get the team object for the passed in id
+	teamForID: function(id) {
+
+	},
+	//get the team object for the name
+	teamForName: function(name) {
+
+	},
+	//returns an array of team names
+	teamNames: function() {
+
+	},
+	//sort games based on their playing time
+	sortGames: function() {
+
 	}
 });
 
@@ -346,6 +362,7 @@ EditView = (function() {
 			//not set prior to submission
 			homeTeam: 'Home',
 			awayTeam: 'Away',
+			teamList: ["Lakers", "Spurs", "Clippers", "Grizzlies", "Jazz", "Celtics"],
 			homeScore: 0,
 			awayScore: 0,
 			date: '01/01/2013',
