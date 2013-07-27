@@ -357,8 +357,23 @@ EditView = (function() {
 			},
 			
 			show: function() {
+				var startTime = DateHelper.splitTime(this.startTime, false),
+					endTime = DateHelper.splitTime(this.endTime, false);
 				this.$el.show(); 
+
+				//should create setter methods instead
+				//of using these here
 				this.setDateTag();
+				//startTime
+				$('div:nth-child(3) select:nth-child(2)', this.$el).val(startTime[0]);
+				$('div:nth-child(3) select:nth-child(3)', this.$el).val(startTime[1]);
+				$('div:nth-child(3) select:nth-child(4)', this.$el).val(startTime[2]);
+
+				//endTime
+				$('div:nth-child(4) select:nth-child(2)', this.$el).val(endTime[0]);
+				$('div:nth-child(4) select:nth-child(3)', this.$el).val(endTime[1]);
+				$('div:nth-child(4) select:nth-child(4)', this.$el).val(endTime[2]);
+
 				$('div:nth-child(5) input', this.$el).val(this.homeTeam);
 				$('div:nth-child(6) input', this.$el).val(this.awayTeam);
 				$('div:nth-child(8) input', this.$el).val(this.location);
