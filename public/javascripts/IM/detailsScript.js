@@ -332,14 +332,16 @@ EditView = (function() {
 
 		GamesEdit = Backbone.View.extend({
 			'el': '#gamesEdit',
-			homeTeam: '',
-			awayTeam: '',
+			//here are the default values if they were
+			//not set prior to submission
+			homeTeam: 'Home',
+			awayTeam: 'Away',
 			homeScore: 0,
 			awayScore: 0,
-			date: '',
-			startTime: '',
-			endTime: '',
-			location: '',
+			date: '01/01/2013',
+			startTime: '01:00am',
+			endTime: '02:00am',
+			location: 'Court 2',
 			events: {
 				'change div:nth-child(2) select': 'dateChanged',
 				'change div:nth-child(3) select': 'startTimeChanged',
@@ -354,43 +356,72 @@ EditView = (function() {
 
 			},
 			
-			show: function() {this.$el.show();},
+			show: function() {this.$el.show(); this.setDateTag();},
 			hide: function() {this.$el.hide();},
 			onSubmit: function() {this.trigger('submit'); this.hide();},
 			onCancel: function() {this.trigger('cancel'); this.hide();},
 
 			dateChanged: function() {
-				console.log("Date changed");
-				/*
+				
 				var date = this.date.split('/'),
-					month = +this._start.month.val(), 
-					year = +this._start.year.val(), 
-					days = +this._start.day.val(), 
-					changed = false;
+					monthEl = $('div:nth-child(2) select:nth-child(2)', this.$el),
+					dayEl = $('div:nth-child(2) select:nth-child(3)', this.$el),
+					yearEl = $('div:nth-child(2) select:nth-child(4)', this.$el),
+					month = +monthEl.val(), 
+					year = +yearEl.val(), 
+					days = +dayEl.val();
 
 				while (days > DateHelper.daysForMonth(month - 1, year)) {
 					days--;
-					changed = true;
 				}
 
 				if (days <= 9) {
-					startDate[1] = '0' + days.toString();
+					date[1] = '0' + days.toString();
 				} else {
-					startDate[1] = days.toString();
+					date[1] = days.toString();
 				}
 				
 				//set the month
 				if (month <= 9) {
-					startDate[0] = '0' + month.toString();
+					date[0] = '0' + month.toString();
 				} else {
-					startDate[0] = month.toString();
+					date[0] = month.toString();
 				}
 				//set the year
-				startDate[2] = year.toString();
+				date[2] = year.toString();
 
-				this.startDate = startDate[0] + '/' + startDate[1] + '/' + startDate[2];
-				this.setStartDateTag();
-				*/
+				this.date = date[0] + '/' + date[1] + '/' + date[2];
+				this.setDateTag();
+				
+			},
+			setDateTag: function() {
+				var date, days, dayEl = $('div:nth-child(2) select:nth-child(3)', this.$el), i, n;
+
+				if (this.date === '' ) {
+					throw new Error("the start date is not set correctly within the e_datesEdit");
+				}
+
+				date = this.date.split('/');
+				days = DateHelper.daysForMonth(+date[0] - 1, +date[2]);
+				//remove all currently existing options
+
+				dayEl.children().remove();
+
+				//fix the options of the start and end days
+				for (i=1, n = days; i <= n; ++i) {
+					if (i <= 9) {
+
+						dayEl.append('<option value="0' + i + '">' + i + '</option>');
+					} else {
+						dayEl.append('<option value="' + i + '">' + i + '</option>');
+					}
+					
+				}
+
+				$('div:nth-child(2) select:nth-child(2)', this.$el).val(date[0]);
+				dayEl.val(date[1]);
+				$('div:nth-child(2) select:nth-child(4)', this.$el).val(date[2]);
+				
 			},
 			//check to make sure that the end time is
 			// after the start time
