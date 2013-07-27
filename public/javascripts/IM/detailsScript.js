@@ -359,6 +359,8 @@ EditView = (function() {
 			show: function() {
 				this.$el.show(); 
 				this.setDateTag();
+				$('div:nth-child(5) input', this.$el).val(this.homeTeam);
+				$('div:nth-child(6) input', this.$el).val(this.awayTeam);
 				$('div:nth-child(8) input', this.$el).val(this.location);
 
 			},
@@ -444,8 +446,8 @@ EditView = (function() {
 			//check to make sure that the end time is
 			//after the start time
 			endTimeChanged: function() {console.log("end time changed");},
-			homeTeamChanged: function() {console.log("home team changed");},
-			awayTeamChanged: function() {console.log("away team changed");},
+			homeTeamChanged: function() {this.homeTeam = $('div:nth-child(5) input', this.$el).val();},
+			awayTeamChanged: function() {this.awayTeam = $('div:nth-child(6) input', this.$el).val();},
 			homeScoreChanged: function() {
 				var scoreEl = $('div:nth-child(7) input:nth-child(1)', this.$el);
 				if (this.validateHomeScore()) {
