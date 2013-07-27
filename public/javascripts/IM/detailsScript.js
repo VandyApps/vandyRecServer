@@ -354,10 +354,10 @@ EditView = (function() {
 
 			},
 			
-			show: function() {},
-			hide: function() {},
-			onSubmit: function() {console.log("on submit");},
-			onCancel: function() {console.log("on cancel");},
+			show: function() {this.$el.show();},
+			hide: function() {this.$el.hide();},
+			onSubmit: function() {this.trigger('submit'); this.hide();},
+			onCancel: function() {this.trigger('cancel'); this.hide();},
 
 			dateChanged: function() {
 				console.log("Date changed");
