@@ -340,14 +340,27 @@ EditView = (function() {
 			startTime: '',
 			endTime: '',
 			location: '',
-			event: {},
+			events: {
+				'change div:nth-child(2) select': 'dateChanged',
+				'change div:nth-child(3) select': 'startTimeChanged',
+				'change div:nth-child(4) select': 'endTimeChanged',
+				'click input[value="submit"][type="button"]': 'onSubmit',
+				'click input[value="cancel"][type="button"]': 'onCancel',
+				'blur div:nth-child(5) input': 'homeTeamChanged',
+				'blur div:nth-child(6) input': 'awayTeamChanged',
+				'blur div:nth-child(7) input:nth-child(1)': 'homeScoreChanged',
+				'blur div:nth-child(7) input:nth-child(2)': 'awayScoreChanged',
+				'blur div:nth-child(8) input': 'locationChanged'
+
+			},
 			
 			show: function() {},
 			hide: function() {},
-			onSubmit: function() {},
-			onCancel: function() {},
+			onSubmit: function() {console.log("on submit");},
+			onCancel: function() {console.log("on cancel");},
 
 			dateChanged: function() {
+				console.log("Date changed");
 				/*
 				var date = this.date.split('/'),
 					month = +this._start.month.val(), 
@@ -381,14 +394,16 @@ EditView = (function() {
 			},
 			//check to make sure that the end time is
 			// after the start time
-			startTimeChanged: function() {},
+			startTimeChanged: function() {console.log("Start time changed");},
 			//check to make sure that the end time is
 			//after the start time
-			endTimeChanged: function() {},
-			homeScoreChanged: function() {},
-			awayScoreChanged: function() {},
-			locationChanged: function() {},
-			nameChanged: function() {},
+			endTimeChanged: function() {console.log("end time changed");},
+			homeTeamChanged: function() {console.log("home team changed");},
+			awayTeamChanged: function() {console.log("away team changed");},
+			homeScoreChanged: function() {console.log("home score changed");},
+			awayScoreChanged: function() {console.log("away score changed");},
+			locationChanged: function() {console.log("location changed");},
+			nameChanged: function() {console.log("Name changed");},
 			//check to see if the home and away scores are
 			//numbers
 			validateHomeScore: function() {},
