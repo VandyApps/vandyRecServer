@@ -7,39 +7,6 @@ var sportDetails,
 	EditView;
 
 
-
-//Model
-
-SportDetails = Backbone.Model.extend({
-	urlRoot: function() {
-		if (this.isNew()) {
-			return '/intramurals/sports',
-		} else {
-			return '/intramurals/sports?id=' + this.id;
-		}
-	},
-	idAttribute: '_id',
-	intialize: function() {
-
-	},
-	//get the team object for the passed in id
-	teamForID: function(id) {
-
-	},
-	//get the team object for the name
-	teamForName: function(name) {
-
-	},
-	//returns an array of team names
-	teamNames: function() {
-
-	},
-	//sort games based on their playing time
-	sortGames: function() {
-
-	}
-});
-
 //singleton
 SportDetails.getInstance = function() {
 	if (!sportDetails.instance) {
