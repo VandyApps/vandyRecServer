@@ -341,7 +341,7 @@ EditView = (function() {
 			date: '01/01/2013',
 			startTime: '01:00am',
 			endTime: '02:00am',
-			location: 'Court 2',
+			location: 'Court 1',
 			events: {
 				'change div:nth-child(2) select': 'dateChanged',
 				'change div:nth-child(3) select': 'startTimeChanged',
@@ -356,7 +356,12 @@ EditView = (function() {
 
 			},
 			
-			show: function() {this.$el.show(); this.setDateTag();},
+			show: function() {
+				this.$el.show(); 
+				this.setDateTag();
+				$('div:nth-child(8) input', this.$el).val(this.location);
+
+			},
 			hide: function() {this.$el.hide();},
 			onSubmit: function() {this.trigger('submit'); this.hide();},
 			onCancel: function() {this.trigger('cancel'); this.hide();},
@@ -391,13 +396,7 @@ EditView = (function() {
 				date[2] = year.toString();
 
 				this.date = date[0] + '/' + date[1] + '/' + date[2];
-				//make the scores readonly if the game date is before 
-				//the current date
-				if (DateHelper.dateFromDateString(this.date).getTime() > Date.now()) {
-					$('div:nth-child(7) input', this.$el).attr('readonly', true);
-				} else {
-					$('div:nth-child(7) input', this.$el).attr('readonly', false);
-				}
+				
 				this.setDateTag();
 				
 			},
@@ -410,6 +409,15 @@ EditView = (function() {
 
 				date = this.date.split('/');
 				days = DateHelper.daysForMonth(+date[0] - 1, +date[2]);
+
+				//make the scores readonly if the game date is before 
+				//the current date
+				if (DateHelper.dateFromDateString(this.date).getTime() > Date.now()) {
+					$('div:nth-child(7) input', this.$el).attr('readonly', true);
+				} else {
+					$('div:nth-child(7) input', this.$el).attr('readonly', false);
+				}
+
 				//remove all currently existing options
 
 				dayEl.children().remove();
@@ -457,7 +465,9 @@ EditView = (function() {
 					scoreEl.val("0");
 				}
 			},
-			locationChanged: function() {console.log("location changed");},
+			locationChanged: function() {
+				this.location = $('div:nth-child(8) input', this.$el).val();
+			},
 
 			//check to see if the home and away scores are
 			//numbers
