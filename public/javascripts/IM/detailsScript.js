@@ -406,8 +406,14 @@ EditView = (function() {
 			nameChanged: function() {console.log("Name changed");},
 			//check to see if the home and away scores are
 			//numbers
-			validateHomeScore: function() {},
-			validateAwayScore: function() {}
+			validateHomeScore: function() {
+				var score = $('div:nth-child(7) input:nth-child(1)', this.$el).val();
+				return +score === +score;
+			},
+			validateAwayScore: function() {
+				var score = $('div:nth-child(7) input:nth-child(2)', this.$el).val();
+				return +score === +score;
+			}
 		});
 
 
