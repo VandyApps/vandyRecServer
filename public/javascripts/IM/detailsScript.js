@@ -415,9 +415,13 @@ EditView = (function() {
 				//make the scores readonly if the game date is before 
 				//the current date
 				if (DateHelper.dateFromDateString(this.date).getTime() > Date.now()) {
+					$('div:nth-child(7) input').val("");
 					$('div:nth-child(7) input', this.$el).attr('readonly', true);
+
 				} else {
 					$('div:nth-child(7) input', this.$el).attr('readonly', false);
+					$('div:nth-child(7) input:nth-child(1)').val(this.homeScore.toString());
+					$('div:nth-child(7) input:nth-child(2)').val(this.awayScore.toString());
 				}
 
 				//remove all currently existing options
