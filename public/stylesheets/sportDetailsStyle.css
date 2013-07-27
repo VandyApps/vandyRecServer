@@ -522,6 +522,10 @@ input[type="text"] {
     text-align: center;
 }
 
+#gamesEdit div:nth-child(7) input[readonly] {
+    background-color: #444444;
+}
+
 #gamesEdit div:nth-child(8) {
     position: absolute;
     left: 20px;

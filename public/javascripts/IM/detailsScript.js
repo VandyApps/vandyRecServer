@@ -391,6 +391,13 @@ EditView = (function() {
 				date[2] = year.toString();
 
 				this.date = date[0] + '/' + date[1] + '/' + date[2];
+				//make the scores readonly if the game date is before 
+				//the current date
+				if (DateHelper.dateFromDateString(this.date).getTime() > Date.now()) {
+					$('div:nth-child(7) input', this.$el).attr('readonly', true);
+				} else {
+					$('div:nth-child(7) input', this.$el).attr('readonly', false);
+				}
 				this.setDateTag();
 				
 			},
