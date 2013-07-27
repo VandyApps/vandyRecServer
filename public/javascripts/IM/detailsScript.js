@@ -6,15 +6,6 @@ var sportDetails,
 	GamesView,
 	EditView;
 
-
-//singleton
-SportDetails.getInstance = function() {
-	if (!sportDetails.instance) {
-		sportDetails.instance = new SportDetails();
-	}
-	return sportDetails.instance;
-};
-
 //Views
 
 E_DatesView = Backbone.View.extend({
