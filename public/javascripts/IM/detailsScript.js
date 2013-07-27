@@ -11,7 +11,17 @@ var sportDetails,
 //Model
 
 SportDetails = Backbone.Model.extend({
+	urlRoot: function() {
+		if (this.isNew()) {
+			return '/intramurals/sports',
+		} else {
+			return '/intramurals/sports?id=' + this.id;
+		}
+	},
+	idAttribute: '_id',
+	intialize: function() {
 
+	}
 });
 
 //singleton
