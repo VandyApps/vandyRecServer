@@ -272,8 +272,9 @@ DateHelper.splitTime = function(time, coerce) {
 DateHelper.timeStringInSecs = function(timeString) {
 	var timeArray = this.splitTime(timeString, true),
 		seconds = 0;
-	seconds += (60 * timeArray[0] + timeArray[1]) * 60;
-	seconds += (timeString[2] === 'pm') ? 12 * 60 * 60: 0;
+	seconds += (timeArray[0] === 12) ? 0 : timeArray[0] * 3600;
+	seconds += timeArray[1] * 60;
+	seconds += (timeArray[2].toLowerCase() === 'pm') ? 12 * 60 * 60: 0;
 	return seconds;
 
 }
