@@ -3,10 +3,18 @@ var IMModel = {};
 IMModel.Sport = Backbone.Model.extend({
 	url: '/intramurals',
 	idAttribute: '_id',
-	entryStart: function() {},
-	entryEnd: function() {},
-	seasonStart: function() {},
-	seasonEnd: function() {},
+	entryStart: function() {
+		return DateHelper.dateFromDateString(this.get('entryDates').start);
+	},
+	entryEnd: function() {
+		return DateHelper.dateFromDateString(this.get('entryDates').end);
+	},
+	seasonStart: function() {
+		return DateHelper.dateFromDateString(this.get('seasonDates').start);
+	},
+	seasonEnd: function() {
+		return DateHelper.dateFromDateString(this.get('seasonDates').end);
+	},
 	//sorts the games in chronological order
 	sortGames: function() {}
 });
