@@ -246,6 +246,18 @@ exports.intramurals = function(req, res) {
 	
 };
 
+exports.createIntramurals = function(req, res) {
+	res.send("Create intramurals here");
+};
+
+exports.updateIntramurals = function(req, res) {
+	res.send("update intramurals here");
+};
+
+exports.deleteIntramurals = function(req, res) {
+	res.send("delete intramurals here");
+};
+
 exports.intramuralFiles = function(req, res) {
 	if (!req.files) {
 		//should create an error page

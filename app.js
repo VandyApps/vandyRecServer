@@ -95,6 +95,9 @@ app.get('/traffic', routes.traffic);
 
 
 app.get('/intramurals', routes.intramurals);
+app.post('/intramurals', routes.createIntramurals);
+app.put('/intramurals', routes.updateIntramurals);
+app.delete('/intramurals', routes.deleteIntramurals);
 
 app.post('/intramurals/files', routes.intramuralFiles);
 app.get('/intramurals/details', routes.intramuralsDetails);
