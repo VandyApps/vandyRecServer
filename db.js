@@ -14,7 +14,8 @@
 		users: 'users',
 		news: 'news',
 		hours: 'hours',
-		groupFitness: 'groupFitness'
+		groupFitness: 'groupFitness',
+		intramurals: 'intramurals'
 	},
 	renderProperties = {
 		GF: {
@@ -380,4 +381,32 @@
 		});
 	};
 
+	exports.getIntramurals = function(callback) {
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.find({}, function(err, cursor) {
+					cursor.toArray(function(err, intramurals) {
+						callback(err, intramurals);
+						db.close();
+					});
+				});
+			});
+		});
+	};
+
+	exports.getIntramuralsForSeason = function(seasonIndex, callback) {
+
+	};
+
+	exports.updateIntramurals = function(sport, callback) {
+
+	};
+
+	exports.insertIntramurals = function(sport, callback) {
+
+	};
+
+	exports.deleteIntramurals = function(id, callback) {
+
+	};
 })(exports);

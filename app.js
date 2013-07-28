@@ -108,6 +108,7 @@ app.get('/programs', routes.programs);
 app.get('/JSON/news', data.news);
 app.get('/JSON/hours', data.hours);
 app.get('/JSON/GF', data.groupFitness);
+app.get('/JSON/IM', data.intramurals);
 
 passport.serializeUser(function(user, done) {
   done(null, user);

@@ -50,3 +50,11 @@ exports.groupFitness = function(req, res) {
 	}
 	
 };
+
+
+exports.intramurals = function(req, res) {
+	db.getIntramurals(function(err, intramurals) {
+		res.send(intramurals);
+	});
+};
+
