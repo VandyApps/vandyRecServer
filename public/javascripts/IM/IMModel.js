@@ -16,7 +16,19 @@ IMModel.Sport = Backbone.Model.extend({
 		return DateHelper.dateFromDateString(this.get('seasonDates').end);
 	},
 	//sorts the games in chronological order
-	sortGames: function() {}
+	sortGames: function() {
+		var games = this.get('games').slice();
+		games.sort(function(game1, game2) {
+			var time1 = DateHelper.dateFromDateString(game1.date).getTime(),
+				time2 = DateHelper.dateFromDateString(game2.date).getTime();
+			time1 += DateHelper.timeStringInSecs(game1.startTime) * 1000;
+			time2 += DateHelper.timeStringInSecs(game2.startTime) * 1000;
+			return time1 - time2;
+
+		});
+
+		this.set('games', games);
+	}
 });
 
 IMModel.Season = Backbone.Collection.extend({
