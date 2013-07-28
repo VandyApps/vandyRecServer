@@ -24,4 +24,9 @@ IMModel.All = Backbone.Collection.extend({
 	model: IMModel.Sport
 });
 
-IMModel.All.getInstance = function() {};
+IMModel.getCollection = function() {
+	if (!IMModel.All.instance) {
+		IMModel.All.instance = new IMModel.All();
+	}
+	return IMModel.All.instance;
+};
