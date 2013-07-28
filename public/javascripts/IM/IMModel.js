@@ -1,7 +1,8 @@
 var IMModel = {};
 
 IMModel.Sport = Backbone.Model.extend({
-	url: '/intramurals'
+	url: '/intramurals',
+	idAttribute: '_id',
 	entryStart: function() {},
 	entryEnd: function() {},
 	seasonStart: function() {},
@@ -11,6 +12,7 @@ IMModel.Sport = Backbone.Model.extend({
 });
 
 IMModel.Season = Backbone.Collection.extend({
+	model: IMModel.Sport,
 	//sorts sports based on date the sport is happenning
 	sort: function() {
 
@@ -18,7 +20,8 @@ IMModel.Season = Backbone.Collection.extend({
 });
 
 IMModel.All = Backbone.Collection.extend({
-	url: '/JSON/intramurals'
+	url: '/JSON/IM',
+	model: IMModel.Sport
 });
 
 IMModel.All.getInstance = function() {};
