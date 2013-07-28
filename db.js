@@ -395,7 +395,17 @@
 	};
 
 	exports.getIntramuralsForSeason = function(seasonIndex, callback) {
-
+		var seasonQuery = {season: seasonIndex};
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.find(seasonQuery, function(err, cursor) {
+					cursor.toArray(function(err, intramurals) {
+						callback(err, intramurals);
+						db.close();
+					});
+				});
+			});
+		});
 	};
 
 	exports.updateIntramurals = function(sport, callback) {
