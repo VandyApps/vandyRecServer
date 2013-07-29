@@ -1,6 +1,5 @@
 //Declarations
-var sportDetails,
-	E_DatesView,
+var E_DatesView,
 	S_DatesView,
 	TeamsView,
 	GamesView,

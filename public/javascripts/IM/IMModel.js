@@ -41,7 +41,27 @@ IMModel.Season = Backbone.Collection.extend({
 
 IMModel.All = Backbone.Collection.extend({
 	url: '/JSON/IM',
-	model: IMModel.Sport
+	model: IMModel.Sport,
+	getSpringSports: function() {
+		return this.models.filter(function(sport) {
+			return sport.get('season') === 2;
+		}).slice();
+	},
+	getFallSports: function() {
+		return this.models.filter(function(sport) {
+			return sport.get('season') === 0;
+		}).slice();
+	},
+	getWinterSports: function() {
+		return this.models.filter(function(sport) {
+			return sport.get('season') === 1;
+		}).slice();
+	},
+	getSummerSports: function() {
+		return this.models.filter(function(sport) {
+			return sport.get('season') === 3;
+		}).slice();
+	}
 });
 
 IMModel.getCollection = function() {
