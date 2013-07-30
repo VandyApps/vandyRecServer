@@ -64,9 +64,34 @@ IMModel.All = Backbone.Collection.extend({
 	}
 });
 
-IMModel.getCollection = function() {
-	if (!IMModel.All.instance) {
-		IMModel.All.instance = new IMModel.All();
+IMModel.getCollection = function(_season) {
+	var season = (_season) ? _season.toLowerCase() : "";
+	switch(season) {
+		case 'fall':
+			if (!IMModel.Season.fallInstance) {
+				IMModel.Season.fallInstance = new IMModel.Season(IMModel.getCollection().getFallSports());
+			}
+			return IMModel.Season.fallInstance;
+		case 'spring':
+			if (!IMModel.Season.springInstance) {
+				IMModel.Season.springInstance = new IMModel.Season(IMModel.getCollection().getSpringSports());
+			}
+			return IMModel.Season.springInstance;
+		case 'summer':
+			if (!IMModel.Season.summerInstance) {
+				IMModel.Season.summerInstance = new IMModel.Season(IMModel.getCollection().getSummerSports());
+			}
+			return IMModel.Season.summerInstance;
+		case 'winter':
+			if (!IMModel.Season.winterInstance) {
+				IMModel.Season.winterInstance = new IMModel.Season(IMModel.getCollection().getWinterSports());
+			}
+			return IMModel.Season.winterInstance;
+		default:
+			if (!IMModel.All.instance) {
+				IMModel.All.instance = new IMModel.All();
+			}
+			return IMModel.All.instance;	
 	}
-	return IMModel.All.instance;
+	
 };
