@@ -31,6 +31,10 @@ IMModel.Sport = Backbone.Model.extend({
 	}
 });
 
+//should not add models to the All collection
+//but rather to the collection for the particular
+//season, which automatically syncs the model with the
+//season collection
 IMModel.Season = Backbone.Collection.extend({
 	model: IMModel.Sport,
 	//sorts sports based on date the sport is happenning
@@ -38,6 +42,7 @@ IMModel.Season = Backbone.Collection.extend({
 
 	}
 });
+
 
 IMModel.All = Backbone.Collection.extend({
 	url: '/JSON/IM',
@@ -61,7 +66,24 @@ IMModel.All = Backbone.Collection.extend({
 		return this.models.filter(function(sport) {
 			return sport.get('season') === 3;
 		}).slice();
-	}
+	},
+	//should use this method in place of add to make sure
+	//all collections are synced with model
+	insert: function(model) {
+		this.add(model);
+		switch(model.get('season')) {
+			case 0:
+				IMModel.getCollection('fall').add(model);
+			case 1:
+				IMModel.getCollection('winter').add(model);
+			case 2:
+				IMModel.getCollection('spring').add(model);
+			case 3:
+				IMModel.getCollection('summer').add(model);
+			default:
+				throw new Error("Model does not have a correct value for season property");
+		}
+	},
 });
 
 IMModel.getCollection = function(_season) {
