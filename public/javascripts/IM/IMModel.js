@@ -74,14 +74,19 @@ IMModel.All = Backbone.Collection.extend({
 		switch(model.get('season')) {
 			case 0:
 				IMModel.getCollection('fall').add(model);
+				break;
 			case 1:
 				IMModel.getCollection('winter').add(model);
+				break;
 			case 2:
 				IMModel.getCollection('spring').add(model);
+				break;
 			case 3:
 				IMModel.getCollection('summer').add(model);
+				break;
 			default:
 				throw new Error("Model does not have a correct value for season property");
+				break;
 		}
 	},
 });
