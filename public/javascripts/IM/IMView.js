@@ -1,7 +1,42 @@
 var IMView = {};
 
 IMView.tableElement = Backbone.View.extend({
+	tagName: 'li',
+	events: function() {
+		return {
+			'click a': 'navigateToDetails'
+		};
+	},
+	initialize: function(options) {
+		if (!options || !options.model) {
+			throw new Error("Need to include the model in the parameters");
+		}
+		this.model = options.model;
+		this.render();
 
+		//add model-listening events here
+	},
+	render: function() {
+		var linkEl;
+		this.$el.append('<a href="intramurals/details"></a>');
+		linkEl = $('a', this.$el);
+
+		linkEl.append('<div class="intramuralsItem-name">' + this.model.get('sport') + '</div>')
+				.append('<div class="intramuralsItem-startDate">' + this.model.get('seasonDates').start + '</div>')
+				.append('<div class="intramuralsItem-endDate">' + this.model.get('seasonDates').end + '</div>');
+
+
+	},
+	navigateToDetails: function() {
+		sessionStorage.model = JSON.stringify(this.model);
+	}
+/*
+	<li id="databaseIDHere"><a href="intramurals/details">
+        <div class="intramuralsItem-name">Flag Football</div>
+        <div class="intramuralsItem-startDate">06/12/2013</div>
+        <div class="intramuralsItem-endDate">08/12/2013</div>
+    </a></li>
+*/
 });
 
 IMView.tableSection = Backbone.View.extend({
