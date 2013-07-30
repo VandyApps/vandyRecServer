@@ -15,6 +15,15 @@ IMView.tableElement = Backbone.View.extend({
 		this.render();
 
 		//add model-listening events here
+		this.model.on('change:sport', function() {
+			$('.intramuralsItem-name', this.$el).text(this.model.get('sport'));
+		}.bind(this));
+		this.model.on('change:startDate', function() {
+			$('.intramuralsItem-startDate', this.$el).text(this.model.get('startDate'));
+		}.bind(this));
+		this.model.on('change:endDate', function() {
+			$('.intramuralsItem-endDate', this.$el).text(this.model.get('endDate'));
+		}.bind(this));
 	},
 	render: function() {
 		var linkEl;
@@ -30,13 +39,6 @@ IMView.tableElement = Backbone.View.extend({
 	navigateToDetails: function() {
 		sessionStorage.model = JSON.stringify(this.model);
 	}
-/*
-	<li id="databaseIDHere"><a href="intramurals/details">
-        <div class="intramuralsItem-name">Flag Football</div>
-        <div class="intramuralsItem-startDate">06/12/2013</div>
-        <div class="intramuralsItem-endDate">08/12/2013</div>
-    </a></li>
-*/
 });
 
 IMView.tableSection = Backbone.View.extend({
