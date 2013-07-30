@@ -1,6 +1,6 @@
 var IMView = {};
 
-IMView.tableElement = Backbone.View.extend({
+IMView.TableElement = Backbone.View.extend({
 	tagName: 'li',
 	events: function() {
 		return {
@@ -41,10 +41,14 @@ IMView.tableElement = Backbone.View.extend({
 	}
 });
 
-IMView.tableSection = Backbone.View.extend({
-
+IMView.TableSection = Backbone.View.extend({
+	//array of views that exist in the table view,
+	//in the order that they appear in the table view
+	items: [],
 	//pass in the seasonIndex 0, 1, 2, 3
-	intitialize: function(options) {
+	initialize: function(options) {
+		console.log("Initialize was called");
+		//must have a specified season
 		if (!options || !options.season) {
 			throw new Error("Must include the season index of the table");
 		}
@@ -53,41 +57,36 @@ IMView.tableSection = Backbone.View.extend({
 		switch(options.season) {
 			case 0:
 				this.$el = $('#FallSeason');
-				this.collection = IMModel.getInstance('fall');
 				break;
 			case 1:
+				console.log("Setting el to season");
 				this.$el = $('#WinterSeason');
-				this.collection = IMModel.getInstance('winter');
 				break;
 			case 2:
 				this.$el = $('#SpringSeason');
-				this.collection = IMModel.getInstance('spring');
 				break;
 			case 3:
 				this.$el = $('#SummerSeason');
-				this.collection = IMModel.getInstance('summer');
 				break;
 			default:
 				throw new Error("The season index is incorrect");
 		}
-		this.render();
-	},
-	render: function() {
-		//iterate through the collection and create
-		//views for all the models
-		this.collection.each(function(model) {
-			//do stuff here with the model
-		});
 	},
 	//accepts a model and creates a view, then
 	//appends the view to the end of the table
 	//does nothing if the model has a 
 	//non-corresponding season value
 	append: function(model) {
+		var view = new IMView.TableElement({model: model});
+		this.items.push(view);
 
+		this.$el.append(view.$el);
 	},
-	preprend: function(model) {
+	prepend: function(model) {
+		var view = new IMView.tableElement({model: model});
+		this.items = [view].concat(this.items);
 
+		this.$el.prepend(view.$el);
 	},
 	//removes all elements and resorts them
 	//based on the sorting within the 
