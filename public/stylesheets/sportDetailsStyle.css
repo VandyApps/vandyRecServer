@@ -112,7 +112,26 @@ body {
     top: 380px;
 }
 
-#teams > div, #games > div {
+#addButton {
+    position: absolute;
+    top: 20px;
+    background-color: black;
+    color: white;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 30px;
+    right: 20px;
+    display: block;
+    height: 30px;
+    width: 30px;
+    margin-top: -15px;
+    
+    cursor: pointer;
+    
+}
+
+
+#teams > div:nth-child(1), #games > div:nth-child(1) {
     
     background: #EB8F00;
     height: 40px;
