@@ -44,6 +44,17 @@ h3 {
     padding: 0px 10px;
 }
 
+.sportDates .edit {
+    position: absolute;
+    top: 35px;
+    right: 10px;
+    font-size: 10pt;
+    color: red;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
 #entryDates {
     top: 150px;   
 }
@@ -257,7 +268,7 @@ h3 {
     color:red;
 }
 
-#return, #generateHTML, #delete {
+#return, #generateHTML, #delete, #saveModel {
     font-weight: bold;
     border: solid black 2px;
     display: block;
@@ -276,16 +287,21 @@ h3 {
     background: #fc654c;
 }
 
+
 #delete {
-    top: 460px;
+    top: 490px;
 }
 
 #return {
-    top: 440px;
+    top: 470px;
 }
 
 #generateHTML {
-    top: 420px;
+    top: 450px;
+}
+
+#saveModel {
+    top: 430px;
 }
 
 

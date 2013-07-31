@@ -5,6 +5,7 @@ var E_DatesView,
 	GamesView,
 	EditView;
 
+
 //Views
 
 E_DatesView = Backbone.View.extend({
@@ -13,18 +14,30 @@ E_DatesView = Backbone.View.extend({
 	endDate: '',
 	isHidden: true,
 	events: {
+		'click .edit': 'editDates'
 
 	},
-	render: function() {
+	editDates: function() {
+		var datesEdit = EditView.getInstance('dates');
 
-	},
-	toggle: function() {
+		datesEdit.startDate = this.startDate;
+		datesEdit.endDate = this.endDate;
+		datesEdit.show();
 
-	},
-	show: function() {
+		datesEdit.on('submit', function() {
+			this.startDate = datesEdit.startDate;
+			this.endDate = datesEdit.endDate;
 
-	},
-	hide: function() {
+			datesEdit.unbind('submit');
+			datesEdit.unbind('cancel');
+
+		});
+
+		datesEdit.on('cancel', function() {
+
+			datesEdit.unbind('submit');
+			datesEdit.unbind('cancel');
+		});
 
 	}
 });
@@ -569,3 +582,12 @@ EditView = (function() {
 	};
 
 })();
+
+
+//Script starts here
+
+var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
+	entryDatesView;
+
+
+
