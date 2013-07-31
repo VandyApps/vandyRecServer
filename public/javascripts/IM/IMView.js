@@ -27,6 +27,8 @@ IMView.TableElement = Backbone.View.extend({
 		this.model.on('change:endDate', function() {
 			$('.intramuralsItem-endDate', this.$el).text(this.model.get('endDate'));
 		}.bind(this));
+
+		
 	},
 	render: function() {
 		var linkEl;
@@ -73,6 +75,11 @@ IMView.TableSection = Backbone.View.extend({
 			default:
 				throw new Error("The season index is incorrect");
 		}
+
+		//events outside of el
+		$('#hoursAdd-'+this.season.toString()).click(function() {
+			this.addElement();
+		}.bind(this));
 	},
 	//accepts a model and creates a view, then
 	//appends the view to the end of the table
@@ -95,6 +102,32 @@ IMView.TableSection = Backbone.View.extend({
 	//collection
 	sort: function() {
 
+	},
+	//creates a generic model and adds it to the collection and 
+	//creates a view that is appended to the table
+	//the model is not persisted to the database
+	addElement: function() {
+		var modelData = {
+				sport: "New Sport",
+				season: this.season,
+				entryDates: {
+					start: "02/01/2013",
+					end: "03/03/2013"
+				},
+				seasonDates: {
+					start: "01/01/2013",
+					end: "01/05/2013",
+				},
+				teams: [],
+				games: []
+			},
+
+			
+			model = new IMModel.Sport(modelData);
+
+
+		IMModel.getCollection().insert(model);
+		this.append(model);
 	}
 });
 

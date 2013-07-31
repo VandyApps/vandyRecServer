@@ -3,6 +3,7 @@ var IMModel = {};
 IMModel.Sport = Backbone.Model.extend({
 	url: '/intramurals',
 	idAttribute: '_id',
+	
 	entryStart: function() {
 		return DateHelper.dateFromDateString(this.get('entryDates').start);
 	},
