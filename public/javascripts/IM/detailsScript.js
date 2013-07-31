@@ -169,8 +169,10 @@ GamesView = Backbone.View.extend({
 //each window has a singleton that can be accessed through
 //this method
 EditView = (function() {
+	//indicates if any of the windows are active
+	var isEditting = false,
 
-	var NameEdit = Backbone.View.extend({
+		NameEdit = Backbone.View.extend({
 
 			el: '#nameEdit',
 			isShowing: false,
@@ -180,16 +182,24 @@ EditView = (function() {
 				'click input[value="cancel"][type="button"]': 'onCancel'
 			},
 			show: function() {
-				$('input:nth-of-type(1)', this.$el).val(this.sportName);
-				 
-				this.$el.show();
+				if (!isEditting) {
 
+					$('input:nth-of-type(1)', this.$el).val(this.sportName);
+				 
+					this.$el.show();
+					this.isShowing = true;
+					isEditting = true;
+				}
+				
 			},
 			hide: function() {
+				this.isShowing = false;
+				isEditting = false;
 				this.$el.hide();
 			},
 			onSubmit: function() {
 				this.trigger('submit');
+				
 				this.hide();
 			},
 			onCancel: function() {
@@ -223,15 +233,19 @@ EditView = (function() {
 				
 			},
 			show: function() {
-				
-				this.setStartDateTag();
-				this.setEndDateTag();
-				this.$el.show();
-				this.isShowing = true;
+				if (!isEditting) {
+					this.setStartDateTag();
+					this.setEndDateTag();
+					this.$el.show();
+					this.isShowing = true;
+					isEditting = true;
+				}
+					
 			},
 			hide: function() {
 				this.$el.hide();
 				this.isShowing = false;
+				isEditting = false;
 			},
 			onSubmit: function() {
 
@@ -368,6 +382,7 @@ EditView = (function() {
 		TeamsEdit = Backbone.View.extend({
 			'el': '#teamsEdit',
 			name: '',
+			isShowing: false,
 			wins: 0,
 			losses: 0,
 			ties: 0,
@@ -381,6 +396,7 @@ EditView = (function() {
 			},
 			onSubmit: function() {
 				this.trigger('submit');
+
 				this.hide();
 			},
 			onCancel: function() {
@@ -423,14 +439,21 @@ EditView = (function() {
 				this.ties = +ties;
 			},
 			show: function() {
-				$('input:nth-child(2)', this.$el).val(this.name);
-				$('div:nth-child(3) input', this.$el).val(this.wins.toString());
-				$('div:nth-child(4) input', this.$el).val(this.losses.toString());
-				$('div:nth-child(5) input', this.$el).val(this.ties.toString());
-				this.$el.show();
+				if (!isEditting) {
+					$('input:nth-child(2)', this.$el).val(this.name);
+					$('div:nth-child(3) input', this.$el).val(this.wins.toString());
+					$('div:nth-child(4) input', this.$el).val(this.losses.toString());
+					$('div:nth-child(5) input', this.$el).val(this.ties.toString());
+					this.$el.show();
+					this.isShowing = true;
+					isEditting = true;
+				}
+					
 			},
 			hide: function() {
 				this.$el.hide();
+				this.isShowing = false;
+				isEditting = false;
 			}
 		}),
 
@@ -438,6 +461,7 @@ EditView = (function() {
 			'el': '#gamesEdit',
 			//here are the default values if they were
 			//not set prior to submission
+			isShowing: false,
 			homeTeam: 'Home',
 			awayTeam: 'Away',
 			teamList: ["Lakers", "Spurs", "Clippers", "Grizzlies", "Jazz", "Celtics"],
@@ -462,25 +486,30 @@ EditView = (function() {
 			},
 			
 			show: function() {
-				
-				this.$el.show(); 
+				if (!isEditting) {
 
-				//should create setter methods instead
-				//of using these here
-				this.setDateTag();
+					this.isShowing = true;
+					this.$el.show(); 
 
-				//startTime
-				this.setStartTime(this.startTime);
+					//should create setter methods instead
+					//of using these here
+					this.setDateTag();
 
-				//endTime
-				this.setEndTime(this.endTime);
+					//startTime
+					this.setStartTime(this.startTime);
 
-				$('div:nth-child(5) input', this.$el).val(this.homeTeam);
-				$('div:nth-child(6) input', this.$el).val(this.awayTeam);
-				$('div:nth-child(8) input', this.$el).val(this.location);
+					//endTime
+					this.setEndTime(this.endTime);
+
+					$('div:nth-child(5) input', this.$el).val(this.homeTeam);
+					$('div:nth-child(6) input', this.$el).val(this.awayTeam);
+					$('div:nth-child(8) input', this.$el).val(this.location);
+					isEditting = true;
+				}
+					
 
 			},
-			hide: function() {this.$el.hide();},
+			hide: function() {this.$el.hide(); this.isShowing = false; isEditting = false;},
 			onSubmit: function() {this.trigger('submit'); this.hide();},
 			onCancel: function() {this.trigger('cancel'); this.hide();},
 
@@ -691,6 +720,10 @@ EditView = (function() {
 					throw new Error("Edit view could not find instance with name " + elName);
 					break;
 			}
+		},
+		isEditting: function() {
+			
+			return isEditting;
 		}
 	};
 
