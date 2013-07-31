@@ -170,7 +170,35 @@ GamesView = Backbone.View.extend({
 //this method
 EditView = (function() {
 
-	var DatesEdit = Backbone.View.extend({
+	var NameEdit = Backbone.View.extend({
+
+			el: '#nameEdit',
+			isShowing: false,
+			sportName: '',
+			events: {
+				'click input[value="submit"][type="button"]': 'onSubmit',
+				'click input[value="cancel"][type="button"]': 'onCancel'
+			},
+			show: function() {
+				$('input:nth-of-type(1)', this.$el).val(this.sportName);
+				 
+				this.$el.show();
+
+			},
+			hide: function() {
+				this.$el.hide();
+			},
+			onSubmit: function() {
+				this.trigger('submit');
+				this.hide();
+			},
+			onCancel: function() {
+				this.trigger('cancel');
+				this.hide();
+			}
+		}),
+
+		DatesEdit = Backbone.View.extend({
 			el: '#datesEdit',
 			isShowing: false,
 			startDate: '',
@@ -638,6 +666,11 @@ EditView = (function() {
 		getInstance: function(elName) {
 			var name = elName.toLowerCase();
 			switch(elName) {
+				case 'name':
+					if (!NameEdit.instance) {
+						NameEdit.instance = new NameEdit();
+					}
+					return NameEdit.instance;
 				case 'dates':
 					if (!DatesEdit.instance) {
 						DatesEdit.instance = new DatesEdit();
