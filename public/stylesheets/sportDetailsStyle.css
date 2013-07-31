@@ -181,7 +181,7 @@ h3 {
 #games > ul {
     margin: 0;
     list-style: none;
-    display: block;
+    display: none;
 }
 
 #games > ul li {
