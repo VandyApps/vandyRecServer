@@ -138,6 +138,30 @@ TeamsView = Backbone.View.extend({
 
 GamesView = Backbone.View.extend({
 	el: '#games',
+	isShowing: false,
+	events: {
+		'click div:nth-child(1)': 'toggle'
+	},
+	initialize: function(model) {},
+	
+	show: function() {
+		$('ul', this.$el).slideDown();
+		this.isShowing = true;
+	},
+	hide: function() {
+		$('ul', this.$el).slideUp();
+		this.isShowing = false;
+	},
+	toggle: function() {
+		if (this.isShowing) {
+			this.hide();
+		} else {
+			this.show();
+		}
+	},
+	editGame: function() {},
+	addGame: function() {},
+	removeGame: function() {} 
 });
 
 //edit view contains all the windows that have
@@ -645,7 +669,8 @@ EditView = (function() {
 var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
 	entryDatesView = new E_DatesView(sportModel),
 	seasonDatesView = new S_DatesView(sportModel),
-	teamsView = new TeamsView(sportModel);
+	teamsView = new TeamsView(sportModel),
+	gamesEdit = new GamesView(sportModel);
 
 
 
