@@ -50,22 +50,22 @@ IMModel.All = Backbone.Collection.extend({
 	getSpringSports: function() {
 		return this.models.filter(function(sport) {
 			return sport.get('season') === 2;
-		}).slice();
+		});
 	},
 	getFallSports: function() {
 		return this.models.filter(function(sport) {
 			return sport.get('season') === 0;
-		}).slice();
+		});
 	},
 	getWinterSports: function() {
 		return this.models.filter(function(sport) {
 			return sport.get('season') === 1;
-		}).slice();
+		});
 	},
 	getSummerSports: function() {
 		return this.models.filter(function(sport) {
 			return sport.get('season') === 3;
-		}).slice();
+		});
 	},
 	//should use this method in place of add to make sure
 	//all collections are synced with model
@@ -96,6 +96,7 @@ IMModel.getCollection = function(_season) {
 	switch(season) {
 		case 'fall':
 			if (!IMModel.Season.fallInstance) {
+
 				IMModel.Season.fallInstance = new IMModel.Season(IMModel.getCollection().getFallSports());
 			}
 			return IMModel.Season.fallInstance;

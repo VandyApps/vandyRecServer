@@ -51,7 +51,7 @@ IMView.TableSection = Backbone.View.extend({
 	//pass in the seasonIndex 0, 1, 2, 3
 	initialize: function(options) {
 		//must have a specified season
-		if (!options || !options.season) {
+		if (!options || options.season === undefined) {
 			throw new Error("Must include the season index of the table");
 		}
 		//set the season for quick access
