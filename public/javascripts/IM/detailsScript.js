@@ -66,7 +66,45 @@ E_DatesView = Backbone.View.extend({
 
 
 S_DatesView = Backbone.View.extend({
-	el: '#seasonDates'
+	el: '#seasonDates',
+	startDate: '',
+	endDate: '',
+	events: {
+		'click .edit': 'editDates'
+	},
+	initialize: function(model) {
+		this.model = model;
+		this.startDate = model.get('seasonDates').start;
+		this.endDate = model.get('seasonDates').end;
+		$('span:nth-of-type(1)', this.$el).text(this.startDate);
+		$('span:nth-of-type(2)', this.$el).text(this.endDate);
+
+		model.on('change:seasonDates', function() {
+			this.startDate = model.get('seasonDates').start;
+			this.endDate = model.get('seasonDates').end;
+			$('span:nth-of-type(1)', this.$el).text(this.startDate);
+			$('span:nth-of-type(2)', this.$el).text(this.endDate);
+
+		}.bind(this));
+	},
+	editDates: function() {
+		var datesEdit = EditView.getInstance('dates');
+		datesEdit.startDate = this.startDate;
+		datesEdit.endDate = this.endDate;
+		datesEdit.show();
+		datesEdit.on('submit', function() {
+
+			this.model.set('seasonDates', {start: datesEdit.startDate, end: datesEdit.endDate});
+
+			datesEdit.unbind('submit');
+			datesEdit.unbind('cancel');
+		}.bind(this));
+
+		datesEdit.on('cancel', function() {
+			datesEdit.unbind('submit');
+			datesEdit.unbind('cancel');
+		});
+	}
 });
 
 
@@ -582,7 +620,8 @@ EditView = (function() {
 //Script starts here
 
 var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
-	entryDatesView = new E_DatesView(sportModel);
+	entryDatesView = new E_DatesView(sportModel),
+	seasonDatesView = new S_DatesView(sportModel);
 
 
 
