@@ -2,14 +2,40 @@ body {
     background: #e1e1e1;
     height: 1500px;
 }
-
-h3 {
-    text-align: center;
+#sportName {
+    
+    height: 100px;
     display: block;
+    position: relative;
+    
+}
+
+#sportName h3 {
+    
+    position: absolute;
     width: 1000px;
-    font-size: 25pt;
+    margin-left: -500px;
+    left: 50%;
+    height: 30px;
+    line-height: 30px;
+    margin-top: -15px;
+    top: 50%;
+    text-align: center;
+    font-size: 20pt;
     color: #1C94C4;
-    margin: 50px auto;
+    
+}
+
+#sportName div {
+    cursor: pointer;
+    position: absolute;
+    color: red;
+    text-decoration: underline;
+    left: 50%;
+    width: 30px;
+    margin-left: -15px;
+    bottom: 0px;
+    font-size: 10pt;
 }
 
 
