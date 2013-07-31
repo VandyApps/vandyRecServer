@@ -1,3 +1,5 @@
+//NEED TO ADD CHECKS FOR ISEDITTING WITHIN THE VIEW OBJECTS
+
 //Declarations
 var E_DatesView,
 	S_DatesView,
@@ -7,6 +9,37 @@ var E_DatesView,
 
 
 //Views
+NameView = Backbone.View.extend({
+	el: '#sportName',
+	sportName: '',
+	events: {
+		'click div': 'editName'
+	},
+	initialize: function(model) {
+		$('h3', this.$el).text(model.get('sport'));
+
+		this.model = model;
+		model.on('change:sport', function() {
+			this.sportName = model.get('sport');
+			$('h3', this.$el).text(model.get('sport'));
+		}.bind(this));
+	},
+	editName: function() {
+		var nameEdit = EditView.getInstance('name');
+
+		nameEdit.show();
+		nameEdit.on('submit', function() {
+			this.model.set('sport', nameEdit.sportName);
+
+			nameEdit.unbind('submit');
+			nameEdit.unbind('cancel');
+		}.bind(this));
+		nameEdit.on('cancel', function() {
+			nameEdit.unbind('submit');
+			nameEdit.unbind('cancel');
+		});
+	}
+});
 
 E_DatesView = Backbone.View.extend({
 	el: '#entryDates',
@@ -179,7 +212,8 @@ EditView = (function() {
 			sportName: '',
 			events: {
 				'click input[value="submit"][type="button"]': 'onSubmit',
-				'click input[value="cancel"][type="button"]': 'onCancel'
+				'click input[value="cancel"][type="button"]': 'onCancel',
+				'blur input[type="text"]': 'setName'
 			},
 			show: function() {
 				if (!isEditting) {
@@ -205,6 +239,9 @@ EditView = (function() {
 			onCancel: function() {
 				this.trigger('cancel');
 				this.hide();
+			},
+			setName: function() {
+				this.sportName = $('input[type="text"]', this.$el).val();
 			}
 		}),
 
@@ -733,6 +770,7 @@ EditView = (function() {
 //Script starts here
 
 var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
+	nameView = new NameView(sportModel),
 	entryDatesView = new E_DatesView(sportModel),
 	seasonDatesView = new S_DatesView(sportModel),
 	teamsView = new TeamsView(sportModel),
