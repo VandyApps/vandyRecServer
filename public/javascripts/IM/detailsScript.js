@@ -109,7 +109,30 @@ S_DatesView = Backbone.View.extend({
 
 
 TeamsView = Backbone.View.extend({
-	el: '#teams'
+	el: '#teams',
+	isShowing: false,
+	events: {
+		'click div:nth-child(1)': 'toggle'
+	},
+	intialize: function(model) {},
+	hide: function() {
+		this.isShowing = false;
+		$('ul', this.$el).slideUp();
+	},
+	show: function() {
+		this.isShowing = true;
+		$('ul', this.$el).slideDown();
+	},
+	toggle: function() {
+		if (this.isShowing) {
+			this.hide();
+		} else {
+			this.show();
+		}
+	},
+	editTeam: function() {},
+	addTeam: function() {},
+	removeTeam: function() {}
 });
 
 
@@ -621,7 +644,8 @@ EditView = (function() {
 
 var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
 	entryDatesView = new E_DatesView(sportModel),
-	seasonDatesView = new S_DatesView(sportModel);
+	seasonDatesView = new S_DatesView(sportModel),
+	teamsView = new TeamsView(sportModel);
 
 
 
