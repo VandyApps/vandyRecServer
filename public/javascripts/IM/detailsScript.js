@@ -15,7 +15,26 @@ E_DatesView = Backbone.View.extend({
 	isHidden: true,
 	events: {
 		'click .edit': 'editDates'
+	},
+	//pass in the model here and the needed data is extracted
+	initialize: function(model) {
 
+		this.model = model;
+		this.startDate = model.get('entryDates').start;
+		this.endDate = model.get('entryDates').end;
+
+		$('span:nth-of-type(1)', this.$el).text(this.startDate);
+		$('span:nth-of-type(2)', this.$el).text(this.endDate);
+
+		//always listen to unexpected changed in the model
+		model.on('change:entryDates', function() {
+
+			this.startDate = model.get('entryDates').start;
+			this.endDate = model.get('entryDates').end;
+			$('span:nth-of-type(1)', this.$el).text(this.startDate);
+			$('span:nth-of-type(2)', this.$el).text(this.endDate);
+
+		}.bind(this));
 	},
 	editDates: function() {
 		var datesEdit = EditView.getInstance('dates');
@@ -25,13 +44,16 @@ E_DatesView = Backbone.View.extend({
 		datesEdit.show();
 
 		datesEdit.on('submit', function() {
-			this.startDate = datesEdit.startDate;
-			this.endDate = datesEdit.endDate;
+			//registered event takes care of setting the views parameters and 
+			//rendering the correct dates
+			this.model.set('entryDates', {start: datesEdit.startDate, end: datesEdit.endDate});
+			//this.startDate = datesEdit.startDate;
+			//this.endDate = datesEdit.endDate;
 
 			datesEdit.unbind('submit');
 			datesEdit.unbind('cancel');
 
-		});
+		}.bind(this));
 
 		datesEdit.on('cancel', function() {
 
@@ -587,7 +609,7 @@ EditView = (function() {
 //Script starts here
 
 var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
-	entryDatesView;
+	entryDatesView = new E_DatesView(sportModel);
 
 
 
