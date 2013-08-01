@@ -170,10 +170,10 @@ TeamsView = Backbone.View.extend({
 	//parses out the index of the li
 	//that it is referring to
 	getIndex: function(event) {
-
+		return $(event.toElement).parent().index();
 	},
 	editTeam: function(event) {
-		console.log("Editting a team");
+		console.log(this.getIndex(event));
 	},
 	addTeam: function(event) {
 		console.log("Add a team");
