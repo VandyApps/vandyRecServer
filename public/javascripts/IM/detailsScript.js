@@ -144,13 +144,20 @@ S_DatesView = Backbone.View.extend({
 TeamsView = Backbone.View.extend({
 	el: '#teams',
 	isShowing: false,
+	teams: [],
 	events: {
 		'click div:nth-child(1)': 'toggle',
 		'click ul li div:nth-child(5)': 'editTeam',
 		'click ul li div:nth-child(6)': 'removeTeam',
 		'click #addButton': 'addTeam'
 	},
-	intialize: function(model) {},
+	initialize: function(model) {
+		this.model = model;
+		this.teams = model.get('teams');
+		model.on('change:teams', function() {
+
+		});
+	},
 	hide: function() {
 		this.isShowing = false;
 		$('ul', this.$el).slideUp();
@@ -180,6 +187,22 @@ TeamsView = Backbone.View.extend({
 	},
 	removeTeam: function(event) {
 		console.log("removing a team");
+	},
+	//uses the teams property of the object to set up the elements within the
+	//teams list
+	//removes all currently set teams and resets the teams displayed using the
+	//teams property
+	resetTeams: function() {
+		var i, n, list = $('ul', this.$el);
+		list.children().remove();
+		for (i =0, n = this.teams.length; i < n; ++i) {
+			$('<li></li>')	.append('<div>'+ this.teams[i].name + '</div>')
+							.append('<div>Wins: ' + this.teams[i].WLT[0] + '</div>')
+							.append('<div>Losses: ' + this.teams[i].WLT[1] + '</div>')
+							.append('<div>Ties: ' + this.teams[i].WLT[2] + '</div>')
+							.append('<div>edit</div><div>delete</div>').appendTo(list);
+
+		}
 	}
 });
 
