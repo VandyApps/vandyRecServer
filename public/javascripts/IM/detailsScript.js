@@ -298,10 +298,21 @@ TeamsView = Backbone.View.extend({
 GamesView = Backbone.View.extend({
 	el: '#games',
 	isShowing: false,
+	//the date string of the last game
+	lastDate: '',
 	events: {
-		'click div:nth-child(1)': 'toggle'
+		'click div:nth-child(1)': 'toggle',
+		'click ul li div:nth-child(6)': 'editGame',
+		'click ul li div:nth-child(7)': 'removeGame',
+		'click #addButton': 'addGame'
 	},
-	initialize: function(model) {},
+	initialize: function(model) {
+		this.model = model;
+
+		model.on('change:games', function() {
+
+		});
+	},
 	
 	show: function() {
 		$('ul', this.$el).slideDown();
@@ -318,9 +329,15 @@ GamesView = Backbone.View.extend({
 			this.show();
 		}
 	},
-	editGame: function() {},
-	addGame: function() {},
-	removeGame: function() {} 
+	editGame: function(event) {
+		console.log("edit game called");
+	},
+	addGame: function() {console.log("Add games called");},
+	removeGame: function(event) {console.log("remove game called");},
+	getIndex: function(event) {
+		return $(event.delegateTarget).parent().index();
+	},
+	setGameAtIndex: function(index, gameObj) {}
 });
 
 //edit view contains all the windows that have
