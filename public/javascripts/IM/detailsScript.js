@@ -181,9 +181,10 @@ TeamsView = Backbone.View.extend({
 	//parses out the index of the li
 	//that it is referring to
 	getIndex: function(event) {
-		return $(event.toElement).parent().index();
+		return $(event.delegateTarget).parent().index();
 	},
 	editTeam: function(event) {
+		
 		var teamsEdit, index, team;
 		if (!EditView.isEditting()) {
 
@@ -191,7 +192,7 @@ TeamsView = Backbone.View.extend({
 			index = this.getIndex(event);
 			
 			team = this.teams[index];
-
+			
 			//set the variables of teams edit
 			teamsEdit.name = team.name;
 			teamsEdit.wins = team.WLT[0];
