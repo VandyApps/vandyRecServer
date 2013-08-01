@@ -247,7 +247,33 @@ TeamsView = Backbone.View.extend({
 
 	},
 	removeTeam: function(event) {
-		console.log("removing a team");
+		var confirm = new ConfirmationBox(
+		{
+			message: 'Are you sure you would like to delete this team',
+			button1Name: 'YES',
+			button2Name: 'NO'
+		});
+		confirm.show();
+		confirm.on('clicked1', function() {
+			var index = this.getIndex(event),
+				self = this;
+
+			$('ul li:nth-child('+ (index + 1).toString()+ ')', this.$el).slideUp(400, function() {
+				var modelTeams = self.model.get('teams');
+				//remove the element
+				this.remove();
+				self.teams.splice(index, 1);
+				//silently set the model
+				modelTeams.splice(index, 1);
+			});
+			confirm.unbind('clicked1');
+			confirm.unbind('clicked2');
+		}.bind(this));
+
+		confirm.on('clicked2', function() {
+			confirm.unbind('clicked1');
+			confirm.unbind('clicked2');
+		});
 	},
 	//uses the teams property of the object to set up the elements within the
 	//teams list
