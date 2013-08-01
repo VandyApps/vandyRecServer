@@ -145,7 +145,10 @@ TeamsView = Backbone.View.extend({
 	el: '#teams',
 	isShowing: false,
 	events: {
-		'click div:nth-child(1)': 'toggle'
+		'click div:nth-child(1)': 'toggle',
+		'click ul li div:nth-child(5)': 'editTeam',
+		'click ul li div:nth-child(6)': 'removeTeam',
+		'click #addButton': 'addTeam'
 	},
 	intialize: function(model) {},
 	hide: function() {
@@ -163,9 +166,21 @@ TeamsView = Backbone.View.extend({
 			this.show();
 		}
 	},
-	editTeam: function() {},
-	addTeam: function() {},
-	removeTeam: function() {}
+	//takes the event that is being fired and
+	//parses out the index of the li
+	//that it is referring to
+	getIndex: function(event) {
+
+	},
+	editTeam: function(event) {
+		console.log("Editting a team");
+	},
+	addTeam: function(event) {
+		console.log("Add a team");
+	},
+	removeTeam: function(event) {
+		console.log("removing a team");
+	}
 });
 
 
