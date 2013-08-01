@@ -156,7 +156,8 @@ TeamsView = Backbone.View.extend({
 		this.teams = model.get('teams');
 		this.resetTeams();
 		this.model.on('change:teams', function() {
-
+			this.teams = model.get('teams');
+			this.resetTeams();
 		}.bind(this));
 	},
 	hide: function() {
