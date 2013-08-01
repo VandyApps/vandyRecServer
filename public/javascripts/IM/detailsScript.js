@@ -153,11 +153,13 @@ TeamsView = Backbone.View.extend({
 	},
 	initialize: function(model) {
 		this.model = model;
-		this.teams = model.get('teams');
+		this.teams = model.get('teams').slice();
 		this.resetTeams();
 		this.model.on('change:teams', function() {
+
 			this.teams = model.get('teams');
 			this.resetTeams();
+
 		}.bind(this));
 	},
 	hide: function() {
@@ -227,8 +229,22 @@ TeamsView = Backbone.View.extend({
 		$('div:nth-child(4)', teamEl).text('Ties:' + teamObj.WLT[2].toString());
 
 	},
-	addTeam: function(event) {
-		console.log("Add a team");
+	addTeam: function() {
+		var defaultObj = {
+			name: "New Team",
+			WLT: [0,0,0]
+		}
+
+		this.teams.push(defaultObj);
+		//silent set
+		this.model.get('teams').push(defaultObj);
+
+		$('<li></li>')	.append('<div>New Team</div>')
+						.append('<div>Wins: 0</div>')
+						.append('<div>Losses: 0</div>')
+						.append('<div>Ties: 0</div>')
+						.append('<div>edit</div><div>delete</div>').appendTo('ul', this.$el);
+
 	},
 	removeTeam: function(event) {
 		console.log("removing a team");
