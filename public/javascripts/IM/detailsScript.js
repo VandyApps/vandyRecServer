@@ -154,9 +154,10 @@ TeamsView = Backbone.View.extend({
 	initialize: function(model) {
 		this.model = model;
 		this.teams = model.get('teams');
-		model.on('change:teams', function() {
+		this.resetTeams();
+		this.model.on('change:teams', function() {
 
-		});
+		}.bind(this));
 	},
 	hide: function() {
 		this.isShowing = false;
@@ -180,7 +181,50 @@ TeamsView = Backbone.View.extend({
 		return $(event.toElement).parent().index();
 	},
 	editTeam: function(event) {
-		console.log(this.getIndex(event));
+		var teamsEdit, index, team;
+		if (!EditView.isEditting()) {
+
+			teamsEdit = EditView.getInstance('teams');
+			index = this.getIndex(event);
+			
+			team = this.teams[index];
+
+			//set the variables of teams edit
+			teamsEdit.name = team.name;
+			teamsEdit.wins = team.WLT[0];
+			teamsEdit.losses = team.WLT[1];
+			teamsEdit.ties = team.WLT[2];
+
+			teamsEdit.show();
+			teamsEdit.on('submit', function() {
+
+				this.setTeamAtIndex(index, {name: teamsEdit.name, WLT: [teamsEdit.wins, teamsEdit.losses, teamsEdit.ties], teamID: team.teamID});
+				
+				teamsEdit.unbind('submit');
+				teamsEdit.unbind('cancel');
+			}.bind(this));
+
+			teamsEdit.on('cancel', function() {
+
+				teamsEdit.unbind('submit');
+				teamsEdit.unbind('cancel');
+			});
+		}
+			
+	},
+	//fix this to make sure teamObj has the correct properties
+	setTeamAtIndex: function(index, teamObj) {
+		var teamEl = $('ul li:nth-child('+(index+1)+')', this.$el);
+		this.teams[index] = teamObj;
+		//a silent set by using the getter
+		this.model.get('teams')[index] = teamObj;
+
+		//set the DOM element
+		$('div:nth-child(1)', teamEl).text(teamObj.name);
+		$('div:nth-child(2)', teamEl).text('Wins: ' + teamObj.WLT[0].toString());
+		$('div:nth-child(3)', teamEl).text('Losses: ' + teamObj.WLT[1].toString());
+		$('div:nth-child(4)', teamEl).text('Ties:' + teamObj.WLT[2].toString());
+
 	},
 	addTeam: function(event) {
 		console.log("Add a team");
