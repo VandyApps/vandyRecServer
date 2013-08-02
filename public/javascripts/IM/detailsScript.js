@@ -41,6 +41,13 @@ NameView = Backbone.View.extend({
 	}
 });
 
+NameView.getInstance = function() {
+	if (!NameView.instance) {
+		NameView.instance = new NameView(sportModel);
+	}
+	return NameView.instance;
+};
+
 E_DatesView = Backbone.View.extend({
 	el: '#entryDates',
 	startDate: '',
@@ -98,6 +105,13 @@ E_DatesView = Backbone.View.extend({
 });
 
 
+E_DatesView.getInstance = function() {
+	if (!E_DatesView.instance) {
+		E_DatesView.instance = new E_DatesView(sportModel);
+	}
+	return E_DatesView.instance;
+};
+
 S_DatesView = Backbone.View.extend({
 	el: '#seasonDates',
 	startDate: '',
@@ -140,6 +154,12 @@ S_DatesView = Backbone.View.extend({
 	}
 });
 
+S_DatesView.getInstance = function() {
+	if (!S_DatesView.instance) {
+		S_DatesView.instance = new S_DatesView(sportModel);
+	}
+	return S_DatesView.instance;
+};
 
 TeamsView = Backbone.View.extend({
 	el: '#teams',
@@ -304,6 +324,13 @@ TeamsView = Backbone.View.extend({
 	}
 });
 
+TeamsView.getInstance = function() {
+	if (!TeamsView.instance) {
+		TeamsView.instance = new TeamsView(sportModel);
+	}
+	return TeamsView.instance;
+};
+
 
 GamesView = Backbone.View.extend({
 	el: '#games',
@@ -387,6 +414,12 @@ GamesView = Backbone.View.extend({
 	}
 });
 
+GamesView.getInstance = function() {
+	if (!GamesView.instance) {
+		GamesView.instance = new GamesView(sportModel);
+	}
+	return GamesView.instance;
+};
 //edit view contains all the windows that have
 //access to editting the data within the model
 //each window has a singleton that can be accessed through
@@ -958,13 +991,13 @@ EditView = (function() {
 
 
 //Script starts here
-
+//should move declaration to the beginning
 var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
-	nameView = new NameView(sportModel),
-	entryDatesView = new E_DatesView(sportModel),
-	seasonDatesView = new S_DatesView(sportModel),
-	teamsView = new TeamsView(sportModel),
-	gamesEdit = new GamesView(sportModel);
+	nameView = NameView.getInstance(),
+	entryDatesView = E_DatesView.getInstance(),
+	seasonDatesView = new S_DatesView.getInstance(),
+	teamsView = TeamsView.getInstance(),
+	gamesEdit = new GamesView.getInstance();
 
 
 
