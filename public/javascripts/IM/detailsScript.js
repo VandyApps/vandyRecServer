@@ -398,10 +398,40 @@ GamesView = Backbone.View.extend({
 		return $(event.delegateTarget).parent().index();
 	},
 	//sets the model, property and the rendered data
+	//changes the game at the index to the new game object
 	setGameAtIndex: function(index, gameObj) {},
 	//inserts a game into the correct chronological spot
+	//adds game to the model and to the property
 	insertGame: function(gameObj) {
+		var insertIndex;
+		this.games.forEach(function(game, index) {
 
+			if (this.gameValue(gameObj) < this.gameValue(game)) {
+				insertIndex = index;
+				return;
+			}
+		}.bind(this));
+		if (insertIndex === undefined) {
+			insertIndex = this.games.length;
+		}
+
+		//the array reference will cause the model to change
+		this.games.splice(insertindex, 0, gameObj);
+
+		//render addition
+		$('ul li:nth-child(' + (insertIndex+1).toString() + ')', this.$el).after(this.generateGameView(gameObj));
+	},
+	generateGameView: function(game) {
+		var homeTeam = teamsView.teamWithID(game.teams[0]),
+			awayTeam = teamsView.teamWithID(game.teams[1]),
+			el =  $('<li></li>').append('<div>'+game.date+'</div>')
+								.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
+								.append('<div><span>'+homeTeam.name+'</span>Vs<span>'+awayTeam.name+'</span></div>')
+								.append('<div>'+game.location+'</div>')
+								.append('<div>'+game.score[0]+'-'+game.score[1]+'</div>')
+								.append('<div>edit</div>')
+								.append('<div>delete</div>');
+		return el;
 	},
 	//returns the value of the game that
 	//is used to sort the games in the correct
@@ -426,18 +456,9 @@ GamesView = Backbone.View.extend({
 		}.bind(this));
 
 		this.games.forEach(function(game) {
-			var homeTeam = teamsView.teamWithID(game.teams[0]),
-				awayTeam = teamsView.teamWithID(game.teams[1]);
 			
-			$('<li></li>')	.append('<div>'+game.date+'</div>')
-							.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
-							.append('<div><span>'+homeTeam.name+'</span>Vs<span>'+awayTeam.name+'</span></div>')
-							.append('<div>'+game.location+'</div>')
-							.append('<div>'+game.score[0]+'-'+game.score[1]+'</div>')
-							.append('<div>edit</div>')
-							.append('<div>delete</div>')
-							.appendTo(listEl);
-		});
+			this.generateGameView(game).appendTo(listEl);
+		}.bind(this));
 
 	}
 });
