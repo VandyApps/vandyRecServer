@@ -780,9 +780,11 @@ EditView = (function() {
 			//here are the default values if they were
 			//not set prior to submission
 			isShowing: false,
-			homeTeam: 'Home',
-			awayTeam: 'Away',
-			teamList: ["Lakers", "Spurs", "Clippers", "Grizzlies", "Jazz", "Celtics"],
+			//keeps track of the team id of
+			//the selected teams
+			homeTeam: 0,
+			awayTeam: 0,
+			teamList: [],
 			homeScore: 0,
 			awayScore: 0,
 			date: '01/01/2013',
@@ -795,20 +797,36 @@ EditView = (function() {
 				'change div:nth-child(4) select': 'endTimeChanged',
 				'click input[value="submit"][type="button"]': 'onSubmit',
 				'click input[value="cancel"][type="button"]': 'onCancel',
-				'blur div:nth-child(5) input': 'homeTeamChanged',
-				'blur div:nth-child(6) input': 'awayTeamChanged',
+				'change div:nth-child(5) select': 'homeTeamChanged',
+				'change div:nth-child(6) select': 'awayTeamChanged',
 				'blur div:nth-child(7) input:nth-child(1)': 'homeScoreChanged',
 				'blur div:nth-child(7) input:nth-child(2)': 'awayScoreChanged',
 				'blur div:nth-child(8) input': 'locationChanged'
 
 			},
-			
 			show: function() {
+				var homeSelect, awaySelect;
 				if (!isEditting) {
 
-					this.isShowing = true;
-					this.$el.show(); 
+					homeSelect = $('div:nth-child(5) select', this.$el);
+					awaySelect = $('div:nth-child(6) select', this.$el);
 
+					//set the options for the select teams
+					homeSelect.children().remove();
+
+					awaySelect.children().remove();
+
+					this.teamList.forEach(function(teamObj) {
+						$('<option value="'+teamObj.teamID.toString()+'">'+teamObj.name+'</option>')
+							.appendTo(homeSelect);
+						$('<option value="'+teamObj.teamID.toString()+'">'+teamObj.name+'</option>')
+							.appendTo(awaySelect);
+
+					}.bind(this));
+					//select teams
+
+					homeSelect.val(this.homeTeam.toString());
+					awaySelect.val(this.awayTeam.toString());
 					//should create setter methods instead
 					//of using these here
 					this.setDateTag();
@@ -819,9 +837,11 @@ EditView = (function() {
 					//endTime
 					this.setEndTime(this.endTime);
 
-					$('div:nth-child(5) input', this.$el).val(this.homeTeam);
-					$('div:nth-child(6) input', this.$el).val(this.awayTeam);
+					
 					$('div:nth-child(8) input', this.$el).val(this.location);
+
+					this.isShowing = true;
+					this.$el.show(); 
 					isEditting = true;
 				}
 					
@@ -971,8 +991,8 @@ EditView = (function() {
 								$('div:nth-child(4) select:nth-child(3)', this.$el).val() +
 								$('div:nth-child(4) select:nth-child(4)', this.$el).val();
 			},
-			homeTeamChanged: function() {this.homeTeam = $('div:nth-child(5) input', this.$el).val();},
-			awayTeamChanged: function() {this.awayTeam = $('div:nth-child(6) input', this.$el).val();},
+			homeTeamChanged: function() {this.homeTeam = +$('div:nth-child(5) select', this.$el).val();},
+			awayTeamChanged: function() {this.awayTeam = +$('div:nth-child(6) select', this.$el).val();},
 			homeScoreChanged: function() {
 				var scoreEl = $('div:nth-child(7) input:nth-child(1)', this.$el);
 				if (this.validateHomeScore()) {
