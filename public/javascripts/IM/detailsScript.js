@@ -269,7 +269,8 @@ TeamsView = Backbone.View.extend({
 	addTeam: function() {
 		var defaultObj = {
 			name: "New Team",
-			WLT: [0,0,0]
+			WLT: [0,0,0],
+			teamID: this.getNewID()
 		}
 
 		this.teams.push(defaultObj);
@@ -365,7 +366,7 @@ GamesView = Backbone.View.extend({
 		//sort the games
 		this.games = model.get('games');
 		
-
+		this.sortAndDisplay();
 		model.on('change:games', function() {
 
 		});
@@ -397,7 +398,9 @@ GamesView = Backbone.View.extend({
 	setGameAtIndex: function(index, gameObj) {},
 	//sorts the games a
 	sortAndDisplay: function() {
-		var listEl = $('ul', this.$el);
+		var listEl = $('ul', this.$el),
+			teamsView = TeamsView.getInstance(),
+			team;
 
 		listEl.children().remove();
 
@@ -411,20 +414,17 @@ GamesView = Backbone.View.extend({
 		});
 
 		this.games.forEach(function(game) {
-			/*
-			<li>
-					<div>06/12/2013</div>
-					<div>7:00pm - 8:00pm</div>
-					<div><span>Lakers</span>Vs<span>Spurs</span></div>
-					<div>Court 2</div>
-					<div>27-28</div>
-					<div>edit</div>
-		            <div>delete</div>
-				</li>
-				*/
+			var homeTeam = teamsView.teamWithID(game.teams[0]),
+				awayTeam = teamsView.teamWithID(game.teams[1]);
+			
 			$('<li></li>')	.append('<div>'+game.date+'</div>')
 							.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
-							.append('<div><span>'+game.teams[0]+'</span>Vs'+'<span>'+game.teams[1]+'</span></div>')
+							.append('<div><span>'+homeTeam.name+'</span>Vs<span>'+awayTeam.name+'</span></div>')
+							.append('<div>'+game.location+'</div>')
+							.append('<div>'+game.score[0]+'-'+game.score[1]+'</div>')
+							.append('<div>edit</div>')
+							.append('<div>delete</div>')
+							.appendTo(listEl);
 		});
 
 	}
