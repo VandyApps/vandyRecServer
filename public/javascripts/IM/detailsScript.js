@@ -300,6 +300,7 @@ GamesView = Backbone.View.extend({
 	isShowing: false,
 	//the date string of the last game
 	lastDate: '',
+	games: [],
 	events: {
 		'click div:nth-child(1)': 'toggle',
 		'click ul li div:nth-child(6)': 'editGame',
@@ -308,6 +309,9 @@ GamesView = Backbone.View.extend({
 	},
 	initialize: function(model) {
 		this.model = model;
+		//sort the games
+		this.games = model.get('games');
+		
 
 		model.on('change:games', function() {
 
@@ -337,7 +341,40 @@ GamesView = Backbone.View.extend({
 	getIndex: function(event) {
 		return $(event.delegateTarget).parent().index();
 	},
-	setGameAtIndex: function(index, gameObj) {}
+	setGameAtIndex: function(index, gameObj) {},
+	//sorts the games a
+	sortAndDisplay: function() {
+		var listEl = $('ul', this.$el);
+
+		listEl.children().remove();
+
+		this.games.sort(function(game1, game2) {
+			var time1 = DateHelper.dateFromDateString(game1.date).getTime(),
+				time2 = DateHelper.dateFromDateString(game2.date).getTime();
+
+			time1 = time1 + (DateHelper.timeStringInSecs(game1.startTime) * 1000);
+			time2 = time2 + (DateHelper.timeStringInSecs(game2.startTime) * 1000);
+			return time1 - time2;
+		});
+
+		this.games.forEach(function(game) {
+			/*
+			<li>
+					<div>06/12/2013</div>
+					<div>7:00pm - 8:00pm</div>
+					<div><span>Lakers</span>Vs<span>Spurs</span></div>
+					<div>Court 2</div>
+					<div>27-28</div>
+					<div>edit</div>
+		            <div>delete</div>
+				</li>
+				*/
+			$('<li></li>')	.append('<div>'+game.date+'</div>')
+							.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
+							.append('<div><span>'+game.teams[0]+'</span>Vs'+'<span>'+game.teams[1]+'</span></div>')
+		});
+
+	}
 });
 
 //edit view contains all the windows that have
