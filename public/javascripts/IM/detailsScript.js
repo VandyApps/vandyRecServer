@@ -367,9 +367,11 @@ GamesView = Backbone.View.extend({
 		this.games = model.get('games');
 		
 		this.sortAndDisplay();
+		
 		model.on('change:games', function() {
-
-		});
+			this.games = model.get('games');
+			this.sortAndDisplay();
+		}.bind(this));
 	},
 	
 	show: function() {
