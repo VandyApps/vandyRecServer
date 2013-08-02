@@ -530,47 +530,47 @@ input[type="text"] {
 
 #gamesEdit {
     width: 500px;
-    height: 400px;
+    height: 500px;
     margin-top: -200px;
     margin-left: -250px;
-    top: 50%;
+    top: 30%;
     left: 50%;
 }
 
 
-#gamesEdit div:nth-child(2), #gamesEdit div:nth-child(3), #gamesEdit div:nth-child(4) {
+#gamesEdit > div:nth-child(2), #gamesEdit > div:nth-child(3), #gamesEdit > div:nth-child(4) {
     position: absolute;
     width: 260px;
     text-align: right;
 }
 
-#gamesEdit div:nth-child(2) div, #gamesEdit div:nth-child(3) div, #gamesEdit div:nth-child(4) div {
+#gamesEdit > div:nth-child(2) div, #gamesEdit > div:nth-child(3) div, #gamesEdit > div:nth-child(4) div {
     position: absolute;
     top: 0px;
 }
 
 
-#gamesEdit div:nth-child(2) {
+#gamesEdit > div:nth-child(2) {
     
     top: 60px;
     left: 30px;
 }
 
-#gamesEdit div:nth-child(3) {
+#gamesEdit > div:nth-child(3) {
     position: absolute;
     top: 100px;
     left: 30px;
 
 }
 
-#gamesEdit div:nth-child(4) {
+#gamesEdit > div:nth-child(4) {
     position: absolute;
     top: 130px;
     left: 30px;
 }
 
 
-#gamesEdit div:nth-child(5) {
+#gamesEdit > div:nth-child(5) {
     position: absolute;
     top: 190px;
     left: 20px;
@@ -578,7 +578,7 @@ input[type="text"] {
     
 }
 
-#gamesEdit div:nth-child(6) {
+#gamesEdit > div:nth-child(6) {
 
     position: absolute;
     top: 190px;
@@ -588,42 +588,50 @@ input[type="text"] {
     text-align: right;
     
 }
-#gamesEdit div:nth-child(5) select, #gamesEdit div:nth-child(6) select {
+#gamesEdit > div:nth-child(5) select, #gamesEdit div:nth-child(6) select {
     margin-left: 10px;
     width: 150px;
 }
 
 
-#gamesEdit div:nth-child(7) {
+#gamesEdit > div:nth-child(7) {
     position: absolute;
     top: 220px;
     left: 20px;
 }
 
-#gamesEdit div:nth-child(7) input:nth-child(1) {
+#gamesEdit > div:nth-child(7) input:nth-child(1) {
     width: 30px;
     margin: 0px 205px 0px 75px;
     text-align: center;
 }
 
-#gamesEdit div:nth-child(7) input:nth-child(2) {
+#gamesEdit > div:nth-child(7) input:nth-child(2) {
     width: 30px;
     text-align: center;
 }
 
-#gamesEdit div:nth-child(7) input[readonly] {
+#gamesEdit > div:nth-child(7) input[readonly] {
     background-color: #444444;
 }
 
-#gamesEdit div:nth-child(8) {
+#gamesEdit > div:nth-child(8) {
     position: absolute;
     left: 20px;
     top: 290px;
     
 }
 
-#gamesEdit div:nth-child(8) input {
+#gamesEdit > div:nth-child(8) input {
     margin-left: 20px;
+}
+
+#gamesEdit > div:nth-child(9) {
+    position: absolute;
+    top: 370px;
+    width: 400px;
+    margin-left: -200px;
+    left: 50%;
 }
 
 #gamesEdit input[type="button"][value="submit"] {
