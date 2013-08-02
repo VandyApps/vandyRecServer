@@ -399,16 +399,22 @@ GamesView = Backbone.View.extend({
 	},
 	//sets the model, property and the rendered data
 	//changes the game at the index to the new game object
-	setGameAtIndex: function(index, gameObj) {},
+	setGameAtIndex: function(index, gameObj) {
+		var gameEl = this.generateGameView(gameObj);
+		//changes the model using the array reference
+		this.games.splice(index, 1, gameObj);
+
+		$('ul li:nth-child('+(index+1).toString() + ')', this.$el).after(gameEl).remove();
+	},
 	//inserts a game into the correct chronological spot
 	//adds game to the model and to the property
+	//NEEDS EXCEPTION FOR GAMES AT THE BEGINNING OF THE LIST
 	insertGame: function(gameObj) {
 		var insertIndex;
 		this.games.forEach(function(game, index) {
 
-			if (this.gameValue(gameObj) < this.gameValue(game)) {
+			if (this.gameValue(gameObj) < this.gameValue(game) && insertIndex === undefined) {
 				insertIndex = index;
-				return;
 			}
 		}.bind(this));
 		if (insertIndex === undefined) {
@@ -416,10 +422,13 @@ GamesView = Backbone.View.extend({
 		}
 
 		//the array reference will cause the model to change
-		this.games.splice(insertindex, 0, gameObj);
+		this.games.splice(insertIndex, 0, gameObj);
 
 		//render addition
-		$('ul li:nth-child(' + (insertIndex+1).toString() + ')', this.$el).after(this.generateGameView(gameObj));
+		
+		$('ul li:nth-child(' + (insertIndex).toString() + ')', this.$el).after(this.generateGameView(gameObj));
+		
+		
 	},
 	generateGameView: function(game) {
 		var homeTeam = teamsView.teamWithID(game.teams[0]),
@@ -1046,7 +1055,7 @@ var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
 	entryDatesView = E_DatesView.getInstance(),
 	seasonDatesView = new S_DatesView.getInstance(),
 	teamsView = TeamsView.getInstance(),
-	gamesEdit = new GamesView.getInstance();
+	gamesView = new GamesView.getInstance();
 
 
 

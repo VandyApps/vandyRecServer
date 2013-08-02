@@ -588,7 +588,7 @@ input[type="text"] {
     text-align: right;
     
 }
-#gamesEdit div:nth-child(5) input, #gamesEdit div:nth-child(6) input {
+#gamesEdit div:nth-child(5) select, #gamesEdit div:nth-child(6) select {
     margin-left: 10px;
     width: 150px;
 }
