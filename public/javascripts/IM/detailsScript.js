@@ -291,6 +291,16 @@ TeamsView = Backbone.View.extend({
 							.append('<div>edit</div><div>delete</div>').appendTo(list);
 
 		}
+	},
+	teamWithID: function(id) {
+		var team;
+		this.teams.forEach(function(_team) {
+			if (_team.teamID === id) {
+				team = _team;
+				return;
+			}
+		});
+		return team;
 	}
 });
 
