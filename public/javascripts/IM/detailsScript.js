@@ -784,7 +784,7 @@ EditView = (function() {
 			//the selected teams
 			homeTeam: 0,
 			awayTeam: 0,
-			teamList: [],
+			teams: [],
 			homeScore: 0,
 			awayScore: 0,
 			date: '01/01/2013',
@@ -816,7 +816,7 @@ EditView = (function() {
 
 					awaySelect.children().remove();
 
-					this.teamList.forEach(function(teamObj) {
+					this.teams.forEach(function(teamObj) {
 						$('<option value="'+teamObj.teamID.toString()+'">'+teamObj.name+'</option>')
 							.appendTo(homeSelect);
 						$('<option value="'+teamObj.teamID.toString()+'">'+teamObj.name+'</option>')
