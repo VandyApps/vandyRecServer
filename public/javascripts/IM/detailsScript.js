@@ -367,7 +367,7 @@ GamesView = Backbone.View.extend({
 		this.games = model.get('games');
 		
 		this.sortAndDisplay();
-		
+
 		model.on('change:games', function() {
 			this.games = model.get('games');
 			this.sortAndDisplay();
@@ -397,7 +397,22 @@ GamesView = Backbone.View.extend({
 	getIndex: function(event) {
 		return $(event.delegateTarget).parent().index();
 	},
+	//sets the model, property and the rendered data
 	setGameAtIndex: function(index, gameObj) {},
+	//inserts a game into the correct chronological spot
+	insertGame: function(gameObj) {
+
+	},
+	//returns the value of the game that
+	//is used to sort the games in the correct
+	//order by ascending game values
+	gameValue: function(gameObj) {
+		var time = DateHelper.dateFromDateString(gameObj.date).getTime();
+			time = time + (DateHelper.timeStringInSecs(gameObj.startTime) * 1000);
+
+			return time;
+			
+	},
 	//sorts the games a
 	sortAndDisplay: function() {
 		var listEl = $('ul', this.$el),
@@ -407,13 +422,8 @@ GamesView = Backbone.View.extend({
 		listEl.children().remove();
 
 		this.games.sort(function(game1, game2) {
-			var time1 = DateHelper.dateFromDateString(game1.date).getTime(),
-				time2 = DateHelper.dateFromDateString(game2.date).getTime();
-
-			time1 = time1 + (DateHelper.timeStringInSecs(game1.startTime) * 1000);
-			time2 = time2 + (DateHelper.timeStringInSecs(game2.startTime) * 1000);
-			return time1 - time2;
-		});
+			return this.gameValue(game1) - this.gameValue(game2);
+		}.bind(this));
 
 		this.games.forEach(function(game) {
 			var homeTeam = teamsView.teamWithID(game.teams[0]),
