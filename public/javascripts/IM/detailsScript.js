@@ -197,6 +197,22 @@ TeamsView = Backbone.View.extend({
 			this.show();
 		}
 	},
+	//this method generates new ID's for Teams 
+	//that are being created for the first time
+	getNewID: function() {
+		var nextID, max = 0;
+		if (!this.getNewID.nextID) {
+			this.teams.forEach(function(team) {
+				if (team.teamID > max) {
+					max = team.teamID;
+				}
+			});
+			this.getNewID.nextID = max + 1;
+		}
+		nextID = this.getNewID.nextID;
+		this.getNewID.nextID++;
+		return nextID;
+	},
 	//takes the event that is being fired and
 	//parses out the index of the li
 	//that it is referring to
