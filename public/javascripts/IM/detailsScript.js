@@ -167,8 +167,8 @@ TeamsView = Backbone.View.extend({
 	teams: [],
 	events: {
 		'click div:nth-child(1)': 'toggle',
-		'click ul li div:nth-child(5)': 'editTeam',
-		'click ul li div:nth-child(6)': 'removeTeam',
+		//'click ul li div:nth-child(5)': 'editTeam',
+		//'click ul li div:nth-child(6)': 'removeTeam',
 		'click #addButton': 'addTeam'
 	},
 	initialize: function(model) {
@@ -191,6 +191,11 @@ TeamsView = Backbone.View.extend({
 				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(4)', this.$el).text('Ties: ' + model.get('teams')[index].WLT[2].toString());
 			}.bind(this));
 		}
+		//add separate event for clicking the edit button
+		//so that the event is registered with the specific 
+		//element that is clicked instead of this.$el
+		$('ul li div:nth-child(5)', this.$el).click($.proxy(this.editTeam, this));
+		$('ul li div:nth-child(6)', this.$el).click($.proxy(this.removeTeam, this));
 	},
 	hide: function() {
 		this.isShowing = false;
@@ -227,6 +232,9 @@ TeamsView = Backbone.View.extend({
 	//parses out the index of the li
 	//that it is referring to
 	getIndex: function(event) {
+
+		console.dir(event);
+		console.log(event.delegateTarget);
 		return $(event.delegateTarget).parent().index();
 	},
 	editTeam: function(event) {
@@ -236,6 +244,7 @@ TeamsView = Backbone.View.extend({
 
 			teamsEdit = EditView.getInstance('teams');
 			index = this.getIndex(event);
+			console.log(index);
 			
 			team = this.teams[index];
 			
