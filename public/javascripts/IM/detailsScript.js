@@ -172,6 +172,7 @@ TeamsView = Backbone.View.extend({
 		'click #addButton': 'addTeam'
 	},
 	initialize: function(model) {
+		var i, n;
 		this.model = model;
 		this.teams = model.get('teams').slice();
 		this.resetTeams();
@@ -181,6 +182,15 @@ TeamsView = Backbone.View.extend({
 			this.resetTeams();
 
 		}.bind(this));
+		for (i = 0, n = this.teams.length; i < n; ++i) {
+			var index = i;
+			this.model.on('change:teams:'+i.toString(), function() {
+
+				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(2)', this.$el).text('Wins: ' + model.get('teams')[index].WLT[0].toString());
+				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(3)', this.$el).text('Losses: ' + model.get('teams')[index].WLT[1].toString());
+				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(4)', this.$el).text('Ties: ' + model.get('teams')[index].WLT[2].toString());
+			}.bind(this));
+		}
 	},
 	hide: function() {
 		this.isShowing = false;
