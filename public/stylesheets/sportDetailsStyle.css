@@ -473,7 +473,7 @@ input[type="text"] {
 
 #teamsEdit {
     width: 500px;
-    height: 250px;
+    height: 200px;
     margin-left: -250px;
     left: 50%;
     margin-top: -150px;
@@ -482,43 +482,12 @@ input[type="text"] {
 
 #teamsEdit input:nth-child(2) {
     position: absolute;
-    top: 110px;
-    left: 30px;
+    top: 90px;
+    margin-left: -125px;
+    left: 50%;
     width: 250px;
 }
 
-#teamsEdit div:nth-child(3), #teamsEdit div:nth-child(4), #teamsEdit div:nth-child(5) {
-    position: absolute;
-    width: 100px;
-    height: 30px;
-    line-height: 30px;
-    right: 70px;
-    
-}
-
-#teamsEdit div:nth-child(3) input, #teamsEdit div:nth-child(4) input, #teamsEdit div:nth-child(5) input {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    height: 20px;
-    margin-top: -10px;
-    top: 50%;
-    width: 20px;
-    text-align: center;
-}
-
-#teamsEdit div:nth-child(3) {
-    top: 70px;
-    
-}
-
-#teamsEdit div:nth-child(4) {
-    top: 110px;
-}
-
-#teamsEdit div:nth-child(5) {
-    top: 150px;
-}
 
 #teamsEdit input[value="submit"][type="button"] {
     left: 100px;
