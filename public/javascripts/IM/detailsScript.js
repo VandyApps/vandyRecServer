@@ -232,7 +232,6 @@ TeamsView = Backbone.View.extend({
 	//parses out the index of the li
 	//that it is referring to
 	getIndex: function(event) {
-		console.dir(event);
 		if (BrowserDetect.browser === "Firefox") {
 			console.log("This is mozilla");
 			return $(event.currentTarget).parent().index();
@@ -240,8 +239,7 @@ TeamsView = Backbone.View.extend({
 		return $(event.toElement).parent().index();
 	},
 	editTeam: function(event) {
-		console.dir(event);
-		console.log(event.relatedElement);
+		
 		var teamsEdit, index, team;
 		if (!EditView.isEditting()) {
 
