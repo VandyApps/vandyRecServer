@@ -231,14 +231,11 @@ TeamsView = Backbone.View.extend({
 			
 			//set the variables of teams edit
 			teamsEdit.name = team.name;
-			teamsEdit.wins = team.WLT[0];
-			teamsEdit.losses = team.WLT[1];
-			teamsEdit.ties = team.WLT[2];
 
 			teamsEdit.show();
 			teamsEdit.on('submit', function() {
 
-				this.setTeamAtIndex(index, {name: teamsEdit.name, WLT: [teamsEdit.wins, teamsEdit.losses, teamsEdit.ties], teamID: team.teamID});
+				this.setTeamAtIndex(index, {name: teamsEdit.name, WLT: team.WLT, teamID: team.teamID});
 				
 				teamsEdit.unbind('submit');
 				teamsEdit.unbind('cancel');
@@ -701,16 +698,10 @@ EditView = (function() {
 			'el': '#teamsEdit',
 			name: '',
 			isShowing: false,
-			wins: 0,
-			losses: 0,
-			ties: 0,
 			events: {
 				'click input[value="submit"][type="button"]': 'onSubmit',
 				'click input[value="cancel"][type="button"]': 'onCancel',
-				'blur input:nth-child(2)': 'updateName',
-				'blur div:nth-child(3) input': 'updateWins',
-				'blur div:nth-child(4) input': 'updateLosses',
-				'blur div:nth-child(5) input': 'updateTies'
+				'blur input:nth-child(2)': 'updateName'
 			},
 			onSubmit: function() {
 				this.trigger('submit');
@@ -731,37 +722,10 @@ EditView = (function() {
 				}
 				
 			},
-			updateWins: function() {
-				var wins = $('div:nth-child(3) input').val();
-				if (+wins !== +wins) {
-					wins = "0";
-					$('div:nth-child(3) input').val("0");
-				}
-				this.wins = +wins;
-
-			},
-			updateLosses: function() {
-				var losses = $('div:nth-child(4) input').val();
-				if (+losses !== +losses) {
-					losses = "0";
-					$('div:nth-child(4) input').val("0");
-				}
-				this.losses = +losses;
-			},
-			updateTies: function() {
-				var ties = $('div:nth-child(5) input').val();
-				if (+ties !== +ties) {
-					ties = "0";
-					$('div:nth-child(5) input').val("0");
-				}
-				this.ties = +ties;
-			},
 			show: function() {
 				if (!isEditting) {
 					$('input:nth-child(2)', this.$el).val(this.name);
-					$('div:nth-child(3) input', this.$el).val(this.wins.toString());
-					$('div:nth-child(4) input', this.$el).val(this.losses.toString());
-					$('div:nth-child(5) input', this.$el).val(this.ties.toString());
+					
 					this.$el.show();
 					this.isShowing = true;
 					isEditting = true;
