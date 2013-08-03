@@ -787,6 +787,7 @@ EditView = (function() {
 			teams: [],
 			homeScore: 0,
 			awayScore: 0,
+			winner: 0,
 			date: '01/01/2013',
 			startTime: '01:00am',
 			endTime: '02:00am',
@@ -801,7 +802,8 @@ EditView = (function() {
 				'change div:nth-child(6) select': 'awayTeamChanged',
 				'blur div:nth-child(7) input:nth-child(1)': 'homeScoreChanged',
 				'blur div:nth-child(7) input:nth-child(2)': 'awayScoreChanged',
-				'blur div:nth-child(8) input': 'locationChanged'
+				'blur div:nth-child(8) input': 'locationChanged',
+				'change div:nth-child(9) input[type="radio"]': 'winnerChanged'
 
 			},
 			show: function() {
@@ -836,9 +838,11 @@ EditView = (function() {
 
 					//endTime
 					this.setEndTime(this.endTime);
-
 					
 					$('div:nth-child(8) input', this.$el).val(this.location);
+
+					//set the winner
+					$('div:nth-child(9) input[type="radio"][value="'+this.winner.toString()+ '"]', this.$el).attr('checked', true);
 
 					this.isShowing = true;
 					this.$el.show(); 
@@ -1015,7 +1019,9 @@ EditView = (function() {
 			locationChanged: function() {
 				this.location = $('div:nth-child(8) input', this.$el).val();
 			},
-
+			winnerChanged: function() {
+				this.winner = +$('div:nth-child(9) input[type="radio"]:checked', this.$el).val();
+			},
 			//check to see if the home and away scores are
 			//numbers
 			validateHomeScore: function() {
