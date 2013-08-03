@@ -30,6 +30,16 @@ IMModel.Sport = Backbone.Model.extend({
 
 		this.set('games', games);
 	},
+	teamWithID: function(id) {
+		var team;
+		this.get('teams').forEach(function(_team) {
+			if (_team.teamID === id) {
+				team = _team;
+				return;
+			}
+		});
+		return team;
+	},
 	//sets the wins, losses, ties at the specified index
 	decrementWins: function(index) {
 		if (typeof index === 'number') {
