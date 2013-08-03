@@ -174,7 +174,7 @@ TeamsView = Backbone.View.extend({
 	initialize: function(model) {
 		var i, n;
 		this.model = model;
-		this.teams = model.get('teams').slice();
+		this.teams = model.get('teams');
 		this.resetTeams();
 		this.model.on('change:teams', function() {
 
@@ -262,9 +262,9 @@ TeamsView = Backbone.View.extend({
 	//fix this to make sure teamObj has the correct properties
 	setTeamAtIndex: function(index, teamObj) {
 		var teamEl = $('ul li:nth-child('+(index+1)+')', this.$el);
+		//this also changes the value in the model
 		this.teams[index] = teamObj;
-		//a silent set by using the getter
-		this.model.get('teams')[index] = teamObj;
+		
 
 		//set the DOM element
 		$('div:nth-child(1)', teamEl).text(teamObj.name);
@@ -280,9 +280,12 @@ TeamsView = Backbone.View.extend({
 			teamID: this.getNewID()
 		}
 
+		//pushing to the teams property
+		//also adds to the model because
+		//the teams property is a direct
+		//reference of the model
 		this.teams.push(defaultObj);
-		//silent set
-		this.model.get('teams').push(defaultObj);
+		
 
 		$('<li></li>')	.append('<div>New Team</div>')
 						.append('<div>Wins: 0</div>')
@@ -301,15 +304,14 @@ TeamsView = Backbone.View.extend({
 		confirm.show();
 		confirm.on('clicked1', function() {
 			var index = this.getIndex(event),
-				self = this;
+				self = this,
+				listEl = $('ul li:nth-child('+ (index + 1).toString()+ ')', this.$el);
 
-			$('ul li:nth-child('+ (index + 1).toString()+ ')', this.$el).slideUp(400, function() {
-				var modelTeams = self.model.get('teams');
-				//remove the element
-				this.remove();
+			listEl.slideUp(400, function() {
+				listEl.remove();
+				//this changes the model also
 				self.teams.splice(index, 1);
-				//silently set the model
-				modelTeams.splice(index, 1);
+				
 			});
 			confirm.unbind('clicked1');
 			confirm.unbind('clicked2');
