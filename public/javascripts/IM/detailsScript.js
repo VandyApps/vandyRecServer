@@ -335,16 +335,6 @@ TeamsView = Backbone.View.extend({
 							.append('<div>edit</div><div>delete</div>').appendTo(list);
 
 		}
-	},
-	teamWithID: function(id) {
-		var team;
-		this.teams.forEach(function(_team) {
-			if (_team.teamID === id) {
-				team = _team;
-				return;
-			}
-		});
-		return team;
 	}
 });
 
@@ -438,8 +428,8 @@ GamesView = Backbone.View.extend({
 		
 	},
 	generateGameView: function(game) {
-		var homeTeam = teamsView.teamWithID(game.teams[0]),
-			awayTeam = teamsView.teamWithID(game.teams[1]),
+		var homeTeam = this.model.teamWithID(game.teams[0]),
+			awayTeam = this.model.teamWithID(game.teams[1]),
 			el =  $('<li></li>').append('<div>'+game.date+'</div>')
 								.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
 								.append('<div><span>'+homeTeam.name+'</span>Vs<span>'+awayTeam.name+'</span></div>')
