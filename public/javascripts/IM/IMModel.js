@@ -29,7 +29,91 @@ IMModel.Sport = Backbone.Model.extend({
 		});
 
 		this.set('games', games);
+	},
+	//sets the wins, losses, ties at the specified index
+	decrementWins: function(index) {
+		if (typeof index === 'number') {
+			this.attributes.teams[index].WLT[0] -= 1;
+			this.trigger('change');
+			this.trigger('change:teams');
+			this.trigger('change:teams:'+index.toString());
+
+		}
+		
+	},
+	incrementWins: function(index) {
+		if (typeof index === 'number') {
+			this.attributes.teams[index].WLT[0] += 1;
+			this.trigger('change');
+			this.trigger('change:teams');
+			this.trigger('change:teams:'+index.toString());
+
+		}
+	},
+	setWins: function(index, value) {
+		if (typeof index === 'number') {
+			this.attributes.teams[index].WLT[0] = value;
+			this.trigger('change');
+			this.trigger('change:teams');
+			this.trigger('change:teams:'+index.toString());
+
+		}
+	},
+	decrementLosses: function(index) {
+		if (typeof index === 'number') {
+			this.attributes.teams[index].WLT[1] -= 1;
+			this.trigger('change');
+			this.trigger('change:teams');
+			this.trigger('change:teams:'+index.toString());
+
+		}
+	},
+	incrementLosses: function(index) {
+		if (typeof index === 'number') {
+			this.attributes.teams[index].WLT[1] += 1;
+			this.trigger('change');
+			this.trigger('change:teams');
+			this.trigger('change:teams:'+index.toString());
+
+		}
+	},
+	setLosses: function(index, value) {
+		if (typeof index === 'number') {
+			this.attributes.teams[index].WLT[1] = value;
+			this.trigger('change');
+			this.trigger('change:teams');
+			this.trigger('change:teams:'+index.toString());
+
+		}
+	},
+	decrementTies: function(index) {
+		if (typeof index === 'number') {
+			this.attributes.teams[index].WLT[2] -= 1;
+			this.trigger('change');
+			this.trigger('change:teams');
+			this.trigger('change:teams:'+index.toString());
+
+		}
+	},
+	incrementTies: function(index) {
+		if (typeof index === 'number') {
+			this.attributes.teams[index].WLT[2] += 1;
+			this.trigger('change');
+			this.trigger('change:teams');
+			this.trigger('change:teams:'+index.toString());
+
+		}
+	},
+	setTies: function(index, value) {
+		if (typeof index === 'number') {
+			this.attributes.teams[index].WLT[2] = value;
+			this.trigger('change');
+			this.trigger('change:teams');
+			this.trigger('change:teams:'+index.toString());
+
+		}
 	}
+
 });
 
 //should not add models to the All collection
