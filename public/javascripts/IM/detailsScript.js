@@ -184,7 +184,7 @@ TeamsView = Backbone.View.extend({
 		}.bind(this));
 		for (i = 0, n = this.teams.length; i < n; ++i) {
 			var index = i;
-			this.model.on('change:teams:'+i.toString(), function() {
+			this.model.on('change:teams:'+this.teams[i].teamID.toString(), function() {
 
 				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(2)', this.$el).text('Wins: ' + model.get('teams')[index].WLT[0].toString());
 				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(3)', this.$el).text('Losses: ' + model.get('teams')[index].WLT[1].toString());
