@@ -167,8 +167,8 @@ TeamsView = Backbone.View.extend({
 	teams: [],
 	events: {
 		'click div:nth-child(1)': 'toggle',
-		//'click ul li div:nth-child(5)': 'editTeam',
-		//'click ul li div:nth-child(6)': 'removeTeam',
+		'click ul li div:nth-child(5)': 'editTeam',
+		'click ul li div:nth-child(6)': 'removeTeam',
 		'click #addButton': 'addTeam'
 	},
 	initialize: function(model) {
@@ -194,8 +194,8 @@ TeamsView = Backbone.View.extend({
 		//add separate event for clicking the edit button
 		//so that the event is registered with the specific 
 		//element that is clicked instead of this.$el
-		$('ul li div:nth-child(5)', this.$el).click($.proxy(this.editTeam, this));
-		$('ul li div:nth-child(6)', this.$el).click($.proxy(this.removeTeam, this));
+		//$('ul li div:nth-child(5)', this.$el).click($.proxy(this.editTeam, this));
+		//$('ul li div:nth-child(6)', this.$el).click($.proxy(this.removeTeam, this));
 	},
 	hide: function() {
 		this.isShowing = false;
@@ -232,19 +232,21 @@ TeamsView = Backbone.View.extend({
 	//parses out the index of the li
 	//that it is referring to
 	getIndex: function(event) {
-
 		console.dir(event);
-		console.log(event.delegateTarget);
-		return $(event.delegateTarget).parent().index();
+		if (BrowserDetect.browser === "Firefox") {
+			console.log("This is mozilla");
+			return $(event.currentTarget).parent().index();
+		}
+		return $(event.toElement).parent().index();
 	},
 	editTeam: function(event) {
-		
+		console.dir(event);
+		console.log(event.relatedElement);
 		var teamsEdit, index, team;
 		if (!EditView.isEditting()) {
 
 			teamsEdit = EditView.getInstance('teams');
 			index = this.getIndex(event);
-			console.log(index);
 			
 			team = this.teams[index];
 			
@@ -283,11 +285,12 @@ TeamsView = Backbone.View.extend({
 
 	},
 	addTeam: function() {
-		var defaultObj = {
-			name: "New Team",
-			WLT: [0,0,0],
-			teamID: this.getNewID()
-		}
+			var defaultObj = {
+				name: "New Team",
+				WLT: [0,0,0],
+				teamID: this.getNewID()
+			},
+			listEl = $('<li></li>');
 
 		//pushing to the teams property
 		//also adds to the model because
@@ -296,11 +299,15 @@ TeamsView = Backbone.View.extend({
 		this.teams.push(defaultObj);
 		
 
-		$('<li></li>')	.append('<div>New Team</div>')
-						.append('<div>Wins: 0</div>')
-						.append('<div>Losses: 0</div>')
-						.append('<div>Ties: 0</div>')
-						.append('<div>edit</div><div>delete</div>').appendTo('ul', this.$el);
+		listEl	.append('<div>New Team</div>')
+				.append('<div>Wins: 0</div>')
+				.append('<div>Losses: 0</div>')
+				.append('<div>Ties: 0</div>')
+				.append('<div>edit</div><div>delete</div>').appendTo('ul', this.$el);
+		//edit and delete events are not registered for newly created objects,
+		//must register them manually
+		//$('div:nth-child(5)', listEl).click($.proxy(this.editTeam, this));
+		//$('div:nth-child(6)', listEl).click($.proxy(this.removeTeam, this));
 
 	},
 	removeTeam: function(event) {
