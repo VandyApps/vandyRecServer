@@ -456,33 +456,60 @@ GamesView = Backbone.View.extend({
 	//sets the model, property and the rendered data
 	//changes the game at the index to the new game object
 	setGameAtIndex: function(index, gameObj) {
-		var gameEl = this.generateGameView(gameObj);
-		//changes the model using the array reference
-		this.games.splice(index, 1, gameObj);
+		var gameEl = this.generateGameView(gameObj),
+			dateChanged = this.games.date !== gameObj.date || this.games.startTime !== gameObj.startTime;
 
-		$('ul li:nth-child('+(index+1).toString() + ')', this.$el).after(gameEl).remove();
+		//changes the model using the array reference
+		this.games.splice(index, 1);
+
+		//put the game in the correct location, incase the date changed
+		if (dateChanged) {
+			//remove the old html element
+			this.games.splice(index, 1);
+			$('ul li:nth-child('+(index+1).toString() + ')', this.$el).remove();
+			this.insertGame(gameObj);
+
+		} else {
+			//just put the game back into the same slot that it was in
+			this.games.splice(index, 1, gameObj);
+			$('ul li:nth-child('+(index+1).toString() + ')', this.$el).after(gameEl).remove();
+
+		}
+		
 	},
 	//inserts a game into the correct chronological spot
 	//adds game to the model and to the property
-	//NEEDS EXCEPTION FOR GAMES AT THE BEGINNING OF THE LIST
+	//has an options to change the value in the model,
+	//if no value is passed in as a second parameter,
+	//the model is changed
 	insertGame: function(gameObj) {
-		var insertIndex;
+		var insertIndex,
+			//cache the length because it changes before some code can
+			//get called in this method
+			length = this.games.length;
 		this.games.forEach(function(game, index) {
 
 			if (this.gameValue(gameObj) < this.gameValue(game) && insertIndex === undefined) {
 				insertIndex = index;
 			}
 		}.bind(this));
+		//this is the case if the game is after all of the 
+		//current elements
 		if (insertIndex === undefined) {
 			insertIndex = this.games.length;
 		}
 
-		//the array reference will cause the model to change
-		this.games.splice(insertIndex, 0, gameObj);
-
 		//render addition
+		if (insertIndex === length) {
+			
+			this.games.push(gameObj);
+			$('ul li:nth-child('+(insertIndex).toString() + ')', this.$el).after(this.generateGameView(gameObj));
+		} else {
+			
+			$('ul li:nth-child(' + (insertIndex + 1).toString() + ')', this.$el).before(this.generateGameView(gameObj));	
+			this.games.splice(insertIndex, 0, gameObj);
+		}
 		
-		$('ul li:nth-child(' + (insertIndex).toString() + ')', this.$el).after(this.generateGameView(gameObj));	
 	},
 	generateGameView: function(game) {
 		var homeTeam = this.model.teamWithID(game.teams[0]),
@@ -515,7 +542,8 @@ GamesView = Backbone.View.extend({
 		listEl.children().remove();
 
 		this.model.sortGames();
-
+		//set the pointer back
+		this.games = this.model.get('games');
 		this.games.forEach(function(game) {
 			
 			this.generateGameView(game).appendTo(listEl);
