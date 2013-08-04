@@ -452,21 +452,28 @@ GamesView = Backbone.View.extend({
 	//sets the model, property and the rendered data
 	//changes the game at the index to the new game object
 	setGameAtIndex: function(index, gameObj) {
-		var gameEl = this.generateGameView(gameObj),
-			dateChanged = this.games.date !== gameObj.date || this.games.startTime !== gameObj.startTime;
+		//NOTE: removing before insertion creates a wierd bug
+		var dateChanged = this.games.date !== gameObj.date || this.games.startTime !== gameObj.startTime;
 
 		//put the game in the correct location, incase the date changed
 		if (dateChanged) {
 			console.log("Date changed for this set");
 			//remove the old html element
+			this.insertGame(gameObj);
+			
+			//the index will be incremented after insertion
+			if (this.gameValue(gameObj) < this.gameValue(this.games[index])) {
+				index++;
+			}
 			this.games.splice(index, 1);
 			$('ul li:nth-child('+(index+1).toString() + ')', this.$el).remove();
-			this.insertGame(gameObj);
+
+			
 
 		} else {
 			//just put the game back into the same slot that it was in
 			this.games.splice(index, 1, gameObj);
-			$('ul li:nth-child('+(index+1).toString() + ')', this.$el).after(gameEl).remove();
+			$('ul li:nth-child('+(index+1).toString() + ')', this.$el).after(this.generateGameView(gameObj)).remove();
 
 		}
 		
@@ -480,7 +487,8 @@ GamesView = Backbone.View.extend({
 		var insertIndex,
 			//cache the length because it changes before some code can
 			//get called in this method
-			length = this.games.length;
+			length = this.games.length,
+			selector;
 		this.games.forEach(function(game, index) {
 
 			if (this.gameValue(gameObj) < this.gameValue(game) && insertIndex === undefined) {
@@ -503,7 +511,9 @@ GamesView = Backbone.View.extend({
 			console.log('ul: ' + $('ul li', this.$el).length);
 		} else {
 			
-			$('ul li:nth-child(' + (insertIndex + 1).toString() + ')', this.$el).before(this.generateGameView(gameObj));	
+			console.log('Size: ' + $('ul li:nth-child(' + (insertIndex + 1).toString() + ')', this.$el).length.toString());
+			console.log("selector: " + 'ul li:nth-child(' + (insertIndex + 1).toString() + ')');
+			$('li:nth-child(' + (insertIndex+1).toString() + ')', this.$el).before(this.generateGameView(gameObj));	
 			this.games.splice(insertIndex, 0, gameObj);
 		}
 		
