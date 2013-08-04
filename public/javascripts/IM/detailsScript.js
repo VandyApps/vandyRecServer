@@ -437,7 +437,26 @@ GamesView = Backbone.View.extend({
 		});
 	},
 	addGame: function() {
-		console.log("Add games called");
+		var gameObj, teams = this.model.get('teams');
+		console.log(teams);
+		//make sure there are atleast 2 teams before allowing a game to
+		//be added
+		if (teams.length >= 2) {
+			gameObj = {
+				date: DateHelper.dateStringFromDate(new Date()),
+				startTime: '01:00am',
+				endTime: '02:00am',
+				teams: [teams[0].teamID, teams[1].teamID],
+				score: [0,0],
+				winner: 2,
+				location: 'No location'
+
+			};
+			this.insertGame(gameObj);
+		} else {
+			alert('You must have at least 2 registered teams before creating a game');
+		}
+			
 	},
 	removeGame: function(event) {
 		console.log("remove game called");
@@ -453,7 +472,8 @@ GamesView = Backbone.View.extend({
 	//changes the game at the index to the new game object
 	setGameAtIndex: function(index, gameObj) {
 		//NOTE: removing before insertion creates a wierd bug
-		var dateChanged = this.games.date !== gameObj.date || this.games.startTime !== gameObj.startTime;
+		var dateChanged = this.games.date !== gameObj.date || this.games.startTime !== gameObj.startTime,
+			game = this.games[index];
 
 		//put the game in the correct location, incase the date changed
 		if (dateChanged) {
@@ -462,7 +482,8 @@ GamesView = Backbone.View.extend({
 			this.insertGame(gameObj);
 			
 			//the index will be incremented after insertion
-			if (this.gameValue(gameObj) < this.gameValue(this.games[index])) {
+			if (this.gameValue(gameObj) < this.gameValue(game)) {
+				console.log("Incrementing the index to " + (index+1).toString());
 				index++;
 			}
 			this.games.splice(index, 1);
