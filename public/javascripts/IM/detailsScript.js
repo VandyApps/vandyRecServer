@@ -302,10 +302,6 @@ TeamsView = Backbone.View.extend({
 				.append('<div>Losses: 0</div>')
 				.append('<div>Ties: 0</div>')
 				.append('<div>edit</div><div>delete</div>').appendTo('ul', this.$el);
-		//edit and delete events are not registered for newly created objects,
-		//must register them manually
-		//$('div:nth-child(5)', listEl).click($.proxy(this.editTeam, this));
-		//$('div:nth-child(6)', listEl).click($.proxy(this.removeTeam, this));
 
 	},
 	removeTeam: function(event) {
@@ -459,11 +455,9 @@ GamesView = Backbone.View.extend({
 		var gameEl = this.generateGameView(gameObj),
 			dateChanged = this.games.date !== gameObj.date || this.games.startTime !== gameObj.startTime;
 
-		//changes the model using the array reference
-		this.games.splice(index, 1);
-
 		//put the game in the correct location, incase the date changed
 		if (dateChanged) {
+			console.log("Date changed for this set");
 			//remove the old html element
 			this.games.splice(index, 1);
 			$('ul li:nth-child('+(index+1).toString() + ')', this.$el).remove();
@@ -498,12 +492,15 @@ GamesView = Backbone.View.extend({
 		if (insertIndex === undefined) {
 			insertIndex = this.games.length;
 		}
-
+		console.log(insertIndex);
 		//render addition
 		if (insertIndex === length) {
-			
+			console.log("Insert index at the end");
+			console.log("Object: " + gameObj);
+			console.log('ul: ' + $('ul li', this.$el).length);
 			this.games.push(gameObj);
-			$('ul li:nth-child('+(insertIndex).toString() + ')', this.$el).after(this.generateGameView(gameObj));
+			$('ul', this.$el).append(this.generateGameView(gameObj));
+			console.log('ul: ' + $('ul li', this.$el).length);
 		} else {
 			
 			$('ul li:nth-child(' + (insertIndex + 1).toString() + ')', this.$el).before(this.generateGameView(gameObj));	
@@ -518,7 +515,7 @@ GamesView = Backbone.View.extend({
 								.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
 								.append('<div><span>'+homeTeam.name+'</span>Vs<span>'+awayTeam.name+'</span></div>')
 								.append('<div>'+game.location+'</div>')
-								.append('<div>'+game.score[0]+'-'+game.score[1]+'</div>')
+								.append('<div>'+game.score[0].toString()+'-'+game.score[1].toString()+'</div>')
 								.append('<div>edit</div>')
 								.append('<div>delete</div>');
 		return el;
