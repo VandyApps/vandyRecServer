@@ -16,6 +16,35 @@ IMModel.Sport = Backbone.Model.extend({
 	seasonEnd: function() {
 		return DateHelper.dateFromDateString(this.get('seasonDates').end);
 	},
+	//resets the wins, ties, and losses for all teams
+	resetWLT: function() {
+		//set all the WLT, to 0 for all teams
+		this.get('teams').forEach(function(team) {
+			this.setWins(team.teamID, 0, true);
+			this.setLosses(team.teamID, 0, true);
+			this.setTies(team.teamID, 0, true);
+		}.bind(this));
+
+		this.get('games').forEach(function(game) {
+			if (game.winner === 0) {
+				this.incrementWins(game.teams[0], true);
+				this.incrementLosses(game.teams[1], true);
+			} else if (game.winner === 1) {
+				this.incrementWins(game.teams[1], true);
+				this.incrementLosses(game.teams[0], true);
+			} else {
+				//it is a tie
+				this.incrementTies(game.teams[0], true);
+				this.incrementTies(game.teams[1], true);
+			}
+		}.bind(this));
+		//call events down here
+		this.trigger('change');
+		this.trigger('change:teams');
+		this.get('teams').forEach(function(team) {
+			this.trigger('change:teams:'+team.teamID.toString());
+		}.bind(this));
+	},
 	//sorts the games in chronological order
 	sortGames: function() {
 		var games = this.get('games').slice();
