@@ -169,7 +169,7 @@ TeamsView = Backbone.View.extend({
 		'click div:nth-child(1)': 'toggle',
 		'click ul li div:nth-child(5)': 'editTeam',
 		'click ul li div:nth-child(6)': 'removeTeam',
-		'click #addButton': 'addTeam'
+		'click #addTeam': 'addTeam'
 	},
 	initialize: function(model) {
 		var i, n;
@@ -301,7 +301,7 @@ TeamsView = Backbone.View.extend({
 				.append('<div>Wins: 0</div>')
 				.append('<div>Losses: 0</div>')
 				.append('<div>Ties: 0</div>')
-				.append('<div>edit</div><div>delete</div>').appendTo('ul', this.$el);
+				.append('<div>edit</div><div>delete</div>').appendTo('#teams ul');
 
 	},
 	removeTeam: function(event) {
@@ -368,7 +368,7 @@ GamesView = Backbone.View.extend({
 		'click div:nth-child(1)': 'toggle',
 		'click ul li div:nth-child(6)': 'editGame',
 		'click ul li div:nth-child(7)': 'removeGame',
-		'click #addButton': 'addGame'
+		'click #addGame': 'addGame'
 	},
 	initialize: function(model) {
 		this.model = model;
@@ -465,7 +465,7 @@ GamesView = Backbone.View.extend({
 				button1Name: 'YES',
 				button2Name: 'NO'		
 			});
-			
+
 		confirmation.on('clicked1', function() {
 
 			this.games.splice(index, 1);

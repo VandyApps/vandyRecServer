@@ -112,7 +112,7 @@ body {
     top: 380px;
 }
 
-#addButton {
+.addButton {
     position: absolute;
     top: 20px;
     background-color: black;
