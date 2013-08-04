@@ -401,7 +401,12 @@ GamesView = Backbone.View.extend({
 	editGame: function(event) {
 		var gamesEdit = EditView.getInstance('games'),
 			index = this.getIndex(event),
-			game = this.games[index];
+			game = this.games[index],
+			//cahce properties of the original game
+			winner = game.winner,
+			team1 = game.teams[0],
+			team2 = game.teams[1];
+
 		gamesEdit.teams = this.model.get('teams');
 		gamesEdit.homeTeam = game.teams[0];
 		gamesEdit.awayTeam = game.teams[1];
@@ -412,6 +417,7 @@ GamesView = Backbone.View.extend({
 		gamesEdit.date = game.date;
 		gamesEdit.winner = game.winner;
 		gamesEdit.location = game.location;
+
 
 		gamesEdit.show();
 		gamesEdit.on('submit', function() {
@@ -426,6 +432,31 @@ GamesView = Backbone.View.extend({
 				date: gamesEdit.date
 			};
 			this.setGameAtIndex(index, gameObj);
+			//change the WLT for the teams
+			
+			if (winner === 0) {
+				this.model.decrementWins(team1);
+				this.model.decrementLosses(team2);
+			} else if (winner === 1) {
+				this.model.decrementWins(team2);
+				this.model.decrementLosses(team1);
+			} else {
+				this.model.decrementTies(team1);
+				this.model.decrementTies(team2);
+			}
+
+			if (gamesEdit.winner === 0) {
+				this.model.incrementWins(gamesEdit.homeTeam);
+				this.model.incrementLosses(gamesEdit.awayTeam);
+
+			} else if (gamesEdit.winner === 1) {
+				this.model.incrementWins(gamesEdit.awayTeam);
+				this.model.incrementLosses(gamesEdit.homeTeam);
+			} else {
+				this.model.incrementTies(gamesEdit.homeTeam);
+				this.model.incrementTies(gamesEdit.awayTeam);
+			}
+
 			gamesEdit.unbind('submit');
 			gamesEdit.unbind('cancel');
 		}.bind(this));
