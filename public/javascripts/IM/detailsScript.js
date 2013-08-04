@@ -403,7 +403,42 @@ GamesView = Backbone.View.extend({
 		}
 	},
 	editGame: function(event) {
-		console.log("edit game called");
+		var gamesEdit = EditView.getInstance('games'),
+			index = this.getIndex(event),
+			game = this.games[index];
+		gamesEdit.teams = this.model.get('teams');
+		gamesEdit.homeTeam = game.teams[0];
+		gamesEdit.awayTeam = game.teams[1];
+		gamesEdit.homeScore = game.score[0];
+		gamesEdit.awayScore = game.score[1];
+		gamesEdit.startTime = game.startTime;
+		gamesEdit.endTime = game.endTime;
+		gamesEdit.date = game.date;
+		gamesEdit.winner = game.winner;
+		gamesEdit.location = game.location;
+
+		gamesEdit.show();
+		gamesEdit.on('submit', function() {
+
+			var gameObj = {
+				teams: [gamesEdit.homeTeam, gamesEdit.awayTeam],
+				score: [gamesEdit.homeScore, gamesEdit.awayScore],
+				location: gamesEdit.location,
+				winner: gamesEdit.winner,
+				startTime: gamesEdit.startTime,
+				endTime: gamesEdit.endTime,
+				date: gamesEdit.date
+			};
+			this.setGameAtIndex(index, gameObj);
+			gamesEdit.unbind('submit');
+			gamesEdit.unbind('cancel');
+		}.bind(this));
+
+		gamesEdit.on('cancel', function() {
+
+			gamesEdit.unbind('submit');
+			gamesEdit.unbind('cancel');
+		});
 	},
 	addGame: function() {
 		console.log("Add games called");
@@ -583,8 +618,6 @@ EditView = (function() {
 				isEditting = false;
 			},
 			onSubmit: function() {
-
-				
 				this.trigger('submit');
 				this.hide();
 			},
@@ -768,6 +801,10 @@ EditView = (function() {
 			//the selected teams
 			homeTeam: 0,
 			awayTeam: 0,
+			//this is the teams property from the model
+			//this property will not be changed by this object,
+			//but is used to for displaying the possible teams to
+			//select from
 			teams: [],
 			homeScore: 0,
 			awayScore: 0,
