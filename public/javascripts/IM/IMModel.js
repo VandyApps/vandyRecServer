@@ -41,103 +41,121 @@ IMModel.Sport = Backbone.Model.extend({
 		return team;
 	},
 	//sets the wins, losses, ties at the specified index
-	decrementWins: function(id) {
+	decrementWins: function(id, silent) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[0] -= 1;
-			this.trigger('change');
-			this.trigger('change:teams');
-			this.trigger('change:teams:'+id.toString());
+			if (!silent) {
+				this.trigger('change');
+				this.trigger('change:teams');
+				this.trigger('change:teams:'+id.toString());
+			}
+			
 
 		}
 		
 	},
-	incrementWins: function(id) {
+	incrementWins: function(id, silent) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[0] += 1;
-			this.trigger('change');
-			this.trigger('change:teams');
-			this.trigger('change:teams:'+id.toString());
-
+			if (!silent) {
+				this.trigger('change');
+				this.trigger('change:teams');
+				this.trigger('change:teams:'+id.toString());
+			}
 		}
 	},
-	setWins: function(id, value) {
+	setWins: function(id, value, silent) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[0] = value;
-			this.trigger('change');
-			this.trigger('change:teams');
-			this.trigger('change:teams:'+id.toString());
+			if (!silent) {
+				this.trigger('change');
+				this.trigger('change:teams');
+				this.trigger('change:teams:'+id.toString());
+			}
 
 		}
 	},
-	decrementLosses: function(id) {
+	decrementLosses: function(id, silent) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[1] -= 1;
-			this.trigger('change');
-			this.trigger('change:teams');
-			this.trigger('change:teams:'+id.toString());
+			if (!silent) {
+				this.trigger('change');
+				this.trigger('change:teams');
+				this.trigger('change:teams:'+id.toString());
+			}
 
 		}
 	},
-	incrementLosses: function(id) {
+	incrementLosses: function(id, silent) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[1] += 1;
-			this.trigger('change');
-			this.trigger('change:teams');
-			this.trigger('change:teams:'+id.toString());
+			if (!silent) {
+				this.trigger('change');
+				this.trigger('change:teams');
+				this.trigger('change:teams:'+id.toString());
+			}
 
 		}
 	},
-	setLosses: function(id, value) {
+	setLosses: function(id, value, silent) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[1] = value;
-			this.trigger('change');
-			this.trigger('change:teams');
-			this.trigger('change:teams:'+id.toString());
+			if (!silent) {
+				this.trigger('change');
+				this.trigger('change:teams');
+				this.trigger('change:teams:'+id.toString());
+			}
 
 		}
 	},
-	decrementTies: function(id) {
+	decrementTies: function(id, silent) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[2] -= 1;
-			this.trigger('change');
-			this.trigger('change:teams');
-			this.trigger('change:teams:'+id.toString());
+			if (!silent) {
+				this.trigger('change');
+				this.trigger('change:teams');
+				this.trigger('change:teams:'+id.toString());
+			}
 
 		}
 	},
-	incrementTies: function(id) {
+	incrementTies: function(id, silent) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[2] += 1;
-			this.trigger('change');
-			this.trigger('change:teams');
-			this.trigger('change:teams:'+id.toString());
+			if (!silent) {
+				this.trigger('change');
+				this.trigger('change:teams');
+				this.trigger('change:teams:'+id.toString());
+			}
 
 		}
 	},
-	setTies: function(id, value) {
+	setTies: function(id, value, silent) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[2] = value;
-			this.trigger('change');
-			this.trigger('change:teams');
-			this.trigger('change:teams:'+id.toString());
+			if (!silent) {
+				this.trigger('change');
+				this.trigger('change:teams');
+				this.trigger('change:teams:'+id.toString());
+			}
 
 		}
 	}
