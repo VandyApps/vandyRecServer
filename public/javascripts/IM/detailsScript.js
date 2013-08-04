@@ -233,7 +233,7 @@ TeamsView = Backbone.View.extend({
 	//that it is referring to
 	getIndex: function(event) {
 		if (BrowserDetect.browser === "Firefox") {
-			console.log("This is mozilla");
+			
 			return $(event.currentTarget).parent().index();
 		}
 		return $(event.toElement).parent().index();
@@ -469,7 +469,7 @@ GamesView = Backbone.View.extend({
 	},
 	addGame: function() {
 		var gameObj, teams = this.model.get('teams');
-		console.log(teams);
+		
 		//make sure there are atleast 2 teams before allowing a game to
 		//be added
 		if (teams.length >= 2) {
@@ -518,7 +518,7 @@ GamesView = Backbone.View.extend({
 	},
 	getIndex: function(event) {
 		if (BrowserDetect.browser === "Firefox") {
-			console.log("This is mozilla");
+			
 			return $(event.currentTarget).parent().index();
 		}
 		return $(event.toElement).parent().index();
@@ -532,13 +532,13 @@ GamesView = Backbone.View.extend({
 
 		//put the game in the correct location, incase the date changed
 		if (dateChanged) {
-			console.log("Date changed for this set");
+			
 			//remove the old html element
 			this.insertGame(gameObj);
 			
 			//the index will be incremented after insertion
 			if (this.gameValue(gameObj) < this.gameValue(game)) {
-				console.log("Incrementing the index to " + (index+1).toString());
+				
 				index++;
 			}
 			this.games.splice(index, 1);
@@ -576,19 +576,15 @@ GamesView = Backbone.View.extend({
 		if (insertIndex === undefined) {
 			insertIndex = this.games.length;
 		}
-		console.log(insertIndex);
+		
 		//render addition
 		if (insertIndex === length) {
-			console.log("Insert index at the end");
-			console.log("Object: " + gameObj);
-			console.log('ul: ' + $('ul li', this.$el).length);
+			
 			this.games.push(gameObj);
 			$('ul', this.$el).append(this.generateGameView(gameObj));
-			console.log('ul: ' + $('ul li', this.$el).length);
+			
 		} else {
 			
-			console.log('Size: ' + $('ul li:nth-child(' + (insertIndex + 1).toString() + ')', this.$el).length.toString());
-			console.log("selector: " + 'ul li:nth-child(' + (insertIndex + 1).toString() + ')');
 			$('li:nth-child(' + (insertIndex+1).toString() + ')', this.$el).before(this.generateGameView(gameObj));	
 			this.games.splice(insertIndex, 0, gameObj);
 		}
@@ -1206,6 +1202,8 @@ EditView = (function() {
 })();
 
 
+//set up loose functions
+
 //Script starts here
 //should move declaration to the beginning
 var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
@@ -1214,6 +1212,7 @@ var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
 	seasonDatesView = new S_DatesView.getInstance(),
 	teamsView = TeamsView.getInstance(),
 	gamesView = new GamesView.getInstance();
+
 
 
 
