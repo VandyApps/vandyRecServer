@@ -459,7 +459,31 @@ GamesView = Backbone.View.extend({
 			
 	},
 	removeGame: function(event) {
-		console.log("remove game called");
+		var index = this.getIndex(event),
+			confirmation = new ConfirmationBox({
+				message: "Are you sure you would like to delete this element?",
+				button1Name: 'YES',
+				button2Name: 'NO'		
+			});
+			
+		confirmation.on('clicked1', function() {
+
+			this.games.splice(index, 1);
+			$("ul li:nth-child("+(index+1).toString()+")", this.$el).slideUp(400, function() {
+				$("ul li:nth-child("+(index+1).toString()+")",this.$el).remove();
+			});
+
+			confirmation.unbind('clicked1');
+			confirmation.unbind('clicked2');
+		}.bind(this));
+		confirmation.on('clicked2', function() {
+			confirmation.unbind('clicked1');
+			confirmation.unbind('clicked2');
+		});
+
+		confirmation.show();
+
+			
 	},
 	getIndex: function(event) {
 		if (BrowserDetect.browser === "Firefox") {
