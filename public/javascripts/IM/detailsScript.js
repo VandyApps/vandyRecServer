@@ -405,10 +405,18 @@ GamesView = Backbone.View.extend({
 	editGame: function(event) {
 		console.log("edit game called");
 	},
-	addGame: function() {console.log("Add games called");},
-	removeGame: function(event) {console.log("remove game called");},
+	addGame: function() {
+		console.log("Add games called");
+	},
+	removeGame: function(event) {
+		console.log("remove game called");
+	},
 	getIndex: function(event) {
-		return $(event.delegateTarget).parent().index();
+		if (BrowserDetect.browser === "Firefox") {
+			console.log("This is mozilla");
+			return $(event.currentTarget).parent().index();
+		}
+		return $(event.toElement).parent().index();
 	},
 	//sets the model, property and the rendered data
 	//changes the game at the index to the new game object
@@ -439,9 +447,7 @@ GamesView = Backbone.View.extend({
 
 		//render addition
 		
-		$('ul li:nth-child(' + (insertIndex).toString() + ')', this.$el).after(this.generateGameView(gameObj));
-		
-		
+		$('ul li:nth-child(' + (insertIndex).toString() + ')', this.$el).after(this.generateGameView(gameObj));	
 	},
 	generateGameView: function(game) {
 		var homeTeam = this.model.teamWithID(game.teams[0]),
@@ -473,9 +479,7 @@ GamesView = Backbone.View.extend({
 
 		listEl.children().remove();
 
-		this.games.sort(function(game1, game2) {
-			return this.gameValue(game1) - this.gameValue(game2);
-		}.bind(this));
+		this.model.sortGames();
 
 		this.games.forEach(function(game) {
 			
