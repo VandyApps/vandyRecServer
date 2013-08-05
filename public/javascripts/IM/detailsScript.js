@@ -5,7 +5,13 @@ var E_DatesView,
 	S_DatesView,
 	TeamsView,
 	GamesView,
-	EditView;
+	EditView,
+	sportModel,
+	nameView,
+	entryDatesView,
+	seasonDatesView,
+	teamsView,
+	gamesView;
 
 
 //Views
@@ -371,6 +377,7 @@ GamesView = Backbone.View.extend({
 		'click #addGame': 'addGame'
 	},
 	initialize: function(model) {
+		
 		this.model = model;
 		//sort the games
 		this.games = model.get('games');
@@ -378,9 +385,11 @@ GamesView = Backbone.View.extend({
 		this.sortAndDisplay();
 
 		model.on('change:games', function() {
+			console.log("change games was called");
 			this.games = model.get('games');
 			this.sortAndDisplay();
 		}.bind(this));
+
 	},
 	
 	show: function() {
@@ -620,7 +629,7 @@ GamesView = Backbone.View.extend({
 
 		listEl.children().remove();
 
-		this.model.sortGames();
+		this.model.sortGames(true);
 		//set the pointer back
 		this.games = this.model.get('games');
 		this.games.forEach(function(game) {
@@ -989,7 +998,7 @@ EditView = (function() {
 					monthEl = $('div:nth-child(2) select:nth-child(2)', this.$el),
 					dayEl = $('div:nth-child(2) select:nth-child(3)', this.$el),
 					yearEl = $('div:nth-child(2) select:nth-child(4)', this.$el),
-					month = +monthEl.val(), 
+					 month = +monthEl.val(), 
 					year = +yearEl.val(), 
 					days = +dayEl.val();
 
@@ -1202,16 +1211,27 @@ EditView = (function() {
 })();
 
 
-//set up loose functions
+//set up ;oose functions and events here
+$('#saveModel').click(function() {
+	sportModel.save({
+		success: function() {console.log("Success");},
+		failure: function() {console.log("Failure");}
+	});
+});
 
 //Script starts here
-//should move declaration to the beginning
-var sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model)),
-	nameView = NameView.getInstance(),
-	entryDatesView = E_DatesView.getInstance(),
-	seasonDatesView = new S_DatesView.getInstance(),
-	teamsView = TeamsView.getInstance(),
-	gamesView = new GamesView.getInstance();
+//need to make the fetch method more efficient so that
+//it grabs only a single model
+
+
+sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model));
+nameView = NameView.getInstance();
+entryDatesView = E_DatesView.getInstance();
+seasonDatesView = new S_DatesView.getInstance();
+teamsView = TeamsView.getInstance();
+gamesView = new GamesView.getInstance();
+
+
 
 
 

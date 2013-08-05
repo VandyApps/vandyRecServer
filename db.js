@@ -362,8 +362,8 @@
 		});
 	}
 
-	exports.deleteGFObjectWithID = function(id, callback) {
-		var parsedID = new ObjectID.createFromHexString(id);
+	exports.deleteGFObjectWithID = function(object, callback) {
+		var parsedID = new ObjectID.createFromHexString(object._id);
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collections.groupFitness, function(err, collection) {
 				collection.remove({_id: parsedID}, {w: 1}, function(err, numberRemoved) {
@@ -408,12 +408,40 @@
 		});
 	};
 
-	exports.updateIntramurals = function(sport, callback) {
+	exports.updateIntramurals = function(object, callback) {
+		var parsedID = new ObjectID.createFromHexString(object._id);
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.update({id: parsedID},
+				{
+					sport: object.sport,
+					season: object.season,
+					entryDates: object.entryDates,
+					seasonDates: object.seasonDates,
+					teams: object.teams,
+					games: object.games
 
+				}, function(err, numUpdated) {
+					if (numUpdated) {
+
+						callback(err, null);
+					} else {
+						console.log("No error: " + JSON.stringify(object));
+						callback(err, object);
+					}
+				});
+			});
+		});
 	};
 
 	exports.insertIntramurals = function(sport, callback) {
-
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collection.intramurals, function(err, collection) {
+				collection.insert(sport, {w:1},function(err, sport) {
+					callback(err, sport);
+				});
+			});
+		});
 	};
 
 	exports.deleteIntramurals = function(id, callback) {

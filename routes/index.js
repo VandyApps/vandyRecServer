@@ -247,11 +247,31 @@ exports.intramurals = function(req, res) {
 };
 
 exports.createIntramurals = function(req, res) {
-	res.send("Create intramurals here");
+	var data = req.body;
+	db.createIntramurals(data, function(err, object) {
+		if (err) {
+			res.statusCode = 500;
+			res.send(err);
+
+		} else {
+			res.statusCode = 200;
+			res.send(object);
+		}
+		
+	});
 };
 
 exports.updateIntramurals = function(req, res) {
-	res.send("update intramurals here");
+	var data = req.body;
+	db.updateIntramurals(data, function(err, object) {
+		if (err) {
+			res.statusCode = 500;
+			res.send(err);
+		} else {
+			res.statusCode = 200;
+			res.send(object);
+		}
+	});
 };
 
 exports.deleteIntramurals = function(req, res) {

@@ -46,18 +46,31 @@ IMModel.Sport = Backbone.Model.extend({
 		}.bind(this));
 	},
 	//sorts the games in chronological order
-	sortGames: function() {
-		var games = this.get('games').slice();
-		games.sort(function(game1, game2) {
-			var time1 = DateHelper.dateFromDateString(game1.date).getTime(),
-				time2 = DateHelper.dateFromDateString(game2.date).getTime();
-			time1 += DateHelper.timeStringInSecs(game1.startTime) * 1000;
-			time2 += DateHelper.timeStringInSecs(game2.startTime) * 1000;
-			return time1 - time2;
+	sortGames: function(silent) {
+		var games;
+		if (silent) {
+			games = this.get('games');
+			games.sort(function(game1, game2) {
+				var time1 = DateHelper.dateFromDateString(game1.date).getTime(),
+					time2 = DateHelper.dateFromDateString(game2.date).getTime();
+				time1 += DateHelper.timeStringInSecs(game1.startTime) * 1000;
+				time2 += DateHelper.timeStringInSecs(game2.startTime) * 1000;
+				return time1 - time2;
 
-		});
+			});
+		} else {
+			games = this.get('games').slice();
+			games.sort(function(game1, game2) {
+				var time1 = DateHelper.dateFromDateString(game1.date).getTime(),
+					time2 = DateHelper.dateFromDateString(game2.date).getTime();
+				time1 += DateHelper.timeStringInSecs(game1.startTime) * 1000;
+				time2 += DateHelper.timeStringInSecs(game2.startTime) * 1000;
+				return time1 - time2;
 
-		this.set('games', games);
+			});
+			this.set('games', games);
+		}
+		
 	},
 	teamWithID: function(id) {
 		var team;
