@@ -1211,13 +1211,6 @@ EditView = (function() {
 })();
 
 
-//set up ;oose functions and events here
-$('#saveModel').click(function() {
-	sportModel.save({
-		success: function() {console.log("Success");},
-		failure: function() {console.log("Failure");}
-	});
-});
 
 //Script starts here
 //need to make the fetch method more efficient so that
@@ -1231,6 +1224,27 @@ seasonDatesView = new S_DatesView.getInstance();
 teamsView = TeamsView.getInstance();
 gamesView = new GamesView.getInstance();
 
+
+//set up ;oose functions and events here
+$('#saveModel').click(function() {
+	sportModel.save({
+		success: this.displaySaved()
+	});
+
+}.bind(this));
+
+sportModel.on('unsavedChanges', function() {
+	displayUnsaved();
+});
+
+function displaySaved() {
+	$('#saveModel').css({'backgroundColor': 'green'}).text('Saved!');
+
+}
+
+function displayUnsaved() {
+	$('#saveModel').css({'backgroundColor': '#fc654c'}).text('Save');
+}
 
 
 
