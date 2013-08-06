@@ -466,8 +466,8 @@ GamesView = Backbone.View.extend({
 			game = this.games[index],
 			//cahce properties of the original game
 			winner = game.winner,
-			team1 = game.teams[0],
-			team2 = game.teams[1];
+			team1_id = game.teams[0],
+			team2_id = game.teams[1];
 
 		gamesEdit.teams = this.model.get('teams');
 		gamesEdit.homeTeam = game.teams[0];
@@ -497,14 +497,14 @@ GamesView = Backbone.View.extend({
 			//change the WLT for the teams
 			
 			if (winner === 0) {
-				this.model.decrementWins(team1, {silent: true});
-				this.model.decrementLosses(team2, {silent: true});
+				this.model.decrementWins(team1_id, {silent: true});
+				this.model.decrementLosses(team2_id, {silent: true});
 			} else if (winner === 1) {
-				this.model.decrementWins(team2, {silent: true});
-				this.model.decrementLosses(team1, {silent: true});
+				this.model.decrementWins(team2_id, {silent: true});
+				this.model.decrementLosses(team1_id, {silent: true});
 			} else {
-				this.model.decrementTies(team1, {silent: true});
-				this.model.decrementTies(team2, {silent: true});
+				this.model.decrementTies(team1_id, {silent: true});
+				this.model.decrementTies(team2_id, {silent: true});
 			}
 
 			if (gamesEdit.winner === 0) {
@@ -519,14 +519,14 @@ GamesView = Backbone.View.extend({
 				this.model.incrementTies(gamesEdit.awayTeam, {silent: true});
 			}
 			//events here, custom events that are more specific
-			if (team1 !== gamesEdit.homeTeam) {
+			if (team1_id !== gamesEdit.homeTeam) {
 				this.model.trigger('change:teams:'+gamesEdit.homeTeam.toString());
 			}
-			this.model.trigger('change:teams:'+team1.toString());
-			if (team2 !== gamesEdit.awayTeam) {
+			this.model.trigger('change:teams:'+team1_id.toString());
+			if (team2_id !== gamesEdit.awayTeam) {
 				this.model.trigger('change:teams:'+gamesEdit.awayTeam.toString());
 			}
-			this.model.trigger('change:teams:'+team2.toString());
+			this.model.trigger('change:teams:'+team2_id.toString());
 
 			gamesEdit.unbind('submit');
 			gamesEdit.unbind('cancel');
