@@ -204,13 +204,23 @@ TeamsView = Backbone.View.extend({
 		//$('ul li div:nth-child(5)', this.$el).click($.proxy(this.editTeam, this));
 		//$('ul li div:nth-child(6)', this.$el).click($.proxy(this.removeTeam, this));
 	},
-	hide: function() {
-		this.isShowing = false;
-		$('ul', this.$el).slideUp();
+	hide: function(callback) {
+		if (this.isShowing) {
+			this.isShowing = false;
+			$('ul', this.$el).slideUp(400, callback);
+		} else {
+			callback();
+		}
+		
 	},
-	show: function() {
-		this.isShowing = true;
-		$('ul', this.$el).slideDown();
+	show: function(callback) {
+		if (!this.isShowing) {
+			this.isShowing = true;
+			$('ul', this.$el).slideDown(400, callback);
+		} else if (callback) {
+			callback();
+		}
+		
 	},
 	toggle: function() {
 		if (this.isShowing) {
@@ -290,11 +300,12 @@ TeamsView = Backbone.View.extend({
 
 	},
 	addTeam: function() {
-			var defaultObj = {
-				name: "New Team",
-				WLT: [0,0,0],
-				teamID: this.getNewID()
-			},
+			
+		var defaultObj = {
+			name: "New Team",
+			WLT: [0,0,0],
+			teamID: this.getNewID()
+		},
 			listEl = $('<li></li>');
 
 		//pushing to the teams property
@@ -309,6 +320,9 @@ TeamsView = Backbone.View.extend({
 				.append('<div>Losses: 0</div>')
 				.append('<div>Ties: 0</div>')
 				.append('<div>edit</div><div>delete</div>').appendTo('#teams ul');
+
+		this.show();
+				
 
 	},
 	removeTeam: function(event) {
@@ -393,13 +407,25 @@ GamesView = Backbone.View.extend({
 
 	},
 	
-	show: function() {
-		$('ul', this.$el).slideDown();
-		this.isShowing = true;
+	//contains optional callbacks for after the 
+	//show and hide methods have completed
+	show: function(callback) {
+		if (!this.isShowing) {
+			$('ul', this.$el).slideDown(400, callback);
+			this.isShowing = true;
+		} else if (callback) {
+			callback();
+		}
+			
 	},
-	hide: function() {
-		$('ul', this.$el).slideUp();
-		this.isShowing = false;
+	hide: function(callback) {
+		if (this.isShowing) {
+			$('ul', this.$el).slideUp(400, callback);
+			this.isShowing = false;
+		} else {
+			callback();
+		}
+			
 	},
 	toggle: function() {
 		if (this.isShowing) {
@@ -483,6 +509,8 @@ GamesView = Backbone.View.extend({
 		//make sure there are atleast 2 teams before allowing a game to
 		//be added
 		if (teams.length >= 2) {
+			
+			
 			gameObj = {
 				date: DateHelper.dateStringFromDate(new Date()),
 				startTime: '01:00am',
@@ -496,6 +524,9 @@ GamesView = Backbone.View.extend({
 			this.insertGame(gameObj);
 			this.model.incrementTies(teams[0].teamID);
 			this.model.incrementTies(teams[1].teamID);
+			this.show();
+			
+				
 		} else {
 			alert('You must have at least 2 registered teams before creating a game');
 		}
