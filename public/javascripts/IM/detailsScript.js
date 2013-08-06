@@ -279,6 +279,13 @@ TeamsView = Backbone.View.extend({
 		}
 			
 	},
+	generateTeamView: function(teamObj) {
+		return ($('<li teamid="'+teamObj.teamID+'"></li>').append('<div>'+teamObj.name+'</div>')
+							.append('<div>Wins: '+teamObj.WLT[0].toString()+'</div>')
+							.append('<div>Losses: '+teamObj.WLT[1].toString()+'</div>')
+							.append('<div>Ties: '+teamObj.WLT[2].toString()+'</div>')
+							.append('<div>edit</div><div>delete</div>'));
+	},
 	//fix this to make sure teamObj has the correct properties
 	setTeamAtIndex: function(index, teamObj) {
 		var teamEl = $('ul li:nth-child('+(index+1)+')', this.$el);
@@ -299,8 +306,7 @@ TeamsView = Backbone.View.extend({
 			name: "New Team",
 			WLT: [0,0,0],
 			teamID: this.getNewID()
-		},
-			listEl = $('<li></li>');
+		};
 
 		//pushing to the teams property
 		//also adds to the model because
@@ -309,11 +315,7 @@ TeamsView = Backbone.View.extend({
 		this.teams.push(defaultObj);
 		
 
-		listEl	.append('<div>New Team</div>')
-				.append('<div>Wins: 0</div>')
-				.append('<div>Losses: 0</div>')
-				.append('<div>Ties: 0</div>')
-				.append('<div>edit</div><div>delete</div>').appendTo('#teams ul');
+		$('#teams ul').append(this.generateTeamView(defaultObj));
 		//bind events related to the newly created team
 		this.model.on('change:teams:'+defaultObj.teamID.toString(), function() {
 			
@@ -367,12 +369,7 @@ TeamsView = Backbone.View.extend({
 		//remove the currently-existing elements from this list
 		list.children().remove();
 		for (i =0, n = this.teams.length; i < n; ++i) {
-			$('<li></li>')	.append('<div>'+ this.teams[i].name + '</div>')
-							.append('<div>Wins: ' + this.teams[i].WLT[0] + '</div>')
-							.append('<div>Losses: ' + this.teams[i].WLT[1] + '</div>')
-							.append('<div>Ties: ' + this.teams[i].WLT[2] + '</div>')
-							.append('<div>edit</div><div>delete</div>').appendTo(list);
-
+			list.append(this.generateTeamView(this.teams[i]));
 		}
 
 		for (i = 0, n = this.teams.length; i < n; ++i) {
@@ -380,7 +377,7 @@ TeamsView = Backbone.View.extend({
 			//cache the index in a local variable
 			var index = i;
 			this.model.on('change:teams:'+this.teams[i].teamID.toString(), function() {
-				var team = model.get('teams')[index];
+				var team = this.model.get('teams')[index];
 				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(1)', this.$el).text(team.name);
 				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(2)', this.$el).text('Wins: ' + team.WLT[0].toString());
 				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(3)', this.$el).text('Losses: ' + team.WLT[1].toString());
