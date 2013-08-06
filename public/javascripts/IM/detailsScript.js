@@ -583,14 +583,34 @@ GamesView = Backbone.View.extend({
 			});
 
 		confirmation.on('clicked1', function() {
+			var team1_id = this.games[index].teams[0],
+				team2_id = this.games[index].teams[1],
+				winner = this.games[index].winner;
+				
+
+			if (winner === 0) {
+				this.model.decrementWins(team1_id, {silent: true});
+				this.model.decrementLosses(team2_id, {silent: true});
+			} else if (winner === 1) {
+				this.model.decrementLosses(team1_id, {silent: true});
+				this.model.decrementWins(team2_id, {silent: true});
+			} else {
+				//2: tie
+				this.model.decrementTies(team1_id, {silent: true});
+				this.model.decrementTies(team2_id, {silent: true});
+			}
+			this.model.trigger('change:teams:'+team1_id.toString());
+			this.model.trigger('change:teams:'+team2_id.toString());
 
 			this.games.splice(index, 1);
 			$("#games ul li:nth-child("+(index+1).toString()+")").slideUp(400, function() {
 				$("#games ul li:nth-child("+(index+1).toString()+")").remove();
 			});
+
 			confirmation.unbind('clicked1');
 			confirmation.unbind('clicked2');
 		}.bind(this));
+
 		confirmation.on('clicked2', function() {
 			confirmation.unbind('clicked1');
 			confirmation.unbind('clicked2');
