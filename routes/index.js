@@ -275,7 +275,8 @@ exports.updateIntramurals = function(req, res) {
 };
 
 exports.deleteIntramurals = function(req, res) {
-	db.deleteIntramurals(req.id, function(err) {
+	
+	db.deleteIntramurals(req.headers._id, function(err) {
 		if (err) {
 			res.statusCode = 500;
 			res.send(err);
@@ -285,6 +286,7 @@ exports.deleteIntramurals = function(req, res) {
 		}
 		
 	});
+
 };
 
 exports.intramuralFiles = function(req, res) {

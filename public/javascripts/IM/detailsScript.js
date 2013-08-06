@@ -1265,5 +1265,5 @@ $('#saveModel').click(function() {
 }.bind(this));
 
 $('#delete').click(function() {
-	sportModel.destroy();
+	sportModel.destroy({headers: {_id: sportModel.id}});
 });
