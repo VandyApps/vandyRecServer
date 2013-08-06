@@ -494,6 +494,8 @@ GamesView = Backbone.View.extend({
 
 			};
 			this.insertGame(gameObj);
+			this.model.incrementTies(teams[0].teamID);
+			this.model.incrementTies(teams[1].teamID);
 		} else {
 			alert('You must have at least 2 registered teams before creating a game');
 		}
