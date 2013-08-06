@@ -1237,10 +1237,7 @@ IMModel.getCollection().on('sync', function() {
 
 //set up loose functions and events here
 $('#saveModel').click(function() {
-	sportModel.save({
-		success: this.displaySaved(),
-		wait: true
-	});
+	sportModel.save();
 
 }.bind(this));
 
