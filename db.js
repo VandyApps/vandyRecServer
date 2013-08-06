@@ -412,7 +412,7 @@
 		var parsedID = new ObjectID.createFromHexString(object._id);
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collections.intramurals, function(err, collection) {
-				collection.update({id: parsedID},
+				collection.update({_id: parsedID},
 				{
 					sport: object.sport,
 					season: object.season,
@@ -422,7 +422,7 @@
 					games: object.games
 
 				}, function(err, numUpdated) {
-					if (numUpdated) {
+					if (err) {
 
 						callback(err, null);
 					} else {
