@@ -182,6 +182,8 @@ TeamsView = Backbone.View.extend({
 		var i, n;
 		this.model = model;
 		this.teams = model.get('teams');
+
+		//setting the teams elements
 		this.resetTeams();
 		this.model.on('change:teams', function() {
 
@@ -189,15 +191,7 @@ TeamsView = Backbone.View.extend({
 			this.resetTeams();
 
 		}.bind(this));
-		for (i = 0, n = this.teams.length; i < n; ++i) {
-			var index = i;
-			this.model.on('change:teams:'+this.teams[i].teamID.toString(), function() {
-
-				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(2)', this.$el).text('Wins: ' + model.get('teams')[index].WLT[0].toString());
-				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(3)', this.$el).text('Losses: ' + model.get('teams')[index].WLT[1].toString());
-				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(4)', this.$el).text('Ties: ' + model.get('teams')[index].WLT[2].toString());
-			}.bind(this));
-		}
+		
 		//add separate event for clicking the edit button
 		//so that the event is registered with the specific 
 		//element that is clicked instead of this.$el
@@ -320,7 +314,11 @@ TeamsView = Backbone.View.extend({
 				.append('<div>Losses: 0</div>')
 				.append('<div>Ties: 0</div>')
 				.append('<div>edit</div><div>delete</div>').appendTo('#teams ul');
+		//bind events related to the newly created team
+		this.model.on('change:teams:'+defaultObj.teamID.toString(), function() {
+			
 
+		});
 		this.show();
 				
 
@@ -358,7 +356,15 @@ TeamsView = Backbone.View.extend({
 	//removes all currently set teams and resets the teams displayed using the
 	//teams property
 	resetTeams: function() {
+		console.log("resetTeams was called");
 		var i, n, list = $('ul', this.$el);
+
+		//unbind any events that could have been
+		//set previously by calls to this method
+		for (i=0, n = this.teams.length; i < n; ++i) {
+			this.model.unbind('change:teams:'+this.teams[i].teamID.toString());
+		}
+		//remove the currently-existing elements from this list
 		list.children().remove();
 		for (i =0, n = this.teams.length; i < n; ++i) {
 			$('<li></li>')	.append('<div>'+ this.teams[i].name + '</div>')
@@ -367,6 +373,19 @@ TeamsView = Backbone.View.extend({
 							.append('<div>Ties: ' + this.teams[i].WLT[2] + '</div>')
 							.append('<div>edit</div><div>delete</div>').appendTo(list);
 
+		}
+
+		for (i = 0, n = this.teams.length; i < n; ++i) {
+			console.log("Binding the events now");
+			//cache the index in a local variable
+			var index = i;
+			this.model.on('change:teams:'+this.teams[i].teamID.toString(), function() {
+				var team = model.get('teams')[index];
+				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(1)', this.$el).text(team.name);
+				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(2)', this.$el).text('Wins: ' + team.WLT[0].toString());
+				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(3)', this.$el).text('Losses: ' + team.WLT[1].toString());
+				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(4)', this.$el).text('Ties: ' + team.WLT[2].toString());
+			}.bind(this));
 		}
 	}
 });
@@ -404,6 +423,14 @@ GamesView = Backbone.View.extend({
 			this.games = model.get('games');
 			this.sortAndDisplay();
 		}.bind(this));
+
+		model.get('teams').forEach(function(team) {
+			model.on('change:teams:'+team.teamID.toString(), function() {
+				console.log('change teams was called');
+				$('#games ul li div:nth-child(3) span[teamid="'+team.teamID.toString()+'"]').text(team.name);
+			});
+		});
+		
 
 	},
 	
@@ -637,7 +664,7 @@ GamesView = Backbone.View.extend({
 			awayTeam = this.model.teamWithID(game.teams[1]),
 			el =  $('<li></li>').append('<div>'+game.date+'</div>')
 								.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
-								.append('<div><span>'+homeTeam.name+'</span>Vs<span>'+awayTeam.name+'</span></div>')
+								.append('<div><span teamid="'+game.teams[0].toString()+'">'+homeTeam.name+'</span>Vs<span teamid="'+game.teams[1].toString()+'">'+awayTeam.name+'</span></div>')
 								.append('<div>'+game.location+'</div>')
 								.append('<div>'+game.score[0].toString()+'-'+game.score[1].toString()+'</div>')
 								.append('<div>edit</div>')
