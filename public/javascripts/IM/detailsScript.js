@@ -29,7 +29,6 @@ NameView = Backbone.View.extend({
 			
 			this.sportName = model.get('sport');
 			$('h3', this.$el).text(model.get('sport'));
-			this.trigger('unsavedChanges');
 		}.bind(this));
 	},
 	editName: function() {
@@ -81,7 +80,6 @@ E_DatesView = Backbone.View.extend({
 			this.endDate = model.get('entryDates').end;
 			$('span:nth-of-type(1)', this.$el).text(this.startDate);
 			$('span:nth-of-type(2)', this.$el).text(this.endDate);
-			this.trigger('unsavedChanges');
 
 		}.bind(this));
 	},
@@ -140,7 +138,6 @@ S_DatesView = Backbone.View.extend({
 			this.endDate = model.get('seasonDates').end;
 			$('span:nth-of-type(1)', this.$el).text(this.startDate);
 			$('span:nth-of-type(2)', this.$el).text(this.endDate);
-			this.trigger('unsavedChanges');
 
 		}.bind(this));
 	},
@@ -190,7 +187,6 @@ TeamsView = Backbone.View.extend({
 
 			this.teams = model.get('teams');
 			this.resetTeams();
-			this.trigger('unsavedChanges');
 
 		}.bind(this));
 		for (i = 0, n = this.teams.length; i < n; ++i) {
@@ -393,7 +389,6 @@ GamesView = Backbone.View.extend({
 
 			this.games = model.get('games');
 			this.sortAndDisplay();
-			this.trigger('unsavedChanges');
 		}.bind(this));
 
 	},
@@ -1222,16 +1217,25 @@ EditView = (function() {
 //need to make the fetch method more efficient so that
 //it grabs only a single model
 
+IMModel.getCollection().fetch();
+IMModel.getCollection().on('sync', function() {
+	var collection = IMModel.getCollection(),
+		id = JSON.parse(sessionStorage.id);
+	
+	sportModel = collection.get(id);
+	
+	nameView = NameView.getInstance();
+	entryDatesView = E_DatesView.getInstance();
+	seasonDatesView = new S_DatesView.getInstance();
+	teamsView = TeamsView.getInstance();
+	gamesView = new GamesView.getInstance();
 
-sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model));
-nameView = NameView.getInstance();
-entryDatesView = E_DatesView.getInstance();
-seasonDatesView = new S_DatesView.getInstance();
-teamsView = TeamsView.getInstance();
-gamesView = new GamesView.getInstance();
+
+});
+	
 
 
-//set up ;oose functions and events here
+//set up loose functions and events here
 $('#saveModel').click(function() {
 	sportModel.save({
 		success: this.displaySaved(),
@@ -1240,21 +1244,6 @@ $('#saveModel').click(function() {
 
 }.bind(this));
 
-sportModel.on('unsavedChanges', function() {
-	displayUnsaved();
-});
-
-function displaySaved() {
-	$('#saveModel').css({'backgroundColor': 'green'}).text('Saved!');
-
-}
-
-function displayUnsaved() {
-	$('#saveModel').css({'backgroundColor': '#fc654c'}).text('Save');
-}
-
-//display save button as already saved on load
-displaySaved();
 
 
 

@@ -42,7 +42,12 @@ IMView.TableElement = Backbone.View.extend({
 
 	},
 	navigateToDetails: function() {
-		sessionStorage.model = JSON.stringify(this.model);
+		if (this.model.isNew()) {
+
+		} else {
+			sessionStorage.id = JSON.stringify(this.model.get('_id'));
+		}
+		
 	}
 });
 
