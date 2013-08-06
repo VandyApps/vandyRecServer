@@ -186,7 +186,7 @@ TeamsView = Backbone.View.extend({
 		//setting the teams elements
 		this.resetTeams();
 		this.model.on('change:teams', function() {
-
+			console.log("Change teams was called");
 			this.teams = model.get('teams');
 			this.resetTeams();
 
@@ -372,18 +372,20 @@ TeamsView = Backbone.View.extend({
 			list.append(this.generateTeamView(this.teams[i]));
 		}
 
-		for (i = 0, n = this.teams.length; i < n; ++i) {
+		this.model.get('teams').forEach(function(team, index) {
 			console.log("Binding the events now");
 			//cache the index in a local variable
-			var index = i;
-			this.model.on('change:teams:'+this.teams[i].teamID.toString(), function() {
-				var team = this.model.get('teams')[index];
-				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(1)', this.$el).text(team.name);
-				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(2)', this.$el).text('Wins: ' + team.WLT[0].toString());
-				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(3)', this.$el).text('Losses: ' + team.WLT[1].toString());
-				$('ul li:nth-child('+(index+1).toString()+') div:nth-child(4)', this.$el).text('Ties: ' + team.WLT[2].toString());
-			}.bind(this));
-		}
+			//these bind to teams at different indices, so if a team changes its index,
+			//this needs to be reset as well
+			this.model.on('change:teams:'+team.teamID.toString(), function() {
+				console.log("Index: " + index);
+				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
+				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
+				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
+				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(4)').text('Ties: ' + team.WLT[2].toString());
+			});
+
+		}.bind(this));
 	}
 });
 
@@ -546,8 +548,15 @@ GamesView = Backbone.View.extend({
 
 			};
 			this.insertGame(gameObj);
-			this.model.incrementTies(teams[0].teamID);
-			this.model.incrementTies(teams[1].teamID);
+			//silent events
+			this.model.incrementTies(teams[0].teamID, true);
+			this.model.incrementTies(teams[1].teamID, true);
+			//don't call change or change:teams since these events
+			//will call reset functionalities that take
+			//more processing power
+			console.log('Team id: ' + teams[0].teamID);
+			this.model.trigger('change:teams:'+teams[0].teamID.toString());
+			this.model.trigger('change:teams:'+teams[1].teamID.toString());
 			this.show();
 			
 				
@@ -624,7 +633,8 @@ GamesView = Backbone.View.extend({
 	//adds game to the model and to the property
 	//has an options to change the value in the model,
 	//if no value is passed in as a second parameter,
-	//the model is changed
+	//the model is changed.  The insertion process does
+	//not call any events, events should be called explicitly if desired
 	insertGame: function(gameObj) {
 		var insertIndex,
 			//cache the length because it changes before some code can
