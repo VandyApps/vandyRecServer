@@ -275,7 +275,16 @@ exports.updateIntramurals = function(req, res) {
 };
 
 exports.deleteIntramurals = function(req, res) {
-	res.send("delete intramurals here");
+	db.deleteIntramurals(req.id, function(err) {
+		if (err) {
+			res.statusCode = 500;
+			res.send(err);
+		} else {
+			res.statusCode = 200;
+			res.send(null);
+		}
+		
+	});
 };
 
 exports.intramuralFiles = function(req, res) {
