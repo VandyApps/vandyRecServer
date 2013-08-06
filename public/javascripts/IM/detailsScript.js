@@ -497,27 +497,36 @@ GamesView = Backbone.View.extend({
 			//change the WLT for the teams
 			
 			if (winner === 0) {
-				this.model.decrementWins(team1);
-				this.model.decrementLosses(team2);
+				this.model.decrementWins(team1, {silent: true});
+				this.model.decrementLosses(team2, {silent: true});
 			} else if (winner === 1) {
-				this.model.decrementWins(team2);
-				this.model.decrementLosses(team1);
+				this.model.decrementWins(team2, {silent: true});
+				this.model.decrementLosses(team1, {silent: true});
 			} else {
-				this.model.decrementTies(team1);
-				this.model.decrementTies(team2);
+				this.model.decrementTies(team1, {silent: true});
+				this.model.decrementTies(team2, {silent: true});
 			}
 
 			if (gamesEdit.winner === 0) {
-				this.model.incrementWins(gamesEdit.homeTeam);
-				this.model.incrementLosses(gamesEdit.awayTeam);
+				this.model.incrementWins(gamesEdit.homeTeam, {silent: true});
+				this.model.incrementLosses(gamesEdit.awayTeam, {silent: true});
 
 			} else if (gamesEdit.winner === 1) {
-				this.model.incrementWins(gamesEdit.awayTeam);
-				this.model.incrementLosses(gamesEdit.homeTeam);
+				this.model.incrementWins(gamesEdit.awayTeam, {silent: true});
+				this.model.incrementLosses(gamesEdit.homeTeam, {silent: true});
 			} else {
-				this.model.incrementTies(gamesEdit.homeTeam);
-				this.model.incrementTies(gamesEdit.awayTeam);
+				this.model.incrementTies(gamesEdit.homeTeam, {silent: true});
+				this.model.incrementTies(gamesEdit.awayTeam, {silent: true});
 			}
+			//events here, custom events that are more specific
+			if (team1 !== gamesEdit.homeTeam) {
+				this.model.trigger('change:teams:'+gamesEdit.homeTeam.toString());
+			}
+			this.model.trigger('change:teams:'+team1.toString());
+			if (team2 !== gamesEdit.awayTeam) {
+				this.model.trigger('change:teams:'+gamesEdit.awayTeam.toString());
+			}
+			this.model.trigger('change:teams:'+team2.toString());
 
 			gamesEdit.unbind('submit');
 			gamesEdit.unbind('cancel');
