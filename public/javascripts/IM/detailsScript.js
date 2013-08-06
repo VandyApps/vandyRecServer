@@ -1212,25 +1212,31 @@ EditView = (function() {
 })();
 
 
-
-//Script starts here
-//need to make the fetch method more efficient so that
-//it grabs only a single model
-
-IMModel.getCollection().fetch();
-IMModel.getCollection().on('sync', function() {
-	var collection = IMModel.getCollection(),
-		id = JSON.parse(sessionStorage.id);
-	
-	sportModel = collection.get(id);
-	
+//this method should be called after sportModel has been set
+function setupViews() {
 	nameView = NameView.getInstance();
 	entryDatesView = E_DatesView.getInstance();
 	seasonDatesView = S_DatesView.getInstance();
 	teamsView = TeamsView.getInstance();
 	gamesView = GamesView.getInstance();
+};
 
+//Script starts here
+//need to make the fetch method more efficient so that
+//it grabs only a single model
+if (sessionStorage.id !== 'null') {
+	IMModel.getCollection().fetch();
+} else {
+	sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model));
+	setupViews();
+}
 
+IMModel.getCollection().on('sync', function() {
+	var collection = IMModel.getCollection(),
+		id = sessionStorage.id;
+	
+	sportModel = collection.get(id);
+	setupViews();
 });	
 
 

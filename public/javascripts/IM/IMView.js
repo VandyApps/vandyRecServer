@@ -43,9 +43,11 @@ IMView.TableElement = Backbone.View.extend({
 	},
 	navigateToDetails: function() {
 		if (this.model.isNew()) {
-
+			sessionStorage.id = null;
+			sessionStorage.model = JSON.stringify(this.model);
 		} else {
-			sessionStorage.id = JSON.stringify(this.model.get('_id'));
+			sessionStorage.id = this.model.get('_id');
+			sessionStorage.model = null;
 		}
 		
 	}
@@ -112,24 +114,7 @@ IMView.TableSection = Backbone.View.extend({
 	//creates a view that is appended to the table
 	//the model is not persisted to the database
 	addElement: function() {
-		var modelData = {
-				sport: "New Sport",
-				season: this.season,
-				entryDates: {
-					start: "02/01/2013",
-					end: "03/03/2013"
-				},
-				seasonDates: {
-					start: "01/01/2013",
-					end: "01/05/2013",
-				},
-				teams: [],
-				games: []
-			},
-
-			
-			model = new IMModel.Sport(modelData);
-
+		var model = new IMModel.Sport({season: this.season});
 
 		IMModel.getCollection().insert(model);
 		this.append(model);
