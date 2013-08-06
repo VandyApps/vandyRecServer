@@ -510,10 +510,9 @@ GamesView = Backbone.View.extend({
 		confirmation.on('clicked1', function() {
 
 			this.games.splice(index, 1);
-			$("ul li:nth-child("+(index+1).toString()+")", this.$el).slideUp(400, function() {
-				$("ul li:nth-child("+(index+1).toString()+")",this.$el).remove();
+			$("#games ul li:nth-child("+(index+1).toString()+")").slideUp(400, function() {
+				$("#games ul li:nth-child("+(index+1).toString()+")").remove();
 			});
-
 			confirmation.unbind('clicked1');
 			confirmation.unbind('clicked2');
 		}.bind(this));
