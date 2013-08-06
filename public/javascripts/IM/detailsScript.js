@@ -1226,13 +1226,12 @@ IMModel.getCollection().on('sync', function() {
 	
 	nameView = NameView.getInstance();
 	entryDatesView = E_DatesView.getInstance();
-	seasonDatesView = new S_DatesView.getInstance();
+	seasonDatesView = S_DatesView.getInstance();
 	teamsView = TeamsView.getInstance();
-	gamesView = new GamesView.getInstance();
+	gamesView = GamesView.getInstance();
 
 
-});
-	
+});	
 
 
 //set up loose functions and events here
@@ -1241,7 +1240,6 @@ $('#saveModel').click(function() {
 
 }.bind(this));
 
-
-
-
-
+$('#delete').click(function() {
+	sportModel.destroy();
+});
