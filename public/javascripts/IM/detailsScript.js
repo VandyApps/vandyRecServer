@@ -1243,7 +1243,24 @@ IMModel.getCollection().on('sync', function() {
 
 //set up loose functions and events here
 $('#saveModel').click(function() {
-	sportModel.save();
+	if (sportModel.isNew()) {
+		console.log("Saving new model");
+		sportModel.save(null, {
+			success: function(models, response) {
+				//assign the sport model a new id
+				//and cache the id in the session
+				sessionStorage.id = response[0]._id;
+				sportModel.set('_id', response[0]._id);
+
+			},
+			error: function() {
+				console.log("Posting of a new model failed");
+			}
+		});
+	} else {
+		sportModel.save();
+	}
+	
 
 }.bind(this));
 
