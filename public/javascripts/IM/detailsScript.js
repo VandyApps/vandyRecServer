@@ -549,8 +549,8 @@ GamesView = Backbone.View.extend({
 			};
 			this.insertGame(gameObj);
 			//silent events
-			this.model.incrementTies(teams[0].teamID, true);
-			this.model.incrementTies(teams[1].teamID, true);
+			this.model.incrementTies(teams[0].teamID, {silent: true});
+			this.model.incrementTies(teams[1].teamID, {silent: true});
 			//don't call change or change:teams since these events
 			//will call reset functionalities that take
 			//more processing power

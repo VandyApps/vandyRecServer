@@ -100,12 +100,12 @@ IMModel.Sport = Backbone.Model.extend({
 		return team;
 	},
 	//sets the wins, losses, ties at the specified index
-	decrementWins: function(id, silent) {
+	decrementWins: function(id, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[0] -= 1;
-			if (!silent) {
+			if (!options || !options.silent) {
 				this.trigger('change');
 				this.trigger('change:teams');
 				this.trigger('change:teams:'+id.toString());
@@ -115,24 +115,24 @@ IMModel.Sport = Backbone.Model.extend({
 		}
 		
 	},
-	incrementWins: function(id, silent) {
+	incrementWins: function(id, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[0] += 1;
-			if (!silent) {
+			if (!options || !options.silent) {
 				this.trigger('change');
 				this.trigger('change:teams');
 				this.trigger('change:teams:'+id.toString());
 			}
 		}
 	},
-	setWins: function(id, value, silent) {
+	setWins: function(id, value, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[0] = value;
-			if (!silent) {
+			if (!options || !options.silent) {
 				this.trigger('change');
 				this.trigger('change:teams');
 				this.trigger('change:teams:'+id.toString());
@@ -140,12 +140,12 @@ IMModel.Sport = Backbone.Model.extend({
 
 		}
 	},
-	decrementLosses: function(id, silent) {
+	decrementLosses: function(id, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[1] -= 1;
-			if (!silent) {
+			if (!options || !options.silent) {
 				this.trigger('change');
 				this.trigger('change:teams');
 				this.trigger('change:teams:'+id.toString());
@@ -153,12 +153,12 @@ IMModel.Sport = Backbone.Model.extend({
 
 		}
 	},
-	incrementLosses: function(id, silent) {
+	incrementLosses: function(id, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[1] += 1;
-			if (!silent) {
+			if (!options || !options.silent) {
 				this.trigger('change');
 				this.trigger('change:teams');
 				this.trigger('change:teams:'+id.toString());
@@ -166,12 +166,12 @@ IMModel.Sport = Backbone.Model.extend({
 
 		}
 	},
-	setLosses: function(id, value, silent) {
+	setLosses: function(id, value, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[1] = value;
-			if (!silent) {
+			if (!options || !options.silent) {
 				this.trigger('change');
 				this.trigger('change:teams');
 				this.trigger('change:teams:'+id.toString());
@@ -179,12 +179,12 @@ IMModel.Sport = Backbone.Model.extend({
 
 		}
 	},
-	decrementTies: function(id, silent) {
+	decrementTies: function(id, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[2] -= 1;
-			if (!silent) {
+			if (!options || !options.silent) {
 				this.trigger('change');
 				this.trigger('change:teams');
 				this.trigger('change:teams:'+id.toString());
@@ -192,12 +192,12 @@ IMModel.Sport = Backbone.Model.extend({
 
 		}
 	},
-	incrementTies: function(id, silent) {
+	incrementTies: function(id, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[2] += 1;
-			if (!silent) {
+			if (!options || !options.silent) {
 				this.trigger('change');
 				this.trigger('change:teams');
 				this.trigger('change:teams:'+id.toString());
@@ -205,12 +205,12 @@ IMModel.Sport = Backbone.Model.extend({
 
 		}
 	},
-	setTies: function(id, value, silent) {
+	setTies: function(id, value, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
 			team.WLT[2] = value;
-			if (!silent) {
+			if (!options || !options.silent) {
 				this.trigger('change');
 				this.trigger('change:teams');
 				this.trigger('change:teams:'+id.toString());
