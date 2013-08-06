@@ -303,24 +303,32 @@ TeamsView = Backbone.View.extend({
 	addTeam: function() {
 			
 		var defaultObj = {
-			name: "New Team",
-			WLT: [0,0,0],
-			teamID: this.getNewID()
-		};
+				name: "New Team",
+				WLT: [0,0,0],
+				teamID: this.getNewID()
+			},
+			team,
+			index;
 
 		//pushing to the teams property
 		//also adds to the model because
 		//the teams property is a direct
 		//reference of the model
 		this.teams.push(defaultObj);
-		
+		teamID = defaultObj.teamID;
+		index = this.teams.length - 1;
 
 		$('#teams ul').append(this.generateTeamView(defaultObj));
 		//bind events related to the newly created team
 		this.model.on('change:teams:'+defaultObj.teamID.toString(), function() {
-			
+			var team = this.model.teamWithID(teamID);
+			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
+			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
+			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
+			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(4)').text('Ties: ' + team.WLT[2].toString());
 
-		});
+		}.bind(this));
+
 		this.show();
 				
 
@@ -425,7 +433,7 @@ GamesView = Backbone.View.extend({
 
 		model.get('teams').forEach(function(team) {
 			model.on('change:teams:'+team.teamID.toString(), function() {
-				console.log('change teams was called');
+				console.log('change team was called by game for team ' + team.teamID.toString());
 				$('#games ul li div:nth-child(3) span[teamid="'+team.teamID.toString()+'"]').text(team.name);
 			});
 		});
@@ -464,7 +472,7 @@ GamesView = Backbone.View.extend({
 		var gamesEdit = EditView.getInstance('games'),
 			index = this.getIndex(event),
 			game = this.games[index],
-			//cahce properties of the original game
+			//cache properties of the original game
 			winner = game.winner,
 			team1_id = game.teams[0],
 			team2_id = game.teams[1];
@@ -518,12 +526,15 @@ GamesView = Backbone.View.extend({
 				this.model.incrementTies(gamesEdit.homeTeam, {silent: true});
 				this.model.incrementTies(gamesEdit.awayTeam, {silent: true});
 			}
+
 			//events here, custom events that are more specific
 			if (team1_id !== gamesEdit.homeTeam) {
+				
 				this.model.trigger('change:teams:'+gamesEdit.homeTeam.toString());
 			}
 			this.model.trigger('change:teams:'+team1_id.toString());
 			if (team2_id !== gamesEdit.awayTeam) {
+
 				this.model.trigger('change:teams:'+gamesEdit.awayTeam.toString());
 			}
 			this.model.trigger('change:teams:'+team2_id.toString());
@@ -557,17 +568,19 @@ GamesView = Backbone.View.extend({
 
 			};
 			this.insertGame(gameObj);
-			//silent events
+			//silent events because these methods call events that
+			//work on a larger scale like "change", that will
+			//cause ui elements to totally reset
 			this.model.incrementTies(teams[0].teamID, {silent: true});
 			this.model.incrementTies(teams[1].teamID, {silent: true});
 			//don't call change or change:teams since these events
 			//will call reset functionalities that take
 			//more processing power
-			console.log('Team id: ' + teams[0].teamID);
+			
+			//call more specific events
 			this.model.trigger('change:teams:'+teams[0].teamID.toString());
 			this.model.trigger('change:teams:'+teams[1].teamID.toString());
 			this.show();
-			
 				
 		} else {
 			alert('You must have at least 2 registered teams before creating a game');
