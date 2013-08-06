@@ -3,7 +3,24 @@ var IMModel = {};
 IMModel.Sport = Backbone.Model.extend({
 	url: '/intramurals',
 	idAttribute: '_id',
-	
+	initialize: function(options) {
+		if (options) {
+			this.set('sport', options.sport || 'New Sport');
+			this.set('season', options.season || 0);
+			this.set('entryDates', options.entryDates || {start: '01/01/2013', end: '01/02/2013'});
+			this.set('seasonDates', options.seasonDates || {start: '02/01/2013', end: '02/02/2013'});
+			this.set('teams', options.teams || []);
+			this.set('games', options.games || []);
+		} else {
+			this.set('sport', 'New Sport');
+			this.set('season', 0);
+			this.set('entryDates', {start: '01/01/2013', end: '01/02/2013'});
+			this.set('seasonDates', {start: '02/01/2013', end: '02/02/2013'});
+			this.set('teams',  []);
+			this.set('games',  []);
+		}
+			
+	},
 	entryStart: function() {
 		return DateHelper.dateFromDateString(this.get('entryDates').start);
 	},
