@@ -436,7 +436,7 @@
 
 	exports.insertIntramurals = function(sport, callback) {
 		Db.connect(MONGODB_URL, function(err, db) {
-			db.collection(Collection.intramurals, function(err, collection) {
+			db.collection(Collections.intramurals, function(err, collection) {
 				collection.insert(sport, {w:1},function(err, sport) {
 					callback(err, sport);
 				});

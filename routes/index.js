@@ -248,7 +248,7 @@ exports.intramurals = function(req, res) {
 
 exports.createIntramurals = function(req, res) {
 	var data = req.body;
-	db.createIntramurals(data, function(err, object) {
+	db.insertIntramurals(data, function(err, object) {
 		if (err) {
 			res.statusCode = 500;
 			res.send(err);
