@@ -448,7 +448,7 @@
 		var parsedID = ObjectID.createFromHexString(id);
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collection.intramurals, function(err, collection) {
-				collection.remove({_id, parsedID}, function(err, numRemoved) {
+				collection.remove({_id: parsedID}, function(err, numRemoved) {
 					if (err) {
 						callback(err);
 					} else if (numRemoved === 0) {
