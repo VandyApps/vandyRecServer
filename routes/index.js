@@ -276,13 +276,13 @@ exports.updateIntramurals = function(req, res) {
 
 exports.deleteIntramurals = function(req, res) {
 	
-	db.deleteIntramurals(req.headers._id, function(err) {
+	db.deleteIntramurals(req.headers._id, function(err, sport) {
 		if (err) {
 			res.statusCode = 500;
 			res.send(err);
 		} else {
 			res.statusCode = 200;
-			res.send(req.headers._id);
+			res.send(sport);
 		}
 		
 	});

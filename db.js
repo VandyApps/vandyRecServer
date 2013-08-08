@@ -456,11 +456,11 @@
 					cursor.toArray(function(err, sports) {
 						collection.remove({_id: parsedID}, function(err, numRemoved) {
 							if (err) {
-								callback(err);
+								callback(err, null);
 							} else if (numRemoved === 0) {
-								callback(new Error("Did not remove anything"));
+								callback(new Error("Did not remove anything"), null);
 							} else {
-								callback(sports[0]);
+								callback(null, sports[0]);
 							}
 							db.close();
 						});
