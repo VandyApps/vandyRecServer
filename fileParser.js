@@ -1,25 +1,44 @@
 var jsdom = require('jsdom');
 	//array of data with all the sports 
 	//that were uploaded in the single document
-	sports = [];
-//sample object in sports
-/*
-	{
-		name: "",
-		//teams should be sorted in 
-		//winning order if the season is done
-		teams: [],
+	sports = [],
+	_ = require('underscore')._;
 
-		rank: [],
-		wins: [],
-		loses: [],
-		ties: [],
-		//an array of two values, start date 
-		//string and end date string
-		entryDates: [],
-		dates: []
+
+//add missing helper methods
+
+_.extendDeep = function(object) {
+	var property, copy;
+	if (Array.isArray(object)) {
+		copy = object.slice();
+		for (property in object) {
+			if (object.hasOwnProperty(property) && +property !== +property) {
+				//the property is not a number/index
+				//the property belongs to the prototype
+				if (typeof object[property] === 'object') {
+					copy[property] = _.extendDeep(object[property]);
+				} else {
+					copy[property] = object[property];
+				}
+			}
+		}
+	} else {
+		copy = {};
+		for (property in object) {
+			if (object.hasOwnProperty(property)) {
+				if (typeof object[property] === 'object') {
+					copy[property] = _.extendDeep(object[property]);
+				} 
+				else {
+					copy[property] = object[property];
+				}
+			}
+		}
 	}
-*/
+		
+	return copy;
+};
+//sample object in sports
 
 //helper functions for parsing 
 //sports
@@ -86,16 +105,17 @@ function tallyToNumber(window, element) {
 	
 }
 
-function matrixOfScores(window, table) {
+function matrixOfTeams(window, table) {
 	
 	//matrix is in the form: teamNumber, teamName, numOfWins, numOfLosses
 	
-	var table = window.$('body table:nth-child(3) tbody'), rowEl,
-	    matrix = [], i, j, m, n, row;
-	for (i = 1, n = table.children().length; i < n; ++i) {
+	var teamsTable = window.$('body table:nth-child(3) tbody'), rowEl,
+	    teams = [], i, j, m, n, nextTeam;
+	for (i = 1, n = teamsTable.children().length; i < n; ++i) {
 		
-		row = [];
-		for (j = 1, rowEl = table.children().eq(i), m = rowEl.children().length; j < m; ++j) {
+		nextTeam = [];
+
+		for (j = 1, rowEl = teamsTable.children().eq(i), m = rowEl.children().length; j < m; ++j) {
 			
 			if (j >= 2) {
 				row[j-1] = tallyToNumber(window, rowEl.children().eq(j));
@@ -105,7 +125,7 @@ function matrixOfScores(window, table) {
 			
 		}
 		
-		matrix.push(row.slice());
+		teams.push(nextTeam.slice());
 	}
 	
 	return matrix;
@@ -118,9 +138,21 @@ exports.parseHTML = function(html, callback) {
 	var document = jsdom.jsdom(html),
 	    window = document.createWindow();
 
-	console.log("Parse html called");
+
+	console.log("Test extend deep: ");
+	var hello = 
+	{
+		name: 'Brendan',
+		arr: [1, 2, 4, 6],
+		obj: {
+			name: 'Brendan nested',
+			arr: [1, 4, 6, 12]
+		},
+		number: 12
+	}
+	console.log(_.extendDeep(hell))
 	jsdom.jQueryify(window, './public/jQuery-ui/js/jquery-1.9.1.js', function() {
 		console.log("jquery called");
-		callback(matrixOfScores(window));
+		callback(matrixOfTeams(window));
 	});
 };
