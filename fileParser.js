@@ -88,7 +88,6 @@ function filterBadCharacters(text) {
 
 function tallyToNumber(window, element) {
 	console.log("in tally");
-	console.log(element);
 	var total = 0;
 	if (element.text() === "") {
 		return 0;
@@ -107,28 +106,28 @@ function tallyToNumber(window, element) {
 
 function matrixOfTeams(window, table) {
 	
-	//matrix is in the form: teamNumber, teamName, numOfWins, numOfLosses
-	
 	var teamsTable = window.$('body table:nth-child(3) tbody'), rowEl,
 	    teams = [], i, j, m, n, nextTeam;
 	for (i = 1, n = teamsTable.children().length; i < n; ++i) {
 		
-		nextTeam = [];
-
+		nextTeam = {};
+		nextTeam.WLT = new Array(3);
+		nextTeam.teamID = i;
 		for (j = 1, rowEl = teamsTable.children().eq(i), m = rowEl.children().length; j < m; ++j) {
 			
 			if (j >= 2) {
-				row[j-1] = tallyToNumber(window, rowEl.children().eq(j));
+				nextTeam.WLT[j-2] = tallyToNumber(window, rowEl.children().eq(j));
 			} else {
-				row[j-1] = filterBadCharacters(trimExtraSpaces(rowEl.children().eq(j).text().trim()));
+				nextTeam.name = filterBadCharacters(trimExtraSpaces(rowEl.children().eq(j).text().trim()));
 			}
 			
 		}
 		
-		teams.push(nextTeam.slice());
+		teams.push(_.extendDeep(nextTeam));
+		console.log(JSON.stringify(nextTeam));
 	}
 	
-	return matrix;
+	return teams;
 }
 
 
@@ -138,19 +137,6 @@ exports.parseHTML = function(html, callback) {
 	var document = jsdom.jsdom(html),
 	    window = document.createWindow();
 
-
-	console.log("Test extend deep: ");
-	var hello = 
-	{
-		name: 'Brendan',
-		arr: [1, 2, 4, 6],
-		obj: {
-			name: 'Brendan nested',
-			arr: [1, 4, 6, 12]
-		},
-		number: 12
-	}
-	console.log(_.extendDeep(hell))
 	jsdom.jQueryify(window, './public/jQuery-ui/js/jquery-1.9.1.js', function() {
 		console.log("jquery called");
 		callback(matrixOfTeams(window));
