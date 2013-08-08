@@ -429,6 +429,7 @@
 						console.log("No error: " + JSON.stringify(object));
 						callback(err, object);
 					}
+					db.close();
 				});
 			});
 		});
@@ -439,6 +440,7 @@
 			db.collection(Collections.intramurals, function(err, collection) {
 				collection.insert(sport, {w:1},function(err, sport) {
 					callback(err, sport);
+					db.close();
 				});
 			});
 		});
@@ -446,17 +448,25 @@
 
 	exports.deleteIntramurals = function(id, callback) {
 		var parsedID = ObjectID.createFromHexString(id);
+		//first find the intramurals sport that you are deleting
+
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collections.intramurals, function(err, collection) {
-				collection.remove({_id: parsedID}, function(err, numRemoved) {
-					if (err) {
-						callback(err);
-					} else if (numRemoved === 0) {
-						callback(new Error("Did not remove anything"));
-					} else {
-						callback(null);
-					}
+				collection.find({_id: parsedID}, function(err, cursor) {
+					cursor.toArray(function(err, sports) {
+						collection.remove({_id: parsedID}, function(err, numRemoved) {
+							if (err) {
+								callback(err);
+							} else if (numRemoved === 0) {
+								callback(new Error("Did not remove anything"));
+							} else {
+								callback(sports[0]);
+							}
+							db.close();
+						});
+					});
 				});
+						
 			});
 		});
 	};

@@ -282,7 +282,7 @@ exports.deleteIntramurals = function(req, res) {
 			res.send(err);
 		} else {
 			res.statusCode = 200;
-			res.send(null);
+			res.send(req.headers._id);
 		}
 		
 	});

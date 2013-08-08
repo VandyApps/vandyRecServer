@@ -1392,5 +1392,30 @@ $('#saveModel').click(function() {
 }.bind(this));
 
 $('#delete').click(function() {
-	sportModel.destroy({headers: {_id: sportModel.id}});
+	var confirmation = new ConfirmationBox({
+		message: "Are you sure you would like to delete " + sportModel.get('sport'),
+		button1Name: 'YES',
+		button2Name: 'NO'
+	});
+	confirmation.show();
+	confirmation.on('clicked1', function() {
+		sportModel.destroy({
+			headers: {_id: sportModel.id},
+			success: function() {
+				var url = location.href.split('/');
+				url.pop();
+				console.log(JSON.stringify(url));
+			},
+			error: function() {
+				toastr.error('There was an error when trying to delete this sport');
+			}
+		});
+		confirmation.unbind('clicked1');
+		confirmation.unbind('clicked2');
+	});
+	confirmation.on('clicked2', function() {
+		confirmation.unbind('clicked1');
+		confirmation.unbind('clicked2');
+	});
+	
 });
