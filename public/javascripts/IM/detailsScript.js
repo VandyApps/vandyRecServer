@@ -1402,9 +1402,12 @@ $('#delete').click(function() {
 		sportModel.destroy({
 			headers: {_id: sportModel.id},
 			success: function() {
-				var url = location.href.split('/');
-				url.pop();
-				console.log(JSON.stringify(url));
+				var url = location.href
+				url = url.substr(0, url.length - 8);
+				console.log(url);
+				//remove the intramurals extension from the url
+				location.href = url;
+
 			},
 			error: function() {
 				toastr.error('There was an error when trying to delete this sport');
