@@ -1367,16 +1367,25 @@ $('#saveModel').click(function() {
 			success: function(models, response) {
 				//assign the sport model a new id
 				//and cache the id in the session
+				console.log("Success");
 				sessionStorage.id = response[0]._id;
 				sportModel.set('_id', response[0]._id);
+				toastr.success("You have created a new intramurals sport!");
 
 			},
 			error: function() {
-				console.log("Posting of a new model failed");
+				toastr.error("I'm sorry.  "+sportModel.get('sport') + " could not be saved at this time");
 			}
 		});
 	} else {
-		sportModel.save();
+		sportModel.save(null, {
+			success: function() {
+				toastr.success("You have saved you're progress");
+			},
+			error: function() {
+				toastr.error("I'm sorry.  "+sportModel.get('sport') + " could not be saved at this time");
+			}
+		});
 	}
 	
 
