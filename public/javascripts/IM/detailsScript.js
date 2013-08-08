@@ -287,17 +287,22 @@ TeamsView = Backbone.View.extend({
 							.append('<div>edit</div><div>delete</div>'));
 	},
 	//fix this to make sure teamObj has the correct properties
+	//the team that is being set should have the same id as the one
+	//it is replacing, or an error is thrown
 	setTeamAtIndex: function(index, teamObj) {
-		var teamEl = $('ul li:nth-child('+(index+1)+')', this.$el);
-		//this also changes the value in the model
-		this.teams[index] = teamObj;
-		
+		var teamEl;
+		if (teamObj.teamID !== this.teams[index].teamID) {
+			throw new Error('The id of the the team being set is not the same as the team replacing it');
+		} else {
+			teamEl = $('ul li:nth-child('+(index+1)+')', this.$el);
+			//this also changes the value in the model
+			this.teams[index] = teamObj;
+			
 
-		//set the DOM element
-		$('div:nth-child(1)', teamEl).text(teamObj.name);
-		$('div:nth-child(2)', teamEl).text('Wins: ' + teamObj.WLT[0].toString());
-		$('div:nth-child(3)', teamEl).text('Losses: ' + teamObj.WLT[1].toString());
-		$('div:nth-child(4)', teamEl).text('Ties:' + teamObj.WLT[2].toString());
+			//set the DOM element
+			this.model.trigger('change:teams:'+teamObj.teamID);
+		}
+			
 
 	},
 	addTeam: function() {
@@ -381,17 +386,19 @@ TeamsView = Backbone.View.extend({
 		}
 
 		this.model.get('teams').forEach(function(team, index) {
+			var id = team.teamID;
 			console.log("Binding the events now");
 			//cache the index in a local variable
 			//these bind to teams at different indices, so if a team changes its index,
 			//this needs to be reset as well
 			this.model.on('change:teams:'+team.teamID.toString(), function() {
+				var team = this.model.teamWithID(id);
 				console.log("Index: " + index);
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(4)').text('Ties: ' + team.WLT[2].toString());
-			});
+			}.bind(this));
 
 		}.bind(this));
 	}
@@ -432,8 +439,12 @@ GamesView = Backbone.View.extend({
 		}.bind(this));
 
 		model.get('teams').forEach(function(team) {
+			var id = team.teamID;
 			model.on('change:teams:'+team.teamID.toString(), function() {
-				console.log('change team was called by game for team ' + team.teamID.toString());
+				var team = model.teamWithID(id);
+				console.log('change team was called by game for team: ' + team.teamID.toString());
+				console.log('team name that is being changed: ' + $('#games ul li div:nth-child(3) span[teamid="'+team.teamID.toString()+'"]').text());
+				console.log("Changing name to: " + team.name);
 				$('#games ul li div:nth-child(3) span[teamid="'+team.teamID.toString()+'"]').text(team.name);
 			});
 		});
