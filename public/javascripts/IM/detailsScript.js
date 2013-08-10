@@ -1423,9 +1423,8 @@ $('#delete').click(function() {
 	
 });
 
-setTimeout(function() {
-	toastr.info("Don't forget to save your changes when you are done!");
-	setTimeout(function() {
-		toastr.info("Scroll to the bottom for the save option");
-	}, 4000);
-}, 5000);
+NQ.add(
+	{type: 'info', message: "Don't forget to save your progress!"},
+	{type: 'info', message: "Scroll down to the bottom of the page to view the save button"});
+
+NQ.start();
