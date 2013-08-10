@@ -76,6 +76,16 @@ function trimExtraSpaces(text) {
 	return returnText;
 }
 
+function removeAllWhitespace(text) {
+	var i, n, fixedText = "";
+	for (i = 0, n = text.length; i < n; ++i) {
+		if (!text.charAt(i).match(/\s/)) {
+			fixedText = fixedText + text.charAt(i);
+		}
+	}
+	return fixedText;
+}
+
 function filterBadCharacters(text) {
 	var i, n, returnText = "";
 	for (i=0, n = text.length; i < n; ++i) {
@@ -138,6 +148,80 @@ function parseDate(date) {
 	return null;
 }
 
+function parseTime(time) {
+	var timeObj,
+		salvageTime,
+		splitTime;
+	if (DateHelper.isTimeString(time)) {
+		return time;
+	} else {
+		timeObj = removeAllWhitespace(time);
+		timeObj = filterBadCharacters(timeObj);
+		salvageTime = /^(((0\d)|(1[1,2]))|(\d)):\d\d[a,p]m$/g
+		if (salvageTime.test(timeObj)) {
+			splitTime = timeObj.split(':');
+			if (splitTime[1].substr(splitTime[1].length - 2, 2) === 'am') {
+				splitTime.push('am');
+			} else {
+				splitTime.push('pm');
+			}
+			//remove the am/pm string from the 2nd element
+			splitTime[1] = splitTime[1].substr(0, splitTime[1].length -2);
+			if (splitTime[0].length === 1) {
+				splitTime[0] = '0' + splitTime[0];
+			}
+			return splitTime[0] + ':' + splitTime[1] + splitTime[2];
+
+		} else {
+			console.log("Time cannot be salvaged");
+			return null;
+		}
+
+	}
+}
+
+//create an end time string based on the start
+//time string that is passed in (1 hours after the start time)
+//this method should only be called if a valid time string is
+//passed in
+function generateEndTime(timeString) {
+	console.log("In generate end time");
+	var timeArray, endTime = "";
+	if (DateHelper.isTimeString(timeString)) {
+		console.log("Is valid time string");
+		timeArray = DateHelper.splitTime(timeString, true);
+		console.log("Split the time");
+		timeArray[0] = timeArray[0] + 1;
+		if (timeArray[0] > 12) {
+			timeArray[0] = 1;
+			if (timeArray[2].toLowerCase() === 'am') {
+				timeArray[2] = 'pm'
+			} else {
+				timeArray[2] = 'am';
+			}
+		}
+
+		//now convert array to time string for end time
+		if (timeArray[0] < 10) {
+			endTime = '0' + timeArray[0].toString()+':';
+		} else {
+			endTime = timeArray[0].toString()+':';
+		}
+
+		if (timeArray[1] < 10) {
+			endTime = endTime + '0' + timeArray[1].toString();
+		} else {
+			endTime = endTime + timeArray[1].toString();
+		}
+
+		endTime = endTime + timeArray[2];
+
+	} 
+	return endTime;
+		
+
+}
+
 //functions to parse out data
 function sportName(window) {
 	var nameEl = window.$('body p:nth-of-type(1)'),
@@ -196,7 +280,17 @@ function matrixOfGames(window) {
 					}
 					break;
 				case 1:
-					nextGame.startTime = filterBadCharacters(trimExtraSpaces(gameEl.children().eq(1).text()).trim());
+					console.log("setting times");
+					nextGame.startTime = removeAllWhitespace(filterBadCharacters(gameEl.children().eq(1).text()));
+					nextGame.startTime = parseTime(nextGame.startTime);
+					console.log("done parsing start time");
+					if (!nextGame.startTime) {
+						nextGame.startTime = "";
+						nextGame.endTime = "";
+					} else {
+						console.log("About to generate end time");
+						nextGame.endTime = generateEndTime(nextGame.startTime);
+					}
 					break;
 				case 2:
 					nextGame.location = filterBadCharacters(trimExtraSpaces(location + gameEl.children().eq(2).text()).trim());
