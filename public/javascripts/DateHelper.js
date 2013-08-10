@@ -1,5 +1,17 @@
 //DateHelper is a utility class
-window.DateHelper = {};
+
+//for adding to NODE
+//NEED TO IMPROVE THIS FOR BETTER TESTS
+//TO CHECK FOR NODE INTEGRATION
+if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
+	exports.DateHelper = {};
+	DateHelper = exports.DateHelper;
+
+//for client-side
+} else {
+	window.DateHelper = {};
+}
+
 
 DateHelper.addWeekToDate = function(date) {
 	date.setDate(date.getDate() + 7);
