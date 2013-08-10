@@ -3,9 +3,8 @@ var jsdom = require('jsdom');
 	//that were uploaded in the single document
 	sports = [],
 	_ = require('underscore')._,
-	DateHelper = require('./public/javascripts/DateHelper');
+	DateHelper = require('./public/javascripts/DateHelper').DateHelper;
 
-JSON.stringify(DateHelper);
 //add missing helper methods to _
 
 _.extendDeep = function(object) {
@@ -107,7 +106,36 @@ function tallyToNumber(window, element) {
 
 //for parsing ambiguous dates to a solution
 function parseDate(date) {
-
+	console.log("In parse date: " + date);
+	var splitDate, i, testMonth, year;
+	if (DateHelper.isDateString(date)) {
+		return DateHelper.dateFromDateString(date);
+	} else {
+		console.log("Not a date string");
+		year = (new Date()).getYear() + 1900;
+		splitDate = date.split(' ');
+		if (splitDate.length >= 2) {
+			console.log("Split date is split into >= 2");
+			//need to check if split date has a number for the day
+			if (+splitDate[1] !== +splitDate[1]) {
+				console.log("Split date is null")
+				return null;
+			}
+			console.log("Split date is not null")
+			testMonth = new RegExp('^' + splitDate[0], 'i');
+			//generate month regexp
+			for (i = 0; i < 12; ++i) {
+				console.log("In the for loop");
+				if (testMonth.test(DateHelper.monthNameForIndex(i))) {
+					return new Date(year, i, +splitDate[1]);
+				}
+			}
+		}
+		
+	}
+	console.log("Actually, split date is null");
+	//the date could not be parsed
+	return null;
 }
 
 //functions to parse out data
@@ -145,8 +173,9 @@ function matrixOfTeams(window) {
 
 function matrixOfGames(window) {
 	var gamesTable = window.$('body table:nth-of-type(2) tbody'),
-		i, n, j, m, gameEl, games = [], score = []
-		location = gamesTable.children().eq(0).children().eq(2).text() + " ";
+		i, n, j, m, gameEl, games = [], score = [],
+		location = gamesTable.children().eq(0).children().eq(2).text() + " ",
+		rawDate, dateObj;
 
 	for (i = 1, n = gamesTable.children().length; i < n; ++i) {
 		gameEl = gamesTable.children().eq(i);
@@ -155,7 +184,16 @@ function matrixOfGames(window) {
 		for (j = 0, m = gameEl.children().length; j < m; ++j) {
 			switch(j) {
 				case 0:
-					nextGame.date = filterBadCharacters(trimExtraSpaces(gameEl.children().eq(0).text()).trim());
+					console.log("Checking date");
+					rawDate = filterBadCharacters(trimExtraSpaces(gameEl.children().eq(0).text()).trim());
+					dateObj = parseDate(rawDate);
+					console.log("Parsed the date");
+					if (dateObj === null) {
+						nextGame.date = "";
+					} else {
+						console.log("Setting the date");
+						nextGame.date = DateHelper.dateStringFromDate(dateObj);
+					}
 					break;
 				case 1:
 					nextGame.startTime = filterBadCharacters(trimExtraSpaces(gameEl.children().eq(1).text()).trim());

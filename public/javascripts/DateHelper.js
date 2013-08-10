@@ -79,7 +79,8 @@ DateHelper.monthNameForIndex = function(monthIndex) {
 		case 8: return "September";
 		case 9: return "October";
 		case 10: return "November";
-		default: return "December";
+		case 11: return "December";
+		default: return "";
 	}
 }
 
