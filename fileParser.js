@@ -404,6 +404,7 @@ exports.parseSport = function(html, callback) {
 			model.sport = sportName(window);
 			model.teams = matrixOfTeams(window);
 			model.games = matrixOfGames(window);
+			console.log("Done with the games");
 			callback(model);
 		});
 	} catch(err) {

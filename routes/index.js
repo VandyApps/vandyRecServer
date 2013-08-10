@@ -298,15 +298,26 @@ exports.intramuralFiles = function(req, res) {
 			
 			//the errors callback consists of all the things wrong with
 			//the html file that was uploaded
-			fileParser.parseSport(data, function(sport, errors) {
-				
-				res.statusCode = 200;
-				res.send(sport);
-				if (!errors || errors.length === 0) {
-					res.send(sport);
-				} else {
-					res.redirect('/intramurals/details/?errors=' + errors.join());
-				}
+			fileParser.parseSport(data, function(sport, parsingErrors) {
+				console.log("In the callback");
+				db.insertIntramurals(sport, function(err, DB_Sport) {
+					console.log("Back from db");
+					if (!err) {
+						res.statusCode = 200;
+
+						if (!parsingErrors || parsingErrors.length === 0) {
+							res.redirect('/intramurals/details?id='+DB_Sport._id);
+						} else {
+							res.redirect('/intramurals/details?id='+DB_Sport._id + '&errors=' + parsingErrors.join());
+						}
+					} else {
+						res.statusCode = 500;
+						res.redirect('/intramurals/details?errors=There was an error when saving to the database');
+					}
+					
+						
+				});
+					
 			});
 		});
 	}
@@ -315,6 +326,7 @@ exports.intramuralFiles = function(req, res) {
 };
 
 exports.intramuralsDetails = function(req, res) {
+
 	res.render('sportsDetails');
 };
 
