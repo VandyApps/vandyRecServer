@@ -376,17 +376,48 @@ function matrixOfGames(window) {
 	
 }
 
+
 //export methods
 
-exports.parseHTML = function(html, callback) {
+//validation stuff here
+
+function isSportFile(html, callback) {
+	var document = jsdom.jsdom(html),
+		window = document.createWindow();
+	jsdom.jQueryify(window, './public/jQuery-ui/js/jquery-1.9.1.js', function() {
+		//test for the correct elements in the correct orders
+		if (!window.$('body h3:nth-child(1)').length) {
+			callback(false);
+		} else if (!window.$('body p:nth-child(2)').length) {
+			callback(false);
+		}
+		callback(true);
+	});
+};
+
+exports.parseSport = function(html, callback) {
 	var document = jsdom.jsdom(html),
 	    window = document.createWindow();
-
-	jsdom.jQueryify(window, './public/jQuery-ui/js/jquery-1.9.1.js', function() {
-		var model = {};
-		model.sport = sportName(window);
-		model.teams = matrixOfTeams(window);
-		model.games = matrixOfGames(window);
-		callback(model);
-	});
+	try {
+		jsdom.jQueryify(window, './public/jQuery-ui/js/jquery-1.9.1.js', function() {
+			var model = {};
+			model.sport = sportName(window);
+			model.teams = matrixOfTeams(window);
+			model.games = matrixOfGames(window);
+			callback(model);
+		});
+	} catch(err) {
+		//cannot read this file as html
+		callback({
+			sport: 'New Sport',
+			season: 0,
+			entryDates: {start: '01/01/2013', end: '01/02/2013'},
+			seasonDates: {start: '01/01/2013', end: '01/02/2013'},
+			teams: [],
+			games: []
+		}, ['This file could not be read as a valid html file']);
+	}
+		
+		
+			
 };

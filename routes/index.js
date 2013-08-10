@@ -296,10 +296,12 @@ exports.intramuralFiles = function(req, res) {
 	} else {
 		fs.readFile(req.files.intramuralsSport.path, function(err, data) {
 			
-			fileParser.parseHTML(data, function(test) {
+			//the errors callback consists of all the things wrong with
+			//the html file that was uploaded
+			fileParser.parseSport(data, function(sport, errors) {
 				
 				res.statusCode = 200;
-				res.send(test);
+				res.send(sport);
 			});
 		});
 	}
