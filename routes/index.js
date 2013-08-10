@@ -302,6 +302,11 @@ exports.intramuralFiles = function(req, res) {
 				
 				res.statusCode = 200;
 				res.send(sport);
+				if (!errors || errors.length === 0) {
+					res.send(sport);
+				} else {
+					res.redirect('/intramurals/details/?errors=' + errors.join());
+				}
 			});
 		});
 	}

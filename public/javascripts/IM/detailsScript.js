@@ -13,7 +13,12 @@ var E_DatesView,
 	teamsView,
 	gamesView;
 
-
+function getQueryString (key) {
+	var re=new RegExp('(?:\\?|&)'+key+'=(.*?)(?=&|$)','gi');
+	var r=[], m;
+	while ((m=re.exec(document.location.search)) != null) r.push(m[1]);
+	return r;
+}
 //Views
 NameView = Backbone.View.extend({
 	el: '#sportName',
@@ -1342,9 +1347,11 @@ function setupViews() {
 
 //Script starts here
 //need to make the fetch method more efficient so that
-//it grabs only a single model
-if (sessionStorage.id !== 'null') {
+//it grabs only a single model instead of loading all 
+//intramural sports
+if (getQueryString('id').length || sessionStorage.id !== 'null') {
 	IMModel.getCollection().fetch();
+
 } else {
 	sportModel = new IMModel.Sport(JSON.parse(sessionStorage.model));
 	setupViews();
@@ -1352,7 +1359,7 @@ if (sessionStorage.id !== 'null') {
 
 IMModel.getCollection().on('sync', function() {
 	var collection = IMModel.getCollection(),
-		id = sessionStorage.id;
+		id = (getQueryString('id').length) ? getQueryString('id')[0] : sessionStorage.id;
 	
 	sportModel = collection.get(id);
 	setupViews();
@@ -1423,6 +1430,12 @@ $('#delete').click(function() {
 	
 });
 
+
+if (getQueryString('errors').length !== 0) {
+	NQ.add.apply(NQ, decodeURIComponent(getQueryString('errors')[0]).split(',').map(function(error) {
+		return {type: 'error', message: error};
+	}));
+}
 NQ.add(
 	{type: 'info', message: "Don't forget to save your progress!"},
 	{type: 'info', message: "Scroll down to the bottom of the page to view the save button"});
