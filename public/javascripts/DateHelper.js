@@ -232,7 +232,10 @@ DateHelper.dateFromDateString = function(dateString) {
 	return new Date(parseInt(dateArray[2], 10), parseInt(dateArray[0], 10) - 1, parseInt(dateArray[1], 10), 0,0,0,0);
 }
 
-
+DateHelper.isDateString = function(dateString) {
+	var regexp = /^((0[1-9])|(1[1,2]))\/\d\d\/\d\d\d\d$/g;
+	return regexp.test(dateString);
+}
 /*timeString methods*/
 DateHelper.isTimeString = function(timeString) {
 	var regexp = new RegExp("^((0\\d)|(1[012])):[012345]\\d[a,A,p,P][m,M]$");
