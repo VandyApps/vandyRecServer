@@ -834,6 +834,18 @@ EditView = (function() {
 			}
 		}),
 
+		SeasonEdit = Backbone.View.extend({
+			el: '#seasonEdit',
+			isShowing: false,
+			season: 0,
+			events: {},
+			show: function() {},
+			hide: function() {},
+			onSubmit: function() {},
+			onCancel: function() {},
+			setSeason: function() {}
+		}),
+
 		DatesEdit = Backbone.View.extend({
 			el: '#datesEdit',
 			isShowing: false,
