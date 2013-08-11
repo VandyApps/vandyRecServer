@@ -299,7 +299,7 @@ exports.intramuralFiles = function(req, res) {
 			//the errors callback consists of all the things wrong with
 			//the html file that was uploaded
 			fileParser.parseSport(data, function(sport, parsingErrors) {
-				console.log("In the callback");
+				/*
 				db.insertIntramurals(sport, function(err, DB_Sport) {
 					console.log("Back from db");
 					if (!err) {
@@ -317,7 +317,10 @@ exports.intramuralFiles = function(req, res) {
 					
 						
 				});
-					
+				*/
+				console.log("In the callback");
+				res.statusCode = 200;
+				res.send(sport);
 			});
 		});
 	}

@@ -255,6 +255,34 @@ function matrixOfTeams(window) {
 	return teams;
 }
 
+//for this function to work, the function's 
+//teams property needs to be set to the array
+//of teams in the sport, this teams property
+//can be generated from the matrixOfTeams return
+//value
+function teamWithName(name) {
+	console.log("teamwith name was called");
+	var teams = teamWithName.teams,
+		searchRegexp = new RegExp(name, 'i'),
+		i, n;
+	if (!teams) {
+		
+		throw new Error('Teams property is not set');
+	}
+	console.log("About to enter the for loop");
+	for (i =0, n = teams.length; i < n; ++i) {
+		console.log("In the for loop");
+		if (searchRegexp.test(teams[i].name)) {
+			return teams[i].teamID;
+		}
+	}
+	console.log("Nothing was found with the name " + name);
+	//id's of 0 do not exist, a return of a 0 ID
+	//indicates that the team name could not be identified
+	return 0;
+}
+
+
 function matrixOfGames(window) {
 	var gamesTable = window.$('body table:nth-of-type(2) tbody'),
 		i, n, j, m, gameEl, games = [], score = [],
@@ -296,10 +324,10 @@ function matrixOfGames(window) {
 					nextGame.location = filterBadCharacters(trimExtraSpaces(location + gameEl.children().eq(2).text()).trim());
 					break;
 				case 3:
-					nextGame.teams[0] = filterBadCharacters(trimExtraSpaces(gameEl.children().eq(3).text()).trim());
+					nextGame.teams[0] = teamWithName(filterBadCharacters(trimExtraSpaces(gameEl.children().eq(3).text()).trim()));
 					break;
 				case 5:
-					nextGame.teams[1] = filterBadCharacters(trimExtraSpaces(gameEl.children().eq(5).text()).trim());
+					nextGame.teams[1] = teamWithName(filterBadCharacters(trimExtraSpaces(gameEl.children().eq(5).text()).trim()));
 					break;
 				case 6:
 				
@@ -379,21 +407,6 @@ function matrixOfGames(window) {
 
 //export methods
 
-//validation stuff here
-
-function isSportFile(html, callback) {
-	var document = jsdom.jsdom(html),
-		window = document.createWindow();
-	jsdom.jQueryify(window, './public/jQuery-ui/js/jquery-1.9.1.js', function() {
-		//test for the correct elements in the correct orders
-		if (!window.$('body h3:nth-child(1)').length) {
-			callback(false);
-		} else if (!window.$('body p:nth-child(2)').length) {
-			callback(false);
-		}
-		callback(true);
-	});
-};
 
 exports.parseSport = function(html, callback) {
 	var document = jsdom.jsdom(html),
@@ -403,6 +416,10 @@ exports.parseSport = function(html, callback) {
 			var model = {};
 			model.sport = sportName(window);
 			model.teams = matrixOfTeams(window);
+
+			//set the teams property on the teamsWithName function
+			teamWithName.teams = model.teams;
+
 			model.games = matrixOfGames(window);
 			console.log("Done with the games");
 			callback(model);
