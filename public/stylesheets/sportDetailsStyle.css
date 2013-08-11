@@ -291,11 +291,11 @@ body {
     cursor: pointer;
 }
 
-#games > ul li:nth-child(odd) div:nth-child(6), #games > ul li:nth-child(odd) div:nth-child(7) {
+#games > ul li:nth-child(odd) div:nth-child(6), #games > ul li:nth-child(odd) div:nth-child(7), #games > ul li:nth-child(odd) div:nth-child(8) {
     color: blue;
 }
 
-#games > ul li:nth-child(even) div:nth-child(6), #games > ul li:nth-child(even) div:nth-child(7) {
+#games > ul li:nth-child(even) div:nth-child(6), #games > ul li:nth-child(even) div:nth-child(7), #games > ul li:nth-child(even) div:nth-child(8) {
     color:red;
 }
 
@@ -305,6 +305,15 @@ body {
     top: 30px;
     right: 10px;
     font-size: 10pt;
+    text-decoration: underline;
+}
+
+#games >ul div:nth-child(8) {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    font-size: 10pt;
+    top: 50px;
     text-decoration: underline;
 }
 

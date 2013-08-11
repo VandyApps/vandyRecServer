@@ -748,7 +748,7 @@ GamesView = Backbone.View.extend({
 								.append('<div>'+game.location+'</div>')
 								.append('<div>'+game.score[0].toString()+'-'+game.score[1].toString()+'</div>')
 								.append('<div>edit</div>')
-								.append('<div>delete</div>');
+								.append('<div>delete</div><div>cancel</div>');
 		return el;
 	},
 	//returns the value of the game that
