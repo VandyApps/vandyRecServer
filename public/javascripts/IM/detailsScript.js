@@ -1364,7 +1364,12 @@ function setupViews() {
 //need to make the fetch method more efficient so that
 //it grabs only a single model instead of loading all 
 //intramural sports
-if (getQueryString('id').length || sessionStorage.id !== 'null') {
+if (getQueryString('id').length) {
+	//move the id query string to the sessionStorage property
+	sessionStorage.id = getQueryString('id')[0];
+}
+
+if (sessionStorage.id !== 'null') {
 	IMModel.getCollection().fetch();
 
 } else {
@@ -1374,7 +1379,7 @@ if (getQueryString('id').length || sessionStorage.id !== 'null') {
 
 IMModel.getCollection().on('sync', function() {
 	var collection = IMModel.getCollection(),
-		id = (getQueryString('id').length) ? getQueryString('id')[0] : sessionStorage.id;
+		id = sessionStorage.id;
 	
 	sportModel = collection.get(id);
 	setupViews();
