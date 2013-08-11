@@ -299,16 +299,16 @@ exports.intramuralFiles = function(req, res) {
 			//the errors callback consists of all the things wrong with
 			//the html file that was uploaded
 			fileParser.parseSport(data, function(sport, parsingErrors) {
-				/*
-				db.insertIntramurals(sport, function(err, DB_Sport) {
-					console.log("Back from db");
+				
+				db.insertIntramurals(sport, function(err, DB_Sports) {
+					var DB_Sport = DB_Sports[0];
 					if (!err) {
 						res.statusCode = 200;
 
 						if (!parsingErrors || parsingErrors.length === 0) {
 							res.redirect('/intramurals/details?id='+DB_Sport._id);
 						} else {
-							res.redirect('/intramurals/details?id='+DB_Sport._id + '&errors=' + parsingErrors.join());
+							res.redirect('/intramurals/details?id='+DB_Sport._id + '&errors=' + encodeURIComponent(parsingErrors.join()));
 						}
 					} else {
 						res.statusCode = 500;
@@ -317,10 +317,8 @@ exports.intramuralFiles = function(req, res) {
 					
 						
 				});
-				*/
-				console.log("In the callback");
-				res.statusCode = 200;
-				res.send(sport);
+				
+
 			});
 		});
 	}

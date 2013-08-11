@@ -96,6 +96,23 @@ function filterBadCharacters(text) {
 	return returnText;
 }
 
+//filters the given character from the text
+function filterToken(text, token) {
+	console.log("in filter token");
+	var filterRegExp = new RegExp('[' + token + ']'),
+		newText = "", i, n;
+
+	for (i = 0, n = text.length; i < n; ++i) {
+		console.log("Filter token: for loop");
+		if (!filterRegExp.test(text.charAt(i))) {
+			newText = newText + text.charAt(i);
+		}
+	}
+	console.log("About to return from filter token with text " + newText);
+	return newText;
+
+} 
+
 function tallyToNumber(window, element) {
 	console.log("in tally");
 	var total = 0;
@@ -283,7 +300,7 @@ function teamWithName(name) {
 }
 
 
-function matrixOfGames(window) {
+function matrixOfGames(window, errors) {
 	var gamesTable = window.$('body table:nth-of-type(2) tbody'),
 		i, n, j, m, gameEl, games = [], score = [],
 		location = gamesTable.children().eq(0).children().eq(2).text() + " ",
@@ -301,7 +318,8 @@ function matrixOfGames(window) {
 					dateObj = parseDate(rawDate);
 					console.log("Parsed the date");
 					if (dateObj === null) {
-						nextGame.date = "";
+						errors.push("The date for game #" + (j+1).toString() + " could not be identified and was set to 01/01/2013")
+						nextGame.date = "01/01/2013";
 					} else {
 						console.log("Setting the date");
 						nextGame.date = DateHelper.dateStringFromDate(dateObj);
@@ -313,8 +331,9 @@ function matrixOfGames(window) {
 					nextGame.startTime = parseTime(nextGame.startTime);
 					console.log("done parsing start time");
 					if (!nextGame.startTime) {
-						nextGame.startTime = "";
-						nextGame.endTime = "";
+						errors.push("The start time for game #" + (j+1).toString() + " could not be identified and was set to 01:00am")
+						nextGame.startTime = "01:00am";
+						nextGame.endTime = "02:00am";
 					} else {
 						console.log("About to generate end time");
 						nextGame.endTime = generateEndTime(nextGame.startTime);
@@ -325,9 +344,17 @@ function matrixOfGames(window) {
 					break;
 				case 3:
 					nextGame.teams[0] = teamWithName(filterBadCharacters(trimExtraSpaces(gameEl.children().eq(3).text()).trim()));
+					if (nextGame.teams[0] === 0) {
+						errors.push('The home team in game #' +(j+1).toString() + ' could not be identified and was replaced with the team "' + filterToken(teamWithName.teams[0].name, ',') + '"');
+						nextGame.teams[0] = teamWithName.teams[0].teamID;
+					}
 					break;
 				case 5:
 					nextGame.teams[1] = teamWithName(filterBadCharacters(trimExtraSpaces(gameEl.children().eq(5).text()).trim()));
+					if (nextGame.teams[1] === 0) {
+						errors.push('The away team in game #' +(j+1).toString() + ' could not be identified and was replaced with the team "' + filterToken(teamWithName.teams[1].name, ',') + '"');
+						nextGame.teams[1] = teamWithName.teams[1].teamID;
+					}
 					break;
 				case 6:
 				
@@ -397,6 +424,7 @@ function matrixOfGames(window) {
 
 			}
 		}
+		nextGame.isCancelled = false;
 		games.push(_.extendDeep(nextGame));
 
 	}
@@ -413,16 +441,19 @@ exports.parseSport = function(html, callback) {
 	    window = document.createWindow();
 	try {
 		jsdom.jQueryify(window, './public/jQuery-ui/js/jquery-1.9.1.js', function() {
-			var model = {};
-			model.sport = sportName(window);
-			model.teams = matrixOfTeams(window);
+			var model = {}, errors = [];
+			model.sport = sportName(window, errors);
+			model.teams = matrixOfTeams(window, errors);
 
 			//set the teams property on the teamsWithName function
 			teamWithName.teams = model.teams;
 
-			model.games = matrixOfGames(window);
+			model.games = matrixOfGames(window, errors);
 			console.log("Done with the games");
-			callback(model);
+			//callback the model that was parsed from the html
+			//and the errors that were idenitified during the
+			//parsing process
+			callback(model, errors);
 		});
 	} catch(err) {
 		//cannot read this file as html
@@ -433,7 +464,7 @@ exports.parseSport = function(html, callback) {
 			seasonDates: {start: '01/01/2013', end: '01/02/2013'},
 			teams: [],
 			games: []
-		}, ['This file could not be read as a valid html file']);
+		}, ['This file could not be read as a valid html file and the sport was set to default values']);
 	}
 		
 		

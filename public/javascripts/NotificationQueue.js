@@ -8,7 +8,7 @@ management tool that works with toastr js to display notifications */
 (function(global) {
 	var NQ = {},
 		settings = {
-			timeInterval: 3000
+			timeInterval: 4500
 		},
 		notifications = [],
 		interval,
