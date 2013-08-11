@@ -264,7 +264,7 @@ function matrixOfTeams(window) {
 			}
 			
 		}
-		
+		nextTeam.dropped = false;
 		teams.push(_.extendDeep(nextTeam));
 		console.log(JSON.stringify(nextTeam));
 	}
