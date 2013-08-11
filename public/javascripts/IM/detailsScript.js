@@ -324,20 +324,26 @@ TeamsView = Backbone.View.extend({
 		//also adds to the model because
 		//the teams property is a direct
 		//reference of the model
-		this.teams.push(defaultObj);
+		this.model.addTeam(defaultObj);
+
 		teamID = defaultObj.teamID;
 		index = this.teams.length - 1;
 
 		$('#teams ul').append(this.generateTeamView(defaultObj));
 		//bind events related to the newly created team
-		this.model.on('change:teams:'+defaultObj.teamID.toString(), function() {
-			var team = this.model.teamWithID(teamID);
-			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
-			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
-			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
-			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(4)').text('Ties: ' + team.WLT[2].toString());
+		(function(self) {
+			var id = teamID;
+			self.model.on('change:teams:'+defaultObj.teamID.toString(), function() {
+				var team = this.model.teamWithID(id);
+				console.log(id);
+				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
+				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
+				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
+				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(4)').text('Ties: ' + team.WLT[2].toString());
 
-		}.bind(this));
+			}.bind(self));
+		})(this);
+			
 
 		this.show();
 				
@@ -437,11 +443,13 @@ GamesView = Backbone.View.extend({
 		
 		this.sortAndDisplay();
 
+		//setting dynamic events and model-related events
 		model.on('change:games', function() {
 
 			this.games = model.get('games');
 			this.sortAndDisplay();
 		}.bind(this));
+
 
 		model.get('teams').forEach(function(team) {
 			var id = team.teamID;
@@ -454,6 +462,13 @@ GamesView = Backbone.View.extend({
 			});
 		});
 		
+		model.on('teamAdded', function(event) {
+			var id = event.teamID;
+			model.on('change:teams:'+id.toString(), function() {
+				var team = model.teamWithID(id);
+				$('#games ul li div:nth-child(3) span[teamid="'+team.teamID.toString()+ '"]').text(team.name);
+			});
+		});
 
 	},
 	

@@ -89,6 +89,10 @@ IMModel.Sport = Backbone.Model.extend({
 		}
 		
 	},
+	addTeam: function(team) {
+		this.get('teams').push(team);
+		this.trigger('teamAdded', {teamID: team.teamID});
+	},
 	teamWithID: function(id) {
 		var team;
 		this.get('teams').forEach(function(_team) {
