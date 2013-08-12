@@ -74,7 +74,23 @@ SeasonView = Backbone.View.extend({
 	},
 	season: 0,
 	initialize: function(model) {
+		var seasonString, season;
 		this.model = model;
+		this.season = model.get('season');
+
+		season = model.get('season');
+		this.season = season;
+		if (season === 0) {
+			seasonString = "Season: Fall";
+		} else if (season === 1) {
+			seasonString = "Season: Winter";
+		} else if (season === 2) {
+			seasonString = "Season: Spring";
+		} else {
+			//season is 3 (or it should be)
+			seasonString = "Season: Summer";
+		}
+
 		model.on('change:season', function() {
 			var seasonString, season = model.get('season');
 			this.season = season;
