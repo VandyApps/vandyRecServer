@@ -838,12 +838,38 @@ EditView = (function() {
 			el: '#seasonEdit',
 			isShowing: false,
 			season: 0,
-			events: {},
-			show: function() {},
-			hide: function() {},
-			onSubmit: function() {},
-			onCancel: function() {},
-			setSeason: function() {}
+			events: {
+				'click input[type="button"][value="submit"]': 'onSubmit',
+				'click input[type="button"][value="cancel"]': 'onCancel',
+				'change select': 'setSeason'
+			},
+			show: function() {
+				this.setSeason();
+				if (!this.isShowing) {
+					this.$el.show();
+					this.isShowing = true;
+				}
+			},
+			hide: function() {
+				if (this.isShowing) {
+					this.isShowing = false;
+					this.$el.hide();
+				}
+			},
+			onSubmit: function() {
+				this.trigger('submit');
+				this.hide();
+			},
+			onCancel: function() {
+				this.trigger('cancel');
+				this.show();
+			},
+			//sets the season to the value within the
+			//season property
+			setSeason: function() {
+				$('#seasonEdit select').val(this.season.toString());
+
+			}
 		}),
 
 		DatesEdit = Backbone.View.extend({
@@ -1325,6 +1351,7 @@ EditView = (function() {
 
 
 	return {
+		//singleton
 		getInstance: function(elName) {
 			var name = elName.toLowerCase();
 			switch(elName) {
@@ -1333,6 +1360,11 @@ EditView = (function() {
 						NameEdit.instance = new NameEdit();
 					}
 					return NameEdit.instance;
+				case 'season':
+					if (!SeasonEdit.instance) {
+						SeasonEdit.instance = new SeasonEdit();
+					}
+					return SeasonEdit.instance;
 				case 'dates':
 					if (!DatesEdit.instance) {
 						DatesEdit.instance = new DatesEdit();
