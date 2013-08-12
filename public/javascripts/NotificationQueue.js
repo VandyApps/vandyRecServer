@@ -67,7 +67,14 @@ management tool that works with toastr js to display notifications */
 
 	NQ.dequeue = function() {
 		notifications.splice(0,1);
-	}
+	};
+
+	//displays the notification immediately without 
+	//enqueuing it
+	NQ.now = function(notification) {
+		var type = notification.type.toLowerCase();
+		toastr[type](notification.message);
+	};
 
 	NQ.start = function() {
 		if (!isRunning && notifications.length > 0) {
