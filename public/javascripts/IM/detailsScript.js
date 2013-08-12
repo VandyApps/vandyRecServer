@@ -862,7 +862,7 @@ EditView = (function() {
 			},
 			onCancel: function() {
 				this.trigger('cancel');
-				this.show();
+				this.hide();
 			},
 			//sets the season to the value within the
 			//season property
