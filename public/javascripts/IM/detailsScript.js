@@ -903,6 +903,7 @@ EditView = (function() {
 				'change select': 'setSeason'
 			},
 			show: function() {
+				$('#seasonEdit select').val(this.season.toString());
 				this.setSeason();
 				if (!this.isShowing) {
 					this.$el.show();
@@ -923,10 +924,9 @@ EditView = (function() {
 				this.trigger('cancel');
 				this.hide();
 			},
-			//sets the season to the value within the
-			//season property
+			//called when the select value changes
 			setSeason: function() {
-				$('#seasonEdit select').val(this.season.toString());
+				this.season = +$('#seasonEdit select').val();
 
 			}
 		}),
