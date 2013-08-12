@@ -676,7 +676,7 @@ GamesView = Backbone.View.extend({
 		});
 	},
 	addGame: function() {
-		var gameObj, teams = this.model.get('teams');
+		var gameObj, teams = this.model.get('teams'), gamesEdit;
 		
 		//make sure there are atleast 2 teams before allowing a game to
 		//be added
@@ -693,20 +693,76 @@ GamesView = Backbone.View.extend({
 				location: 'No location'
 
 			};
-			this.insertGame(gameObj);
-			//silent events because these methods call events that
-			//work on a larger scale like "change", that will
-			//cause ui elements to totally reset
-			this.model.incrementTies(teams[0].teamID, {silent: true});
-			this.model.incrementTies(teams[1].teamID, {silent: true});
-			//don't call change or change:teams since these events
-			//will call reset functionalities that take
-			//more processing power
+
+			gamesEdit = EditView.getInstance('games');
+			gamesEdit.homeTeam = gameObj.teams[0];
+			gamesEdit.awayTeam = gameObj.teams[1];
+			gamesEdit.teams = this.model.get('teams');
+			gamesEdit.date = gameObj.date;
+			gamesEdit.homeScore = gameObj.score[0];
+			gamesEdit.awayScore = gameObj.score[1];
+			gamesEdit.winner = gameObj.winner;
+			gamesEdit.location = gameObj.location;
+			gamesEdit.startTime = gameObj.startTime;
+			gamesEdit.endTime = gameObj.endTime;
+
+			gamesEdit.show();
+
+			gamesEdit.on('submit', function() {
+
+				if (gamesEdit.winner === 0) {
+					this.model.incrementWins(gamesEdit.homeTeam, {silent: true});
+					this.model.incrementLosses(gamesEdit.awayTeam, {silent: true});
+
+				} else if (gamesEdit.winner === 1) {
+					this.model.incrementWins(gamesEdit.awayTeam, {silent: true});
+					this.model.incrementLosses(gamesEdit.homeTeam, {silent: true});
+				} else {
+					this.model.incrementTies(gamesEdit.homeTeam, {silent: true});
+					this.model.incrementTies(gamesEdit.awayTeam, {silent: true});
+				}
+
+				//events here, custom events that are more specific
+				//trigger the correct events
+					
+				this.model.trigger('change:teams:'+gamesEdit.homeTeam.toString());
+				this.model.trigger('change:teams:'+gamesEdit.awayTeam.toString());
 			
-			//call more specific events
-			this.model.trigger('change:teams:'+teams[0].teamID.toString());
-			this.model.trigger('change:teams:'+teams[1].teamID.toString());
-			this.show();
+				//set the values to what was submitted
+				gameObj.teams[0].teamID = gamesEdit.homeTeam;
+				gameObj.teams[1].teamID = gamesEdit.awayTeam;
+				gameObj.date = gamesEdit.date;
+				gameObj.score[0] = gamesEdit.homeScore;
+				gameObj.score[1] = gamesEdit.awayScore;
+				gameObj.winner = gamesEdit.winner;
+				gameObj.location = gamesEdit.location;
+				gameObj.startTime = gamesEdit.startTime;
+				gameObj.endTime = gamesEdit.endTime;
+
+				//insert the game
+				this.insertGame(gameObj);
+
+				//don't call change or change:teams since these events
+				//will call reset functionalities that take
+				//more processing power
+				
+				//call more specific events
+				this.model.trigger('change:teams:'+teams[0].teamID.toString());
+				this.model.trigger('change:teams:'+teams[1].teamID.toString());
+				this.show();
+
+				NQ.now({type: 'success', message: "You have successfully created a new game"});
+				gamesEdit.unbind('submit');
+				gamesEdit.unbind('cancel');
+
+			}.bind(this));
+
+			gamesEdit.on('cancel', function() {
+				gamesEdit.unbind('submit');
+				gamesEdit.unbind('cancel');
+			});
+
+				
 				
 		} else {
 			alert('You must have at least 2 registered teams before creating a game');
