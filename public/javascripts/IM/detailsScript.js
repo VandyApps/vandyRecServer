@@ -1,17 +1,23 @@
 //NEED TO ADD CHECKS FOR ISEDITTING WITHIN THE VIEW OBJECTS
 
 //Declarations
-var E_DatesView,
+var NameView,
+	SeasonsView,
+	E_DatesView,
 	S_DatesView,
 	TeamsView,
 	GamesView,
 	EditView,
+
+	//variables for instances
+
 	sportModel,
 	nameView,
 	entryDatesView,
 	seasonDatesView,
 	teamsView,
 	gamesView;
+
 
 function getQueryString (key) {
 	var re=new RegExp('(?:\\?|&)'+key+'=(.*?)(?=&|$)','gi');
@@ -59,6 +65,33 @@ NameView.getInstance = function() {
 	}
 	return NameView.instance;
 };
+
+SeasonsView = Backbone.View.extend({
+	el: '#season',
+	season: 0,
+	initialize: function() {
+		this.model.on('change:season', function() {
+			//change the season here
+		}.bind(this));
+	},
+	editSeason: function() {
+		var seasonEdit = EditView.getInstance('season');
+
+		seasonEdit.season = this.season;
+		seasonEdit.show();
+		seasonEdit.on('submit', function() {
+			
+			
+			seasonEdit.unbind('submit');
+			seasonEdit.unbind('cancel');
+		});
+		seasonEdit.on('cancel', function() {
+
+			seasonEdit.unbind('submit');
+			seasonEdit.unbind('cancel');
+		});
+	}
+});
 
 E_DatesView = Backbone.View.extend({
 	el: '#entryDates',
