@@ -427,7 +427,7 @@ TeamsView = Backbone.View.extend({
 				}.bind(self));
 			})(this);
 
-			NQ.enqueue({type: 'success', message: defaultObj.name + " was added as a new team"});
+			NQ.now({type: 'success', message: defaultObj.name + " was added as a new team"});
 			teamsEdit.unbind('submit');
 			teamsEdit.unbind('cancel');
 
@@ -1537,20 +1537,20 @@ $('#saveModel').click(function() {
 				console.log("Success");
 				sessionStorage.id = response[0]._id;
 				sportModel.set('_id', response[0]._id);
-				toastr.success("You have created a new intramurals sport!");
+				NQ.now({type: 'success', message: "You have created a new intramurals sport!"});
 
 			},
 			error: function() {
-				toastr.error("I'm sorry.  "+sportModel.get('sport') + " could not be saved at this time");
+				NQ.now({type: 'error', message: "I'm sorry.  "+sportModel.get('sport') + " could not be saved at this time"});
 			}
 		});
 	} else {
 		sportModel.save(null, {
 			success: function() {
-				toastr.success("You have saved you're progress");
+				NQ.now({type: 'success', message: "You have saved you're progress"});
 			},
 			error: function() {
-				toastr.error("I'm sorry.  "+sportModel.get('sport') + " could not be saved at this time");
+				NQ.now({type: 'error', message: "I'm sorry.  "+sportModel.get('sport') + " could not be saved at this time"});
 			}
 		});
 	}
