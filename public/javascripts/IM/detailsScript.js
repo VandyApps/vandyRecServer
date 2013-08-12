@@ -393,31 +393,51 @@ TeamsView = Backbone.View.extend({
 				teamID: this.getNewID()
 			},
 			team,
-			index;
+			index,
+			teamsEdit = EditView.getInstance('teams');
 
-		//pushing to the teams property
-		//also adds to the model because
-		//the teams property is a direct
-		//reference of the model
-		this.model.addTeam(defaultObj);
+		teamsEdit.name = defaultObj.name;
+		teamsEdit.show();
 
-		teamID = defaultObj.teamID;
-		index = this.teams.length - 1;
+		teamsEdit.on('submit', function() {
+			defaultObj.name = teamsEdit.name;
 
-		$('#teams ul').append(this.generateTeamView(defaultObj));
-		//bind events related to the newly created team
-		(function(self) {
-			var id = teamID;
-			self.model.on('change:teams:'+defaultObj.teamID.toString(), function() {
-				var team = this.model.teamWithID(id);
-				console.log(id);
-				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
-				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
-				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
-				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(4)').text('Ties: ' + team.WLT[2].toString());
 
-			}.bind(self));
-		})(this);
+			//pushing to the teams property	
+			//also adds to the model because
+			//the teams property is a direct
+			//reference of the model
+			this.model.addTeam(defaultObj);
+
+			teamID = defaultObj.teamID;
+			index = this.teams.length - 1;
+
+			$('#teams ul').append(this.generateTeamView(defaultObj));
+			//bind events related to the newly created team
+			(function(self) {
+				var id = teamID;
+				self.model.on('change:teams:'+defaultObj.teamID.toString(), function() {
+					var team = this.model.teamWithID(id);
+					console.log(id);
+					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
+					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
+					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
+					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(4)').text('Ties: ' + team.WLT[2].toString());
+
+				}.bind(self));
+			})(this);
+
+			NQ.enqueue({type: 'success', message: defaultObj.name + " was added as a new team"});
+			teamsEdit.unbind('submit');
+			teamsEdit.unbind('cancel');
+
+		}.bind(this));
+
+		teamsEdit.on('cancel', function() {
+			teamsEdit.unbind('submit');
+			teamsEdit.unbind('cancel');
+		});
+			
 			
 
 		this.show();
