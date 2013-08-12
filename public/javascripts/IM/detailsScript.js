@@ -2,7 +2,7 @@
 
 //Declarations
 var NameView,
-	SeasonsView,
+	SeasonView,
 	E_DatesView,
 	S_DatesView,
 	TeamsView,
@@ -13,6 +13,7 @@ var NameView,
 
 	sportModel,
 	nameView,
+	seasonView,
 	entryDatesView,
 	seasonDatesView,
 	teamsView,
@@ -66,12 +67,29 @@ NameView.getInstance = function() {
 	return NameView.instance;
 };
 
-SeasonsView = Backbone.View.extend({
+SeasonView = Backbone.View.extend({
 	el: '#season',
+	events: {
+		'click div': 'editSeason'
+	},
 	season: 0,
-	initialize: function() {
-		this.model.on('change:season', function() {
-			//change the season here
+	initialize: function(model) {
+		this.model = model;
+		model.on('change:season', function() {
+			var seasonString, season = model.get('season');
+			this.season = season;
+			if (season === 0) {
+				seasonString = "Season: Fall";
+			} else if (season === 1) {
+				seasonString = "Season: Winter";
+			} else if (season === 2) {
+				seasonString = "Season: Spring";
+			} else {
+				//season is 3 (or it should be)
+				seasonString = "Season: Summer";
+			}
+
+			$('#season h3').text(seasonString);
 		}.bind(this));
 	},
 	editSeason: function() {
@@ -80,11 +98,12 @@ SeasonsView = Backbone.View.extend({
 		seasonEdit.season = this.season;
 		seasonEdit.show();
 		seasonEdit.on('submit', function() {
-			
-			
+
+			this.model.set('season', seasonEdit.season);
+
 			seasonEdit.unbind('submit');
 			seasonEdit.unbind('cancel');
-		});
+		}.bind(this));
 		seasonEdit.on('cancel', function() {
 
 			seasonEdit.unbind('submit');
@@ -92,6 +111,13 @@ SeasonsView = Backbone.View.extend({
 		});
 	}
 });
+
+SeasonView.getInstance = function() {
+	if (!SeasonView.instance) {
+		SeasonView.instance = new SeasonView(sportModel);
+	}
+	return SeasonView.instance;
+};
 
 E_DatesView = Backbone.View.extend({
 	el: '#entryDates',
@@ -1431,6 +1457,7 @@ EditView = (function() {
 //this method should be called after sportModel has been set
 function setupViews() {
 	nameView = NameView.getInstance();
+	seasonView = SeasonView.getInstance();
 	entryDatesView = E_DatesView.getInstance();
 	seasonDatesView = S_DatesView.getInstance();
 	teamsView = TeamsView.getInstance();
