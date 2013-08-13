@@ -236,6 +236,18 @@ body {
     cursor: pointer;
 }
 
+#teams > ul li .teamDropped {
+    border: solid black;
+    display: black;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    width: 100%;
+    background-color: black;
+    opacity: .6;
+    color: red;
+    font-size: 22pt;
+}
 
 #teams > ul li:nth-child(even), #games > ul li:nth-child(even) {
     background: #1C94C4;
