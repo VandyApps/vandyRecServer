@@ -246,7 +246,6 @@ body {
 }
 
 #teams > ul li .teamDropped {
-    border: solid black;
     display: black;
     height: 80px;
     line-height: 80px;
