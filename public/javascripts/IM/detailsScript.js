@@ -478,7 +478,6 @@ TeamsView = Backbone.View.extend({
 	//removes all currently set teams and resets the teams displayed using the
 	//teams property
 	resetTeams: function() {
-		console.log("resetTeams was called");
 		var i, n, list = $('ul', this.$el);
 
 		//unbind any events that could have been
@@ -494,13 +493,12 @@ TeamsView = Backbone.View.extend({
 
 		this.model.get('teams').forEach(function(team, index) {
 			var id = team.teamID;
-			console.log("Binding the events now");
 			//cache the index in a local variable
 			//these bind to teams at different indices, so if a team changes its index,
 			//this needs to be reset as well
 			this.model.on('change:teams:'+team.teamID.toString(), function() {
 				var team = this.model.teamWithID(id);
-				console.log("Index: " + index);
+				
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
@@ -513,6 +511,7 @@ TeamsView = Backbone.View.extend({
 		var index = this.getIndex(event)
 			el = $('#teams ul li').eq(index),
 			self = this;
+
 		self.teams[index].dropped = true;
 
 		el.append('<div class="teamDropped">Dropped</div>');
@@ -593,11 +592,17 @@ GamesView = Backbone.View.extend({
 		});
 		
 		model.on('teamAdded', function(event) {
+			//teamID is a customized property that is 
+			//bound to the event object through IMModel
 			var id = event.teamID;
 			model.on('change:teams:'+id.toString(), function() {
 				var team = model.teamWithID(id);
 				$('#games ul li div:nth-child(3) span[teamid="'+team.teamID.toString()+ '"]').text(team.name);
 			});
+		});
+
+		model.on('teamRemoved', function(event) {
+			//found games related to this team and remove them
 		});
 
 	},
@@ -862,6 +867,32 @@ GamesView = Backbone.View.extend({
 				confirmation.unbind('clicked2');
 			});
 		});
+	},
+	//remove any game that has a team with the id
+	//unlike removeGame, this method does
+	//confirm if the deletion of the games
+	//is desired
+	removeGamesWithTeam: function(teamID) {
+		var gamesToRemove = $('#games span[teamid="'+teamID.toString()+'"]').parent().parent(),
+		indexes = [], i, n;
+
+		//get the indexes of the games that are
+		//to be deleted from the model
+		this.games.forEach(function(game, index) {
+			if (game.teams[0] === teamID || game.teams[1] === teamID) {
+				indexes.push(index);
+			}
+		});
+
+		//remove the games at the indexes that were found
+		for (i =0, n = indexes.length; i < n; ++i) {
+			//must decrement the index by the number
+			//of games that were previously deleted so that the index
+			//is always accurate as the array changes
+			this.games.splice(indexes[i] -i, 1);
+		}
+
+		gamesToRemove.remove();
 	},
 	removeGame: function(event) {
 		var index = this.getIndex(event),

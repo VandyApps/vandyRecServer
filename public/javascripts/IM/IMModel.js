@@ -89,9 +89,30 @@ IMModel.Sport = Backbone.Model.extend({
 		}
 		
 	},
+	//triggers custom event teamAdded with 
+	//the team id of the team that was added
+	//bound to the event object
 	addTeam: function(team) {
 		this.get('teams').push(team);
 		this.trigger('teamAdded', {teamID: team.teamID});
+	},
+	//triggers custom event teamRemoved
+	//with the teamID of the team that was removed
+	//bound to the event object
+	deleteTeam: function(teamID) {
+		var index, i, n, teamFound = false, teams = this.get('teams');
+		for (i = 0, n = teams.length; i < n && !teamFound; ++i) {
+			if (teams[i].teamID === teamID) {
+				index = i;
+				teamFound = true;
+			}
+		}
+		if (index !== undefined) {
+			//team was found
+			teams.splice(index, 1);
+			ths.trigger('teamRemoved', {teamID: teamID});
+		} 
+
 	},
 	teamWithID: function(id) {
 		var team;
