@@ -843,19 +843,7 @@ GamesView = Backbone.View.extend({
 				winner = this.games[index].winner;
 				
 
-			if (winner === 0) {
-				this.model.decrementWins(team1_id, {silent: true});
-				this.model.decrementLosses(team2_id, {silent: true});
-			} else if (winner === 1) {
-				this.model.decrementLosses(team1_id, {silent: true});
-				this.model.decrementWins(team2_id, {silent: true});
-			} else {
-				//2: tie
-				this.model.decrementTies(team1_id, {silent: true});
-				this.model.decrementTies(team2_id, {silent: true});
-			}
-			this.model.trigger('change:teams:'+team1_id.toString());
-			this.model.trigger('change:teams:'+team2_id.toString());
+			this.discountWLTForGame(this.games[index]);
 
 			this.games.splice(index, 1);
 			$("#games ul li:nth-child("+(index+1).toString()+")").slideUp(400, function() {
