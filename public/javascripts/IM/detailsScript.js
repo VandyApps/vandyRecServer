@@ -528,6 +528,7 @@ GamesView = Backbone.View.extend({
 		'click div:nth-child(1)': 'toggle',
 		'click ul li div:nth-child(6)': 'editGame',
 		'click ul li div:nth-child(7)': 'removeGame',
+		'click ul li div:nth-child(8)': 'cancelClicked',
 		'click #addGame': 'addGame'
 	},
 	initialize: function(model) {
@@ -625,7 +626,8 @@ GamesView = Backbone.View.extend({
 				winner: gamesEdit.winner,
 				startTime: gamesEdit.startTime,
 				endTime: gamesEdit.endTime,
-				date: gamesEdit.date
+				date: gamesEdit.date,
+				isCancelled: false
 			};
 			this.setGameAtIndex(index, gameObj);
 			//change the WLT for the teams
@@ -690,7 +692,8 @@ GamesView = Backbone.View.extend({
 				teams: [teams[0].teamID, teams[1].teamID],
 				score: [0,0],
 				winner: 2,
-				location: 'No location'
+				location: 'No location',
+				isCancelled: false
 
 			};
 
@@ -768,6 +771,37 @@ GamesView = Backbone.View.extend({
 			alert('You must have at least 2 registered teams before creating a game');
 		}
 			
+	},
+	cancelClicked: function(event) {
+		var index = this.getIndex(event), self = this,
+			el = $('#games ul li').eq(index);
+		this.games[index].isCancelled = true;
+		el.append('<div class="gameCancelled">Cancelled</div>');
+		$('.gameCancelled', el).click(function() {
+			var confirmation = new ConfirmationBox(
+				{
+					message: 'Are you sure you would like to uncancel this game',
+					button1Name: 'YES',
+					button2Name: 'NO'
+				}),
+				cachedEl = el;
+
+			confirmation.show();
+			confirmation.on('clicked1', function() {
+				var index = cachedEl.index();
+				$('.gameCancelled', cachedEl).remove();
+				confirmation.unbind('clicked1');
+				confirmation.unbind('clicked2');
+				//need to fix this to not search by index
+				//index could have changed since the game
+				//was cancelled
+				self.games[index].isCancelled = false;
+			});
+			confirmation.on('clicked2', function() {
+				confirmation.unbind('clicked1');
+				confirmation.unbind('clicked2');
+			});
+		});
 	},
 	removeGame: function(event) {
 		var index = this.getIndex(event),
