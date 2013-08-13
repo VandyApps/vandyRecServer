@@ -256,7 +256,8 @@ TeamsView = Backbone.View.extend({
 		'click div:nth-child(1)': 'toggle',
 		'click ul li div:nth-child(5)': 'editTeam',
 		'click ul li div:nth-child(6)': 'removeTeam',
-		'click #addTeam': 'addTeam'
+		'click ul li div:nth-child(7)': 'dropTeam',
+		'click #addTeam': 'addTeam'	
 	},
 	initialize: function(model) {
 		var i, n;
@@ -364,7 +365,7 @@ TeamsView = Backbone.View.extend({
 							.append('<div>Wins: '+teamObj.WLT[0].toString()+'</div>')
 							.append('<div>Losses: '+teamObj.WLT[1].toString()+'</div>')
 							.append('<div>Ties: '+teamObj.WLT[2].toString()+'</div>')
-							.append('<div>edit</div><div>delete</div>'));
+							.append('<div>edit</div><div>delete</div><div>drop</div>'));
 	},
 	//fix this to make sure teamObj has the correct properties
 	//the team that is being set should have the same id as the one
@@ -507,6 +508,9 @@ TeamsView = Backbone.View.extend({
 			}.bind(this));
 
 		}.bind(this));
+	},
+	dropTeam: function(event) {
+		console.log("Drop team was called");
 	}
 });
 

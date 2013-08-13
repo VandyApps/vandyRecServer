@@ -219,11 +219,11 @@ body {
     cursor: pointer;
 }
 
-#teams > ul li:nth-child(odd) div:nth-child(5), #teams > ul li:nth-child(odd) div:nth-child(6) {
+#teams > ul li:nth-child(odd) div:nth-child(5), #teams > ul li:nth-child(odd) div:nth-child(6), #teams > ul li:nth-child(odd) div:nth-child(7) {
     color: blue;
 }
 
-#teams > ul li:nth-child(even) div:nth-child(5), #teams > ul li:nth-child(even) div:nth-child(6) {
+#teams > ul li:nth-child(even) div:nth-child(5), #teams > ul li:nth-child(even) div:nth-child(6), #teams > ul li:nth-child(even) div:nth-child(7) {
     color: red;
 }
 
@@ -233,6 +233,15 @@ body {
     right: 10px;
     font-size: 10pt;
     text-decoration: underline;
+    cursor: pointer;
+}
+
+#teams > ul li div:nth-child(7) {
+    position: absolute;
+    text-decoration: underline;
+    font-size: 10pt;
+    right: 10px;
+    top: 35px;
     cursor: pointer;
 }
 
@@ -248,6 +257,7 @@ body {
     color: red;
     font-size: 22pt;
 }
+
 
 #teams > ul li:nth-child(even), #games > ul li:nth-child(even) {
     background: #1C94C4;
