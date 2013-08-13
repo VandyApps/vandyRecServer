@@ -510,7 +510,37 @@ TeamsView = Backbone.View.extend({
 		}.bind(this));
 	},
 	dropTeam: function(event) {
-		console.log("Drop team was called");
+		var index = this.getIndex(event)
+			el = $('#teams ul li').eq(index),
+			self = this;
+		self.teams[index].dropped = true;
+
+		el.append('<div class="teamDropped">Dropped</div>');
+		$('.teamDropped', el).click(function() {
+			var listItemEl = $(this).parent(),
+				confirmation = new ConfirmationBox(
+					{
+						message: 'Are you sure you would like to undrop this team?',
+						button1Name: 'YES',
+						button2Name: 'NO'
+					});
+
+			confirmation.show();
+
+			confirmation.on('clicked1', function() {
+				var i = listItemEl.index();
+				self.teams[i].dropped = false;
+				$('.teamDropped', listItemEl).remove();
+
+				confirmation.unbind('clicked1');
+				confirmation.unbind('clicked2');
+			});
+
+			confirmation.on('clicked2', function() {
+				confirmation.unbind('clicked1');
+				confirmation.unbind('clicked2');
+			});
+		});
 	}
 });
 
