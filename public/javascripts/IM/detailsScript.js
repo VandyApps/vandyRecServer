@@ -800,6 +800,7 @@ GamesView = Backbone.View.extend({
 		var index = this.getIndex(event), self = this,
 			el = $('#games ul li').eq(index);
 		this.games[index].isCancelled = true;
+		this.discountWLTForGame(this.games[index]);
 		el.append('<div class="gameCancelled">Cancelled</div>');
 		$('.gameCancelled', el).click(function() {
 			var confirmation = new ConfirmationBox(
@@ -820,7 +821,7 @@ GamesView = Backbone.View.extend({
 				//index could have changed since the game
 				//was cancelled
 				self.games[index].isCancelled = false;
-
+				self.countWLTForGame(self.games[index]);
 			});
 			confirmation.on('clicked2', function() {
 				confirmation.unbind('clicked1');
