@@ -712,19 +712,6 @@ GamesView = Backbone.View.extend({
 			gamesEdit.show();
 
 			gamesEdit.on('submit', function() {
-
-				if (gamesEdit.winner === 0) {
-					this.model.incrementWins(gamesEdit.homeTeam, {silent: true});
-					this.model.incrementLosses(gamesEdit.awayTeam, {silent: true});
-
-				} else if (gamesEdit.winner === 1) {
-					this.model.incrementWins(gamesEdit.awayTeam, {silent: true});
-					this.model.incrementLosses(gamesEdit.homeTeam, {silent: true});
-				} else {
-					this.model.incrementTies(gamesEdit.homeTeam, {silent: true});
-					this.model.incrementTies(gamesEdit.awayTeam, {silent: true});
-				}
-
 				//events here, custom events that are more specific
 				//trigger the correct events
 					
@@ -745,13 +732,9 @@ GamesView = Backbone.View.extend({
 				//insert the game
 				this.insertGame(gameObj);
 
-				//don't call change or change:teams since these events
-				//will call reset functionalities that take
-				//more processing power
-				
-				//call more specific events
-				this.model.trigger('change:teams:'+teams[0].teamID.toString());
-				this.model.trigger('change:teams:'+teams[1].teamID.toString());
+				//count the wins, ties, and losses that are incremented
+				//with the addition of the game
+				this.countWLTForGame(gameObj);
 				this.show();
 
 				NQ.now({type: 'success', message: "You have successfully created a new game"});
