@@ -772,6 +772,47 @@ GamesView = Backbone.View.extend({
 		}
 			
 	},
+	//for changing the wins, ties, and losses
+	//of a team by either counting or discounting a
+	//game
+	discountWLTForGame: function(game) {
+		var team1_id = game.teams[0],
+			team2_id = game.teams[1];
+
+		if (game.winner === 0) {
+			this.model.decrementWins(team1_id, {silent: true});
+			this.model.decrementLosses(team2_id, {silent: true});
+		} else if (game.winner === 1) {
+			this.model.decrementWins(team2_id, {silent: true});
+			this.model.decrementLosses(team1_id, {silent: true});
+
+		} else if (game.winner === 2) {
+			this.model.decrementTies(team1_id, {silent: true});
+			this.model.decrementTies(team2_id, {silent: true});
+
+		}
+		this.model.trigger('change:teams:'+team1_id.toString());
+		this.model.trigger('change:teams:'+team2_id.toString());
+	},
+	countWLTForGame: function(game) {
+		var team1_id = game.teams[0],
+			team2_id = game.teams[1];
+
+		if (game.winner === 0) {
+			this.model.incrementWins(team1_id, {silent: true});
+			this.model.incrementLosses(team2_id, {silent: true});
+		} else if (game.winner === 1) {
+			this.model.incrementWins(team2_id, {silent: true});
+			this.model.incrementLosses(team1_id, {silent: true});
+
+		} else if (game.winner === 2) {
+			this.model.incrementTies(team1_id, {silent: true});
+			this.model.incrementTies(team2_id, {silent: true});
+		}
+		this.model.trigger('change:teams:'+team1_id.toString());
+		this.model.trigger('change:teams:'+team2_id.toString());
+
+	},
 	cancelClicked: function(event) {
 		var index = this.getIndex(event), self = this,
 			el = $('#games ul li').eq(index);
@@ -796,6 +837,7 @@ GamesView = Backbone.View.extend({
 				//index could have changed since the game
 				//was cancelled
 				self.games[index].isCancelled = false;
+
 			});
 			confirmation.on('clicked2', function() {
 				confirmation.unbind('clicked1');
