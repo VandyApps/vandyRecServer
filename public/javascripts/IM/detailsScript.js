@@ -447,21 +447,23 @@ TeamsView = Backbone.View.extend({
 	},
 	removeTeam: function(event) {
 		var confirm = new ConfirmationBox(
-		{
-			message: 'Are you sure you would like to delete this team',
-			button1Name: 'YES',
-			button2Name: 'NO'
-		});
+			{
+				message: 'Are you sure you would like to delete this team',
+				button1Name: 'YES',
+				button2Name: 'NO'
+			});
+
 		confirm.show();
 		confirm.on('clicked1', function() {
 			var index = this.getIndex(event),
+				teamID = this.teams[index].teamID;
 				self = this,
 				listEl = $('ul li:nth-child('+ (index + 1).toString()+ ')', this.$el);
 
 			listEl.slideUp(400, function() {
 				listEl.remove();
-				//this changes the model also
-				self.teams.splice(index, 1);
+				//triggers event teamRemoved
+				self.model.deleteTeam(teamID);
 				
 			});
 			confirm.unbind('clicked1');
@@ -498,7 +500,7 @@ TeamsView = Backbone.View.extend({
 			//this needs to be reset as well
 			this.model.on('change:teams:'+team.teamID.toString(), function() {
 				var team = this.model.teamWithID(id);
-				
+				console.log("change teams was called on teamsView at team " + id);
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
@@ -560,7 +562,7 @@ GamesView = Backbone.View.extend({
 	events: {
 		'click div:nth-child(1)': 'toggle',
 		'click ul li div:nth-child(6)': 'editGame',
-		'click ul li div:nth-child(7)': 'removeGame',
+		'click ul li div:nth-child(7)': 'confirmRemoveGame',
 		'click ul li div:nth-child(8)': 'cancelClicked',
 		'click #addGame': 'addGame'
 	},
@@ -603,7 +605,9 @@ GamesView = Backbone.View.extend({
 
 		model.on('teamRemoved', function(event) {
 			//found games related to this team and remove them
-		});
+			console.log('teamRemoved called on game for id ' + event.teamID);
+			this.removeGamesWithTeam(event.teamID);
+		}.bind(this));
 
 	},
 	
@@ -718,7 +722,7 @@ GamesView = Backbone.View.extend({
 	},
 	addGame: function() {
 		var gameObj, teams = this.model.get('teams'), gamesEdit;
-		
+		console.log("Teams in addGame: " + JSON.stringify(teams));
 		//make sure there are atleast 2 teams before allowing a game to
 		//be added
 		if (teams.length >= 2) {
@@ -801,20 +805,33 @@ GamesView = Backbone.View.extend({
 		var team1_id = game.teams[0],
 			team2_id = game.teams[1];
 
-		if (game.winner === 0) {
-			this.model.decrementWins(team1_id, {silent: true});
-			this.model.decrementLosses(team2_id, {silent: true});
-		} else if (game.winner === 1) {
-			this.model.decrementWins(team2_id, {silent: true});
-			this.model.decrementLosses(team1_id, {silent: true});
+		if (this.model.teamExists(team1_id)) {
+			if (game.winner === 0) {
+				this.model.decrementWins(team1_id, {silent: true});
+			} else if (game.winner === 1) {
+				this.model.decrementLosses(team1_id, {silent: true});
 
-		} else if (game.winner === 2) {
-			this.model.decrementTies(team1_id, {silent: true});
-			this.model.decrementTies(team2_id, {silent: true});
+			} else if (game.winner === 2) {
+				this.model.decrementTies(team1_id, {silent: true});
+
+			}
+			this.model.trigger('change:teams:'+team1_id.toString());
 
 		}
-		this.model.trigger('change:teams:'+team1_id.toString());
-		this.model.trigger('change:teams:'+team2_id.toString());
+		if (this.model.teamExists(team2_id)) {
+
+			if (game.winner === 0) {
+				this.model.decrementLosses(team2_id, {silent: true});
+			} else if (game.winner === 1) {
+				this.model.decrementWins(team2_id, {silent: true});
+
+			} else if (game.winner === 2) {
+				this.model.decrementTies(team2_id, {silent: true});
+
+			}
+			this.model.trigger('change:teams:'+team2_id.toString());
+		}
+		
 	},
 	countWLTForGame: function(game) {
 		var team1_id = game.teams[0],
@@ -874,27 +891,57 @@ GamesView = Backbone.View.extend({
 	//is desired
 	removeGamesWithTeam: function(teamID) {
 		var gamesToRemove = $('#games span[teamid="'+teamID.toString()+'"]').parent().parent(),
-		indexes = [], i, n;
+			indexes = [], i, n, model = this.model;
 
 		//get the indexes of the games that are
 		//to be deleted from the model
 		this.games.forEach(function(game, index) {
+			//in case the person set the same team
+			//to compete with itself
 			if (game.teams[0] === teamID || game.teams[1] === teamID) {
+
 				indexes.push(index);
+
 			}
 		});
 
 		//remove the games at the indexes that were found
 		for (i =0, n = indexes.length; i < n; ++i) {
+
 			//must decrement the index by the number
 			//of games that were previously deleted so that the index
 			//is always accurate as the array changes
-			this.games.splice(indexes[i] -i, 1);
+			this.removeGameAtIndex(indexes[i] - i);
 		}
 
 		gamesToRemove.remove();
 	},
-	removeGame: function(event) {
+	//removes the game at the given index within
+	//the games array
+	removeGameAtIndex: function(index, options) {
+		var team1_id = this.games[index].teams[0],
+			team2_id = this.games[index].teams[1],
+			winner = this.games[index].winner,
+			animate = (!options || options.animate) ? true : false;
+			
+
+		this.discountWLTForGame(this.games[index]);
+
+		this.games.splice(index, 1);
+		if (animate) {
+			$("#games ul li:nth-child("+(index+1).toString()+")").slideUp(400, function() {
+				$(this).remove();
+			});
+		} else {
+			$("#games ul li:nth-child("+(index+1).toString()+")").remove();
+		}
+			
+	},
+	//an abstraction over the remove game at index that
+	//first confirms if the user wants to remove the game
+	//then converts the event to an index of an array that can
+	//be used to idenitify the game within the model
+	confirmRemoveGame: function(event) {
 		var index = this.getIndex(event),
 			confirmation = new ConfirmationBox({
 				message: "Are you sure you would like to delete this element?",
@@ -903,17 +950,7 @@ GamesView = Backbone.View.extend({
 			});
 
 		confirmation.on('clicked1', function() {
-			var team1_id = this.games[index].teams[0],
-				team2_id = this.games[index].teams[1],
-				winner = this.games[index].winner;
-				
-
-			this.discountWLTForGame(this.games[index]);
-
-			this.games.splice(index, 1);
-			$("#games ul li:nth-child("+(index+1).toString()+")").slideUp(400, function() {
-				$("#games ul li:nth-child("+(index+1).toString()+")").remove();
-			});
+			this.removeGameAtIndex(index);
 
 			confirmation.unbind('clicked1');
 			confirmation.unbind('clicked2');
@@ -1303,7 +1340,6 @@ EditView = (function() {
 				this.setEndDateTag();
 			}
 		}),
-
 
 		TeamsEdit = Backbone.View.extend({
 			'el': '#teamsEdit',

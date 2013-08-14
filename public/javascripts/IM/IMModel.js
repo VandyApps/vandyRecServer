@@ -110,12 +110,14 @@ IMModel.Sport = Backbone.Model.extend({
 		if (index !== undefined) {
 			//team was found
 			teams.splice(index, 1);
-			ths.trigger('teamRemoved', {teamID: teamID});
+			this.trigger('teamRemoved', {teamID: teamID});
 		} 
 
 	},
+	//returns null if no team could be found with the
+	//given id
 	teamWithID: function(id) {
-		var team;
+		var team = null;
 		this.get('teams').forEach(function(_team) {
 			if (_team.teamID === id) {
 				team = _team;
@@ -124,18 +126,32 @@ IMModel.Sport = Backbone.Model.extend({
 		});
 		return team;
 	},
+	teamExists: function(id) {
+		var i, n, teams = this.get('teams');
+		if (typeof id === 'number') {
+			for (i = 0, n = teams.length; i < n; ++i) {
+				if (teams[i].teamID === id) {
+					return true;
+				}
+			}
+		}
+		return false;
+	},
 	//sets the wins, losses, ties at the specified index
+	//if a team does not exist with the given id,
+	//then this function does nothing
 	decrementWins: function(id, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
-			team.WLT[0] -= 1;
-			if (!options || !options.silent) {
-				this.trigger('change');
-				this.trigger('change:teams');
-				this.trigger('change:teams:'+id.toString());
+			if (team !== null) {
+				team.WLT[0] -= 1;
+				if (!options || !options.silent) {
+					this.trigger('change');
+					this.trigger('change:teams');
+					this.trigger('change:teams:'+id.toString());
+				}
 			}
-			
 
 		}
 		
@@ -144,11 +160,13 @@ IMModel.Sport = Backbone.Model.extend({
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
-			team.WLT[0] += 1;
-			if (!options || !options.silent) {
-				this.trigger('change');
-				this.trigger('change:teams');
-				this.trigger('change:teams:'+id.toString());
+			if (team !== null) {
+				team.WLT[0] += 1;
+				if (!options || !options.silent) {
+					this.trigger('change');
+					this.trigger('change:teams');
+					this.trigger('change:teams:'+id.toString());
+				}
 			}
 		}
 	},
@@ -156,26 +174,28 @@ IMModel.Sport = Backbone.Model.extend({
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
-			team.WLT[0] = value;
-			if (!options || !options.silent) {
-				this.trigger('change');
-				this.trigger('change:teams');
-				this.trigger('change:teams:'+id.toString());
+			if (team !== null) {
+				team.WLT[0] = value;
+				if (!options || !options.silent) {
+					this.trigger('change');
+					this.trigger('change:teams');
+					this.trigger('change:teams:'+id.toString());
+				}
 			}
-
 		}
 	},
 	decrementLosses: function(id, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
-			team.WLT[1] -= 1;
-			if (!options || !options.silent) {
-				this.trigger('change');
-				this.trigger('change:teams');
-				this.trigger('change:teams:'+id.toString());
+			if (team !== null) {
+				team.WLT[1] -= 1;
+				if (!options || !options.silent) {
+					this.trigger('change');
+					this.trigger('change:teams');
+					this.trigger('change:teams:'+id.toString());
+				}
 			}
-
 		}
 	},
 	incrementLosses: function(id, options) {
@@ -195,25 +215,29 @@ IMModel.Sport = Backbone.Model.extend({
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
-			team.WLT[1] = value;
-			if (!options || !options.silent) {
-				this.trigger('change');
-				this.trigger('change:teams');
-				this.trigger('change:teams:'+id.toString());
+			if (team !== null) {
+				team.WLT[1] = value;
+				if (!options || !options.silent) {
+					this.trigger('change');
+					this.trigger('change:teams');
+					this.trigger('change:teams:'+id.toString());
+				}
 			}
-
 		}
 	},
 	decrementTies: function(id, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
-			team.WLT[2] -= 1;
-			if (!options || !options.silent) {
-				this.trigger('change');
-				this.trigger('change:teams');
-				this.trigger('change:teams:'+id.toString());
+			if (team !== null) {
+				team.WLT[2] -= 1;
+				if (!options || !options.silent) {
+					this.trigger('change');
+					this.trigger('change:teams');
+					this.trigger('change:teams:'+id.toString());
+				}
 			}
+				
 
 		}
 	},
@@ -221,26 +245,28 @@ IMModel.Sport = Backbone.Model.extend({
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
-			team.WLT[2] += 1;
-			if (!options || !options.silent) {
-				this.trigger('change');
-				this.trigger('change:teams');
-				this.trigger('change:teams:'+id.toString());
+			if (team !== null) {
+				team.WLT[2] += 1;
+				if (!options || !options.silent) {
+					this.trigger('change');
+					this.trigger('change:teams');
+					this.trigger('change:teams:'+id.toString());
+				}
 			}
-
 		}
 	},
 	setTies: function(id, value, options) {
 		var team;
 		if (typeof id === 'number') {
 			team = this.teamWithID(id);
-			team.WLT[2] = value;
-			if (!options || !options.silent) {
-				this.trigger('change');
-				this.trigger('change:teams');
-				this.trigger('change:teams:'+id.toString());
+			if (team !== null) {
+				team.WLT[2] = value;
+				if (!options || !options.silent) {
+					this.trigger('change');
+					this.trigger('change:teams');
+					this.trigger('change:teams:'+id.toString());
+				}
 			}
-
 		}
 	}
 
