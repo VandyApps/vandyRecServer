@@ -675,25 +675,25 @@ GamesView = Backbone.View.extend({
 			this.setGameAtIndex(index, gameObj);
 			//change the WLT for the teams
 			
-			if (winner === 0) {
+			if (winner === 0 || winner === 4) {
 				this.model.decrementWins(team1_id, {silent: true});
 				this.model.decrementLosses(team2_id, {silent: true});
-			} else if (winner === 1) {
+			} else if (winner === 1 || winner === 3) {
 				this.model.decrementWins(team2_id, {silent: true});
 				this.model.decrementLosses(team1_id, {silent: true});
-			} else {
+			} else if (games.winner === 2) {
 				this.model.decrementTies(team1_id, {silent: true});
 				this.model.decrementTies(team2_id, {silent: true});
 			}
 
-			if (gamesEdit.winner === 0) {
+			if (gamesEdit.winner === 0 || gamesEdit.winner === 4) {
 				this.model.incrementWins(gamesEdit.homeTeam, {silent: true});
 				this.model.incrementLosses(gamesEdit.awayTeam, {silent: true});
 
-			} else if (gamesEdit.winner === 1) {
+			} else if (gamesEdit.winner === 1 || gamesEdit.winner === 3) {
 				this.model.incrementWins(gamesEdit.awayTeam, {silent: true});
 				this.model.incrementLosses(gamesEdit.homeTeam, {silent: true});
-			} else {
+			} else if (gamesEdit.winner === 2) {
 				this.model.incrementTies(gamesEdit.homeTeam, {silent: true});
 				this.model.incrementTies(gamesEdit.awayTeam, {silent: true});
 			}
@@ -806,9 +806,9 @@ GamesView = Backbone.View.extend({
 			team2_id = game.teams[1];
 
 		if (this.model.teamExists(team1_id)) {
-			if (game.winner === 0) {
+			if (game.winner === 0 || game.winner === 4) {
 				this.model.decrementWins(team1_id, {silent: true});
-			} else if (game.winner === 1) {
+			} else if (game.winner === 1 || game.winner === 3) {
 				this.model.decrementLosses(team1_id, {silent: true});
 
 			} else if (game.winner === 2) {
@@ -820,9 +820,9 @@ GamesView = Backbone.View.extend({
 		}
 		if (this.model.teamExists(team2_id)) {
 
-			if (game.winner === 0) {
+			if (game.winner === 0 || game.winner === 4) {
 				this.model.decrementLosses(team2_id, {silent: true});
-			} else if (game.winner === 1) {
+			} else if (game.winner === 1 || game.winner === 3) {
 				this.model.decrementWins(team2_id, {silent: true});
 
 			} else if (game.winner === 2) {
@@ -837,10 +837,10 @@ GamesView = Backbone.View.extend({
 		var team1_id = game.teams[0],
 			team2_id = game.teams[1];
 
-		if (game.winner === 0) {
+		if (game.winner === 0 || game.winner === 4) {
 			this.model.incrementWins(team1_id, {silent: true});
 			this.model.incrementLosses(team2_id, {silent: true});
-		} else if (game.winner === 1) {
+		} else if (game.winner === 1 || game.winner === 3) {
 			this.model.incrementWins(team2_id, {silent: true});
 			this.model.incrementLosses(team1_id, {silent: true});
 
@@ -1418,7 +1418,7 @@ EditView = (function() {
 				'blur div:nth-child(7) input:nth-child(1)': 'homeScoreChanged',
 				'blur div:nth-child(7) input:nth-child(2)': 'awayScoreChanged',
 				'blur div:nth-child(8) input': 'locationChanged',
-				'change div:nth-child(9) input[type="radio"]': 'winnerChanged'
+				'change input[type="radio"][name="winner"]': 'winnerChanged'
 
 			},
 			show: function() {
@@ -1457,7 +1457,7 @@ EditView = (function() {
 					$('div:nth-child(8) input', this.$el).val(this.location);
 
 					//set the winner
-					$('div:nth-child(9) input[type="radio"][value="'+this.winner.toString()+ '"]', this.$el).attr('checked', true);
+					$('input[type="radio"][name="winner"][value="'+this.winner.toString()+ '"]', this.$el).attr('checked', true);
 
 					this.isShowing = true;
 					this.$el.show(); 
@@ -1635,7 +1635,7 @@ EditView = (function() {
 				this.location = $('div:nth-child(8) input', this.$el).val();
 			},
 			winnerChanged: function() {
-				this.winner = +$('div:nth-child(9) input[type="radio"]:checked', this.$el).val();
+				this.winner = +$('[type="radio"][name="winner"]:checked', this.$el).val();
 			},
 			//check to see if the home and away scores are
 			//numbers
