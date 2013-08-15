@@ -1043,11 +1043,25 @@ GamesView = Backbone.View.extend({
 	generateGameView: function(game) {
 		var homeTeam = this.model.teamWithID(game.teams[0]),
 			awayTeam = this.model.teamWithID(game.teams[1]),
+			homeScore,
+			awayScore;
+
+			if (game.winner === 3) {
+				homeScore = "F";
+				awayScore = "W";
+			} else if (game.winner === 4) {
+				homeScore = "W";
+				awayScore = "F";
+			} else {
+				homeScore = game.score[0].toString();
+				awayScore = game.score[1].toString();
+			}
+
 			el =  $('<li></li>').append('<div>'+game.date+'</div>')
 								.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
 								.append('<div><span teamid="'+game.teams[0].toString()+'">'+homeTeam.name+'</span>Vs<span teamid="'+game.teams[1].toString()+'">'+awayTeam.name+'</span></div>')
 								.append('<div>'+game.location+'</div>')
-								.append('<div>'+game.score[0].toString()+'-'+game.score[1].toString()+'</div>')
+								.append('<div>'+homeScore+'-'+awayScore+'</div>')
 								.append('<div>edit</div>')
 								.append('<div>delete</div><div>cancel</div>');
 		return el;
