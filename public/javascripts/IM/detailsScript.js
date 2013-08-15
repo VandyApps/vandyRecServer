@@ -1457,7 +1457,7 @@ EditView = (function() {
 					$('div:nth-child(8) input', this.$el).val(this.location);
 
 					//set the winner
-					$('input[type="radio"][name="winner"][value="'+this.winner.toString()+ '"]', this.$el).attr('checked', true);
+					$('#gamesEdit input[type="radio"][name="winner"][value="'+this.winner.toString()+ '"]').prop('checked', true);
 
 					this.isShowing = true;
 					this.$el.show(); 
