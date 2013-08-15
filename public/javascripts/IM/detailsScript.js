@@ -1057,7 +1057,8 @@ GamesView = Backbone.View.extend({
 				awayScore = game.score[1].toString();
 			}
 
-			el =  $('<li></li>').append('<div>'+game.date+'</div>')
+			el =  $('<li></li>').append('<div>#12</div>')
+								.append('<div>'+game.date+'</div>')
 								.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
 								.append('<div><span teamid="'+game.teams[0].toString()+'">'+homeTeam.name+'</span>Vs<span teamid="'+game.teams[1].toString()+'">'+awayTeam.name+'</span></div>')
 								.append('<div>'+game.location+'</div>')

@@ -211,7 +211,7 @@ body {
 
 #teams > ul li div:nth-child(5) {
     position: absolute;
-    top: 5px;
+    top:5px;
     right: 10px;
     font-size: 10pt;
     color: red;
@@ -275,21 +275,21 @@ body {
     height: 120px;
 }
 
-#games > ul div:nth-child(1) {
-
-    position: absolute;
-    top: 5px;
-    left: 10px;
-}
-
 #games > ul div:nth-child(2) {
 
     position: absolute;
-    top: 30px;
+    top: 25px;
     left: 10px;
 }
 
 #games > ul div:nth-child(3) {
+
+    position: absolute;
+    top: 50px;
+    left: 10px;
+}
+
+#games > ul div:nth-child(4) {
     position: absolute;
     display: block;
     height: 30px;
@@ -303,13 +303,13 @@ body {
     
 }
 
-#games > ul div:nth-child(4) {
+#games > ul div:nth-child(5) {
     position: absolute;
     left: 10px;
-    top: 55px;
+    top: 75px;
 }
 
-#games > ul div:nth-child(5) {
+#games > ul div:nth-child(6) {
     position: absolute;
     display: block;
     width: 100px;
@@ -321,7 +321,7 @@ body {
     text-align: center;
 }
 
-#games > ul div:nth-child(6) {
+#games > ul div:nth-child(7) {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -330,15 +330,15 @@ body {
     cursor: pointer;
 }
 
-#games > ul li:nth-child(odd) div:nth-child(6), #games > ul li:nth-child(odd) div:nth-child(7), #games > ul li:nth-child(odd) div:nth-child(8) {
+#games > ul li:nth-child(odd) div:nth-child(7), #games > ul li:nth-child(odd) div:nth-child(8), #games > ul li:nth-child(odd) div:nth-child(9) {
     color: blue;
 }
 
-#games > ul li:nth-child(even) div:nth-child(6), #games > ul li:nth-child(even) div:nth-child(7), #games > ul li:nth-child(even) div:nth-child(8) {
+#games > ul li:nth-child(even) div:nth-child(7), #games > ul li:nth-child(even) div:nth-child(8), #games > ul li:nth-child(even) div:nth-child(9) {
     color:red;
 }
 
-#games > ul div:nth-child(7) {
+#games > ul div:nth-child(8) {
     cursor: pointer;
     position: absolute;
     top: 30px;
@@ -347,7 +347,7 @@ body {
     text-decoration: underline;
 }
 
-#games >ul div:nth-child(8) {
+#games >ul div:nth-child(9) {
     cursor: pointer;
     position: absolute;
     right: 10px;
