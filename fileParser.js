@@ -372,13 +372,29 @@ function matrixOfGames(window, errors) {
 						if (+score[0] !== +score[0]) {
 							//not a number
 							//only need to set this using the data from the first score
-				
-							nextGame.forfeit = true;
+							if (DateHelper.dateFromDateString(nextGame.date).getTime() > Date.now()) {
+								//5 indicates game not played
+								nextGame.winner = 5;
+
+							} else if (score[0].toLowerCase() === 'w') {
+								nextGame.winner = 4;
+							} else {
+								nextGame.winner = 3;
+							}
 
 
 						} else {
-							nextGame.forfeit = false;
 							nextGame.score[0] = +score[0];
+							if (DateHelper.dateFromDateString(nextGame.date).getTime() > Date.now()) {
+								//5 indicates the games has not yet been played
+								nextGame.winner = 5;
+							} else if (nextGame.score[0] > nextGame.score[1]) {
+								nextGame.winner = 0;
+							} else if (nextGame.score[0] < nextGame.score[1]) {
+								nextGame.winner = 1;
+							} else {
+								nextGame.winner = 2;
+							}
 						}
 
 						if (+score[1] !== +score[1]) {
@@ -390,23 +406,6 @@ function matrixOfGames(window, errors) {
 
 						//set the winner
 						
-						if (+score[0] !== +score[0]) {
-							
-							
-							if (score[0].toLowerCase() === 'w') {
-								nextGame.winner = 0;
-							} else {
-								nextGame.winner = 1;
-							}
-						} else {
-							if (nextGame.score[0] > nextGame.score[1]) {
-								nextGame.winner = 0;
-							} else if (nextGame.score[0] < nextGame.score[1]) {
-								nextGame.winner = 1;
-							} else {
-								nextGame.winner = 2;
-							}
-						}
 
 					} else {
 						//the game cannot be read
