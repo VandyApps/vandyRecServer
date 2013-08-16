@@ -318,7 +318,7 @@ function matrixOfGames(window, errors) {
 					dateObj = parseDate(rawDate);
 					console.log("Parsed the date");
 					if (dateObj === null) {
-						errors.push("The date for game #" + (i+1).toString() + " could not be identified and was set to 01/01/2013")
+						errors.push("The date for game #" + (i).toString() + " could not be identified and was set to 01/01/2013")
 						nextGame.date = "01/01/2013";
 					} else {
 						console.log("Setting the date");
@@ -331,7 +331,7 @@ function matrixOfGames(window, errors) {
 					nextGame.startTime = parseTime(nextGame.startTime);
 					console.log("done parsing start time");
 					if (!nextGame.startTime) {
-						errors.push("The start time for game #" + (i+1).toString() + " could not be identified and was set to 01:00am")
+						errors.push("The start time for game #" + (i).toString() + " could not be identified and was set to 01:00am")
 						nextGame.startTime = "01:00am";
 						nextGame.endTime = "02:00am";
 					} else {
@@ -345,14 +345,14 @@ function matrixOfGames(window, errors) {
 				case 3:
 					nextGame.teams[0] = teamWithName(filterBadCharacters(trimExtraSpaces(gameEl.children().eq(3).text()).trim()));
 					if (nextGame.teams[0] === 0) {
-						errors.push('The home team in game #' +(i+1).toString() + ' could not be identified and was replaced with the team "' + filterToken(teamWithName.teams[0].name, ',') + '"');
+						errors.push('The home team in game #' +(i).toString() + ' could not be identified and was replaced with the team "' + filterToken(teamWithName.teams[0].name, ',') + '"');
 						nextGame.teams[0] = teamWithName.teams[0].teamID;
 					}
 					break;
 				case 5:
 					nextGame.teams[1] = teamWithName(filterBadCharacters(trimExtraSpaces(gameEl.children().eq(5).text()).trim()));
 					if (nextGame.teams[1] === 0) {
-						errors.push('The away team in game #' +(i+1).toString() + ' could not be identified and was replaced with the team "' + filterToken(teamWithName.teams[1].name, ',') + '"');
+						errors.push('The away team in game #' +(i).toString() + ' could not be identified and was replaced with the team "' + filterToken(teamWithName.teams[1].name, ',') + '"');
 						nextGame.teams[1] = teamWithName.teams[1].teamID;
 					}
 					break;
@@ -406,7 +406,7 @@ function matrixOfGames(window, errors) {
 					} else {
 						//the game cannot be read
 						nextGame.score = [0,0];
-						errors.push("Could not read the score for game #" + (i+1).toString());
+						errors.push("Could not read the score for game #" + (i).toString());
 						console.log("Score was not of length 2");
 						//set winner to 5 if the game is after the current date
 						//set winner to 2 if the game is before the current date (indicates tie)
