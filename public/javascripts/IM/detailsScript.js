@@ -561,9 +561,9 @@ GamesView = Backbone.View.extend({
 	games: [],
 	events: {
 		'click div:nth-child(1)': 'toggle',
-		'click ul li div:nth-child(6)': 'editGame',
-		'click ul li div:nth-child(7)': 'confirmRemoveGame',
-		'click ul li div:nth-child(8)': 'cancelClicked',
+		'click ul li div:nth-child(7)': 'editGame',
+		'click ul li div:nth-child(8)': 'confirmRemoveGame',
+		'click ul li div:nth-child(9)': 'cancelClicked',
 		'click #addGame': 'addGame'
 	},
 	initialize: function(model) {
@@ -589,7 +589,7 @@ GamesView = Backbone.View.extend({
 				console.log('change team was called by game for team: ' + team.teamID.toString());
 				console.log('team name that is being changed: ' + $('#games ul li div:nth-child(3) span[teamid="'+team.teamID.toString()+'"]').text());
 				console.log("Changing name to: " + team.name);
-				$('#games ul li div:nth-child(3) span[teamid="'+team.teamID.toString()+'"]').text(team.name);
+				$('#games ul li div:nth-child(4) span[teamid="'+team.teamID.toString()+'"]').text(team.name);
 			});
 		});
 		
@@ -599,7 +599,7 @@ GamesView = Backbone.View.extend({
 			var id = event.teamID;
 			model.on('change:teams:'+id.toString(), function() {
 				var team = model.teamWithID(id);
-				$('#games ul li div:nth-child(3) span[teamid="'+team.teamID.toString()+ '"]').text(team.name);
+				$('#games ul li div:nth-child(4) span[teamid="'+team.teamID.toString()+ '"]').text(team.name);
 			});
 		});
 
