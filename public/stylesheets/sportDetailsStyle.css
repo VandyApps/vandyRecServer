@@ -275,17 +275,33 @@ body {
     height: 120px;
 }
 
+#games > ul div:nth-child(1) {
+    position: absolute;
+    background-color: black;
+    color: white;
+    display: block;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 10pt;
+    border-radius: 15px;
+    top: 5px;
+    left: 5px;
+    
+}
+
 #games > ul div:nth-child(2) {
 
     position: absolute;
-    top: 25px;
+    top: 40px;
     left: 10px;
 }
 
 #games > ul div:nth-child(3) {
 
     position: absolute;
-    top: 50px;
+    top: 65px;
     left: 10px;
 }
 
@@ -306,7 +322,7 @@ body {
 #games > ul div:nth-child(5) {
     position: absolute;
     left: 10px;
-    top: 75px;
+    top: 90px;
 }
 
 #games > ul div:nth-child(6) {
