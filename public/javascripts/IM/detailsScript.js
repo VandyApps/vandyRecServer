@@ -997,8 +997,9 @@ GamesView = Backbone.View.extend({
 
 		} else {
 			//just put the game back into the same slot that it was in
+			//no need to reset the game numbers
 			this.games.splice(index, 1, gameObj);
-			$('ul li:nth-child('+(index+1).toString() + ')', this.$el).after(this.generateGameView(gameObj)).remove();
+			$('ul li:nth-child('+(index+1).toString() + ')', this.$el).after(this.generateGameView(gameObj, index+1)).remove();
 
 		}
 		
@@ -1031,16 +1032,18 @@ GamesView = Backbone.View.extend({
 		if (insertIndex === length) {
 			
 			this.games.push(gameObj);
-			$('ul', this.$el).append(this.generateGameView(gameObj));
+			$('ul', this.$el).append(this.generateGameView(gameObj, insertIndex + 1));
+			this.resetGameNumbers(insertIndex);
 			
 		} else {
 			
-			$('li:nth-child(' + (insertIndex+1).toString() + ')', this.$el).before(this.generateGameView(gameObj));	
+			$('li:nth-child(' + (insertIndex+1).toString() + ')', this.$el).before(this.generateGameView(gameObj, insertIndex + 1));
+			this.resetGameNumbers(insertIndex);	
 			this.games.splice(insertIndex, 0, gameObj);
 		}
 		
 	},
-	generateGameView: function(game) {
+	generateGameView: function(game, gameNumber) {
 		var homeTeam = this.model.teamWithID(game.teams[0]),
 			awayTeam = this.model.teamWithID(game.teams[1]),
 			homeScore,
@@ -1057,7 +1060,7 @@ GamesView = Backbone.View.extend({
 				awayScore = game.score[1].toString();
 			}
 
-			el =  $('<li></li>').append('<div>#12</div>')
+			el =  $('<li></li>').append('<div>'+gameNumber.toString()+'</div>')
 								.append('<div>'+game.date+'</div>')
 								.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
 								.append('<div><span teamid="'+game.teams[0].toString()+'">'+homeTeam.name+'</span>Vs<span teamid="'+game.teams[1].toString()+'">'+awayTeam.name+'</span></div>')
@@ -1088,11 +1091,23 @@ GamesView = Backbone.View.extend({
 		this.model.sortGames(true);
 		//set the pointer back
 		this.games = this.model.get('games');
-		this.games.forEach(function(game) {
+		this.games.forEach(function(game, index) {
 			
-			this.generateGameView(game).appendTo(listEl);
+			this.generateGameView(game, index+1).appendTo(listEl);
 		}.bind(this));
 
+	},
+	resetGameNumbers: function(startIndex) {
+		if (startIndex === undefined) {
+			$('#games ul li').toArray().forEach(function(game, index) {
+				$(game).children('div:nth-child(1)').text((index+1).toString());
+			});
+		} else {
+			$('#games ul li:gt('+(startIndex-1).toString()+')').toArray().forEach(function(game, index) {
+				$(game).children('div:nth-child(1)').text((index+1+startIndex).toString());
+			});
+		}
+			
 	}
 });
 
