@@ -299,6 +299,56 @@ function teamWithName(name) {
 	return 0;
 }
 
+function resetWLT(teams, games) {
+	//get the max teamID
+	var maxID = 0,
+		teamsArray;
+	teams.forEach(function(team) {
+		if (maxID < team.teamID) {
+			maxID = team.teamID;
+		}
+	});
+	if (maxID !== 0) {
+		teamsArray = new Array(maxID);
+		games.forEach(function(game) {
+			var winner = game.winner,
+				team1_id = game.teams[0],
+				team2_id = game.teams[1];
+			//lazy instantiation of the WLT arrays within the
+			//teams array
+			if (teamsArray[team1_id] === undefined) {
+				teamsArray[team1_id] = [0,0,0];
+			}
+
+			if (teamsArray[team2_id] === undefined) {
+				teamsArray[team2_id] = [0,0,0];
+			}
+
+			if (winner === 0 || winner === 4) {
+				//home team won
+				teamsArray[team1_id][0] = teamsArray[team1_id][0] + 1;
+				teamsArray[team2_id][1] = teamsArray[team2_id][1] + 1;
+
+			} else if (winner === 1 || winner === 3) {
+				//away team won
+				teamsArray[team1_id][1] = teamsArray[team1_id][1] + 1;
+				teamsArray[team2_id][0] = teamsArray[team2_id][0] + 1;
+
+			} else if (winner === 2) {
+				//tie
+				teamsArray[team1_id][2] = teamsArray[team1_id][2] + 1;
+				teamsArray[team2_id][2] = teamsArray[team2_id][2] + 1;
+			}
+		});
+	}
+
+	//insert the new WLT back into the teams
+	teams.forEach(function(team) {
+		if (teamsArray[team.teamID] !== undefined) {
+			team.WLT = teamsArray[team.teamID]
+		}
+	});
+}
 
 function matrixOfGames(window, errors) {
 	var gamesTable = window.$('body table:nth-of-type(2) tbody'),
@@ -449,6 +499,7 @@ exports.parseSport = function(html, callback) {
 			teamWithName.teams = model.teams;
 
 			model.games = matrixOfGames(window, errors);
+			resetWLT(model.teams, model.games);
 			console.log("Done with the games");
 			//callback the model that was parsed from the html
 			//and the errors that were idenitified during the
