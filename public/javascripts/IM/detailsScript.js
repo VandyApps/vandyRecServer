@@ -1563,10 +1563,21 @@ EditView = (function() {
 				//the current date
 				if (DateHelper.dateFromDateString(this.date).getTime() > Date.now()) {
 					$('div:nth-child(7) input').val("");
+					//make the score setter uneditable
 					$('div:nth-child(7) input', this.$el).attr('readonly', true);
+					//select the game not played button and disable other
+					//radio buttons
+					$('input[type="radio"][name="winner"][value="5"]').prop('checked', true);
+					this.winner = 5;
+					$('input[type="radio"][name="winner"]:not([value="5"])').attr('onclick', 'return false;');
 
 				} else {
+					//make the score setter editable
 					$('div:nth-child(7) input', this.$el).attr('readonly', false);
+					//make other radio buttons selectable
+					$('input[type="radio"][name="winner"]:not([value="5"])').attr('onclick', false);
+
+					//re-insert the home scores into the text fields
 					$('div:nth-child(7) input:nth-child(1)').val(this.homeScore.toString());
 					$('div:nth-child(7) input:nth-child(2)').val(this.awayScore.toString());
 				}
@@ -1665,7 +1676,14 @@ EditView = (function() {
 				this.location = $('div:nth-child(8) input', this.$el).val();
 			},
 			winnerChanged: function() {
-				this.winner = +$('[type="radio"][name="winner"]:checked', this.$el).val();
+				//if the date of the game is after the current date, then the 
+				//game cannot have been played
+				if (DateHelper.dateFromDateString(this.date).getTime() > Date.now()) {
+					this.winner = 5;
+				} else {
+					this.winner = +$('[type="radio"][name="winner"]:checked', this.$el).val();
+				}
+					
 			},
 			//check to see if the home and away scores are
 			//numbers
