@@ -4,7 +4,7 @@
 		collection, table, i, n;
 	instance.fetch();
 	instance.on('sync', function() {
-		var seasons = ["fall", "winter", "summer", "spring"];
+		var seasons = ["fall", "winter", "spring", "summer"];
 		for (i = 0, n = 4; i < n; ++i) {
 			
 			collection = IMModel.getCollection(seasons[i]);
