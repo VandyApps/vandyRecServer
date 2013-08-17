@@ -57,27 +57,25 @@ IMModel.Sport = Backbone.Model.extend({
 	resetWLT: function() {
 		//set all the WLT, to 0 for all teams
 		this.get('teams').forEach(function(team) {
-			this.setWins(team.teamID, 0, true);
-			this.setLosses(team.teamID, 0, true);
-			this.setTies(team.teamID, 0, true);
+			this.setWins(team.teamID, 0, {silent: true});
+			this.setLosses(team.teamID, 0, {silent: true});
+			this.setTies(team.teamID, 0, {silent: true});
 		}.bind(this));
 
 		this.get('games').forEach(function(game) {
 			if (game.winner === 0) {
-				this.incrementWins(game.teams[0], true);
-				this.incrementLosses(game.teams[1], true);
+				this.incrementWins(game.teams[0], {silent: true});
+				this.incrementLosses(game.teams[1], {silent: true});
 			} else if (game.winner === 1) {
-				this.incrementWins(game.teams[1], true);
-				this.incrementLosses(game.teams[0], true);
+				this.incrementWins(game.teams[1], {silent: true});
+				this.incrementLosses(game.teams[0], {silent: true});
 			} else {
 				//it is a tie
-				this.incrementTies(game.teams[0], true);
-				this.incrementTies(game.teams[1], true);
+				this.incrementTies(game.teams[0], {silent: true});
+				this.incrementTies(game.teams[1], {silent: true});
 			}
 		}.bind(this));
 		//call events down here
-		this.trigger('change');
-		this.trigger('change:teams');
 		this.get('teams').forEach(function(team) {
 			this.trigger('change:teams:'+team.teamID.toString());
 		}.bind(this));

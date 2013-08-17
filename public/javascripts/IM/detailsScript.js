@@ -28,6 +28,8 @@ function getQueryString (key) {
 	return r;
 }
 
+//sets up the error display so that errors can be viewed
+//makes sure that 
 function setupErrorsDisplay (errors) {
 	if (errors && errors.length) {
 		$('#errors').show();
@@ -40,6 +42,7 @@ function setupErrorsDisplay (errors) {
 		});
 	}
 }
+
 //Views
 NameView = Backbone.View.extend({
 	el: '#sportName',
