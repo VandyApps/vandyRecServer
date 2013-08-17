@@ -304,22 +304,6 @@ TeamsView = Backbone.View.extend({
 			this.show();
 		}
 	},
-	//this method generates new ID's for Teams 
-	//that are being created for the first time
-	getNewID: function() {
-		var nextID, max = 0;
-		if (!this.getNewID.nextID) {
-			this.teams.forEach(function(team) {
-				if (team.teamID > max) {
-					max = team.teamID;
-				}
-			});
-			this.getNewID.nextID = max + 1;
-		}
-		nextID = this.getNewID.nextID;
-		this.getNewID.nextID++;
-		return nextID;
-	},
 	//takes the event that is being fired and
 	//parses out the index of the li
 	//that it is referring to
@@ -390,8 +374,7 @@ TeamsView = Backbone.View.extend({
 			
 		var defaultObj = {
 				name: "New Team",
-				WLT: [0,0,0],
-				teamID: this.getNewID()
+				WLT: [0,0,0]
 			},
 			team,
 			index,
@@ -407,8 +390,10 @@ TeamsView = Backbone.View.extend({
 			//pushing to the teams property	
 			//also adds to the model because
 			//the teams property is a direct
-			//reference of the model
-			this.model.addTeam(defaultObj);
+			//reference of the model, the add team
+			//method returns the teamID
+			//of the newly created team
+			defaultObj.teamID = this.model.addTeam(defaultObj);
 
 			teamID = defaultObj.teamID;
 			index = this.teams.length - 1;

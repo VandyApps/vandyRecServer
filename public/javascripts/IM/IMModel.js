@@ -33,6 +33,26 @@ IMModel.Sport = Backbone.Model.extend({
 	seasonEnd: function() {
 		return DateHelper.dateFromDateString(this.get('seasonDates').end);
 	},
+	//this method generates new ID's for Teams 
+	//that are being created for the first time
+	getNewID: function(options) {
+		var nextID, max = 0;
+		if (!this.getNewID.nextID) {
+			this.get('teams').forEach(function(team) {
+				if (team.teamID > max) {
+					max = team.teamID;
+				}
+			});
+			this.getNewID.nextID = max + 1;
+		}
+		nextID = this.getNewID.nextID;
+
+		if (!options || !options.staticID) {
+			this.getNewID.nextID++;
+		} 
+		
+		return nextID;
+	},
 	//resets the wins, ties, and losses for all teams
 	resetWLT: function() {
 		//set all the WLT, to 0 for all teams
@@ -92,9 +112,13 @@ IMModel.Sport = Backbone.Model.extend({
 	//triggers custom event teamAdded with 
 	//the team id of the team that was added
 	//bound to the event object
-	addTeam: function(team) {
+	addTeam: function(_team) {
+		var team = _team;
+		//set the ID of the new team
+		team.teamID = this.getNewID();
 		this.get('teams').push(team);
 		this.trigger('teamAdded', {teamID: team.teamID});
+		return team.teamID;
 	},
 	//triggers custom event teamRemoved
 	//with the teamID of the team that was removed
