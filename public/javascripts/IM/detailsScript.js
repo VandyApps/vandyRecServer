@@ -1046,7 +1046,8 @@ GamesView = Backbone.View.extend({
 		var homeTeam = this.model.teamWithID(game.teams[0]),
 			awayTeam = this.model.teamWithID(game.teams[1]),
 			homeScore,
-			awayScore;
+			awayScore
+			backgroundColor = (game.winner === 5) ? 'background-color: red;' : 'background-color: black;';
 
 			if (game.winner === 3) {
 				homeScore = "F";
@@ -1059,7 +1060,7 @@ GamesView = Backbone.View.extend({
 				awayScore = game.score[1].toString();
 			}
 
-			el =  $('<li></li>').append('<div>'+gameNumber.toString()+'</div>')
+			el =  $('<li></li>').append('<div style="'+backgroundColor+'">'+gameNumber.toString()+'</div>')
 								.append('<div>'+game.date+'</div>')
 								.append('<div>'+game.startTime+ ' - '+ game.endTime+'</div>')
 								.append('<div><span teamid="'+game.teams[0].toString()+'">'+homeTeam.name+'</span>Vs<span teamid="'+game.teams[1].toString()+'">'+awayTeam.name+'</span></div>')

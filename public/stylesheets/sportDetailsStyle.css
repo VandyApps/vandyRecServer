@@ -277,7 +277,6 @@ body {
 
 #games > ul div:nth-child(1) {
     position: absolute;
-    background-color: black;
     color: white;
     display: block;
     height: 30px;
