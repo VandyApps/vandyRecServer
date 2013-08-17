@@ -506,25 +506,25 @@ TeamsView = Backbone.View.extend({
 	resetTeams: function() {
 		var i, n, list = $('ul', this.$el);
 
-		//unbind any events that could have been
-		//set previously by calls to this method
-		for (i=0, n = this.teams.length; i < n; ++i) {
-			this.model.unbind('change:teams:'+this.teams[i].teamID.toString());
-		}
 		//remove the currently-existing elements from this list
 		list.children().remove();
 		for (i =0, n = this.teams.length; i < n; ++i) {
 			list.append(this.generateTeamView(this.teams[i]));
 		}
+		if (!this.resetTeams.eventsSet) {
+			this.model.get('teams').forEach(function(team) {
+				var id = team.teamID;
+				//cache the id in a local variable
+				//these bind to teams at different indices, so if a team changes its index,
+				//this needs to be reset as well
+				this.model.on('change:teams:'+team.teamID.toString(), this.teamCallbackFactory(team.teamID, this));
 
-		this.model.get('teams').forEach(function(team) {
-			var id = team.teamID;
-			//cache the index in a local variable
-			//these bind to teams at different indices, so if a team changes its index,
-			//this needs to be reset as well
-			this.model.on('change:teams:'+team.teamID.toString(), this.teamCallbackFactory(team.teamID, this));
-
-		}.bind(this));
+			}.bind(this));
+		}
+			
+		if (!this.resetTeams.eventsSet) {
+			this.resetTeams.eventsSet = true;
+		}
 	},
 	dropTeam: function(event) {
 		var index = this.getIndex(event)
