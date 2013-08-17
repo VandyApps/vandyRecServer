@@ -255,7 +255,7 @@ TeamsView = Backbone.View.extend({
 	events: {
 		'click div:nth-child(1)': 'toggle',
 		'click ul li div:nth-child(5)': 'editTeam',
-		'click ul li div:nth-child(6)': 'removeTeam',
+		'click ul li div:nth-child(6)': 'confirmRemoveTeam',
 		'click ul li div:nth-child(7)': 'dropTeam',
 		'click #addTeam': 'addTeam'	
 	},
@@ -438,7 +438,22 @@ TeamsView = Backbone.View.extend({
 	},
 	//removes team and removes the change:teams:teamID
 	//event for the associated team
-	removeTeam: function(event) {
+	removeTeamAtIndex: function(index) {
+		var teamID = this.teams[index].teamID;
+			self = this,
+			listEl = $('ul li:nth-child('+ (index + 1).toString()+ ')', this.$el);
+
+		listEl.slideUp(400, function() {
+			listEl.remove();
+			//triggers event teamRemoved
+			self.model.deleteTeam(teamID);
+			
+		});
+	},
+	//confirms that a team is to be removed
+	//and calls the removeTeam method if
+	//there is a positive confirmation
+	confirmRemoveTeam: function(event) {
 		var confirm = new ConfirmationBox(
 			{
 				message: 'Are you sure you would like to delete this team',
@@ -448,17 +463,9 @@ TeamsView = Backbone.View.extend({
 
 		confirm.show();
 		confirm.on('clicked1', function() {
-			var index = this.getIndex(event),
-				teamID = this.teams[index].teamID;
-				self = this,
-				listEl = $('ul li:nth-child('+ (index + 1).toString()+ ')', this.$el);
 
-			listEl.slideUp(400, function() {
-				listEl.remove();
-				//triggers event teamRemoved
-				self.model.deleteTeam(teamID);
-				
-			});
+			this.removeTeamAtIndex(this.getIndex(event));
+
 			confirm.unbind('clicked1');
 			confirm.unbind('clicked2');
 		}.bind(this));
