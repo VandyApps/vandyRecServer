@@ -396,15 +396,21 @@ TeamsView = Backbone.View.extend({
 			defaultObj.teamID = this.model.addTeam(defaultObj);
 
 			teamID = defaultObj.teamID;
-			index = this.teams.length - 1;
 
 			$('#teams ul').append(this.generateTeamView(defaultObj));
 			//bind events related to the newly created team
 			(function(self) {
 				var id = teamID;
 				self.model.on('change:teams:'+defaultObj.teamID.toString(), function() {
-					var team = this.model.teamWithID(id);
-					console.log(id);
+					var team = this.model.teamWithID(id),
+						index;
+					//get the index of the team
+					this.teams.forEach(function(_team, _index) {
+						if (team === _team) {
+							index = _index;
+							return;
+						}
+					});
 					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
 					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
 					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
@@ -478,13 +484,23 @@ TeamsView = Backbone.View.extend({
 			list.append(this.generateTeamView(this.teams[i]));
 		}
 
-		this.model.get('teams').forEach(function(team, index) {
+		this.model.get('teams').forEach(function(team) {
 			var id = team.teamID;
 			//cache the index in a local variable
 			//these bind to teams at different indices, so if a team changes its index,
 			//this needs to be reset as well
 			this.model.on('change:teams:'+team.teamID.toString(), function() {
-				var team = this.model.teamWithID(id);
+				var team = this.model.teamWithID(id),
+					index;
+				//generate the index when this method is called
+				this.teams.forEach(function(_team, _index) {
+					if (team === _team) {
+						index = _index;
+						return;
+					}
+				});
+				//regenerate the index in case it has changed
+
 				console.log("change teams was called on teamsView at team " + id);
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
 				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
