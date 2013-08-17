@@ -17,7 +17,8 @@ var NameView,
 	entryDatesView,
 	seasonDatesView,
 	teamsView,
-	gamesView;
+	gamesView,
+	errors;
 
 
 function getQueryString (key) {
@@ -25,6 +26,19 @@ function getQueryString (key) {
 	var r=[], m;
 	while ((m=re.exec(document.location.search)) != null) r.push(m[1]);
 	return r;
+}
+
+function setupErrorsDisplay (errors) {
+	if (errors && errors.length) {
+		$('#errors').show();
+		errors.forEach(function(error) {
+			$('#errors ul').append('<li>'+error+'</li>');
+		});
+		//add click event to errors
+		$('#errors div').click(function() {
+			$('#errors ul').slideToggle();
+		});
+	}
 }
 //Views
 NameView = Backbone.View.extend({
@@ -1817,6 +1831,7 @@ $('#delete').click(function() {
 		button1Name: 'YES',
 		button2Name: 'NO'
 	});
+
 	confirmation.show();
 	confirmation.on('clicked1', function() {
 		sportModel.destroy({
@@ -1845,9 +1860,12 @@ $('#delete').click(function() {
 
 
 if (getQueryString('errors').length !== 0) {
-	NQ.add.apply(NQ, decodeURIComponent(getQueryString('errors')[0]).split(',').map(function(error) {
+	errors = decodeURIComponent(getQueryString('errors')[0]).split(',');
+	NQ.add.apply(NQ, errors.map(function(error) {
 		return {type: 'error', message: error};
 	}));
+	NQ.add({type: 'info', message: 'You can view all the errors by scrolling down and clicking on the errors button'});
+	setupErrorsDisplay(errors);
 }
 NQ.add(
 	{type: 'info', message: "Don't forget to save your progress!"},

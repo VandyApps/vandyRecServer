@@ -425,6 +425,43 @@ body {
     top: 430px;
 }
 
+#errors {
+    display: none;
+    position: relative;
+    width: 400px;
+    margin-left: -201px;
+    left: 50%;
+    top: 510px;
+}
+
+#errors > div:nth-child(1) {
+    display: block;
+    cursor: pointer;
+    box-shadow: 5px 5px 6px 0 #555555;
+    font-weight: bold;
+    border: solid black 2px;
+    border-radius: 5px;
+    background: #fc654c;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+#errors ul {
+    display: none;
+    margin: 0px;
+    list-style: none;
+}
+
+#errors ul li {
+    background-color: red;
+    font-weight: bold;
+    
+    border-radius: 5px;
+    padding: 5px;
+    border: solid black 1px;
+    text-align: center;
+    margin: 20px 0px 20px -40px;;
+}
 
 /*edit window*/
 
