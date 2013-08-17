@@ -279,6 +279,29 @@ TeamsView = Backbone.View.extend({
 		//$('ul li div:nth-child(5)', this.$el).click($.proxy(this.editTeam, this));
 		//$('ul li div:nth-child(6)', this.$el).click($.proxy(this.removeTeam, this));
 	},
+	//generates callback functions for event binding
+	//to the event change:teams:teamID
+	teamCallbackFactory: function(teamID, context) {
+		if (!context) {
+			context = this;
+		}
+		return function() {
+			var team = context.model.teamWithID(teamID),
+				index;
+			//get the index of the team
+			context.teams.forEach(function(_team, _index) {
+				if (team === _team) {
+					index = _index;
+					return;
+				}
+			});
+			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
+			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
+			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
+			$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(4)').text('Ties: ' + team.WLT[2].toString());
+
+		}
+	},
 	hide: function(callback) {
 		if (this.isShowing) {
 			this.isShowing = false;
@@ -399,25 +422,9 @@ TeamsView = Backbone.View.extend({
 
 			$('#teams ul').append(this.generateTeamView(defaultObj));
 			//bind events related to the newly created team
-			(function(self) {
-				var id = teamID;
-				self.model.on('change:teams:'+defaultObj.teamID.toString(), function() {
-					var team = this.model.teamWithID(id),
-						index;
-					//get the index of the team
-					this.teams.forEach(function(_team, _index) {
-						if (team === _team) {
-							index = _index;
-							return;
-						}
-					});
-					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
-					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
-					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
-					$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(4)').text('Ties: ' + team.WLT[2].toString());
-
-				}.bind(self));
-			})(this);
+			
+			this.model.on('change:teams:'+defaultObj.teamID.toString(), this.teamCallbackFactory(teamID, this));
+			
 
 			NQ.now({type: 'success', message: defaultObj.name + " was added as a new team"});
 			teamsEdit.unbind('submit');
@@ -498,24 +505,7 @@ TeamsView = Backbone.View.extend({
 			//cache the index in a local variable
 			//these bind to teams at different indices, so if a team changes its index,
 			//this needs to be reset as well
-			this.model.on('change:teams:'+team.teamID.toString(), function() {
-				var team = this.model.teamWithID(id),
-					index;
-				//generate the index when this method is called
-				this.teams.forEach(function(_team, _index) {
-					if (team === _team) {
-						index = _index;
-						return;
-					}
-				});
-				//regenerate the index in case it has changed
-
-				console.log("change teams was called on teamsView at team " + id);
-				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(1)').text(team.name);
-				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(2)').text('Wins: ' + team.WLT[0].toString());
-				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(3)').text('Losses: ' + team.WLT[1].toString());
-				$('#teams ul li:nth-child('+(index+1).toString()+') div:nth-child(4)').text('Ties: ' + team.WLT[2].toString());
-			}.bind(this));
+			this.model.on('change:teams:'+team.teamID.toString(), this.teamCallbackFactory(team.teamID, this));
 
 		}.bind(this));
 	},
