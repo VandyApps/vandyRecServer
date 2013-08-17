@@ -707,7 +707,6 @@ GamesView = Backbone.View.extend({
 	},
 	addGame: function() {
 		var gameObj, teams = this.model.get('teams'), gamesEdit;
-		console.log("Teams in addGame: " + JSON.stringify(teams));
 		//make sure there are atleast 2 teams before allowing a game to
 		//be added
 		if (teams.length >= 2) {
@@ -747,8 +746,8 @@ GamesView = Backbone.View.extend({
 				this.model.trigger('change:teams:'+gamesEdit.awayTeam.toString());
 			
 				//set the values to what was submitted
-				gameObj.teams[0].teamID = gamesEdit.homeTeam;
-				gameObj.teams[1].teamID = gamesEdit.awayTeam;
+				gameObj.teams[0] = gamesEdit.homeTeam;
+				gameObj.teams[1] = gamesEdit.awayTeam;
 				gameObj.date = gamesEdit.date;
 				gameObj.score[0] = gamesEdit.homeScore;
 				gameObj.score[1] = gamesEdit.awayScore;
