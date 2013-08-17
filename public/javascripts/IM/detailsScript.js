@@ -975,7 +975,7 @@ GamesView = Backbone.View.extend({
 	//changes the game at the index to the new game object
 	setGameAtIndex: function(index, gameObj) {
 		//NOTE: removing before insertion creates a wierd bug
-		var dateChanged = this.games.date !== gameObj.date || this.games.startTime !== gameObj.startTime,
+		var dateChanged = this.games[index].date !== gameObj.date || this.games[index].startTime !== gameObj.startTime,
 			game = this.games[index];
 
 		//put the game in the correct location, incase the date changed
