@@ -125,6 +125,8 @@ IMModel.Sport = Backbone.Model.extend({
 	//bound to the event object
 	deleteTeam: function(teamID) {
 		var index, i, n, teamFound = false, teams = this.get('teams');
+		//remove event binding of teamID
+		this.off('change:teams:'+teamID.toString());
 		for (i = 0, n = teams.length; i < n && !teamFound; ++i) {
 			if (teams[i].teamID === teamID) {
 				index = i;

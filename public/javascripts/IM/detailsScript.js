@@ -436,6 +436,8 @@ TeamsView = Backbone.View.extend({
 				
 
 	},
+	//removes team and removes the change:teams:teamID
+	//event for the associated team
 	removeTeam: function(event) {
 		var confirm = new ConfirmationBox(
 			{
