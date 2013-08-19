@@ -145,7 +145,7 @@ function parseDate(date) {
 			console.log("Split date is split into >= 2");
 			//need to check if split date has a number for the day
 			if (+splitDate[1] !== +splitDate[1]) {
-				console.log("Split date is null")
+				console.log("/n/n/n/n/n/n/n/n/n/n/n/n/nSplit date is null")
 				return null;
 			}
 			console.log("Split date is not null")
@@ -301,6 +301,7 @@ function teamWithName(name) {
 }
 
 function resetWLT(teams, games) {
+	console.log("ResetWLT was called");
 	//get the max teamID
 	var maxID = 0,
 		teamsArray;
@@ -371,8 +372,10 @@ function matrixOfGames(window) {
 
 					dateObj = parseDate(rawDate);
 					if (dateObj) {
+						
 						nextGame.date = DateHelper.dateStringFromDate(dateObj);
 					} else {
+
 						nextGame.date = null;
 					}
 					break;
@@ -494,8 +497,25 @@ function sortTeams(teams) {
 }
 
 //sorts the games in chronological order
+//all properties without proper dates are placed at
+//the beginning of the list
 function sortGames(games) {
+	console.log("Sort games was called");
+	games.sort(function(game1, game2) {
+		var value1 = 0,
+			value2 = 0;
+		if (game1.date && game1.startTime) {
+			value1 = DateHelper.dateFromDateString(game1.date).getTime() / 1000;
+			value1 += DateHelper.timeStringInSecs(game1.startTime);
+		}
 
+		if (game1.date && game1.startTime) {
+			value2 = DateHelper.dateFromDateString(game2.date).getTime() / 1000;
+			value2 += DateHelper.timeStringInSecs(game2.startTime);
+		}
+
+		return value1 - value2;
+	});
 }
 
 //finds errors with the model,
@@ -503,7 +523,53 @@ function sortGames(games) {
 //reports the errors by returning an array 
 //of descriptions
 function findErrors(model) {
+	console.log("Find errors was called");
+	var errors = [];
+	//check error with title
 
+	//check error with teams
+
+	//check error with games
+	model.games.forEach(function(game, index) {
+		console.log("Next game: "+game.date);
+		if (!game.date) {
+			errors.push("The date of game #"+(index+1).toString() + " cannot be read and was set to 01/01/2013");
+			game.date = "01/01/2013";
+		}
+
+		if (!game.startTime) {
+			errors.push("The starting time of game #"+(index+1).toString()+ " could not be read and was replaced with 01:00am");
+			game.startTime = "01:00am";
+			game.endTime = "02:00am";
+		}
+
+		if (!game.teams[0]) {
+			errors.push("The home team for game #"+(index+1).toString()+" could not be identified and was replaced with the team \""+model.teams[0].name+"\"");
+			game.teams[0] = model.teams[0].teamID;
+		}
+
+		if (!game.teams[1]) {
+			errors.push("The away team for game #"+(index+1).toString()+" could not be identified and was replaced with the team \""+model.teams[1].name+"\"");
+			game.teams[1] = model.teams[1].teamID;
+		}
+
+		if (game.score[0] < 0) {
+			errors.push("The scores from game #"+(index+1).toString()+" could not be read and was set to 0 for both teams");
+			game.score = [0,0];
+			if (DateHelper.dateFromDateString(game.date).getTime() > Date.now()) {
+				game.winner = 5;
+			} else {
+				game.winner = 2;
+			}
+		}
+	});
+
+	//commas are used to separate array elements so commas
+	//should be removed from all error messages
+	errors = errors.map(function(error) {
+		return filterToken(error, ',');
+	});
+	return errors;
 }
 
 //export methods
@@ -514,7 +580,7 @@ exports.parseSport = function(html, callback) {
 	    window = document.createWindow();
 	try {
 		jsdom.jQueryify(window, './public/jQuery-ui/js/jquery-1.9.1.js', function() {
-			var model = {};
+			var model = {}, errors;
 			model.sport = sportName(window);
 			model.teams = matrixOfTeams(window);
 
@@ -522,11 +588,15 @@ exports.parseSport = function(html, callback) {
 			teamWithName.teams = model.teams;
 			console.log("Games about to be created");
 			model.games = matrixOfGames(window);
+			sortGames(model.games);
+			errors = findErrors(model);
 			resetWLT(model.teams, model.games);
 			console.log("Done with the games");
 			//callback the model that was parsed from the html
 			//and the errors that were idenitified during the
 			//parsing process
+			console.log("Errors: ");
+			console.log(JSON.stringify(errors));
 			callback(model, errors);
 		});
 	} catch(err) {
