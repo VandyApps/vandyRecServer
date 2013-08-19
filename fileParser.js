@@ -311,18 +311,18 @@ function resetWLT(teams, games) {
 		}
 	});
 	if (maxID !== 0) {
-		teamsArray = new Array(maxID);
+		teamsArray = new Array(maxID + 1);
 		games.forEach(function(game) {
 			var winner = game.winner,
 				team1_id = game.teams[0],
 				team2_id = game.teams[1];
 			//lazy instantiation of the WLT arrays within the
 			//teams array
-			if (teamsArray[team1_id] === undefined) {
+			if (!teamsArray[team1_id]) {
 				teamsArray[team1_id] = [0,0,0];
 			}
 
-			if (teamsArray[team2_id] === undefined) {
+			if (!teamsArray[team2_id]) {
 				teamsArray[team2_id] = [0,0,0];
 			}
 
@@ -341,12 +341,13 @@ function resetWLT(teams, games) {
 				teamsArray[team1_id][2] = teamsArray[team1_id][2] + 1;
 				teamsArray[team2_id][2] = teamsArray[team2_id][2] + 1;
 			}
+			//don't do anything for games not played (winner === 5)
 		});
 	}
 
 	//insert the new WLT back into the teams
 	teams.forEach(function(team) {
-		if (teamsArray[team.teamID] !== undefined) {
+		if (teamsArray[team.teamID]) {
 			team.WLT = teamsArray[team.teamID]
 		}
 	});
@@ -437,6 +438,7 @@ function matrixOfGames(window) {
 
 
 						} else if (+score[0] !== +score[0] || +score[1] !== +score[1]) {
+							//if only 1 score has a non-number value
 							console.log("THE XOR STATEMENT IS TRUE, not yet handled properly");
 							throw new Error("Xor statement is true!!");
 

@@ -63,17 +63,18 @@ IMModel.Sport = Backbone.Model.extend({
 		}.bind(this));
 
 		this.get('games').forEach(function(game) {
-			if (game.winner === 0) {
+			if (game.winner === 0 || game.winner === 4) {
 				this.incrementWins(game.teams[0], {silent: true});
 				this.incrementLosses(game.teams[1], {silent: true});
-			} else if (game.winner === 1) {
+			} else if (game.winner === 1 || game.winner === 3) {
 				this.incrementWins(game.teams[1], {silent: true});
 				this.incrementLosses(game.teams[0], {silent: true});
-			} else {
+			} else if (game.winner === 2) {
 				//it is a tie
 				this.incrementTies(game.teams[0], {silent: true});
 				this.incrementTies(game.teams[1], {silent: true});
 			}
+			//don't count games not played (winner === 5)
 		}.bind(this));
 		//call events down here
 		this.get('teams').forEach(function(team) {
