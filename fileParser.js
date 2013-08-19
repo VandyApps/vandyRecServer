@@ -408,11 +408,12 @@ function matrixOfGames(window) {
 						score[1] = trimExtraSpaces(score[1]).trim();
 
 						console.log("Done trimming");
-						console.log("The date is " + nextGame.date);						nextGame.score = [0,0];
+						console.log("The date is " + nextGame.date);						
+						nextGame.score = [0,0];
 						//console.log(score);
 						//console.log(+score[0]);
 						
-						if (+score[0] !== +score[0]) {
+						if (+score[0] !== +score[0] && +score[1] !== +score[1]) {
 							console.log("Score is not a number");
 							//not a number
 							//only need to set this using the data from the first score
@@ -435,9 +436,14 @@ function matrixOfGames(window) {
 							}
 
 
+						} else if (+score[0] !== +score[0] || +score[1] !== +score[1]) {
+							console.log("THE XOR STATEMENT IS TRUE, not yet handled properly");
+							throw new Error("Xor statement is true!!");
+
 						} else {
-							console.log("Score is a number");
+							//score is a number
 							nextGame.score[0] = +score[0];
+							nextGame.score[1] = +score[1];
 							if (!nextGame.date) {
 
 								if (nextGame.score[0] > nextGame.score[1]) {
@@ -459,17 +465,16 @@ function matrixOfGames(window) {
 								nextGame.winner = 2;
 							}
 						}
-
-						if (+score[1] === +score[1]) {
-							
-							nextGame.score[1] = +score[1];
-						}
 						
 
 					} else {
 						console.log("Could not find a team")
 						//the game cannot be read
 						nextGame.score = [-1,-1];
+						//set it to something
+						//winner should be changed along with
+						//the score
+						nextGame.winner = -1;
 					}
 					
 						
