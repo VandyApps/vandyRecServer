@@ -8,7 +8,7 @@ var db = require('../db'),
     fileParser = require('../fileParser');
 
 exports.index = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		if (typeof req.query.entry !== 'undefined') {
 			res.render('index', {tabIndex: parseInt(req.query.entry, 10)});
 		} else {
@@ -23,7 +23,7 @@ exports.index = function(req, res) {
 };
 
 exports.login = function(req, res) {
-	if (typeof req.query.failed !== 'undefined' && req.query.failed === 'true') {
+	if (req.query.failed !== undefined && req.query.failed === 'true') {
 		res.render('login', {warning: 'Incorrect Login Credentials'});
 	} else {
 		res.render('login', {warning: ''});	
@@ -34,7 +34,7 @@ exports.login = function(req, res) {
 
 
 exports.news = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		res.redirect('/');	
 	} else {
 		res.redirect('/login');
@@ -91,7 +91,7 @@ exports.deleteNews = function(req, res) {
 
 //hours methods
 exports.hours = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		res.redirect('/?entry=1')
 	} else {
 		res.redirect('/login');
@@ -155,7 +155,7 @@ exports.traffic = function(req, res) {
 
 //group fitness methods
 exports.groupFitness = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		res.redirect('/?entry=3');
 	} else {
 		res.redirect('/login');
@@ -238,7 +238,7 @@ exports.deleteGF = function(req, res) {
 
 //intramurals methods
 exports.intramurals = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		res.redirect('/?entry=4');
 	} else {
 		res.redirect('/login');
@@ -327,8 +327,12 @@ exports.intramuralFiles = function(req, res) {
 };
 
 exports.intramuralsDetails = function(req, res) {
-
-	res.render('sportsDetails');
+	if (req.user) {
+		res.render('sportsDetails');
+	} else {
+		res.redirect('/login');
+	}
+	
 };
 
 //programs method
