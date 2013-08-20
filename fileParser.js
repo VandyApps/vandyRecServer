@@ -616,8 +616,16 @@ exports.parseSport = function(html, callback) {
 			teams: [],
 			games: []
 		}, ['This file could not be read as a valid html file and the sport was set to default values']);
-	}
-		
-		
-			
+	}			
 };
+
+//takes a sport model and converts it into a 
+//buffer that is passed into the callback
+//the callback has two argument (error, data),
+//error is null if there is no error and data
+//is in the form of a buffer class
+exports.sportToHTML = function(model, callback) {
+	
+};
+
+

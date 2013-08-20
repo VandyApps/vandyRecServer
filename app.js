@@ -101,6 +101,7 @@ app.delete('/intramurals', routes.deleteIntramurals);
 
 app.post('/intramurals/files', routes.intramuralFiles);
 app.get('/intramurals/details', routes.intramuralsDetails);
+app.get('/intramurals/download', routes.downloadHTML);
 
 app.get('/programs', routes.programs);
 

@@ -5,6 +5,7 @@
 
 var db = require('../db'),
 	fs = require('fs'),
+	stream = require('stream'),
     fileParser = require('../fileParser');
 
 exports.index = function(req, res) {
@@ -328,11 +329,30 @@ exports.intramuralFiles = function(req, res) {
 
 exports.intramuralsDetails = function(req, res) {
 	if (req.user) {
-		res.render('sportsDetails');
+		if (req.query.renderHTML && req.query.renderHTML === 'true') {
+			res.render('sportsDetails');
+			res.attachment();
+		} else {
+			res.render('sportsDetails');
+		}
+		
 	} else {
 		res.redirect('/login');
 	}
 	
+};
+
+exports.downloadHTML = function(req, res) {
+	var filename = "IM_raw";
+		//filestream = new stream.Duplex();
+
+	res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+	res.setHeader('Content-type', 'text/html');
+	res.send("Hello");
+	//filestream.pipe(res);
+	
+	
+
 };
 
 //programs method
