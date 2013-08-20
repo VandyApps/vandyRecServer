@@ -708,9 +708,25 @@ function gamesTable(games) {
 		gamesData = gamesData + "<tr><td height=\"25\" style=\"text-align: center;\" width=\"70\"><strong>"+game.date+"</strong></td>";
 		gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"80\"><strong>"+game.startTime+"</strong></td>";
 		gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"20\"><strong>"+_location[1]+"</strong></td>";
-		gamesData = gamesData + "<td height=\"25\" style=\"text-align: left;\" width=\"210\"><span style=\"color: #ff0000;\"><strong>"+teamWithID(game.teams[0]).name+"</strong></span></td>";
-		gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"30\"><strong>VS</strong></td>";
-		gamesData = gamesData + "<td height=\"25\" style=\"text-align: left;\" width=\"210\"><span style=\"color: #000000;\"><strong>"+teamWithID(game.teams[1]).name+"</strong></span></td>";
+
+		//highlight the winner differently (red)
+		if (game.winner === 0 || game.winer === 4) {
+
+			gamesData = gamesData + "<td height=\"25\" style=\"text-align: left;\" width=\"210\"><span style=\"color: #ff0000;\"><strong>"+teamWithID(game.teams[0]).name+"</strong></span></td>";
+			gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"30\"><strong>VS</strong></td>";
+			gamesData = gamesData + "<td height=\"25\" style=\"text-align: left;\" width=\"210\"><span style=\"color: #000000;\"><strong>"+teamWithID(game.teams[1]).name+"</strong></span></td>";
+
+		} else if (game.winner === 1 || game.winner === 3) {
+
+			gamesData = gamesData + "<td height=\"25\" style=\"text-align: left;\" width=\"210\"><span style=\"color: #000000;\"><strong>"+teamWithID(game.teams[0]).name+"</strong></span></td>";
+			gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"30\"><strong>VS</strong></td>";
+			gamesData = gamesData + "<td height=\"25\" style=\"text-align: left;\" width=\"210\"><span style=\"color: #ff0000;\"><strong>"+teamWithID(game.teams[1]).name+"</strong></span></td>";
+		} else {
+			gamesData = gamesData + "<td height=\"25\" style=\"text-align: left;\" width=\"210\"><span style=\"color: #000000;\"><strong>"+teamWithID(game.teams[0]).name+"</strong></span></td>";
+			gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"30\"><strong>VS</strong></td>";
+			gamesData = gamesData + "<td height=\"25\" style=\"text-align: left;\" width=\"210\"><span style=\"color: #000000;\"><strong>"+teamWithID(game.teams[1]).name+"</strong></span></td>";
+		}
+			
 		gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"70\"><strong>"+homeScore+"-"+awayScore+"</strong></td>";
 	});
 
