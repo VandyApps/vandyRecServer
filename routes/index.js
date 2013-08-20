@@ -345,10 +345,18 @@ exports.intramuralsDetails = function(req, res) {
 exports.downloadHTML = function(req, res) {
 	var filename = "IM_raw";
 		//filestream = new stream.Duplex();
+	if (req.query.id) {
+		res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+		res.setHeader('Content-type', 'text/plain');
+		console.log(req.query.id);
+		db.getIntramuralWithID(req.query.id, function(err, sport) {
 
-	res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-	res.setHeader('Content-type', 'text/html');
-	res.send("Hello");
+			res.send(sport);
+		});
+	} else {
+		res.statusCode = 404;
+		res.send("File could not be found");
+	}
 	//filestream.pipe(res);
 	
 	
