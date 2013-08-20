@@ -288,6 +288,23 @@ function matrixOfTeams(window) {
 	return teams;
 }
 
+//returns team with the id
+//must set the teams property to
+//the teams available
+function teamWithID(id) {
+	var teams = teamWithID.teams,
+		i, n;
+	if (!teams) {
+		throw new Error("Need to set the teams");
+	} 
+
+	for (i = 0, n = teams.length; i < n; ++i) {
+		if (teams[i].teamID === id) {
+			return teams[i];
+		}
+	}
+	return null;
+}
 //for this function to work, the function's 
 //teams property needs to be set to the array
 //of teams in the sport, this teams property
@@ -661,24 +678,59 @@ function teamsTable(teams) {
 			teamsData = teamsData + "</tr>";
 		});
 		//close the tags
-		teamsData = teamsData + "</tbody></table>";
+		teamsData = teamsData + "</tbody></table>&nbsp;";
 		return new Buffer(teamsData);
 }
 
 //returns buffer with the html data for games
 function gamesTable(games) {
+	var location = games[0].location.split(' '),
+		gamesData = "<table border=\"0\" cellpadding=\"&quot;2\" cellspacing=\"5\" style=\"width: 690px;\">" + "<tbody>";
 
+	//add the first row of data
+	gamesData = gamesData + "<tr><td height=\"25\" style=\"text-align: center;\" width=\"70\"><strong>Date</strong></td><td height=\"25\" style=\"text-align: center;\" width=\"80\"><strong>Time</strong></td><td height=\"25\" style=\"text-align: center;\" width=\"20\"><strong>"+location[0]+"</strong></td><td height=\"25\" style=\"text-align: left;\" width=\"210\"><strong>Home</strong></td><td height=\"25\" style=\"text-align: center;\" width=\"30\"><strong>VS</strong></td><td height=\"25\" style=\"text-align: left;\" width=\"210\"><strong>Away</strong></td><td height=\"25\" style=\"text-align: center;\" width=\"70\"><strong>Score</strong></td></tr>";
+
+	games.forEach(function(game) {
+		var _location = game.location.split(' '), homeScore, awayScore;
+
+		if (game.winner <= 2 || game.winner === 5) {
+
+			homeScore = game.score[0].toString();
+			awayScore = game.score[1].toString();
+		} else if (game.winner === 3) {
+			homeScore = 'F';
+			awayScore = 'W';
+		} else if (game.winner === 4) {
+			homeScore = 'W';
+			awayScore = "F";
+		}
+
+		gamesData = gamesData + "<tr><td height=\"25\" style=\"text-align: center;\" width=\"70\"><strong>"+game.date+"</strong></td>";
+		gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"80\"><strong>"+game.startTime+"</strong></td>";
+		gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"20\"><strong>"+_location[1]+"</strong></td>";
+		gamesData = gamesData + "<td height=\"25\" style=\"text-align: left;\" width=\"210\"><span style=\"color: #ff0000;\"><strong>"+teamWithID(game.teams[0]).name+"</strong></span></td>";
+		gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"30\"><strong>VS</strong></td>";
+		gamesData = gamesData + "<td height=\"25\" style=\"text-align: left;\" width=\"210\"><span style=\"color: #000000;\"><strong>"+teamWithID(game.teams[1]).name+"</strong></span></td>";
+		gamesData = gamesData + "<td height=\"25\" style=\"text-align: center;\" width=\"70\"><strong>"+homeScore+"-"+awayScore+"</strong></td>";
+	});
+
+	gamesData = gamesData + "</tbody></table>";
+	return new Buffer(gamesData);
 }
 
 exports.sportToHTML = function(model, callback) {
 	console.log(model);
 	//temp implementation
-	var base = new Buffer("<!DOCTYPE html><html><head><title></title></head><body>"),
-		headBody,
-		teamsBody = teamsTable(model.teams),
-		gamesBody,
-		close = new Buffer("</body></html>"),
-		data = Buffer.concat([base, teamsBody, close]);
+	var base, headBody, teamsBody, gamesBody, close, data;
+
+	teamWithID.teams = model.teams;
+	base = new Buffer("<!DOCTYPE html><html><head><title></title></head><body>");
+	//headBody;
+	teamsBody = teamsTable(model.teams);
+
+	gamesBody = gamesTable(model.games);
+	close = new Buffer("</body></html>");
+	data = Buffer.concat([base, teamsBody, gamesBody, close]);
 
 
 	callback(null, data);
