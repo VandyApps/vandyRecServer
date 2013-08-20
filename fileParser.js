@@ -127,8 +127,24 @@ function tallyToNumber(window, element) {
 		
 		return total;
 	}
+}
+
+function numberToTally(number) {
+	console.log("Tally was called");
 	
-	
+	var tally = "";
+	while (number > 0) {
+		console.log("In the loop");
+		if (number >= 5) {
+			tally = tally + "<del>IIII</del> ";
+			number = number - 5;
+		} else {
+			//tally is between 0 and 5
+			tally = tally + "I";
+			number = number - 1;
+		}
+	}
+	return tally;
 }
 
 //for parsing ambiguous dates to a solution
@@ -624,9 +640,47 @@ exports.parseSport = function(html, callback) {
 //the callback has two argument (error, data),
 //error is null if there is no error and data
 //is in the form of a buffer class
+
+//returns buffer with the html data for teams
+function teamsTable(teams) {
+	var getTally = numberToTally,
+		tableAttributes = "border=\"0\" cellpadding=\"&quot;2\" cellspacing=\"5\" style=\"width: 600px; margin: auto;\"",
+		teamsData = "<table "+tableAttributes+"><tbody>";
+
+		//add the initial row
+		teamsData = teamsData + "<tr><td style=\"width: 19px; margin: auto;\"></td><td style=\"width: 200px; text-align: left;\"><strong>Team</strong></td><td style=\"width: 127px; margin: auto; text-align: center;\"><strong>Won</strong></td><td style=\"width: 127px; margin: auto; text-align: center;\"><strong>Lost</strong></td><td style=\"width: 127px; margin: auto; text-align: center;\"><strong>Tied</strong></td></tr>"
+		//fill in the table data
+		teams.forEach(function(team, index) {
+			console.log("Next team");
+			console.log(team);
+			teamsData = teamsData + "<tr>" + "<td style=\"width: 19px; margin: auto; text-align: center;\">"+(index+1).toString()+"</td>";
+			teamsData = teamsData + "<td style=\"width: 200px; margin: auto; text-align: left;\">"+team.name+"</td>";
+			teamsData = teamsData + "<td style=\"width: 127px; margin: auto; text-align: center;\">"+getTally(team.WLT[0])+"</td>";
+			teamsData = teamsData + "<td style=\"width: 127px; margin: auto; text-align: center;\">"+getTally(team.WLT[1])+"</td>";
+			teamsData = teamsData + "<td style=\"width: 127px; margin: auto; text-align: center;\">"+getTally(team.WLT[2])+"</td>";
+			teamsData = teamsData + "</tr>";
+		});
+		//close the tags
+		teamsData = teamsData + "</tbody></table>";
+		return new Buffer(teamsData);
+}
+
+//returns buffer with the html data for games
+function gamesTable(games) {
+
+}
+
 exports.sportToHTML = function(model, callback) {
+	console.log(model);
 	//temp implementation
-	var data = new Buffer("<!DOCTYPE html><html><head><title>Test</title></head><body><h3>Testing 123</h3></body></html>");
+	var base = new Buffer("<!DOCTYPE html><html><head><title></title></head><body>"),
+		headBody,
+		teamsBody = teamsTable(model.teams),
+		gamesBody,
+		close = new Buffer("</body></html>"),
+		data = Buffer.concat([base, teamsBody, close]);
+
+
 	callback(null, data);
 };
 
