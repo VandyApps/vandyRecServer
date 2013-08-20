@@ -1828,6 +1828,10 @@ $('#saveModel').click(function() {
 
 }.bind(this));
 
+$('#generateHTML').click(function() {
+	window.location = "/intramurals/download?id=" + sportModel.id;
+});
+
 $('#delete').click(function() {
 	var confirmation = new ConfirmationBox({
 		message: "Are you sure you would like to delete " + sportModel.get('sport'),
