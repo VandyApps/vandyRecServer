@@ -737,16 +737,22 @@ function gamesTable(games) {
 exports.sportToHTML = function(model, callback) {
 	console.log(model);
 	//temp implementation
-	var base, headBody, teamsBody, gamesBody, close, data;
+	var base, headString, headBody, teamsBody, gamesBody, close, data;
 
 	teamWithID.teams = model.teams;
 	base = new Buffer("<!DOCTYPE html><html><head><title></title></head><body>");
-	//headBody;
+
+	headString = "<h3 style=\"text-align: center;\">Vanderbilt University Office of Campus Recreation</h3>";
+	headString = headString + "<p style=\"text-align: center;\"><strong><span style=\"font-size: large;\">"+model.sport+"</span></strong></p>";
+	headBody = new Buffer(headString);
+
 	teamsBody = teamsTable(model.teams);
 
 	gamesBody = gamesTable(model.games);
+
 	close = new Buffer("</body></html>");
-	data = Buffer.concat([base, teamsBody, gamesBody, close]);
+
+	data = Buffer.concat([base, headBody, teamsBody, gamesBody, close]);
 
 
 	callback(null, data);
