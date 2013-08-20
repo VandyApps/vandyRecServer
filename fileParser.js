@@ -625,7 +625,9 @@ exports.parseSport = function(html, callback) {
 //error is null if there is no error and data
 //is in the form of a buffer class
 exports.sportToHTML = function(model, callback) {
-	
+	//temp implementation
+	var data = new Buffer("<!DOCTYPE html><html><head><title>Test</title></head><body><h3>Testing 123</h3></body></html>");
+	callback(null, data);
 };
 
 

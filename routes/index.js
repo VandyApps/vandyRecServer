@@ -347,20 +347,19 @@ exports.downloadHTML = function(req, res) {
 		//filestream = new stream.Duplex();
 	if (req.query.id) {
 		res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-		res.setHeader('Content-type', 'text/plain');
+		res.setHeader('Content-type', 'text/html');
 		console.log(req.query.id);
 		db.getIntramuralWithID(req.query.id, function(err, sport) {
 
-			res.send(sport);
+			fileParser.sportToHTML(sport, function(err, data) {
+				if (err) throw err;
+				res.send(data);
+			});
 		});
 	} else {
 		res.statusCode = 404;
 		res.send("File could not be found");
 	}
-	//filestream.pipe(res);
-	
-	
-
 };
 
 //programs method
