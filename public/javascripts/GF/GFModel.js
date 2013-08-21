@@ -50,7 +50,8 @@ GFModel.FitnessClass = Backbone.Model.extend({
 	//where month is 1-based indexed
 	isOnDay: function(year, monthIndex, day) {
 
-		var date = new Date(year, monthIndex, day, 0,0,0,0);
+		var date = new Date(year, monthIndex, day, 0,0,0,0),
+			specialDates = GFModel.SpecialDates.getInstance();
 
 		if (date.getDay() !== this.get('dayOfWeek') ) {
 			return false;
@@ -473,85 +474,96 @@ GFModel.SpecialDate = Backbone.Model.extend({
 	}
 });
 
-GFModel.SpecialDates = Backbone.Collection.extend({
-	model: GFModel.SpecialDate,
-	url: '/JSON/GF?type=GFSpecialDate',
+GFModel.SpecialDates = (function() {
+	var Instance = Backbone.Collection.extend({
+		model: GFModel.SpecialDate,
+		url: '/JSON/GF?type=GFSpecialDate',
 
-	//returns the SpecialDate model for the passed in
-	//fitnessClass.  If the fitness class does not
-	//belong to any special dates, then this returns null
-	getSpecialDateForClass: function(fitnessClass) {
-		var returnObj = null;
-		this.each(function(SpecialDate) {
-			if (SpecialDate.isMember(fitnessClass)) {
-				returnObj = SpecialDate;
-				return;
-			}
-		});
-		return returnObj;
-	},
-	//returns the special date with the given title
-	//case-insensitive.  Returns null if there
-	//is no special date with the given title
-	getSpecialDateWithTitle: function(title) {
-		var returnObj = null;
-		this.each(function(SpecialDate) {
-			if (title.toUpperCase() === SpecialDate.getTitle().toUpperCase()) {
-				returnObj = SpecialDate;
-				return;
-			}
-		});
-		return returnObj;
-	},
-	//accepts a date string or date object
-	//and returns the SpecialDate model
-	//that includes this date
-	//returns null if there is no special date
-	//that has the parameter date within its bounds
-	getSpecialDateForDate: function(date) {
-		console.log("In the method");
-		var returnObj = null;
-		this.each(function(specialDate) {
-			if (specialDate.includesDate(date)) {
-				returnObj = specialDate;
-				return;
-			}
-		});
-		return returnObj;
-	},
-	//accepts a date string or a date object
-	//and returns true if the date is within any
-	//special date
-	includesDate: function(date) {
-		var includesDate = false;
-		this.each(function(SpecialDate) {
-			if (SpecialDate.includesDate(date)) {
-				includesDate = true;
-				return;
-			}
-		});
-		return includesDate;
-	},
-	//returns true if the fitness class that is passed in as 
-	//a parameter is a member of any special date in the collection
-	isMember: function(fitnessClass) {
-		var isMember = false;
-		this.each(function(specialDate) {
-			if (specialDate.isMember(fitnessClass)) {
-				isMember = true;
-				return;
-			};
-		});
-		return isMember;
-	},
-	addNewSpecialDate: function(specialDate) {
-		this.add(specialDate);
-		//save the model
-		specialDate.save();
-		//fetch the new data
-		this.fetch();
-	}
+		//returns the SpecialDate model for the passed in
+		//fitnessClass.  If the fitness class does not
+		//belong to any special dates, then this returns null
+		getSpecialDateForClass: function(fitnessClass) {
+			var returnObj = null;
+			this.each(function(SpecialDate) {
+				if (SpecialDate.isMember(fitnessClass)) {
+					returnObj = SpecialDate;
+					return;
+				}
+			});
+			return returnObj;
+		},
+		//returns the special date with the given title
+		//case-insensitive.  Returns null if there
+		//is no special date with the given title
+		getSpecialDateWithTitle: function(title) {
+			var returnObj = null;
+			this.each(function(SpecialDate) {
+				if (title.toUpperCase() === SpecialDate.getTitle().toUpperCase()) {
+					returnObj = SpecialDate;
+					return;
+				}
+			});
+			return returnObj;
+		},
+		//accepts a date string or date object
+		//and returns the SpecialDate model
+		//that includes this date
+		//returns null if there is no special date
+		//that has the parameter date within its bounds
+		getSpecialDateForDate: function(date) {
+			console.log("In the method");
+			var returnObj = null;
+			this.each(function(specialDate) {
+				if (specialDate.includesDate(date)) {
+					returnObj = specialDate;
+					return;
+				}
+			});
+			return returnObj;
+		},
+		//accepts a date string or a date object
+		//and returns true if the date is within any
+		//special date
+		includesDate: function(date) {
+			var includesDate = false;
+			this.each(function(SpecialDate) {
+				if (SpecialDate.includesDate(date)) {
+					includesDate = true;
+					return;
+				}
+			});
+			return includesDate;
+		},
+		//returns true if the fitness class that is passed in as 
+		//a parameter is a member of any special date in the collection
+		isMember: function(fitnessClass) {
+			var isMember = false;
+			this.each(function(specialDate) {
+				if (specialDate.isMember(fitnessClass)) {
+					isMember = true;
+					return;
+				};
+			});
+			return isMember;
+		},
+		addNewSpecialDate: function(specialDate) {
+			this.add(specialDate);
+			//save the model
+			specialDate.save();
+			//fetch the new data
+			this.fetch();
+		}
 
-});
+	});
 
-var specialDates = new GFModel.SpecialDates();
+	return {
+		getInstance: function() {
+			if (!GFModel.SpecialDates.instance) {
+				GFModel.SpecialDates.instance = new Instance();
+			}
+			return GFModel.SpecialDates.instance;
+		}
+	};
+
+})();
+

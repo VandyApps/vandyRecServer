@@ -188,7 +188,7 @@ GFView.MonthView = Backbone.View.extend({
 	dayBlocks: [],
 
 	initialize: function(options) {
-		
+		var specialDates = GFModel.SpecialDates.getInstance();
 		this.month = options.month;
 		this.year = options.year;
 		//this is a collection of backbone models
@@ -208,7 +208,9 @@ GFView.MonthView = Backbone.View.extend({
 		    passedLastDay = false,
             row = 0,
             column = 0,
-            iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
+            iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0),
+
+            specialDates = GFModel.SpecialDates.getInstance();
 		
 		console.log("Rendering calendar");
 		//set the display to the month and year indication outside of
@@ -594,8 +596,10 @@ GFView.ClassForm = (function() {
 			
 			var validation = this.validateSubmission(),
 
-	                    dayString, monthString, startDate, monthIndex, yearString, newFitnessClass,
-	                    data = {};
+                dayString, monthString, startDate, monthIndex, yearString, newFitnessClass,
+                data = {},
+                specialDates = GFModel.SpecialDates.getInstance();
+
 			if (validation === true) {
 				$('#formWindow-newClass-error').hide();
 				//submission process
@@ -755,7 +759,8 @@ GFView.SpecialDateView = Backbone.View.extend({
 				button2Name: "NO",
 				animate: false,
 				deleteAfterPresent: true
-			});
+			}),
+			specialDates = GFModel.SpecialDates.getInstance();
 		confirm.show(false);
 		
 		confirm.on('clicked1', function() {
