@@ -163,10 +163,8 @@ GFView.BlockView = Backbone.View.extend({
 			$('#GFWindowPrimer').fadeIn(400, function() {
 				$('#formWindow').show();
 			});
-		}
-		
-	}
-	
+		}		
+	}	
 });
 
 
@@ -788,238 +786,249 @@ GFView.SpecialDateView = Backbone.View.extend({
 //does not have a single model that it renders
 //manages the creation and deletion of models
 //that are being rendered in the window form
-GFView.SpecialDateForm = Backbone.View.extend({
+GFView.SpecialDateForm = (function() {
 
-	el: '#specialDayWindow-classes',
+	var Instance = GFView.SpecialDateForm = Backbone.View.extend({
 
-	events: {
-		//why are events not firing here
-	},
+		el: '#specialDayWindow-classes',
+
+		events: {
+			//why are events not firing here
+		},
 
 
-	initialize: function() {
+		initialize: function() {
 
-		//binding events 
-		$('#specialDayWindow-exit').click($.proxy(this.exit, this));
-		$('#specialDayWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
-		$('#specialDayWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));
-		$('#specialDayWindow-newDate-title').click($.proxy(this.toggleForm, this));
-		$('#specialDayWindow-newDate-submitButton').click($.proxy(this.submit, this));
-		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').change($.proxy(this.changeStartSelect, this));
-		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').change($.proxy(this.changeEndSelect, this));	
+			//binding events 
+			$('#specialDayWindow-exit').click($.proxy(this.exit, this));
+			$('#specialDayWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
+			$('#specialDayWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));
+			$('#specialDayWindow-newDate-title').click($.proxy(this.toggleForm, this));
+			$('#specialDayWindow-newDate-submitButton').click($.proxy(this.submit, this));
+			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').change($.proxy(this.changeStartSelect, this));
+			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector, #specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').change($.proxy(this.changeEndSelect, this));	
 
-		this.render();
-	},
-	render: function() {
-		//set up the initial form
+			this.render();
+		},
+		render: function() {
+			//set up the initial form
 
-		//must also convert month from 1-based to 0-based
-		var startMonth = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1,
-		    startYear = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10),
-		    startDays = DateHelper.daysForMonth(startMonth, startYear),
-                    endMonth = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1,
-		    endYear = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10),
-		    endDays = DateHelper.daysForMonth(endMonth, endYear),
-                    i = 0,
-                    currentDay;
-		for (i = 0; i < startDays; ++i) {
-			if (i < 9) {
-				currentDay = '0'+(i+1).toString();
-			} else {
-				currentDay = (i+1).toString();
+			//must also convert month from 1-based to 0-based
+			var startMonth = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1,
+			    startYear = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10),
+			    startDays = DateHelper.daysForMonth(startMonth, startYear),
+	                    endMonth = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1,
+			    endYear = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10),
+			    endDays = DateHelper.daysForMonth(endMonth, endYear),
+	                    i = 0,
+	                    currentDay;
+			for (i = 0; i < startDays; ++i) {
+				if (i < 9) {
+					currentDay = '0'+(i+1).toString();
+				} else {
+					currentDay = (i+1).toString();
+				}
+				$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
 			}
-			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
-		}
 
-		//must convert month from 1-based to 0-based
-		    
-		for (i = 0; i < startDays; ++i) {
+			//must convert month from 1-based to 0-based
+			    
+			for (i = 0; i < startDays; ++i) {
+				
+				if (i < 9) {
+					currentDay = '0'+(i+1).toString();
+				} else {
+					currentDay = (i+1).toString();
+				}
+
+				$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
+			}
+		},
+		//adds class that was submitted by the form
+		//and appends it immediately after the class creation
+		//form, data should be passed from the form
+		addDates: function(model, animate) {
 			
-			if (i < 9) {
-				currentDay = '0'+(i+1).toString();
-			} else {
-				currentDay = (i+1).toString();
+			//this initialzation of new view automatically adds the view to the 
+			//list and renders html
+			var dateView = new GFView.SpecialDateView({model: model, animate: animate});
+			dateView.$el.on('exit', $.proxy(this.exit,this));
+			//slide animation for form
+			$('#specialDayWindow-newDate-form').slideUp();
+			
+		},
+		//this toggles the appearance of the new class form
+		toggleForm: function() {
+			$('#specialDayWindow-newDate-form').slideToggle();
+		},
+		//returns true if document is ready
+		//to be submitted, returns error message
+		//if the document is not ready to be submitted
+		validateSubmission: function() {
+
+			var startDateString, endDateString, startDate, endDate, data, model;
+			if ($('#specialDayWindow-newDate-nameInput input').val() === '') {
+				return 'Need to include a name for the Special Dates';
 			}
 
-			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
-		}
-	},
-	//adds class that was submitted by the form
-	//and appends it immediately after the class creation
-	//form, data should be passed from the form
-	addDates: function(model, animate) {
+			startDateString = 	$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option:selected').val();
+
+			endDateString = 	$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option:selected').val();
+
+	        startDate = DateHelper.dateFromDateString(startDateString);
+			endDate = DateHelper.dateFromDateString(endDateString);
+	        data = {};
+	        model;
+
+			if (startDate.getTime() > endDate.getTime()) {
+				return 'The end date needs to come after the start date';
+			}
+
+			if (specialDates.includesDate(startDate) || specialDates.includesDate(endDate)) {
+				return 'Cannot create special date that overlaps with another special date';
+			}
+			return true;
 		
-		//this initialzation of new view automatically adds the view to the 
-		//list and renders html
-		var dateView = new GFView.SpecialDateView({model: model, animate: animate});
-		dateView.$el.on('exit', $.proxy(this.exit,this));
-		//slide animation for form
-		$('#specialDayWindow-newDate-form').slideUp();
-		
-	},
-	//this toggles the appearance of the new class form
-	toggleForm: function() {
-		$('#specialDayWindow-newDate-form').slideToggle();
-	},
-	//returns true if document is ready
-	//to be submitted, returns error message
-	//if the document is not ready to be submitted
-	validateSubmission: function() {
+		},
+		//called when the submit button is hit
+		submit: function() {
+			var validate = this.validateSubmission();
+			if (validate === true) {
+				$('#specialDayWindow-newDate-error').hide();
+				data.title = $('#specialDayWindow-newDate-nameInput input').val();
 
-		var startDateString, endDateString, startDate, endDate, data, model;
-		if ($('#specialDayWindow-newDate-nameInput input').val() === '') {
-			return 'Need to include a name for the Special Dates';
+				data.startDate = $('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option:selected').val();
+			
+				data.endDate = 	$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
+								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option:selected').val();
+
+				model = new GFModel.SpecialDate(data);
+
+				//true for animation
+				this.addDates(model, true);
+				specialDates.addNewSpecialDate(model);
+				this.formToDefault();
+
+			} else {
+				$('#specialDayWindow-newDate-error').text(validate);
+				$('#specialDayWindow-newDate-error').show();
+
+			}
+
+		},
+		exit: function() {
+			$('#GFWindowPrimer').hide();
+			$('#specialDayWindow').hide();
+			//hide the form if it was open
+			$('#specialDayWindow-newDate-form').hide();
+			//remove all exsiting class list items
+			$('.specialDayWindow-existingDate').remove();
+		},
+		hoverOnExit: function() {
+			$('#specialDayWindow-exit').animate({backgroundColor: '#cb7c01'}, 200);
+		},
+		hoverOffExit: function() {
+			$('#specialDayWindow-exit').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
+		},
+		//converts the form back to its default values
+		//should be called after submission so that values are cleared
+		//and buttons are reset
+		formToDefault: function() {
+			$('#specialDayWindow-newDate-nameInput input').val('');
+			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option[value="01"]').attr('selected', 'selected');
+			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option[value="01"]').attr('selected', 'selected');
+			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option[value="2013"]').attr('selected', 'selected');
+			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option[value="01"]').attr('selected', 'selected');
+			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option[value="01"]').attr('selected', 'selected');
+			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option[value=2013]').attr('selected', 'selected');
+		},
+		//for making modification to the select tags of startDate
+		changeStartSelect: function() {
+
+			var month = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1,
+				year = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10),
+				day = parseInt( $('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val(), 10),
+				daysInMonth = DateHelper.daysForMonth(month, year),
+				dayAsString, currentDay;
+			
+			while (day > daysInMonth) {
+				day -= 1;
+			}
+
+			if (day < 10) {
+				dayAsString = '0'+day.toString();
+			} else {
+				dayAsString = day.toString();
+			}
+
+
+			//remove all options currently within day selector
+			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option').remove();
+			for (var i = 0; i < daysInMonth; ++i) {
+				
+				if (i < 9) {
+					currentDay = '0'+(i+1).toString();;
+				} else {
+					currentDay = (i+1).toString();
+				}
+				$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
+			}
+			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option[value='+dayAsString+']').attr('selected', 'selected');
+
+		},
+		//for making modification to the select tags of endDate
+		changeEndSelect: function() {
+
+			var month = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1,
+				year = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10),
+				day = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').val(), 10),
+				daysInMonth = DateHelper.daysForMonth(month, year),
+				dayAsString, currentDay, i;
+
+
+			while (day > daysInMonth) {
+				day -= 1;
+			}
+
+			
+			if (day < 10) {
+				dayAsString = '0'+day.toString();
+			} else {
+				dayAsString = day.toString();
+			}
+			//remove all options currently within day selector
+			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option').remove();
+			for (i = 0; i < daysInMonth; ++i) {
+				
+				if (i < 9) {
+					currentDay = '0'+(i+1).toString();;
+				} else {
+					currentDay = (i+1).toString();
+				}
+				$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
+			}
+			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option[value='+dayAsString+']').attr('selected', 'selected');
+
 		}
+	});
 
-		startDateString = 	$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
-							$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
-							$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option:selected').val();
-
-		endDateString = 	$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
-							$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
-							$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option:selected').val();
-
-        startDate = DateHelper.dateFromDateString(startDateString);
-		endDate = DateHelper.dateFromDateString(endDateString);
-        data = {};
-        model;
-
-		if (startDate.getTime() > endDate.getTime()) {
-			return 'The end date needs to come after the start date';
+	return {
+		getInstance: function() {
+			if (!GFView.SpecialDateForm.instance) {
+				GFView.SpecialDateForm.instance = new Instance();
+			}
+			return GFView.SpecialDateForm.instance;
 		}
-
-		if (specialDates.includesDate(startDate) || specialDates.includesDate(endDate)) {
-			return 'Cannot create special date that overlaps with another special date';
-		}
-		return true;
+	};
+})();
 	
-	},
-	//called when the submit button is hit
-	submit: function() {
-		var validate = this.validateSubmission();
-		if (validate === true) {
-			$('#specialDayWindow-newDate-error').hide();
-			data.title = $('#specialDayWindow-newDate-nameInput input').val();
-
-			data.startDate = $('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
-							$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
-							$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option:selected').val();
-		
-			data.endDate = 	$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
-							$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
-							$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option:selected').val();
-
-			model = new GFModel.SpecialDate(data);
-
-			//true for animation
-			this.addDates(model, true);
-			specialDates.addNewSpecialDate(model);
-			this.formToDefault();
-
-		} else {
-			$('#specialDayWindow-newDate-error').text(validate);
-			$('#specialDayWindow-newDate-error').show();
-
-		}
-
-	},
-	exit: function() {
-		$('#GFWindowPrimer').hide();
-		$('#specialDayWindow').hide();
-		//hide the form if it was open
-		$('#specialDayWindow-newDate-form').hide();
-		//remove all exsiting class list items
-		$('.specialDayWindow-existingDate').remove();
-	},
-	hoverOnExit: function() {
-		$('#specialDayWindow-exit').animate({backgroundColor: '#cb7c01'}, 200);
-	},
-	hoverOffExit: function() {
-		$('#specialDayWindow-exit').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
-	},
-	//converts the form back to its default values
-	//should be called after submission so that values are cleared
-	//and buttons are reset
-	formToDefault: function() {
-		$('#specialDayWindow-newDate-nameInput input').val('');
-		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option[value="01"]').attr('selected', 'selected');
-		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option[value="01"]').attr('selected', 'selected');
-		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option[value="2013"]').attr('selected', 'selected');
-		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option[value="01"]').attr('selected', 'selected');
-		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option[value="01"]').attr('selected', 'selected');
-		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option[value=2013]').attr('selected', 'selected');
-	},
-	//for making modification to the select tags of startDate
-	changeStartSelect: function() {
-
-		var month = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1,
-			year = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10),
-			day = parseInt( $('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val(), 10),
-			daysInMonth = DateHelper.daysForMonth(month, year),
-			dayAsString, currentDay;
-		
-		while (day > daysInMonth) {
-			day -= 1;
-		}
-
-		if (day < 10) {
-			dayAsString = '0'+day.toString();
-		} else {
-			dayAsString = day.toString();
-		}
-
-
-		//remove all options currently within day selector
-		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option').remove();
-		for (var i = 0; i < daysInMonth; ++i) {
-			
-			if (i < 9) {
-				currentDay = '0'+(i+1).toString();;
-			} else {
-				currentDay = (i+1).toString();
-			}
-			$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
-		}
-		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option[value='+dayAsString+']').attr('selected', 'selected');
-
-	},
-	//for making modification to the select tags of endDate
-	changeEndSelect: function() {
-
-		var month = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1,
-			year = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10),
-			day = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').val(), 10),
-			daysInMonth = DateHelper.daysForMonth(month, year),
-			dayAsString, currentDay, i;
-
-
-		while (day > daysInMonth) {
-			day -= 1;
-		}
-
-		
-		if (day < 10) {
-			dayAsString = '0'+day.toString();
-		} else {
-			dayAsString = day.toString();
-		}
-		//remove all options currently within day selector
-		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option').remove();
-		for (i = 0; i < daysInMonth; ++i) {
-			
-			if (i < 9) {
-				currentDay = '0'+(i+1).toString();;
-			} else {
-				currentDay = (i+1).toString();
-			}
-			$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').append('<option value='+currentDay+'>'+currentDay+'</option>');
-		}
-		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option[value='+dayAsString+']').attr('selected', 'selected');
-
-	}
-});
-
-var specialDateForm = new GFView.SpecialDateForm();
 //set up other events
 $('#leftArrow').click(function() {
 	monthView.decrementMonth();
@@ -1042,7 +1051,7 @@ $('#specialDaysButton').click(function() {
 
 			this.addDates(specialDate, false);
 
-		}, specialDateForm);
+		}, GFView.SpecialDateForm.getInstance());
 		$('#specialDayWindow').show();
 	});
 });
