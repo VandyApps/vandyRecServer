@@ -156,7 +156,7 @@ GFView.BlockView = Backbone.View.extend({
 			$('#dayIndex').text(this.day.toString());
 			$('#dayOfWeekIndex').text(dayOfWeekIndex.toString());
 			this.fitnessClassesForBlock.forEach(function(fitnessClass) {
-				
+				var formWindowView = new GFView.ClassForm.getInstance();
 				//false for no animation
 				formWindowView.addClass(fitnessClass, false);
 			});
@@ -536,165 +536,177 @@ GFView.ClassView = Backbone.View.extend({
 
 });
 
-//does not have a single model that it renders
-//manages the creation and deletion of models
+//does not have a single model that it renders.
+//This manages the creation and deletion of models
 //that are being rendered in the window form
-GFView.ClassForm = Backbone.View.extend({
 
-	el: '#formWindow-classes',
+GFView.ClassForm = (function() {
+	var instance = Backbone.View.extend({
 
-	events: {
+		el: '#formWindow-classes',
 
-		'click #formWindow-newClass-title': 'toggleForm',
-		'click #formWindow-newClass-submitNewClass': 'submit'
-		//need events to manage selections and changes to existing classes
-		//event for submission
-		//event for changing select elements
-	},
+		events: {
+
+			'click #formWindow-newClass-title': 'toggleForm',
+			'click #formWindow-newClass-submitNewClass': 'submit'
+			//need events to manage selections and changes to existing classes
+			//event for submission
+			//event for changing select elements
+		},
 
 
-	initialize: function() {
+		initialize: function() {
 
-		//binding events that are not within the view
-		$('#formWindow-exit').click($.proxy(this.exit, this));
-		$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
-		$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
+			//binding events that are not within the view
+			$('#formWindow-exit').click($.proxy(this.exit, this));
+			$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
+			$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
 
-	},
-	//adds class that was submitted by the form
-	//and appends it immediately after the class creation
-	//form, data should be passed from the form
-	addClass: function(model, animate) {
-		
-		var classView = new GFView.ClassView({model: model, animate: animate});
-		//slide animation
-		this.$('#formWindow-newClass-form').slideUp();
-		
-	},
-	//this toggles the appearance of the new class form
-	toggleForm: function() {
-		$('#formWindow-newClass-form').slideToggle();
-	},
-	//returns true if document is ready
-	//to be submitted, returns error message
-	//if the document is not ready to be submitted
-	validateSubmission: function() {
-		if ($('#formWindow-newClass-className-input').val() === '') {
-			return "You need to enter a name";
-		}
- 
-                if ($('#formWindow-newClass-instructorName-input').val() === '') {
-			return "You need to enter an instructor";
-		}
-
-		return true;
-	},
-	//called when the submit button is hit
-	submit: function() {
-		
-		var validation = this.validateSubmission(),
-
-                    dayString, monthString, startDate, monthIndex, yearString, newFitnessClass,
-                    data = {};
-		if (validation === true) {
-			$('#formWindow-newClass-error').hide();
-			//submission process
-
-			//construct a data object with the correct fields
-			//move this code to the GFClassView object
+		},
+		//adds class that was submitted by the form
+		//and appends it immediately after the class creation
+		//form, data should be passed from the form
+		addClass: function(model, animate) {
 			
-			data.className = $('#formWindow-newClass-className-input').val();
-			data.instructor = $('#formWindow-newClass-instructorName-input').val();
-			data.dayOfWeek = parseInt($('#dayOfWeekIndex').text(), 10);
-
-			data.startTime = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
-			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
-			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
-
-			data.endTime = $('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
-			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
-			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
-
-			//to be removed eventually
-			data.timeRange = data.startTime + " - " + data.endTime;
+			var classView = new GFView.ClassView({model: model, animate: animate});
+			//slide animation
+			this.$('#formWindow-newClass-form').slideUp();
 			
-			//set specialDate variables
-			startDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10));
-
-
-			//convert month to 1-based for date string
-			monthIndex = startDate.getMonth() + 1;
-			if (monthIndex < 10) {
-				monthString = '0'+ monthIndex.toString();
-			} else {
-				monthString = monthIndex.toString();
+		},
+		//this toggles the appearance of the new class form
+		toggleForm: function() {
+			$('#formWindow-newClass-form').slideToggle();
+		},
+		//returns true if document is ready
+		//to be submitted, returns error message
+		//if the document is not ready to be submitted
+		validateSubmission: function() {
+			if ($('#formWindow-newClass-className-input').val() === '') {
+				return "You need to enter a name";
+			}
+	 
+	                if ($('#formWindow-newClass-instructorName-input').val() === '') {
+				return "You need to enter an instructor";
 			}
 
-			if ($('#dayIndex').text().length === 1) {
-				dayString = '0' + $('#dayIndex').text();
-			} else {
-				dayString = $('#dayIndex').text();
-			}
-
-			yearString = $('#yearIndex').text();
+			return true;
+		},
+		//called when the submit button is hit
+		submit: function() {
 			
-			data.startDate = monthString + '/' + dayString + '/' + yearString;
-			if ($("input[name='isRepeated']:checked", '#formWindow-newClass-repeatSelections').val() === 'true') {
-				data.endDate = '*';
-			} else {
-				data.endDate = data.startDate;
-			}
+			var validation = this.validateSubmission(),
 
-			//set special date boolean; the remaining setting
-			//for inclusion into specialDate is done within the
-			//initializer of GFModel.FitnessClass
-			if (specialDates.includesDate(startDate)) {
-				data.specialDateClass = true;
-			} else {
-				data.specialDateClass = false;
-			}
+	                    dayString, monthString, startDate, monthIndex, yearString, newFitnessClass,
+	                    data = {};
+			if (validation === true) {
+				$('#formWindow-newClass-error').hide();
+				//submission process
 
-			newFitnessClass = fitnessClasses.addNewClass(data);
-			this.addClass(newFitnessClass, true);
-			this.formToDefault();
-		} else {
-			//present the error message
-			$('#formWindow-newClass-error').text(validation);
-			$('#formWindow-newClass-error').show();
+				//construct a data object with the correct fields
+				//move this code to the GFClassView object
+				
+				data.className = $('#formWindow-newClass-className-input').val();
+				data.instructor = $('#formWindow-newClass-instructorName-input').val();
+				data.dayOfWeek = parseInt($('#dayOfWeekIndex').text(), 10);
+
+				data.startTime = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
+				$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
+				$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
+
+				data.endTime = $('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
+				$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
+				$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').children(':selected').text();
+
+				//to be removed eventually
+				data.timeRange = data.startTime + " - " + data.endTime;
+				
+				//set specialDate variables
+				startDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10));
+
+
+				//convert month to 1-based for date string
+				monthIndex = startDate.getMonth() + 1;
+				if (monthIndex < 10) {
+					monthString = '0'+ monthIndex.toString();
+				} else {
+					monthString = monthIndex.toString();
+				}
+
+				if ($('#dayIndex').text().length === 1) {
+					dayString = '0' + $('#dayIndex').text();
+				} else {
+					dayString = $('#dayIndex').text();
+				}
+
+				yearString = $('#yearIndex').text();
+				
+				data.startDate = monthString + '/' + dayString + '/' + yearString;
+				if ($("input[name='isRepeated']:checked", '#formWindow-newClass-repeatSelections').val() === 'true') {
+					data.endDate = '*';
+				} else {
+					data.endDate = data.startDate;
+				}
+
+				//set special date boolean; the remaining setting
+				//for inclusion into specialDate is done within the
+				//initializer of GFModel.FitnessClass
+				if (specialDates.includesDate(startDate)) {
+					data.specialDateClass = true;
+				} else {
+					data.specialDateClass = false;
+				}
+
+				newFitnessClass = fitnessClasses.addNewClass(data);
+				this.addClass(newFitnessClass, true);
+				this.formToDefault();
+			} else {
+				//present the error message
+				$('#formWindow-newClass-error').text(validation);
+				$('#formWindow-newClass-error').show();
+			}
+			
+		},
+		exit: function() {
+			$('#GFWindowPrimer').hide();
+			$('#formWindow').hide();
+			//hide the form if it was open
+			$('#formWindow-newClass-form').hide();
+			//remove all exsiting class list items
+			$('.formWindow-existingClass').remove();
+		},
+		hoverOnExit: function() {
+			$('#formWindow-exit').animate({backgroundColor: '#cb7c01'}, 200);
+		},
+		hoverOffExit: function() {
+			$('#formWindow-exit').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
+		},
+		//converts the form back to its default values
+		//should be called after submission so that values are cleared
+		//and buttons are reset
+		formToDefault: function() {
+			$('#formWindow-newClass-className-input').val('');
+			$('#formWindow-newClass-instructorName-input').val('');
+			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').val('12');
+			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('00');
+			$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').val('am');
+			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').val('1');
+			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('00');
+			$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('am');
+
 		}
+	});
 		
-	},
-	exit: function() {
-		$('#GFWindowPrimer').hide();
-		$('#formWindow').hide();
-		//hide the form if it was open
-		$('#formWindow-newClass-form').hide();
-		//remove all exsiting class list items
-		$('.formWindow-existingClass').remove();
-	},
-	hoverOnExit: function() {
-		$('#formWindow-exit').animate({backgroundColor: '#cb7c01'}, 200);
-	},
-	hoverOffExit: function() {
-		$('#formWindow-exit').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
-	},
-	//converts the form back to its default values
-	//should be called after submission so that values are cleared
-	//and buttons are reset
-	formToDefault: function() {
-		$('#formWindow-newClass-className-input').val('');
-		$('#formWindow-newClass-instructorName-input').val('');
-		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').val('12');
-		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('00');
-		$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-ampm').val('am');
-		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').val('1');
-		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('00');
-		$('#formWindow-newClass-endTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').val('am');
 
-	}
-});
+	return {
+		getInstance: function() {
+			if (!GFView.ClassForm.instance) {
+				GFView.ClassForm.instance = new instance();
+			}
+			return GFView.ClassForm.instance;
+		}
+	};
+})();
 
-var formWindowView = new GFView.ClassForm();
 
 
 //duplication starts here
