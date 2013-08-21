@@ -1,0 +1,756 @@
+body {
+    background: #e1e1e1;
+    height: 1500px;
+}
+#sportName {
+    
+    height: 100px;
+    display: block;
+    position: relative;
+    
+}
+
+#sportName h3 {
+    
+    position: absolute;
+    width: 1000px;
+    margin-left: -500px;
+    left: 50%;
+    height: 30px;
+    line-height: 30px;
+    margin-top: -15px;
+    top: 50%;
+    text-align: center;
+    font-size: 20pt;
+    color: #1C94C4;
+    
+}
+
+#sportName div {
+    cursor: pointer;
+    position: absolute;
+    color: red;
+    text-decoration: underline;
+    left: 50%;
+    width: 30px;
+    margin-left: -15px;
+    bottom: 0px;
+    font-size: 10pt;
+}
+
+#season {
+    position: relative;
+    top: 20px;
+    text-align: center;
+}
+
+#season h3 {
+    color: blue;
+    
+    font-size: 17pt;
+}
+
+#season div {
+    cursor: pointer;
+    color: red;
+    text-decoration: underline;
+    font-size: 10pt;
+}
+
+.sportDates {
+    text-align: center;
+    border: solid black 1px;
+    position: absolute;
+    width: 500px;
+    margin-left: -250px;
+    left: 50%;
+    border-radius: 5px;
+    height: 100px;
+    box-shadow: 5px 5px 6px 0 #555555;
+}
+
+.sportDates div:nth-child(1) {
+    border-bottom: solid black 1px;
+    background: #EB8F00;
+    color: #0b4158;
+    overflow: hidden;
+    padding: 5px 0px;
+    font-size:13pt;
+    
+    
+}
+
+.sportDates div:nth-child(1) {
+    margin-bottom: 25px;
+}
+
+.sportDates span {
+    padding: 0px 10px;
+}
+
+.sportDates .edit {
+    position: absolute;
+    top: 35px;
+    right: 10px;
+    font-size: 10pt;
+    color: red;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+#entryDates {
+    top: 280px;   
+}
+
+#seasonDates {
+    top: 400px;
+}
+
+
+
+#teams, #games {
+    border: solid black 2px;
+    position: relative;
+    
+    display: block;
+    width: 1000px;
+    margin-left: -501px;
+    left: 50%;
+    border-radius: 5px;
+    box-shadow: 5px 5px 6px 0 #555555;
+    
+}
+
+#teams {
+    top: 330px;
+}
+
+#games {
+    top: 380px;
+}
+
+.addButton {
+    position: absolute;
+    top: 20px;
+    background-color: black;
+    color: white;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 30px;
+    right: 20px;
+    display: block;
+    height: 30px;
+    width: 30px;
+    margin-top: -15px;
+    
+    cursor: pointer;
+    
+}
+
+
+#teams > div:nth-child(1), #games > div:nth-child(1) {
+    
+    background: #EB8F00;
+    height: 40px;
+    line-height: 40px;
+    font-size: 15pt;
+    text-align: center; 
+    margin: 0px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#teams > ul {
+    position: relative;
+    display: none;
+    list-style: none;
+    margin: 0px;
+    
+}
+
+#teams > ul li {
+    position: relative;
+    border-top: solid black 2px;
+    margin-left: -40px;
+    height: 80px;
+}
+
+#teams > ul li div:nth-child(1) {
+    position: absolute;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    width: 300px;
+    margin-left: -150px; 
+    margin-top: -15px;
+    top: 30%;
+    left: 50%;
+    text-align: center;
+    color: red;
+    font-size: 14pt;
+}
+
+#teams > ul li div:nth-child(2), #teams > ul li div:nth-child(3), #teams > ul li div:nth-child(4) {
+    position: absolute;
+    font-size: 13pt;
+    top: 55px;
+}
+
+#teams > ul li div:nth-child(2) {
+    left: 200px;
+}
+
+#teams > ul li div:nth-child(3) {
+    left: 475px;
+}
+
+#teams > ul li div:nth-child(4) {
+    right: 200px;
+}
+
+#teams > ul li div:nth-child(5) {
+    position: absolute;
+    top:5px;
+    right: 10px;
+    font-size: 10pt;
+    color: red;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#teams > ul li:nth-child(odd) div:nth-child(5), #teams > ul li:nth-child(odd) div:nth-child(6), #teams > ul li:nth-child(odd) div:nth-child(7) {
+    color: blue;
+}
+
+#teams > ul li:nth-child(even) div:nth-child(5), #teams > ul li:nth-child(even) div:nth-child(6), #teams > ul li:nth-child(even) div:nth-child(7) {
+    color: red;
+}
+
+#teams > ul li div:nth-child(6) {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    font-size: 10pt;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#teams > ul li div:nth-child(7) {
+    position: absolute;
+    text-decoration: underline;
+    font-size: 10pt;
+    right: 10px;
+    top: 35px;
+    cursor: pointer;
+}
+
+#teams > ul li .teamDropped {
+    display: black;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    width: 100%;
+    background-color: black;
+    opacity: .6;
+    color: red;
+    font-size: 22pt;
+}
+
+
+#teams > ul li:nth-child(even), #games > ul li:nth-child(even) {
+    background: #1C94C4;
+}
+
+#games > ul {
+    margin: 0;
+    list-style: none;
+    display: none;
+}
+
+#games > ul li {
+    position: relative;
+    border-top: solid black 2px;
+    margin-left: -40px;
+    height: 120px;
+}
+
+#games > ul div:nth-child(1) {
+    position: absolute;
+    color: white;
+    display: block;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 10pt;
+    border-radius: 15px;
+    top: 5px;
+    left: 5px;
+    
+}
+
+#games > ul div:nth-child(2) {
+
+    position: absolute;
+    top: 40px;
+    left: 10px;
+}
+
+#games > ul div:nth-child(3) {
+
+    position: absolute;
+    top: 65px;
+    left: 10px;
+}
+
+#games > ul div:nth-child(4) {
+    position: absolute;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    width: 650px;
+    text-align: center;
+    margin-left: -325px;
+    font-size: 15pt;
+    left: 50%;
+    top: 10px;
+    
+}
+
+#games > ul div:nth-child(5) {
+    position: absolute;
+    left: 10px;
+    top: 90px;
+}
+
+#games > ul div:nth-child(6) {
+    position: absolute;
+    display: block;
+    width: 100px;
+    margin-left: -50px;
+    left: 50%;
+    bottom: 10px;
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+}
+
+#games > ul div:nth-child(7) {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 10pt;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#games > ul li:nth-child(odd) div:nth-child(7), #games > ul li:nth-child(odd) div:nth-child(8), #games > ul li:nth-child(odd) div:nth-child(9) {
+    color: blue;
+}
+
+#games > ul li:nth-child(even) div:nth-child(7), #games > ul li:nth-child(even) div:nth-child(8), #games > ul li:nth-child(even) div:nth-child(9) {
+    color:red;
+}
+
+#games > ul div:nth-child(8) {
+    cursor: pointer;
+    position: absolute;
+    top: 30px;
+    right: 10px;
+    font-size: 10pt;
+    text-decoration: underline;
+}
+
+#games >ul div:nth-child(9) {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    font-size: 10pt;
+    top: 50px;
+    text-decoration: underline;
+}
+
+#games span {
+    padding: 0px 10px;
+    font-weight: bold;
+    color:red;
+}
+
+#games .gameCancelled {
+    display: block;
+    width: 100%;
+    height: 120px;
+    text-align: center;
+    line-height: 120px;
+    background-color: black;
+    opacity: .4;
+    color: red;
+    font-size: 20pt;
+}
+
+#return, #generateHTML, #delete, #saveModel {
+    font-weight: bold;
+    border: solid black 2px;
+    display: block;
+    width: 400px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative;
+    margin-left: -201px;
+    left: 50%;
+    text-decoration: none;
+    color: black;
+    box-shadow: 5px 5px 6px 0 #555555;
+    background: #fc654c;
+}
+
+
+#delete {
+    top: 490px;
+}
+
+#return {
+    top: 470px;
+}
+
+#generateHTML {
+    top: 450px;
+}
+
+#saveModel {
+    top: 430px;
+}
+
+#errors {
+    display: none;
+    position: relative;
+    width: 400px;
+    margin-left: -201px;
+    left: 50%;
+    top: 510px;
+}
+
+#errors > div:nth-child(1) {
+    display: block;
+    cursor: pointer;
+    box-shadow: 5px 5px 6px 0 #555555;
+    font-weight: bold;
+    border: solid black 2px;
+    border-radius: 5px;
+    background: #fc654c;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+#errors ul {
+    display: none;
+    margin: 0px;
+    list-style: none;
+}
+
+#errors ul li {
+    background-color: red;
+    font-weight: bold;
+    
+    border-radius: 5px;
+    padding: 5px;
+    border: solid black 1px;
+    text-align: center;
+    margin: 20px 0px 20px -40px;;
+}
+
+/*edit window*/
+
+input[type="text"] {
+    border: solid #EB8F00 1px;
+    border-radius: 5px;
+    height: 20px;
+    padding: 0px 5px;
+}
+
+.editWindow {
+    position: fixed;
+    border-radius: 5px;
+    background: black;
+    color: white;
+    opacity: .75;
+    display: none;
+    z-index: 2;
+}
+
+/*the title*/
+.editWindow > div:nth-child(1) {
+    position: absolute;
+    top: 20px;
+    font-size: 15pt;
+    text-align: center;
+    width: 400px;
+    margin-left: -200px;
+    left: 50%;
+}
+
+.editWindow input[value="submit"][type="button"] {
+    border: solid black 1px;
+    border: solid #EB8F00 2px;
+    border-radius: 2px;
+    width: 80px;
+    height: 25px;
+    line-height: 25px;
+    background: transparent;
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    cursor: pointer;
+}
+
+.editWindow input[value="cancel"][type="button"] {
+    border: solid #EB8F00 2px;
+    border-radius: 2px;
+    width: 80px;
+    height: 25px;
+    line-height: 25px;
+    background: transparent;
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    cursor: pointer;
+}
+
+#nameEdit {
+    width: 300px;
+    height: 200px;
+    margin-left: -150px;
+    margin-top: -100px;
+    top: 50%;
+    left: 50%;
+    
+}
+
+#nameEdit input[type="text"] {
+    position: absolute;
+    top: 80px;
+    width: 150px;
+    margin-left: -75px;
+    left: 50%;
+}
+
+#nameEdit input:nth-of-type(2) {
+    left: 50px;
+}
+
+#nameEdit input:nth-of-type(3) {
+    right: 50px;
+}
+
+
+#datesEdit {
+    width: 500px;
+    height: 200px;
+    margin-left: -250px;
+    left: 50%;
+    margin-top: -100px;
+    top: 50%;
+    
+    
+}
+
+#seasonEdit {
+    width: 300px;
+    height: 200px;
+    margin-left: -150px;
+    margin-top: -100px;
+    left: 50%;
+    top: 50%;
+}
+
+#seasonEdit select {
+    width: 100px;
+    margin-left: -50px;
+    left: 50%;
+    position: absolute;
+    top: 90px;
+}
+
+#seasonEdit [value="cancel"] {
+    right: 50px;
+}
+
+#seasonEdit [value="submit"] {
+    left: 50px;
+}
+
+
+#datesEdit > div:nth-child(2), #datesEdit > div:nth-child(3) {
+    position: absolute;
+    top: 80px;
+    width: 200px;
+    text-align: center;
+}
+
+#datesEdit > input:nth-child(4) {
+    left: 140px;
+}
+
+#datesEdit > input:nth-child(5) {
+    right: 140px;
+}
+
+
+#datesEdit > div:nth-child(2) {
+    left: 20px;
+}
+
+#datesEdit > div:nth-child(3) {
+    right: 20px;
+}
+
+
+#teamsEdit {
+    width: 500px;
+    height: 200px;
+    margin-left: -250px;
+    left: 50%;
+    margin-top: -150px;
+    top: 50%;
+}
+
+#teamsEdit input:nth-child(2) {
+    position: absolute;
+    top: 90px;
+    margin-left: -125px;
+    left: 50%;
+    width: 250px;
+}
+
+
+#teamsEdit input[value="submit"][type="button"] {
+    left: 100px;
+}
+
+#teamsEdit input[value="cancel"][type="button"] {
+    right: 100px;
+}
+
+#gamesEdit {
+    width: 500px;
+    height: 500px;
+    margin-top: -250px;
+    margin-left: -250px;
+    top: 50%;
+    left: 50%;
+}
+
+
+#gamesEdit > div:nth-child(2), #gamesEdit > div:nth-child(3), #gamesEdit > div:nth-child(4) {
+    position: absolute;
+    width: 260px;
+    text-align: right;
+}
+
+#gamesEdit > div:nth-child(2) div, #gamesEdit > div:nth-child(3) div, #gamesEdit > div:nth-child(4) div {
+    position: absolute;
+    top: 0px;
+}
+
+
+#gamesEdit > div:nth-child(2) {
+    
+    top: 60px;
+    left: 30px;
+}
+
+#gamesEdit > div:nth-child(3) {
+    position: absolute;
+    top: 100px;
+    left: 30px;
+
+}
+
+#gamesEdit > div:nth-child(4) {
+    position: absolute;
+    top: 130px;
+    left: 30px;
+}
+
+
+#gamesEdit > div:nth-child(5) {
+    position: absolute;
+    top: 190px;
+    left: 20px;
+    width: 220px;
+    
+}
+
+#gamesEdit > div:nth-child(6) {
+
+    position: absolute;
+    top: 190px;
+    right: 20px;
+    
+    width: 220px;
+    text-align: right;
+    
+}
+#gamesEdit > div:nth-child(5) select, #gamesEdit div:nth-child(6) select {
+    margin-left: 10px;
+    width: 150px;
+}
+
+
+#gamesEdit > div:nth-child(7) {
+    position: absolute;
+    top: 220px;
+    left: 20px;
+}
+
+#gamesEdit > div:nth-child(7) input:nth-child(1) {
+    width: 30px;
+    margin: 0px 205px 0px 75px;
+    text-align: center;
+}
+
+#gamesEdit > div:nth-child(7) input:nth-child(2) {
+    width: 30px;
+    text-align: center;
+}
+
+#gamesEdit > div:nth-child(7) input[readonly] {
+    background-color: #444444;
+}
+
+#gamesEdit > div:nth-child(8) {
+    position: absolute;
+    left: 20px;
+    top: 290px;
+    
+}
+
+#gamesEdit > div:nth-child(8) input {
+    margin-left: 20px;
+}
+
+#gamesEdit > div:nth-child(9) {
+    position: absolute;
+    top: 370px;
+    width: 200px;
+    left: 40px;
+}
+
+#gamesEdit > div:nth-child(10) {
+    position: absolute;
+    top: 370px;
+    width: 200px;
+    right: 40px;
+}
+#gamesEdit input[type="button"][value="submit"] {
+    left: 120px;
+}
+
+#gamesEdit input[type="button"][value="cancel"] {
+    right: 120px;
+} 
+

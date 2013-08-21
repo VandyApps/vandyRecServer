@@ -1,5 +1,17 @@
 //DateHelper is a utility class
-window.DateHelper = {};
+
+//for adding to NODE
+//NEED TO IMPROVE THIS FOR BETTER TESTS
+//TO CHECK FOR NODE INTEGRATION
+if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
+	exports.DateHelper = {};
+	DateHelper = exports.DateHelper;
+
+//for client-side
+} else {
+	window.DateHelper = {};
+}
+
 
 DateHelper.addWeekToDate = function(date) {
 	date.setDate(date.getDate() + 7);
@@ -67,7 +79,8 @@ DateHelper.monthNameForIndex = function(monthIndex) {
 		case 8: return "September";
 		case 9: return "October";
 		case 10: return "November";
-		default: return "December";
+		case 11: return "December";
+		default: return "";
 	}
 }
 
@@ -220,7 +233,10 @@ DateHelper.dateFromDateString = function(dateString) {
 	return new Date(parseInt(dateArray[2], 10), parseInt(dateArray[0], 10) - 1, parseInt(dateArray[1], 10), 0,0,0,0);
 }
 
-
+DateHelper.isDateString = function(dateString) {
+	var regexp = /^((0[1-9])|(1[1,2]))\/\d\d\/\d\d\d\d$/g;
+	return regexp.test(dateString);
+}
 /*timeString methods*/
 DateHelper.isTimeString = function(timeString) {
 	var regexp = new RegExp("^((0\\d)|(1[012])):[012345]\\d[a,A,p,P][m,M]$");
@@ -260,11 +276,21 @@ DateHelper.splitTime = function(time, coerce) {
 	var firstSplit = time.split(':'),
 	    finalSplit = [firstSplit[0], firstSplit[1].substr(0,2), firstSplit[1].substr(2,2)];
 
-	if (!!coerce) {
+	if (coerce) {
 		return finalSplit.map(function(el, index) {
 			return (index !== 2) ? +el : el;
 		});
 	}
 	return finalSplit;
 	
+}
+
+DateHelper.timeStringInSecs = function(timeString) {
+	var timeArray = this.splitTime(timeString, true),
+		seconds = 0;
+	seconds += (timeArray[0] === 12) ? 0 : timeArray[0] * 3600;
+	seconds += timeArray[1] * 60;
+	seconds += (timeArray[2].toLowerCase() === 'pm') ? 12 * 60 * 60: 0;
+	return seconds;
+
 }

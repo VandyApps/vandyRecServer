@@ -92,13 +92,24 @@ app.delete('/groupFitness', routes.deleteGF);
 
 
 app.get('/traffic', routes.traffic);
+
+
 app.get('/intramurals', routes.intramurals);
+app.post('/intramurals', routes.createIntramurals);
+app.put('/intramurals', routes.updateIntramurals);
+app.delete('/intramurals', routes.deleteIntramurals);
+
+app.post('/intramurals/files', routes.intramuralFiles);
+app.get('/intramurals/details', routes.intramuralsDetails);
+app.get('/intramurals/download', routes.downloadHTML);
+
 app.get('/programs', routes.programs);
 
 //JSON data for all the tabs
 app.get('/JSON/news', data.news);
 app.get('/JSON/hours', data.hours);
 app.get('/JSON/GF', data.groupFitness);
+app.get('/JSON/IM', data.intramurals);
 
 passport.serializeUser(function(user, done) {
   done(null, user);

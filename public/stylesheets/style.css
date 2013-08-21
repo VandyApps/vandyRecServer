@@ -41,6 +41,7 @@ textarea {
     border-radius: 10px;
     background-color: #dbdbdb;
 }
+
 #title {
     display: block;
     height: 30px;
@@ -422,7 +423,7 @@ textarea {
     left: 160px;
     font-size: 10pt;
 }
-.hoursSectionHeader {
+.hoursSectionHeader, .intramuralsSectionHeader {
     border: solid black 1px;
     position: relative;
     display: block;
@@ -435,12 +436,12 @@ textarea {
     background-color: #f99902;
     box-shadow: #555555 6px 5px 4px 0px;
 }
-.hoursSectionHeader-title {
+.hoursSectionHeader-title, .intramuralsSectionHeader-title {
     display: block;
     position: absolute;
     height: 30px;
-    width: 100px;
-    margin-left: -50px;
+    width: 150px;
+    margin-left: -75px;
     margin-top: -15px;
     left: 50%;
     top: 50%;
@@ -448,7 +449,7 @@ textarea {
     margin-left: 
     
 }
-.hoursSectionHeader-add {
+.hoursSectionHeader-add, .intramuralsSectionHeader-add {
     background-color: black;
     color: white;
     margin-bottom: -40px;
@@ -580,13 +581,13 @@ textarea {
 }
 
 
-.hoursList {
+.hoursList, .intramuralsList {
     display: block;
     width: 500px;
     margin: auto;
 }
 
-.hoursList li {
+.hoursList li, .intramuralsList li {
     position: relative;
     list-style: none;
     display: block;
@@ -623,7 +624,7 @@ textarea {
     top: 50%;
 }
 
-.hoursItem-name {
+.hoursItem-name, .intramuralsItem-name {
     position: absolute;
     display: block;
     top: 24px;
@@ -632,7 +633,7 @@ textarea {
     font-size: 15pt;
 }
 
-.hoursItem-startDate {
+.hoursItem-startDate, .intramuralsItem-startDate {
     
     display: block;
     position: absolute;
@@ -642,7 +643,7 @@ textarea {
     font-size: 10pt;
 }
 
-.hoursItem-endDate {
+.hoursItem-endDate, .intramuralsItem-endDate {
     
     display: block;
     position: absolute;
@@ -1241,6 +1242,47 @@ textarea {
     cursor: pointer;
 }
 
+/*intramurals*/
+
+.intramuralsList li a {
+
+    position: absolute;
+    display: block;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+#intramuralsImport {
+    border: solid black 1px;
+    border-radius: 5px;
+    display: block;
+    width: 500px;
+    padding: 5px;
+    margin: 0 auto;
+    
+}
+#intramuralsImport div {
+    text-align: center;
+    margin: 20px 0px;
+}
+
+#intramuralsImport form {
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+    width: 400px;
+
+}
+
+/*ui help*/
+.line {
+    transform-origin: 0 100%;
+    height: 3px;
+    background: #000;
+}
 
 
 

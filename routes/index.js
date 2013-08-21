@@ -3,10 +3,13 @@
  * GET home page.
  */
 
-var db = require('../db');
+var db = require('../db'),
+	fs = require('fs'),
+	stream = require('stream'),
+    fileParser = require('../fileParser');
 
 exports.index = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		if (typeof req.query.entry !== 'undefined') {
 			res.render('index', {tabIndex: parseInt(req.query.entry, 10)});
 		} else {
@@ -21,7 +24,7 @@ exports.index = function(req, res) {
 };
 
 exports.login = function(req, res) {
-	if (typeof req.query.failed !== 'undefined' && req.query.failed === 'true') {
+	if (req.query.failed !== undefined && req.query.failed === 'true') {
 		res.render('login', {warning: 'Incorrect Login Credentials'});
 	} else {
 		res.render('login', {warning: ''});	
@@ -32,7 +35,7 @@ exports.login = function(req, res) {
 
 
 exports.news = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		res.redirect('/');	
 	} else {
 		res.redirect('/login');
@@ -89,7 +92,7 @@ exports.deleteNews = function(req, res) {
 
 //hours methods
 exports.hours = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		res.redirect('/?entry=1')
 	} else {
 		res.redirect('/login');
@@ -153,7 +156,7 @@ exports.traffic = function(req, res) {
 
 //group fitness methods
 exports.groupFitness = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		res.redirect('/?entry=3');
 	} else {
 		res.redirect('/login');
@@ -236,7 +239,7 @@ exports.deleteGF = function(req, res) {
 
 //intramurals methods
 exports.intramurals = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user !== undefined) {
 		res.redirect('/?entry=4');
 	} else {
 		res.redirect('/login');
@@ -244,10 +247,124 @@ exports.intramurals = function(req, res) {
 	
 };
 
+exports.createIntramurals = function(req, res) {
+	var data = req.body;
+	db.insertIntramurals(data, function(err, object) {
+		if (err) {
+			res.statusCode = 500;
+			res.send(err);
+
+		} else {
+			res.statusCode = 200;
+			res.send(object);
+		}
+		
+	});
+};
+
+exports.updateIntramurals = function(req, res) {
+	var data = req.body;
+	db.updateIntramurals(data, function(err, object) {
+		if (err) {
+			res.statusCode = 500;
+			res.send(err);
+		} else {
+			res.statusCode = 200;
+			res.send(object);
+		}
+	});
+};
+
+exports.deleteIntramurals = function(req, res) {
+	
+	db.deleteIntramurals(req.headers._id, function(err, sport) {
+		if (err) {
+			res.statusCode = 500;
+			res.send(err);
+		} else {
+			res.statusCode = 200;
+			res.send(sport);
+		}
+		
+	});
+
+};
+
+exports.intramuralFiles = function(req, res) {
+	if (!req.files) {
+		//should create an error page
+		res.redirect('/intramurals');
+	} else {
+		fs.readFile(req.files.intramuralsSport.path, function(err, data) {
+			
+			//the errors callback consists of all the things wrong with
+			//the html file that was uploaded
+			fileParser.parseSport(data, function(sport, parsingErrors) {
+				
+				db.insertIntramurals(sport, function(err, DB_Sports) {
+					var DB_Sport = DB_Sports[0];
+					if (!err) {
+						res.statusCode = 200;
+
+						if (!parsingErrors || parsingErrors.length === 0) {
+							res.redirect('/intramurals/details?id='+DB_Sport._id);
+						} else {
+							res.redirect('/intramurals/details?id='+DB_Sport._id + '&errors=' + encodeURIComponent(parsingErrors.join()));
+						}
+					} else {
+						res.statusCode = 500;
+						res.redirect('/intramurals/details?errors=There was an error when saving to the database');
+					}
+					
+						
+				});
+				
+
+			});
+		});
+	}
+	
+
+};
+
+exports.intramuralsDetails = function(req, res) {
+	if (req.user) {
+		if (req.query.renderHTML && req.query.renderHTML === 'true') {
+			res.render('sportsDetails');
+			res.attachment();
+		} else {
+			res.render('sportsDetails');
+		}
+		
+	} else {
+		res.redirect('/login');
+	}
+	
+};
+
+exports.downloadHTML = function(req, res) {
+	var filename = "IM_raw";
+		//filestream = new stream.Duplex();
+	if (req.query.id) {
+		res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+		res.setHeader('Content-type', 'text/html');
+		console.log(req.query.id);
+		db.getIntramuralWithID(req.query.id, function(err, sport) {
+
+			fileParser.sportToHTML(sport, function(err, data) {
+				if (err) throw err;
+				res.send(data);
+			});
+		});
+	} else {
+		res.statusCode = 404;
+		res.send("File could not be found");
+	}
+};
 
 //programs method
 exports.programs = function(req, res) {
-	if (typeof req.user !== 'undefined') {
+	if (req.user) {
 		res.redirect('/?entry=5');
 	} else {
 		res.redirect('/login');

@@ -50,3 +50,18 @@ exports.groupFitness = function(req, res) {
 	}
 	
 };
+
+
+exports.intramurals = function(req, res) {
+	if (req.query.season) {
+		db.getIntramuralsForSeason(+req.query.season, function(err, intramurals) {
+			res.send(intramurals);
+		});
+	} else {
+		db.getIntramurals(function(err, intramurals) {
+			res.send(intramurals);
+		});
+	}
+	
+};
+
