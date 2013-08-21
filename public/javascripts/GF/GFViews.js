@@ -25,10 +25,13 @@ GFView.BlockView = Backbone.View.extend({
 	
 	initialize: function(options) {
 		//set the variables
+		var columnsSelector, rowSelector;
 		this.row = options.row;
 		this.column = options.column;
-		var columnSelector = "#cal-column-" + this.column,
-		    rowSelector = ".cal-block-" + this.row;
+
+		columnSelector = "#cal-column-" + this.column;
+		rowSelector = ".cal-block-" + this.row;
+
 		this.$el = $(columnSelector).children(rowSelector);
 
 		if (options.empty === true) {
@@ -78,10 +81,13 @@ GFView.BlockView = Backbone.View.extend({
 	//without removing it
 	reset: function(options) {
 		//set the variables
+		var columnSelector, rowSelector;
 		this.row = options.row;
 		this.column = options.column;
-		var columnSelector = "#cal-column-" + this.column,
-		    rowSelector = ".cal-block-" + this.row;
+
+		columnSelector = "#cal-column-" + this.column;
+		rowSelector = ".cal-block-" + this.row;
+
 		this.$el = $(columnSelector).children(rowSelector);
 		if (options.empty === true) {
 			this.empty = true;
@@ -144,7 +150,7 @@ GFView.BlockView = Backbone.View.extend({
 		if ($(event.delegateTarget).attr('empty') === undefined) {
 			
 			var dayOfWeekIndex = parseInt($(event.delegateTarget).parent().attr('id').charAt(11), 10),
-                            windowTitle = DateHelper.weekDayAsString(dayOfWeekIndex) +', '+DateHelper.monthNameForIndex(parseInt($('#monthIndex').text(),10))+' '+$('.dayIndicator' , event.delegateTarget).text()+' '+$('#yearIndex').text();
+                windowTitle = DateHelper.weekDayAsString(dayOfWeekIndex) +', '+DateHelper.monthNameForIndex(parseInt($('#monthIndex').text(),10))+' '+$('.dayIndicator' , event.delegateTarget).text()+' '+$('#yearIndex').text();
 
 			$('#formWindow-title').text(windowTitle);
 			$('#dayIndex').text(this.day.toString());
@@ -191,13 +197,21 @@ GFView.MonthView = Backbone.View.extend({
 		//render is called by the reset event on fitness classes
 		this.fitnessClasses = options.fitnessClasses;
 		//set the reset event for rendering the calendar
-		this.fitnessClasses.on('reset', this.render, this);
-		specialDates.on('reset', this.render, this);
+		this.fitnessClasses.on('sync', this.render, this);
+		specialDates.on('sync', this.render, this);
 		specialDates.fetch();
 		this.fitnessClasses.fetch();
 		
 	},
 	render: function() {
+
+		var foundFirstDay = false,
+		    foundLastDay = false,
+		    passedLastDay = false,
+            row = 0,
+            column = 0,
+            iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
+		
 		console.log("Rendering calendar");
 		//set the display to the month and year indication outside of
 		//calendar element
@@ -210,12 +224,6 @@ GFView.MonthView = Backbone.View.extend({
 		$('#yearIndex').text(this.year.toString());
 		//construct date
 		//set iterationDate to the first of the month
-		var foundFirstDay = false,
-		    foundLastDay = false,
-		    passedLastDay = false,
-                    row = 0,
-                    column = 0,
-                    iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0);
 		
 		for (row = 0; row < 6; ++row) {
 			
@@ -396,7 +404,7 @@ GFView.ClassView = Backbone.View.extend({
 		}
 
 		
-		month = parseInt($('#monthIndex').text(), 10)+1;
+		month = +$('#monthIndex').text() + 1
 		if (month < 10) {
 			monthString = '0'+month.toString();
 		} else {
@@ -448,7 +456,6 @@ GFView.ClassView = Backbone.View.extend({
 	},
 	//for deleting a single instance
 	deleteOne: function() {
-		console.log("Delete one was called");
 		var confirm = new ConfirmationBox(
 			{
 				message: 'Are you sure you would like to delete the group fitness class for this one date?',
@@ -457,7 +464,8 @@ GFView.ClassView = Backbone.View.extend({
 				animate: false,
 				deleteAfterPresent: true
 			}),
-                    self = this;
+            self = this;
+
 		confirm.show(false);
 		
 		confirm.on('clicked1', function() {
@@ -845,20 +853,24 @@ GFView.SpecialDateForm = Backbone.View.extend({
 	//to be submitted, returns error message
 	//if the document is not ready to be submitted
 	validateSubmission: function() {
+
+		var startDateString, endDateString, startDate, endDate, data, model;
 		if ($('#specialDayWindow-newDate-nameInput input').val() === '') {
 			return 'Need to include a name for the Special Dates';
 		}
 
-		var startDateString = 	$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
-								$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
-								$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option:selected').val(),
+		startDateString = 	$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
+							$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
+							$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector option:selected').val();
+
 		endDateString = 	$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector option:selected').val()+'/'+
-								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
-								$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option:selected').val(),
-                startDate = DateHelper.dateFromDateString(startDateString),
-		endDate = DateHelper.dateFromDateString(endDateString),
-                data = {},
-                model;
+							$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option:selected').val()+'/'+
+							$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector option:selected').val();
+
+        startDate = DateHelper.dateFromDateString(startDateString);
+		endDate = DateHelper.dateFromDateString(endDateString);
+        data = {};
+        model;
 
 		if (startDate.getTime() > endDate.getTime()) {
 			return 'The end date needs to come after the start date';
@@ -928,15 +940,16 @@ GFView.SpecialDateForm = Backbone.View.extend({
 	//for making modification to the select tags of startDate
 	changeStartSelect: function() {
 
-		var month = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1;
-		var year = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10);
-		var day = parseInt( $('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val(), 10);
-		var daysInMonth = DateHelper.daysForMonth(month, year);
+		var month = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1,
+			year = parseInt($('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-yearSelector').val(), 10),
+			day = parseInt( $('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option:selected').val(), 10),
+			daysInMonth = DateHelper.daysForMonth(month, year),
+			dayAsString, currentDay;
 		
 		while (day > daysInMonth) {
 			day -= 1;
 		}
-		var dayAsString;
+
 		if (day < 10) {
 			dayAsString = '0'+day.toString();
 		} else {
@@ -947,7 +960,7 @@ GFView.SpecialDateForm = Backbone.View.extend({
 		//remove all options currently within day selector
 		$('#specialDayWindow-newDate-startDate .specialDayWindow-newDate-daySelector option').remove();
 		for (var i = 0; i < daysInMonth; ++i) {
-			var currentDay;
+			
 			if (i < 9) {
 				currentDay = '0'+(i+1).toString();;
 			} else {
@@ -961,15 +974,18 @@ GFView.SpecialDateForm = Backbone.View.extend({
 	//for making modification to the select tags of endDate
 	changeEndSelect: function() {
 
-		var month = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1;
-		var year = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10);
-		var day = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').val(), 10);
-		var daysInMonth = DateHelper.daysForMonth(month, year);
+		var month = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-monthSelector').val(), 10) - 1,
+			year = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-yearSelector').val(), 10),
+			day = parseInt($('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector').val(), 10),
+			daysInMonth = DateHelper.daysForMonth(month, year),
+			dayAsString, currentDay, i;
+
+
 		while (day > daysInMonth) {
 			day -= 1;
 		}
 
-		var dayAsString;
+		
 		if (day < 10) {
 			dayAsString = '0'+day.toString();
 		} else {
@@ -977,8 +993,8 @@ GFView.SpecialDateForm = Backbone.View.extend({
 		}
 		//remove all options currently within day selector
 		$('#specialDayWindow-newDate-endDate .specialDayWindow-newDate-daySelector option').remove();
-		for (var i = 0; i < daysInMonth; ++i) {
-			var currentDay;
+		for (i = 0; i < daysInMonth; ++i) {
+			
 			if (i < 9) {
 				currentDay = '0'+(i+1).toString();;
 			} else {
@@ -1009,8 +1025,11 @@ $('#GFWindowPrimer').click(function() {
 $('#specialDaysButton').click(function() {
 			
 	$('#GFWindowPrimer').fadeIn(400, function() {
+
 		specialDates.each(function(specialDate) {
+
 			this.addDates(specialDate, false);
+
 		}, specialDateForm);
 		$('#specialDayWindow').show();
 	});
