@@ -386,10 +386,6 @@ GFModel.FitnessClasses = Backbone.Collection.extend({
 			}
 		});
 		return modelsToReturn;
-	},
-	parse: function(response) {
-		console.log(response);
-		return response;
 	}
 
 
