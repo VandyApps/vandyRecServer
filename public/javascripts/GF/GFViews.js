@@ -912,7 +912,8 @@ GFView.SpecialDateForm = (function() {
 		//if the document is not ready to be submitted
 		validateSubmission: function() {
 
-			var startDateString, endDateString, startDate, endDate, data, model;
+			var startDateString, endDateString, startDate, endDate, data = {},
+				specialDates = GFModel.SpecialDates.getInstance();
 			if ($('#specialDayWindow-newDate-nameInput input').val() === '') {
 				return 'Need to include a name for the Special Dates';
 			}
@@ -927,8 +928,6 @@ GFView.SpecialDateForm = (function() {
 
 	        startDate = DateHelper.dateFromDateString(startDateString);
 			endDate = DateHelper.dateFromDateString(endDateString);
-	        data = {};
-	        model;
 
 			if (startDate.getTime() > endDate.getTime()) {
 				return 'The end date needs to come after the start date';
@@ -942,7 +941,7 @@ GFView.SpecialDateForm = (function() {
 		},
 		//called when the submit button is hit
 		submit: function() {
-			var validate = this.validateSubmission();
+			var validate = this.validateSubmission(), data = {}, model;
 			if (validate === true) {
 				$('#specialDayWindow-newDate-error').hide();
 				data.title = $('#specialDayWindow-newDate-nameInput input').val();
@@ -1093,7 +1092,7 @@ $('#specialDaysButton').click(function() {
 			
 	$('#GFWindowPrimer').fadeIn(400, function() {
 
-		specialDates.each(function(specialDate) {
+		GFModel.SpecialDates.getInstance().each(function(specialDate) {
 
 			this.addDates(specialDate, false);
 
