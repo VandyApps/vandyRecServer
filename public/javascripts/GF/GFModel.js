@@ -395,6 +395,7 @@ GFModel.FitnessClasses = (function() {
 	return {
 		getInstance: function() {
 			if (!GFModel.FitnessClasses.instance) {
+				var currentDate = new Date();
 				GFModel.FitnessClasses.instance = new Instance({month: currentDate.getMonth(), year: currentDate.getYear() + 1900});
 			}
 			return GFModel.FitnessClasses.instance;

@@ -175,144 +175,165 @@ GFView.BlockView = Backbone.View.extend({
 //has no model but contains the collections and has 
 //events that listen to changes in the collection in order to
 //render data on the calendar
-GFView.MonthView = Backbone.View.extend({
+GFView.MonthView = (function() {
+	var Instance = Backbone.View.extend({
 
-	el: '#calendar',
-	//collection that is used by the view
-	fitnessClasses: null,
-	month: 0,
-	year: 0,
-	//2D array for blocks in the month view
-	//this is an array of rows, and each row 
-	//is an array of columns
-	dayBlocks: [],
+		el: '#calendar',
+		//collection that is used by the view
+		fitnessClasses: null,
+		month: 0,
+		year: 0,
+		//2D array for blocks in the month view
+		//this is an array of rows, and each row 
+		//is an array of columns
+		dayBlocks: [],
 
-	initialize: function(options) {
-		var specialDates = GFModel.SpecialDates.getInstance();
-		this.month = options.month;
-		this.year = options.year;
-		//this is a collection of backbone models
-		//render is called by the reset event on fitness classes
-		this.fitnessClasses = options.fitnessClasses;
-		//set the reset event for rendering the calendar
-		this.fitnessClasses.on('sync', this.render, this);
-		specialDates.on('sync', this.render, this);
-		specialDates.fetch();
-		this.fitnessClasses.fetch();
-		
-	},
-	render: function() {
-
-		var foundFirstDay = false,
-		    foundLastDay = false,
-		    passedLastDay = false,
-            row = 0,
-            column = 0,
-            iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0),
-
-            specialDates = GFModel.SpecialDates.getInstance();
-		
-		console.log("Rendering calendar");
-		//set the display to the month and year indication outside of
-		//calendar element
-		//month and year index tags are used for holding data that is not 
-		//meant to be displayed, but used for rendering other elements
-		//and creating models
-		$('#month').text(DateHelper.monthNameForIndex(this.month));
-		$('#monthIndex').text(this.month);
-		$('#year').text(this.year.toString());
-		$('#yearIndex').text(this.year.toString());
-		//construct date
-		//set iterationDate to the first of the month
-		
-		for (row = 0; row < 6; ++row) {
+		initialize: function(options) {
+			var specialDates = GFModel.SpecialDates.getInstance();
+			this.month = options.month;
+			this.year = options.year;
+			//this is a collection of backbone models
+			//render is called by the reset event on fitness classes
+			this.fitnessClasses = options.fitnessClasses;
+			//set the reset event for rendering the calendar
+			this.fitnessClasses.on('sync', this.render, this);
+			specialDates.on('sync', this.render, this);
+			specialDates.fetch();
+			this.fitnessClasses.fetch();
 			
-			//initiate the nested array
-			if (this.dayBlocks[row] === undefined) {
-				this.dayBlocks[row] = new Array(7);
-			}
+		},
+		render: function() {
+
+			var foundFirstDay = false,
+			    foundLastDay = false,
+			    passedLastDay = false,
+	            row = 0,
+	            column = 0,
+	            iterationDate = new Date(this.year, this.month, 1, 0, 0, 0, 0),
+
+	            specialDates = GFModel.SpecialDates.getInstance();
 			
+			console.log("Rendering calendar");
+			//set the display to the month and year indication outside of
+			//calendar element
+			//month and year index tags are used for holding data that is not 
+			//meant to be displayed, but used for rendering other elements
+			//and creating models
+			$('#month').text(DateHelper.monthNameForIndex(this.month));
+			$('#monthIndex').text(this.month);
+			$('#year').text(this.year.toString());
+			$('#yearIndex').text(this.year.toString());
+			//construct date
+			//set iterationDate to the first of the month
 			
-			for (column = 0; column < 7; ++column) {
-
-				//check for the first day 
-				if (!foundFirstDay && iterationDate.getDay() === column) {
-					foundFirstDay = true;
-
-				} else if (foundLastDay) {
-
-					passedLastDay = true;
-				} else if (!foundLastDay && DateHelper.daysForMonth(iterationDate.getMonth(), this.year) === iterationDate.getDate()) {
-					foundLastDay = true;
+			for (row = 0; row < 6; ++row) {
+				
+				//initiate the nested array
+				if (this.dayBlocks[row] === undefined) {
+					this.dayBlocks[row] = new Array(7);
 				}
+				
+				
+				for (column = 0; column < 7; ++column) {
 
-				if (!foundFirstDay || passedLastDay) {
-					
-					//create an empty element
-					if (this.dayBlocks[row][column] === undefined) {
+					//check for the first day 
+					if (!foundFirstDay && iterationDate.getDay() === column) {
+						foundFirstDay = true;
 
-						this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, empty: true});
-					} else {
+					} else if (foundLastDay) {
 
-						this.dayBlocks[row][column].reset({row: row, column: column, empty: true});
+						passedLastDay = true;
+					} else if (!foundLastDay && DateHelper.daysForMonth(iterationDate.getMonth(), this.year) === iterationDate.getDate()) {
+						foundLastDay = true;
 					}
-					
 
-				} else {
-
-					//create a filled column
-					//set the number of fitness classes to 0 initially
-					if (this.dayBlocks[row][column] === undefined) {
+					if (!foundFirstDay || passedLastDay) {
 						
-						if (specialDates.includesDate(iterationDate)) {
-							this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
-					
+						//create an empty element
+						if (this.dayBlocks[row][column] === undefined) {
+
+							this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, empty: true});
 						} else {
-							this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
-					
+
+							this.dayBlocks[row][column].reset({row: row, column: column, empty: true});
 						}
+						
+
 					} else {
-						if (specialDates.includesDate(iterationDate)) {
-							this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
+
+						//create a filled column
+						//set the number of fitness classes to 0 initially
+						if (this.dayBlocks[row][column] === undefined) {
+							
+							if (specialDates.includesDate(iterationDate)) {
+								this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
+						
+							} else {
+								this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
+						
+							}
 						} else {
-							this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
+							if (specialDates.includesDate(iterationDate)) {
+								this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
+							} else {
+								this.dayBlocks[row][column].reset({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
+							}
+
 						}
-
-					}
-					
-					iterationDate.setDate(iterationDate.getDate() + 1);
-					
-				}	
+						
+						iterationDate.setDate(iterationDate.getDate() + 1);
+						
+					}	
+				}
 			}
-		}
-		
-	},
-	incrementMonth: function() {
-		this.month += 1;
-		if (this.month > 11) {
-			this.month = 0;
-			this.year += 1;
 			
-		}
-		this.fitnessClasses.incrementMonth();
-	
-	},
-	decrementMonth: function() {
-		this.month -= 1;
-		if (this.month < 0) {
-			this.month = 11;
-			this.year -= 1;
+		},
+		incrementMonth: function() {
+			this.month += 1;
+			if (this.month > 11) {
+				this.month = 0;
+				this.year += 1;
+				
+			}
+			this.fitnessClasses.incrementMonth();
+		
+		},
+		decrementMonth: function() {
+			this.month -= 1;
+			if (this.month < 0) {
+				this.month = 11;
+				this.year -= 1;
 
+			}
+			//calls reset and renders new calendar
+			this.fitnessClasses.decrementMonth();
+		},
+		getCalendar: function(month, year) {
+			this.month = month;
+			this.year = year;
+			this.fitnessClasses.getCalendar(month,year);
 		}
-		//calls reset and renders new calendar
-		this.fitnessClasses.decrementMonth();
-	},
-	getCalendar: function(month, year) {
-		this.month = month;
-		this.year = year;
-		this.fitnessClasses.getCalendar(month,year);
-	}
-});
+	});
+
+	return {
+		initialize: function() {
+			var currentDate = new Date();
+			GFView.MonthView.instance = new Instance({month: currentDate.getMonth(), year: currentDate.getYear() + 1900, fitnessClasses: GFModel.FitnessClasses.getInstance()});
+
+		},
+
+		getInstance: function() {
+			var currentDate;
+			if (!GFView.MonthView.instance) {
+				currentDate = new Date();
+				GFView.MonthView.instance = new Instance({month: currentDate.getMonth(), year: currentDate.getYear() + 1900, fitnessClasses: GFModel.FitnessClasses.getInstance()});
+			}
+			return GFView.MonthView.instance;
+		}
+	};
+})();
+
+	
 
 //this backbone view does take a model of a single class
 //that it renders to a li
@@ -786,7 +807,7 @@ GFView.SpecialDateView = Backbone.View.extend({
 	},
 	goToDate: function() {
 		var date = this.model.getStartDate();
-		monthView.getCalendar(date.getMonth(), date.getYear() + 1900);
+		GFView.MonthView.getInstance().getCalendar(date.getMonth(), date.getYear() + 1900);
 		this.$el.trigger('exit');
 	}
 	
@@ -1042,11 +1063,11 @@ GFView.SpecialDateForm = (function() {
 	
 //set up other events
 $('#leftArrow').click(function() {
-	monthView.decrementMonth();
+	GFView.MonthView.getInstance().decrementMonth();
 });
 
 $('#rightArrow').click(function() {
-	monthView.incrementMonth();
+	GFView.MonthView.getInstance().incrementMonth();
 });
 
 $('#GFWindowPrimer').click(function() {
