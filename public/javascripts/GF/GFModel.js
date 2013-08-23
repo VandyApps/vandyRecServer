@@ -274,123 +274,136 @@ GFModel.FitnessClass = Backbone.Model.extend({
 
 //set of all classes within a given month
 //used to put classes into views displayed to user
-GFModel.FitnessClasses = Backbone.Collection.extend({
-	model: GFModel.FitnessClass,
-	idAttribute: '_id',
-	url: function() {
-		
-		return '/JSON/GF?type=GFClass&month='+this.month+'&year='+this.year;
-	},
-	//index of the month,
-	//0-based index
-	month: 0,
-	//full year i.e. 2013
-	year: 0, 
+GFModel.FitnessClasses = (function() {
 
-	//first weekday of the month
-	//0=sunday, 6=saturday
-	firstWeekDay: 0,
-	//last weekday of the month
-	lastWeekDay: 0,
+	var Instance = Backbone.Collection.extend({
+		model: GFModel.FitnessClass,
+		idAttribute: '_id',
+		url: function() {
+			
+			return '/JSON/GF?type=GFClass&month='+this.month+'&year='+this.year;
+		},
+		//index of the month,
+		//0-based index
+		month: 0,
+		//full year i.e. 2013
+		year: 0, 
+
+		//first weekday of the month
+		//0=sunday, 6=saturday
+		firstWeekDay: 0,
+		//last weekday of the month
+		lastWeekDay: 0,
+
+		
+		initialize: function(options) {
+			this.month = options.month;
+			this.year = options.year;
+		},
+		//get all the classes that are on a particular day
+		//day is the day of the month, 1-based indexing, 2 is the second
+		//day of the month, does nothing if the day passed in 
+		//is out of the bounds for the days of a month
+		//returns an array of the models on that particular day
+		getClassesForDay: function(day) {
+			var collection = this;
+			var classes = [];
+			this.forEach(function(fitnessClass) {
+				
+				if (fitnessClass.isOnDay(collection.year, collection.month, day)) {
+					
+					classes.push(fitnessClass);
+				}
+			});
+			return classes;
+		},
+		//increments the date by a month and resets the models in the 
+		//collection to correspond with the new month
+		incrementMonth: function() {
+			this.month+= 1;
+			if (this.month > 11) {
+				this.month = 0;
+				this.year += 1;
+			}
+			this.fetch({reset: true});
+		},
+		//decrements the month and seeks for new models using url query
+		decrementMonth: function() {
+			this.month -= 1;
+			if (this.month < 0) {
+				this.month = 11;
+				this.year -=1;
+			}
+			this.fetch({reset: true});
+		},
+		getCalendar: function(month, year) {
+			//for getting month and year over 
+			this.month = month;
+			this.year = year;
+			this.fetch({reset: true});
+		},
+		//creates a new model with the passed in data,
+		//then persists that model to the database
+		//this method then calls fetch to get an updated
+		//set of models from the database after the model
+		//has been added.  The model that was created is then
+		//returned
+		addNewClass: function(data) {
+			//create
+			var newFitnessClass = new GFModel.FitnessClass({
+				className: data.className, 
+				timeRange: data.timeRange,
+				startDate: data.startDate,
+				endDate: data.endDate,
+				dayOfWeek: data.dayOfWeek,
+				instructor: data.instructor,
+				specialDateClass: data.specialDateClass,
+				//cancelled dates will never be added on initialzation
+				cancelledDates: []
+				
+			});
+
+			if (newFitnessClass.isSpecialDateClass()) {
+				//clip the end date if this is a special date
+				//setSpecialDateBoundary autmatically calls the save
+				//method so the model is persisted to the database
+				newFitnessClass.setSpecialDateBoundary();
+			} else {
+				newFitnessClass.save();
+			}
+			
+			
+			
+			//fetch data, no need to reset because month has not
+			//changes
+			this.fetch({
+				error: function(collection) {alert("Error when saving fitness class data to the server")}
+			});
+			return newFitnessClass;
+		},
+		modelsWithinSpecialDate: function(specialDate) {
+			var modelsToReturn = [];
+			this.each(function(model) {
+				if (specialDate.isMember(model)) {
+					modelsToReturn.push(model);
+				}
+			});
+			return modelsToReturn;
+		}
+	});
+
+	return {
+		getInstance: function() {
+			if (!GFModel.FitnessClasses.instance) {
+				GFModel.FitnessClasses.instance = new Instance({month: currentDate.getMonth(), year: currentDate.getYear() + 1900});
+			}
+			return GFModel.FitnessClasses.instance;
+		}
+	};
+
+})();
 
 	
-	initialize: function(options) {
-		this.month = options.month;
-		this.year = options.year;
-	},
-	//get all the classes that are on a particular day
-	//day is the day of the month, 1-based indexing, 2 is the second
-	//day of the month, does nothing if the day passed in 
-	//is out of the bounds for the days of a month
-	//returns an array of the models on that particular day
-	getClassesForDay: function(day) {
-		var collection = this;
-		var classes = [];
-		this.forEach(function(fitnessClass) {
-			
-			if (fitnessClass.isOnDay(collection.year, collection.month, day)) {
-				
-				classes.push(fitnessClass);
-			}
-		});
-		return classes;
-	},
-	//increments the date by a month and resets the models in the 
-	//collection to correspond with the new month
-	incrementMonth: function() {
-		this.month+= 1;
-		if (this.month > 11) {
-			this.month = 0;
-			this.year += 1;
-		}
-		this.fetch({reset: true});
-	},
-	//decrements the month and seeks for new models using url query
-	decrementMonth: function() {
-		this.month -= 1;
-		if (this.month < 0) {
-			this.month = 11;
-			this.year -=1;
-		}
-		this.fetch({reset: true});
-	},
-	getCalendar: function(month, year) {
-		//for getting month and year over 
-		this.month = month;
-		this.year = year;
-		this.fetch({reset: true});
-	},
-	//creates a new model with the passed in data,
-	//then persists that model to the database
-	//this method then calls fetch to get an updated
-	//set of models from the database after the model
-	//has been added.  The model that was created is then
-	//returned
-	addNewClass: function(data) {
-		//create
-		var newFitnessClass = new GFModel.FitnessClass({
-			className: data.className, 
-			timeRange: data.timeRange,
-			startDate: data.startDate,
-			endDate: data.endDate,
-			dayOfWeek: data.dayOfWeek,
-			instructor: data.instructor,
-			specialDateClass: data.specialDateClass,
-			//cancelled dates will never be added on initialzation
-			cancelledDates: []
-			
-		});
-
-		if (newFitnessClass.isSpecialDateClass()) {
-			//clip the end date if this is a special date
-			//setSpecialDateBoundary autmatically calls the save
-			//method so the model is persisted to the database
-			newFitnessClass.setSpecialDateBoundary();
-		} else {
-			newFitnessClass.save();
-		}
-		
-		
-		
-		//fetch data, no need to reset because month has not
-		//changes
-		this.fetch({
-			error: function(collection) {alert("Error when saving fitness class data to the server")}
-		});
-		return newFitnessClass;
-	},
-	modelsWithinSpecialDate: function(specialDate) {
-		var modelsToReturn = [];
-		this.each(function(model) {
-			if (specialDate.isMember(model)) {
-				modelsToReturn.push(model);
-			}
-		});
-		return modelsToReturn;
-	}
-
-
-});
 
 //these are dates that are specified for unique scheduling
 //all normal classes that are held are removed from these
@@ -466,7 +479,9 @@ GFModel.SpecialDate = Backbone.Model.extend({
 	//that are a member of this special date are 
 	//also destroyed
 	delete: function() {
-		var GFClassesToRemove = fitnessClasses.modelsWithinSpecialDate(this);
+		var fitnessClasses = GFModel.FitnessClasses.getInstance(),
+			GFClassesToRemove = fitnessClasses.modelsWithinSpecialDate(this);
+
 		GFClassesToRemove.forEach(function(model) {
 			model.destroy({headers: {_id: model.id}});
 		});

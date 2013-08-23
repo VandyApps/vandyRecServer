@@ -470,7 +470,8 @@ GFView.ClassView = Backbone.View.extend({
 		
 		confirm.on('clicked1', function() {
 			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0),
-			    newObjData = self.model.slice(currentDate);
+			    newObjData = self.model.slice(currentDate),
+			    fitnessClasses = GFModel.FitnessClasses.getInstance();
 			
 			if (typeof newObjData === 'object') {
 				fitnessClasses.addNewClass(newObjData);
@@ -494,7 +495,9 @@ GFView.ClassView = Backbone.View.extend({
                     self = this;
 		confirm.show(false);
 		confirm.on('clicked1', function() {
-			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
+			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0),
+				fitnessClasses = GFModel.FitnessClasses.getInstance();
+
 			self.model.slice(currentDate);
 			self.$el.slideUp(400, function() {
 				self.remove();
@@ -520,7 +523,10 @@ GFView.ClassView = Backbone.View.extend({
 		    self = this;
 		confirm.show(false);
 		confirm.on('clicked1', function() {
-			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
+
+			var fitnessClasses = GFModel.FitnessClasses.getInstance(),
+				currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
+			
 			self.model.slice(currentDate);
 			self.$el.slideUp(400, function() {
 				self.remove();
@@ -658,7 +664,7 @@ GFView.ClassForm = (function() {
 					data.specialDateClass = false;
 				}
 
-				newFitnessClass = fitnessClasses.addNewClass(data);
+				newFitnessClass = GFModel.fitnessClasses.getInstance().addNewClass(data);
 				this.addClass(newFitnessClass, true);
 				this.formToDefault();
 			} else {
