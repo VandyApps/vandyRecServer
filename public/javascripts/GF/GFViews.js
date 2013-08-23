@@ -198,6 +198,8 @@ GFView.MonthView = (function() {
 			this.fitnessClasses = options.fitnessClasses;
 
 			//sets the adding of fitness classes
+			this.fitnessClasses.on("change", this.render, this);
+			specialDates.on("change", this.render, this);
 			this.fitnessClasses.on('add', this.render, this);
 			specialDates.on('add', this.render, this);
 			specialDates.fetch();
@@ -534,10 +536,13 @@ GFView.ClassView = Backbone.View.extend({
 			});
 			//reload the data
 			fitnessClasses.fetch();
+			confirm.unbind('clicked1');
+			confirm.unbind('clicked2');
 		});
 		confirm.on('clicked2', function() {
 			console.log("clicked 2 was called");
-			this.off();
+			confirm.unbind('clicked1');
+			confirm.unbind('clicked2');
 		});
 		
 	},

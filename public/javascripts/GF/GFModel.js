@@ -180,6 +180,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 				headers: {_id: that.id }
 			});
 		}
+		this.trigger('change');
 
 	},
 	//converts the string into a javascript date object
