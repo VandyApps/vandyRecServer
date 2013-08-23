@@ -10,7 +10,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 
 	//url for POST, PUT, DELETE
 	url: '/groupFitness', 
-	
+	idAttribute: '_id',
 	initialize: function(modelData) {
 
 		//timeRange is in the form 12:30pm - 1:30pm
