@@ -196,8 +196,8 @@ GFView.MonthView = (function() {
 			//render is called by the reset event on fitness classes
 			this.fitnessClasses = options.fitnessClasses;
 			//set the reset event for rendering the calendar
-			this.fitnessClasses.on('sync', this.render, this);
-			specialDates.on('sync', this.render, this);
+			this.fitnessClasses.on('add', this.render, this);
+			specialDates.on('add', this.render, this);
 			specialDates.fetch();
 			this.fitnessClasses.fetch();
 			
@@ -685,7 +685,7 @@ GFView.ClassForm = (function() {
 					data.specialDateClass = false;
 				}
 
-				newFitnessClass = GFModel.fitnessClasses.getInstance().addNewClass(data);
+				newFitnessClass = GFModel.FitnessClasses.getInstance().addNewClass(data);
 				this.addClass(newFitnessClass, true);
 				this.formToDefault();
 			} else {

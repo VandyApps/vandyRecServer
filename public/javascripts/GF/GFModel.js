@@ -371,14 +371,9 @@ GFModel.FitnessClasses = (function() {
 			} else {
 				newFitnessClass.save();
 			}
-			
-			
-			
-			//fetch data, no need to reset because month has not
-			//changes
-			this.fetch({
-				error: function(collection) {alert("Error when saving fitness class data to the server")}
-			});
+			//trigger the add event for the view to update
+			//the calendar
+			this.add(newFitnessClass);
 			return newFitnessClass;
 		},
 		modelsWithinSpecialDate: function(specialDate) {
