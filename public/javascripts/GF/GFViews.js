@@ -189,17 +189,26 @@ GFView.MonthView = (function() {
 		dayBlocks: [],
 
 		initialize: function(options) {
-			var specialDates = GFModel.SpecialDates.getInstance();
+			var specialDates = GFModel.SpecialDates.getInstance(),
+				self = this;
 			this.month = options.month;
 			this.year = options.year;
 			//this is a collection of backbone models
 			//render is called by the reset event on fitness classes
 			this.fitnessClasses = options.fitnessClasses;
-			//set the reset event for rendering the calendar
+
+			//sets the adding of fitness classes
 			this.fitnessClasses.on('add', this.render, this);
 			specialDates.on('add', this.render, this);
 			specialDates.fetch();
-			this.fitnessClasses.fetch();
+			this.fitnessClasses.fetch({
+				success: function() {
+					self.render();
+				},
+				error: function() {
+					alert("There was an error when trying to load the group fitness data");
+				}
+			});
 			
 		},
 		render: function() {
