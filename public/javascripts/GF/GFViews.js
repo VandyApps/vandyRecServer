@@ -693,8 +693,13 @@ GFView.ClassForm = (function() {
 				//event, but it is also updated in the calendar,
 				//however, no gaurantee that the selected day is updated
 				//in the calendar before this method is called
-				day = event.day;
+				day = event.day,
+				classes = calendar.getClassesForDay(day);
+
 			this.setTitle(year, month, day);
+			classes.forEach(function(fitnessClass) {
+				this.addClass(fitnessClass, {animate: false});
+			}, this);
 
 			$('#GFWindowPrimer').fadeIn(400, function() {
 				$('#formWindow').show();
