@@ -177,6 +177,7 @@ CalendarBlock = Backbone.View.extend({
 //events that listen to changes in the collection in order to
 //render data on the calendar
 Calendar = (function() {
+		
 	var Instance = Backbone.View.extend({
 
 		el: '#calendar',
@@ -184,6 +185,7 @@ Calendar = (function() {
 		fitnessClasses: null,
 		month: 0,
 		year: 0,
+		selectedDay: 0,
 		//2D array for blocks in the month view
 		//this is an array of rows, and each row 
 		//is an array of columns
@@ -308,6 +310,9 @@ Calendar = (function() {
 			}
 			
 		},
+
+		//getters and setters for the calendar
+		//properties
 		incrementMonth: function() {
 			this.month += 1;
 			if (this.month > 11) {
@@ -332,9 +337,38 @@ Calendar = (function() {
 			this.month = month;
 			this.year = year;
 			this.fitnessClasses.getCalendar(month,year);
+		},
+
+		getMonth: function() {
+			return this.month;
+		},
+		getMonthName: function() {
+			return DateHelper.monthNameForIndex(this.month);
+		},
+
+		getYear: function() {
+			return this.year;
+		},
+		//selected day of 0 indicates that no
+		//day was selected
+		getSelectedDay: function() {
+			return this.selectedDay;
+		},
+
+		setMonth: function(month) {
+			if (typeof month !== 'number' || month < 0 || month > 11) {
+				throw new Error("Month cannot be set to " + month.toString());
+			}
+			this.month = month;
+		},
+
+		setYear: function(year) {
+			this.year = year;
 		}
 	});
 
+
+	//the calendar object exposed
 	return {
 		initialize: function() {
 			var currentDate = new Date();
@@ -349,6 +383,29 @@ Calendar = (function() {
 				Calendar.instance = new Instance({month: currentDate.getMonth(), year: currentDate.getYear() + 1900, fitnessClasses: GFModel.FitnessClasses.getInstance()});
 			}
 			return Calendar.instance;
+		},
+
+		getMonth: function() {
+			return month;
+		},
+		getMonthName: function() {
+
+		},
+		setMonth: function(month) {
+
+		},
+
+		getYear: function() {
+
+		},
+		setYear: function(year) {
+
+		},
+		getSelectedDay: function() {
+
+		},
+		selectDay: function(day) {
+
 		}
 	};
 })();
@@ -969,7 +1026,7 @@ GFView.SpecialDateForm = (function() {
 				this.addDates(model, true);
 				//only rerender calendar if the new special dates
 				//would appear in this month
-				
+
 				GFModel.SpecialDates.getInstance().addNewSpecialDate(model);
 				this.formToDefault();
 
