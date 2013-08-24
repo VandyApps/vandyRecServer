@@ -289,7 +289,7 @@ Calendar = (function() {
 							if (specialDates.includesDate(iterationDate)) {
 								this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
 								this.dayBlocks[row][column].on('calBlockClicked', function(event) {
-									console.log("cal block was clicked");
+									this.selectedDay = event.day;
 									this.trigger('calBlockClicked', {day: event.day});
 								}, this);
 						
@@ -297,7 +297,7 @@ Calendar = (function() {
 
 								this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
 								this.dayBlocks[row][column].on('calBlockClicked', function(event) {
-									console.log("cal block was clicked");
+									this.selectedDay = event.day;
 									this.trigger('calBlockClicked', {day: event.day});
 								}, this);
 
