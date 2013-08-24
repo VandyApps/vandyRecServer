@@ -275,9 +275,10 @@ Calendar = (function() {
 					if (!foundFirstDay || passedLastDay) {
 						
 						//create an empty element
-						if (this.dayBlocks[row][column] === undefined) {
+						if (!this.dayBlocks[row][column]) {
 
 							this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, empty: true});
+							
 						} else {
 
 							this.dayBlocks[row][column].reset({row: row, column: column, empty: true});
@@ -288,15 +289,23 @@ Calendar = (function() {
 
 						//create a filled block
 						//set the number of fitness classes to 0 initially
-						if (this.dayBlocks[row][column] === undefined) {
+						if (!this.dayBlocks[row][column]) {
 							
 							if (specialDates.includesDate(iterationDate)) {
 								this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
+								this.dayBlocks[row][column].on('calBlockClicked', function(event) {
+									console.log("cal block was clicked");
+									this.trigger('calBlockClicked', {day: event.day});
+								}, this);
 						
 							} else {
 
 								this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
-						
+								this.dayBlocks[row][column].on('calBlockClicked', function(event) {
+									console.log("cal block was clicked");
+									this.trigger('calBlockClicked', {day: event.day});
+								}, this);
+
 							}
 						} else {
 							if (specialDates.includesDate(iterationDate)) {
@@ -633,7 +642,10 @@ GFView.ClassForm = (function() {
 	var Instance = Backbone.View.extend({
 
 		el: '#formWindow',
-
+		//fitness classes that are being displayed
+		//in the form, this object is of type
+		//GFView.ClassView
+		classes: [],
 		events: {
 
 			'click #formWindow-newClass-title': 'toggleForm',
@@ -646,19 +658,43 @@ GFView.ClassForm = (function() {
 
 
 		initialize: function() {
-
+			Calendar.getInstance().on('calBlockClicked', this.show);
 			
 			//$('#formWindow-exit').click($.proxy(this.exit, this));
 			$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
-			$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
+			$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));
+
 
 		},
-		//adds class that was submitted by the form
+		//sets the title of the form
+		setTitle: function(year, month, day) {
+
+		},
+		//displays the form and loads the data from the calendar into
+		//the form
+		show: function(event) {
+			/*
+			var cal = Calendar.getInstance(),
+				day = event.day;
+
+			
+			//set the attributes of the 
+			//window
+			if (animate) {
+				$('#formWindow').show();
+			} else {
+				$('#formWindow').show();
+			}
+			*/
+		},
+		//removes all classes in the view
+		reset: function() {},
+ 		//adds class that was submitted by the form
 		//and appends it immediately after the class creation
 		//form, data should be passed from the form
-		addClass: function(model, animate) {
-			
-			var classView = new GFView.ClassView({model: model, animate: animate});
+		addClass: function(model, options) {
+			var animate = !options || options.animate,
+				classView = new GFView.ClassView({model: model, animate: animate});
 			//slide animation
 			this.$('#formWindow-newClass-form').slideUp();
 			
