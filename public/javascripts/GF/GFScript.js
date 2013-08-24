@@ -1,1 +1,1 @@
-GFView.MonthView.initialize();
+Calendar.initialize();

@@ -176,7 +176,7 @@ GFView.BlockView = Backbone.View.extend({
 //has no model but contains the collections and has 
 //events that listen to changes in the collection in order to
 //render data on the calendar
-GFView.MonthView = (function() {
+Calendar = (function() {
 	var Instance = Backbone.View.extend({
 
 		el: '#calendar',
@@ -338,17 +338,17 @@ GFView.MonthView = (function() {
 	return {
 		initialize: function() {
 			var currentDate = new Date();
-			GFView.MonthView.instance = new Instance({month: currentDate.getMonth(), year: currentDate.getYear() + 1900, fitnessClasses: GFModel.FitnessClasses.getInstance()});
+			Calendar.instance = new Instance({month: currentDate.getMonth(), year: currentDate.getYear() + 1900, fitnessClasses: GFModel.FitnessClasses.getInstance()});
 
 		},
 
 		getInstance: function() {
 			var currentDate;
-			if (!GFView.MonthView.instance) {
+			if (!Calendar.instance) {
 				currentDate = new Date();
-				GFView.MonthView.instance = new Instance({month: currentDate.getMonth(), year: currentDate.getYear() + 1900, fitnessClasses: GFModel.FitnessClasses.getInstance()});
+				Calendar.instance = new Instance({month: currentDate.getMonth(), year: currentDate.getYear() + 1900, fitnessClasses: GFModel.FitnessClasses.getInstance()});
 			}
-			return GFView.MonthView.instance;
+			return Calendar.instance;
 		}
 	};
 })();
@@ -830,7 +830,7 @@ GFView.SpecialDateView = Backbone.View.extend({
 	},
 	goToDate: function() {
 		var date = this.model.getStartDate();
-		GFView.MonthView.getInstance().getCalendar(date.getMonth(), date.getYear() + 1900);
+		Calendar.getInstance().getCalendar(date.getMonth(), date.getYear() + 1900);
 		this.$el.trigger('exit');
 	}
 	
@@ -1088,11 +1088,11 @@ GFView.SpecialDateForm = (function() {
 	
 //set up other events
 $('#leftArrow').click(function() {
-	GFView.MonthView.getInstance().decrementMonth();
+	Calendar.getInstance().decrementMonth();
 });
 
 $('#rightArrow').click(function() {
-	GFView.MonthView.getInstance().incrementMonth();
+	Calendar.getInstance().incrementMonth();
 });
 
 $('#GFWindowPrimer').click(function() {
