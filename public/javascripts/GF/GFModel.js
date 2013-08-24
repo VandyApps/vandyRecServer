@@ -483,6 +483,24 @@ GFModel.SpecialDate = Backbone.Model.extend({
 	getTitle: function() {
 		return this.get('title');
 	},
+	//returns true if the special date exists within the month
+	isInMonth: function(month, year) {
+		var startDate = this.getStartDate(),
+			endDate = this.getEndDate();
+
+		//either the start or end date has to be within the year for this to
+		//be within the month, assuming that special dates do not
+		//span a time period greater than a year
+		if (startDate.getYear() === year || endDate.getYear() === year) {
+			if (startDate.getMonth() === month || endDate.getMonth() === month) {
+				return true;
+			} else if (startDate.getMonth() < month && endDate.getMonth() > month) {
+				return true;
+			}
+		}
+		return false;
+			
+	},
 	//should call this method instead of destroy
 	//this makes sure that all the fitnessClasses
 	//that are a member of this special date are 
