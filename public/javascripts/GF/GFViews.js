@@ -383,29 +383,6 @@ Calendar = (function() {
 				Calendar.instance = new Instance({month: currentDate.getMonth(), year: currentDate.getYear() + 1900, fitnessClasses: GFModel.FitnessClasses.getInstance()});
 			}
 			return Calendar.instance;
-		},
-
-		getMonth: function() {
-			return month;
-		},
-		getMonthName: function() {
-
-		},
-		setMonth: function(month) {
-
-		},
-
-		getYear: function() {
-
-		},
-		setYear: function(year) {
-
-		},
-		getSelectedDay: function() {
-
-		},
-		selectDay: function(day) {
-
 		}
 	};
 })();
