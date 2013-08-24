@@ -2,7 +2,7 @@ var GFView = {};
 
 //this is not really a backbone view in that it has not real models but helps 
 //delegate the display of models in a separate window
-GFView.BlockView = Backbone.View.extend({
+CalendarBlock = Backbone.View.extend({
 
 	//the day to display
 	day: 0,
@@ -270,7 +270,7 @@ Calendar = (function() {
 						//create an empty element
 						if (this.dayBlocks[row][column] === undefined) {
 
-							this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, empty: true});
+							this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, empty: true});
 						} else {
 
 							this.dayBlocks[row][column].reset({row: row, column: column, empty: true});
@@ -284,11 +284,11 @@ Calendar = (function() {
 						if (this.dayBlocks[row][column] === undefined) {
 							
 							if (specialDates.includesDate(iterationDate)) {
-								this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
+								this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
 						
 							} else {
 
-								this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
+								this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
 						
 							}
 						} else {
