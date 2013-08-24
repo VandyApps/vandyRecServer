@@ -660,7 +660,9 @@ GFView.ClassForm = (function() {
 
 			'click #formWindow-newClass-title': 'toggleForm',
 			'click #formWindow-newClass-submitNewClass': 'submit',
-			'click #formWindow-exit': 'exit'
+			'click #formWindow-exit': 'exit',
+			'mouseenter #formWindow-exit': 'hoverOnExit',
+			'mouseleave #formWindow-exit': 'hoverOffExit'
 			//need events to manage selections and changes to existing classes
 			//event for submission
 			//event for changing select elements
@@ -668,12 +670,9 @@ GFView.ClassForm = (function() {
 
 
 		initialize: function() {
+			//bind calendar event
 			Calendar.getInstance().on('calBlockClicked', this.show.bind(this));
 			
-			$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
-			$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));
-
-
 		},
 		//sets the title of the form
 		setTitle: function(year, month, day) {
