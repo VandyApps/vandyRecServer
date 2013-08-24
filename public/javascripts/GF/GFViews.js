@@ -129,6 +129,7 @@ GFView.BlockView = Backbone.View.extend({
 
 			this.$('.classCountIndicator').text(this.fitnessClassesForBlock.length+' Classes');
 		} else { //0 classes
+			console.log("There are no classes for day: " + this.day);
 			this.$('.classCountIndicator').text('');
 			
 		}
@@ -141,12 +142,12 @@ GFView.BlockView = Backbone.View.extend({
 		$(event.delegateTarget).not('[empty]').filter('.specialDay').animate({backgroundColor: 'rgba(255, 166, 109, 1)'}, 200);
 	},
 	hoverOff: function(event) {
-		
+		//check Mozilla-support for this!!!
 		$(event.delegateTarget).not('[empty]').not('.specialDay').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
 		$(event.delegateTarget).not('[empty]').filter('.specialDay').animate({backgroundColor: '#EECBAD'}, 200);
 	},
 	showForm: function(event) {
-		
+		//check MOZILLA SUPORT!!
 		if ($(event.delegateTarget).attr('empty') === undefined) {
 			
 			var dayOfWeekIndex = parseInt($(event.delegateTarget).parent().attr('id').charAt(11), 10),
@@ -197,8 +198,10 @@ GFView.MonthView = (function() {
 			//render is called by the reset event on fitness classes
 			this.fitnessClasses = options.fitnessClasses;
 
-			//sets the adding of fitness classes
+			//sets the rendering of the calendar for certain
+			//events that are fired by the model
 			this.fitnessClasses.on("change", this.render, this);
+			this.fitnessClasses.on('monthChanged', this.render, this);
 			specialDates.on("change", this.render, this);
 			this.fitnessClasses.on('add', this.render, this);
 			specialDates.on('add', this.render, this);
@@ -224,7 +227,7 @@ GFView.MonthView = (function() {
 
 	            specialDates = GFModel.SpecialDates.getInstance();
 			
-			console.log("Rendering calendar");
+			
 			//set the display to the month and year indication outside of
 			//calendar element
 			//month and year index tags are used for holding data that is not 
@@ -247,7 +250,10 @@ GFView.MonthView = (function() {
 				
 				for (column = 0; column < 7; ++column) {
 
-					//check for the first day 
+					//check to make sure if 
+					//1. Found the first day on the calendar
+					//2. Found the last day of the calendar 
+					//3. Found the last day of the calendar on the previous iteration
 					if (!foundFirstDay && iterationDate.getDay() === column) {
 						foundFirstDay = true;
 
@@ -257,6 +263,7 @@ GFView.MonthView = (function() {
 					} else if (!foundLastDay && DateHelper.daysForMonth(iterationDate.getMonth(), this.year) === iterationDate.getDate()) {
 						foundLastDay = true;
 					}
+
 
 					if (!foundFirstDay || passedLastDay) {
 						
@@ -272,7 +279,7 @@ GFView.MonthView = (function() {
 
 					} else {
 
-						//create a filled column
+						//create a filled block
 						//set the number of fitness classes to 0 initially
 						if (this.dayBlocks[row][column] === undefined) {
 							
@@ -280,6 +287,7 @@ GFView.MonthView = (function() {
 								this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
 						
 							} else {
+
 								this.dayBlocks[row][column] = new GFView.BlockView({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
 						
 							}
@@ -291,7 +299,8 @@ GFView.MonthView = (function() {
 							}
 
 						}
-						
+						console.log(this.fitnessClasses.getClassesForDay(iterationDate.getDate()).length);
+						//increment the iteration date
 						iterationDate.setDate(iterationDate.getDate() + 1);
 						
 					}	
@@ -316,8 +325,8 @@ GFView.MonthView = (function() {
 				this.year -= 1;
 
 			}
-			//calls reset and renders new calendar
 			this.fitnessClasses.decrementMonth();
+			this.render();
 		},
 		getCalendar: function(month, year) {
 			this.month = month;

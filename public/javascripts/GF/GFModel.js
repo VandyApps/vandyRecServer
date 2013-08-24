@@ -326,7 +326,11 @@ GFModel.FitnessClasses = (function() {
 				this.month = 0;
 				this.year += 1;
 			}
-			this.fetch({reset: true});
+			this.fetch({
+				reset:true,
+				success: function() {this.trigger('monthChanged');}.bind(this)
+			});
+			
 		},
 		//decrements the month and seeks for new models using url query
 		decrementMonth: function() {
@@ -335,7 +339,11 @@ GFModel.FitnessClasses = (function() {
 				this.month = 11;
 				this.year -=1;
 			}
-			this.fetch({reset: true});
+			this.fetch({
+				reset: true,
+				success: function() {this.trigger('monthChanged');}.bind(this)
+			});
+			
 		},
 		getCalendar: function(month, year) {
 			//for getting month and year over 
