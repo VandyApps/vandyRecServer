@@ -156,9 +156,6 @@ CalendarBlock = Backbone.View.extend({
 			dayOfWeekIndex = parseInt($(event.delegateTarget).parent().attr('id').charAt(11), 10),
                 windowTitle = DateHelper.weekDayAsString(dayOfWeekIndex) +', '+DateHelper.monthNameForIndex(parseInt($('#monthIndex').text(),10))+' '+$('.dayIndicator' , event.delegateTarget).text()+' '+$('#yearIndex').text();
 
-			$('#formWindow-title').text(windowTitle);
-			$('#dayIndex').text(this.day.toString());
-			$('#dayOfWeekIndex').text(dayOfWeekIndex.toString());
 			this.fitnessClassesForBlock.forEach(function(fitnessClass) {
 				/*
 				var form = GFView.ClassForm.getInstance();
@@ -166,9 +163,7 @@ CalendarBlock = Backbone.View.extend({
 				form.addClass(fitnessClass, false);
 				*/
 			});
-			$('#GFWindowPrimer').fadeIn(400, function() {
-				$('#formWindow').show();
-			});
+			
 		}		
 	}	
 });
@@ -324,7 +319,22 @@ Calendar = (function() {
 			}
 			
 		},
+		//returns an array of the classes that exist within
+		//the day for the calendar, for the current month and year
+		getClassesForDay: function(day) {
+			var date = new Date(this.year, this.month, day),
+				column, row, i;
 
+			//find the block that the day references
+			column = date.getDay();
+			for (i =0; i < 6; ++i) {
+				if (!this.dayBlocks[i][column].empty && this.dayBlocks[i][column].day == day) {
+					return this.dayBlocks[i][column].fitnessClassesForBlock;
+				}
+			}
+			return null;
+
+		},
 		//getters and setters for the calendar
 		//properties
 		incrementMonth: function() {
@@ -658,7 +668,7 @@ GFView.ClassForm = (function() {
 
 
 		initialize: function() {
-			Calendar.getInstance().on('calBlockClicked', this.show);
+			Calendar.getInstance().on('calBlockClicked', this.show.bind(this));
 			
 			$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
 			$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));
@@ -676,23 +686,29 @@ GFView.ClassForm = (function() {
 		//displays the form and loads the data from the calendar into
 		//the form
 		show: function(event) {
-			console.log("Showing the form");
-			/*
-			var cal = Calendar.getInstance(),
+			var calendar = Calendar.getInstance(),
+				month = calendar.getMonth(),
+				year = calendar.getYear(),
+				//the day that is being clicked is passed through the 
+				//event, but it is also updated in the calendar,
+				//however, no gaurantee that the selected day is updated
+				//in the calendar before this method is called
 				day = event.day;
+			this.setTitle(year, month, day);
 
+			$('#GFWindowPrimer').fadeIn(400, function() {
+				$('#formWindow').show();
+			});
 			
-			//set the attributes of the 
-			//window
-			if (animate) {
-				$('#formWindow').show();
-			} else {
-				$('#formWindow').show();
-			}
-			*/
 		},
 		//removes all classes in the view
-		reset: function() {},
+		reset: function() {
+			//remove the classes array
+			this.classes = [];
+			//remove all existing classes within the list
+			$('.formWindow-existingClass').remove();
+
+		},
  		//adds class that was submitted by the form
 		//and appends it immediately after the class creation
 		//form, data should be passed from the form
