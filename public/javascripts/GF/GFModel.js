@@ -349,7 +349,11 @@ GFModel.FitnessClasses = (function() {
 			//for getting month and year over 
 			this.month = month;
 			this.year = year;
-			this.fetch({reset: true});
+			this.fetch(
+				{
+					reset: true,
+					success: function() {this.trigger('monthChanged');}.bind(this)
+				});
 		},
 		//creates a new model with the passed in data,
 		//then persists that model to the database
