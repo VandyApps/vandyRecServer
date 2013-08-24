@@ -20,7 +20,7 @@ CalendarBlock = Backbone.View.extend({
 
 		'mouseenter.dayBlock': 'hoverOn',
 		'mouseleave.dayBlock': 'hoverOff',
-		'click.dayBlock': 'showForm'
+		'click.dayBlock': 'blockClicked'
 	},
 	
 	initialize: function(options) {
@@ -146,20 +146,25 @@ CalendarBlock = Backbone.View.extend({
 		$(event.delegateTarget).not('[empty]').not('.specialDay').animate({backgroundColor: 'rgba(0,0,0,0)'}, 200);
 		$(event.delegateTarget).not('[empty]').filter('.specialDay').animate({backgroundColor: '#EECBAD'}, 200);
 	},
-	showForm: function(event) {
+	blockClicked: function(event) {
 		//check MOZILLA SUPORT!!
+		var dayOfWeekIndex;
 		if ($(event.delegateTarget).attr('empty') === undefined) {
-			
-			var dayOfWeekIndex = parseInt($(event.delegateTarget).parent().attr('id').charAt(11), 10),
+			//trigger clicking of block and pass in the day that
+			//was clicked
+			this.trigger('calBlockClicked', {day: this.day});
+			dayOfWeekIndex = parseInt($(event.delegateTarget).parent().attr('id').charAt(11), 10),
                 windowTitle = DateHelper.weekDayAsString(dayOfWeekIndex) +', '+DateHelper.monthNameForIndex(parseInt($('#monthIndex').text(),10))+' '+$('.dayIndicator' , event.delegateTarget).text()+' '+$('#yearIndex').text();
 
 			$('#formWindow-title').text(windowTitle);
 			$('#dayIndex').text(this.day.toString());
 			$('#dayOfWeekIndex').text(dayOfWeekIndex.toString());
 			this.fitnessClassesForBlock.forEach(function(fitnessClass) {
-				var formWindowView = new GFView.ClassForm.getInstance();
+				/*
+				var form = GFView.ClassForm.getInstance();
 				//false for no animation
-				formWindowView.addClass(fitnessClass, false);
+				form.addClass(fitnessClass, false);
+				*/
 			});
 			$('#GFWindowPrimer').fadeIn(400, function() {
 				$('#formWindow').show();
@@ -625,14 +630,15 @@ GFView.ClassView = Backbone.View.extend({
 //that are being rendered in the window form
 
 GFView.ClassForm = (function() {
-	var instance = Backbone.View.extend({
+	var Instance = Backbone.View.extend({
 
-		el: '#formWindow-classes',
+		el: '#formWindow',
 
 		events: {
 
 			'click #formWindow-newClass-title': 'toggleForm',
-			'click #formWindow-newClass-submitNewClass': 'submit'
+			'click #formWindow-newClass-submitNewClass': 'submit',
+			'click #formWindow-exit': 'exit'
 			//need events to manage selections and changes to existing classes
 			//event for submission
 			//event for changing select elements
@@ -641,8 +647,8 @@ GFView.ClassForm = (function() {
 
 		initialize: function() {
 
-			//binding events that are not within the view
-			$('#formWindow-exit').click($.proxy(this.exit, this));
+			
+			//$('#formWindow-exit').click($.proxy(this.exit, this));
 			$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
 			$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));	
 
@@ -786,9 +792,12 @@ GFView.ClassForm = (function() {
 	return {
 		getInstance: function() {
 			if (!GFView.ClassForm.instance) {
-				GFView.ClassForm.instance = new instance();
+				GFView.ClassForm.instance = new Instance();
 			}
 			return GFView.ClassForm.instance;
+		},
+		initialize: function() {
+			GFView.ClassForm.instance = new Instance();
 		}
 	};
 })();
