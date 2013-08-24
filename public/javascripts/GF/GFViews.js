@@ -967,7 +967,10 @@ GFView.SpecialDateForm = (function() {
 
 				//true for animation
 				this.addDates(model, true);
-				specialDates.addNewSpecialDate(model);
+				//only rerender calendar if the new special dates
+				//would appear in this month
+				
+				GFModel.SpecialDates.getInstance().addNewSpecialDate(model);
 				this.formToDefault();
 
 			} else {

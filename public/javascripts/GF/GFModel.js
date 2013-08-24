@@ -211,7 +211,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 	//Assumes that the start date is set within the boundaries
 	setSpecialDateBoundary: function() {
 		if (this.isSpecialDateClass()) {
-			specialDates.getSpecialDateForDate(this.getStartDate()).addFitnessClass(this);
+			GFModel.SpecialDates.getInstance().getSpecialDateForDate(this.getStartDate()).addFitnessClass(this);
 		}
 	},
 	//this function adds a date where this fitness class is cancelled
@@ -571,11 +571,12 @@ GFModel.SpecialDates = (function() {
 			return isMember;
 		},
 		addNewSpecialDate: function(specialDate) {
-			this.add(specialDate);
+			
 			//save the model
+			console.log("Adding a new special date");
+			this.add(specialDate);
 			specialDate.save();
-			//fetch the new data
-			this.fetch();
+			
 		}
 
 	});
