@@ -660,7 +660,6 @@ GFView.ClassForm = (function() {
 		initialize: function() {
 			Calendar.getInstance().on('calBlockClicked', this.show);
 			
-			//$('#formWindow-exit').click($.proxy(this.exit, this));
 			$('#formWindow-exit').mouseenter($.proxy(this.hoverOnExit, this));
 			$('#formWindow-exit').mouseleave($.proxy(this.hoverOffExit, this));
 
@@ -668,11 +667,16 @@ GFView.ClassForm = (function() {
 		},
 		//sets the title of the form
 		setTitle: function(year, month, day) {
+			var date = new Date(year, month, day),
+				monthName = DateHelper.monthNameForIndex(month),
+				weekDay = DateHelper.weekDayAsString(date.getDay());
 
+			this.$('#formWindow-title').text(weekDay + ", " + monthName + " " + day.toString() + " " + year.toString());
 		},
 		//displays the form and loads the data from the calendar into
 		//the form
 		show: function(event) {
+			console.log("Showing the form");
 			/*
 			var cal = Calendar.getInstance(),
 				day = event.day;
