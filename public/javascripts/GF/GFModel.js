@@ -492,7 +492,7 @@ GFModel.SpecialDate = Backbone.Model.extend({
 		//either the start or end date has to be within the year for this to
 		//be within the month, assuming that special dates do not
 		//span a time period greater than a year
-		if (startDate.getYear() === year || endDate.getYear() === year) {
+		if (startDate.getYear() + 1900 === year || endDate.getYear() + 1900 === year) {
 			if (startDate.getMonth() === month || endDate.getMonth() === month) {
 				return true;
 			} else if (startDate.getMonth() < month && endDate.getMonth() > month) {
