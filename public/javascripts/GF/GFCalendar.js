@@ -186,11 +186,14 @@ Calendar = (function() {
 
 			//sets the rendering of the calendar for certain
 			//events that are fired by the model
+			specialDates.on("change", this.render, this);
+			specialDates.on('add', this.render, this);
+			specialDates.on('destroy', this.render, this);
+
 			this.fitnessClasses.on("change", this.render, this);
 			this.fitnessClasses.on('monthChanged', this.render, this);
-			specialDates.on("change", this.render, this);
 			this.fitnessClasses.on('add', this.render, this);
-			specialDates.on('add', this.render, this);
+			
 			specialDates.fetch();
 			this.fitnessClasses.fetch({
 				success: function() {
