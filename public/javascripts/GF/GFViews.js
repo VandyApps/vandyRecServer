@@ -168,7 +168,7 @@ GFView.ClassView = Backbone.View.extend({
 			    newObjData = self.model.slice(currentDate),
 			    fitnessClasses = GFModel.FitnessClasses.getInstance();
 			calendar = Calendar.getInstance();
-			currentDate = new Date(calendar.getYear(), calendar.getMonth(), calendar.getSelectedDay());
+			currentDate = calendar.getSelectedDate();
 
 			if (typeof newObjData === 'object') {
 				fitnessClasses.addNewClass(newObjData);
@@ -197,7 +197,7 @@ GFView.ClassView = Backbone.View.extend({
 				fitnessClasses = GFModel.FitnessClasses.getInstance();
 
 			calendar = Calendar.getInstance();
-			currentDate = new Date(calendar.getYear(), calendar.getMonth(), calendar.getSelectedDay()),
+			currentDate = calendar.getSelectedDate();
 				
 
 			self.model.slice(currentDate);
@@ -233,7 +233,7 @@ GFView.ClassView = Backbone.View.extend({
 			var fitnessClasses = GFModel.FitnessClasses.getInstance(),
 				currentDate;
 				calendar = Calendar.getInstance();
-				currentDate = new Date(calendar.getYear(), calendar.getMonth(), calendar.getSelectedDay());
+				currentDate = calendar.getSelectedDate();
 			
 			self.model.slice(currentDate);
 			self.$el.slideUp(400, function() {
