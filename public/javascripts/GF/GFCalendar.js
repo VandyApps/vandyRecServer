@@ -187,8 +187,23 @@ Calendar = (function() {
 			//sets the rendering of the calendar for certain
 			//events that are fired by the model
 			specialDates.on("change", this.render, this);
-			specialDates.on('add', this.render, this);
-			specialDates.on('destroy', this.render, this);
+			specialDates.on('add', function(model) {
+				//only render the calendar if the special
+				//date being added is within the current calendar
+				if (model.isInMonth(this.month, this.year)) {
+					
+					this.render();
+				} 
+			}, this);
+
+			specialDates.on('destroy', function(model) {
+				//only render the calendar if the special
+				//date being deleted is within the current calendar
+				if (model.isInMonth(this.month, this.year)) {
+					
+					this.render();
+				}
+			}, this);
 
 			this.fitnessClasses.on("change", this.render, this);
 			this.fitnessClasses.on('monthChanged', this.render, this);
