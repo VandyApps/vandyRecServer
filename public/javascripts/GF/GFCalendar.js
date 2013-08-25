@@ -145,22 +145,12 @@ CalendarBlock = Backbone.View.extend({
 		$(event.delegateTarget).not('[empty]').filter('.specialDay').animate({backgroundColor: '#EECBAD'}, 200);
 	},
 	blockClicked: function(event) {
-		//check MOZILLA SUPORT!!
-		var dayOfWeekIndex;
-		if ($(event.delegateTarget).attr('empty') === undefined) {
+		
+		//if ($(event.delegateTarget).attr('empty') === undefined) {
+		if (!this.empty) {
 			//trigger clicking of block and pass in the day that
 			//was clicked
 			this.trigger('calBlockClicked', {day: this.day});
-			dayOfWeekIndex = parseInt($(event.delegateTarget).parent().attr('id').charAt(11), 10),
-                windowTitle = DateHelper.weekDayAsString(dayOfWeekIndex) +', '+DateHelper.monthNameForIndex(parseInt($('#monthIndex').text(),10))+' '+$('.dayIndicator' , event.delegateTarget).text()+' '+$('#yearIndex').text();
-
-			this.fitnessClassesForBlock.forEach(function(fitnessClass) {
-				/*
-				var form = GFView.ClassForm.getInstance();
-				//false for no animation
-				form.addClass(fitnessClass, false);
-				*/
-			});
 			
 		}		
 	}	
@@ -263,7 +253,17 @@ Calendar = (function() {
 						if (!this.dayBlocks[row][column]) {
 
 							this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, empty: true});
-							
+							//must also add the event to the blocks that are initially created
+							//as empty, because these blocks can be reset to contain data
+							//when the calendar changes months.  The blocks check 
+							//at run-time if the block is in a state of empty before
+							//calling the event, but should listen to all blocks
+							this.dayBlocks[row][column].on('calBlockClicked', function(event) {
+									//set the selected day of the calendar and trigger 
+									//calBlockClicked event for the calendar
+									this.selectedDay = event.day;
+									this.trigger('calBlockClicked', {day: event.day});
+								}, this);
 						} else {
 
 							this.dayBlocks[row][column].reset({row: row, column: column, empty: true});
@@ -279,6 +279,8 @@ Calendar = (function() {
 							if (specialDates.includesDate(iterationDate)) {
 								this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
 								this.dayBlocks[row][column].on('calBlockClicked', function(event) {
+									//set the selected day of the calendar and trigger 
+									//calBlockClicked event for the calendar
 									this.selectedDay = event.day;
 									this.trigger('calBlockClicked', {day: event.day});
 								}, this);
@@ -287,6 +289,8 @@ Calendar = (function() {
 
 								this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
 								this.dayBlocks[row][column].on('calBlockClicked', function(event) {
+									//set the selected day of the calendar and trigger 
+									//calBlockClicked event for the calendar
 									this.selectedDay = event.day;
 									this.trigger('calBlockClicked', {day: event.day});
 								}, this);
