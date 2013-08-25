@@ -375,7 +375,10 @@ GFModel.FitnessClasses = (function() {
 				cancelledDates: []
 				
 			});
-
+			//trigger the add event for the view to update
+			//the calendar
+			this.add(newFitnessClass);
+			
 			if (newFitnessClass.isSpecialDateClass()) {
 				//clip the end date if this is a special date
 				//setSpecialDateBoundary autmatically calls the save
@@ -384,9 +387,7 @@ GFModel.FitnessClasses = (function() {
 			} else {
 				newFitnessClass.save();
 			}
-			//trigger the add event for the view to update
-			//the calendar
-			this.add(newFitnessClass);
+			
 			return newFitnessClass;
 		},
 		modelsWithinSpecialDate: function(specialDate) {

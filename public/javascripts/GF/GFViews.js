@@ -27,7 +27,9 @@ GFView.ClassView = Backbone.View.extend({
 	//render the list item with necessary forms for
 	//changing options
 	render: function(animate) {
-		var endDate, monthString, dateString, dayString, month;
+		var endDate, monthString, dateString, dayString, month,
+			calendar = Calendar.getInstance();
+
 		if (animate) {
 			this.$el = $('<li class="formWindow-existingClass" style="display: none;"></li>');
 			this.$el.insertAfter('#formWindow-newClass');
@@ -56,20 +58,20 @@ GFView.ClassView = Backbone.View.extend({
 		}
 		//display cancellation if needed
 		
-		if ($('#dayIndex').text().length === 1) {
-			dayString = '0'+$('#dayIndex').text();
+		if (calendar.getSelectedDay() < 10) {
+			dayString = '0'+ calendar.getSelectedDay().toString();
 		} else {
-			dayString = $('#dayIndex').text();
+			dayString = calendar.getSelectedDay().toString();
 		}
 
-		month = parseInt($('#monthIndex').text(), 10)+1;
+		month = calendar.getMonth()+1;
 		if (month < 10) {
 			monthString = '0'+month.toString();
 		} else {
 			monthString = month.toString();
 		}
 
-		dateString = monthString+'/'+dayString+'/'+$('#yearIndex').text();
+		dateString = monthString+'/'+dayString+'/'+calendar.getYear().toString();
 
 		if (this.model.isCancelledForDate(dateString)) {
 			this.addCancelLayover();
@@ -82,22 +84,23 @@ GFView.ClassView = Backbone.View.extend({
 		
 	},
 	cancel: function() {
-		var dayString, monthString, month, dateString;
-		if ($('#dayIndex').text().length === 1) {
-			dayString = '0'+$('#dayIndex').text();
+		var dayString, monthString, month, dateString,
+			calendar = Calendar.getInstance();
+		if (calendar.getSelectedDay() < 10) {
+			dayString = '0'+ calendar.getSelectedDay().toString();
 		} else {
-			dayString = $('#dayIndex').text();
+			dayString = calendar.getSelectedDay().toString();
 		}
 
 		
-		month = +$('#monthIndex').text() + 1
+		month = calendar.getMonth() + 1
 		if (month < 10) {
 			monthString = '0'+month.toString();
 		} else {
 			monthString = month.toString();
 		}
 
-		dateString = monthString+'/'+dayString+'/'+$('#yearIndex').text();
+		dateString = monthString+'/'+dayString+'/'+ calendar.getYear().toString();
 
 		this.model.addCancelDate(dateString);  
 		this.model.save(); 
@@ -110,31 +113,36 @@ GFView.ClassView = Backbone.View.extend({
 		$('.formWindow-existingClass-cancelLayover', this.$el).click($.proxy(this.uncancel, this));
 	},
 	uncancel: function() {
-		var confirm = new ConfirmationBox({
-			message: "Are you sure you want to change this class from cancelled to not cancelled?",
-				button1Name: 'YES',
-				button2Name: 'NO',
-				animate: false,
-				deleteAfterPresent: true
-		});
+		var calendar,
+
+			confirm = new ConfirmationBox({
+				message: "Are you sure you want to change this class from cancelled to not cancelled?",
+					button1Name: 'YES',
+					button2Name: 'NO',
+					animate: false,
+					deleteAfterPresent: true
+			});
+
 		confirm.show(false);
 		confirm.on('clicked1', function() {
+
+			calendar = Calendar.getInstance();
 			var dayString, monthString, month, dateString;
-			if ($('#dayIndex').text().length === 1) {
-				dayString = '0'+$('#dayIndex').text();
+			if (calendar.getSelectedDay() < 10) {
+				dayString = '0'+calendar.getSelectedDay().toString();
 			} else {
-				dayString = $('#dayIndex').text();
+				dayString = calendar.getSelectedDay().toString();
 			}
 
 			
-			month = parseInt($('#monthIndex').text(), 10)+1;
+			month = calendar.getMonth()+1;
 			if (month < 10) {
 				monthString = '0'+month.toString();
 			} else {
 				monthString = month.toString();
 			}
 
-			dateString = monthString+'/'+dayString+'/'+$('#yearIndex').text();
+			dateString = monthString+'/'+dayString+'/'+ calendar.getYear().toString();
 			$('.formWindow-existingClass-cancelLayover', this.$el).remove();
 			this.model.removeCancelledDate(dateString); 
 			this.model.save();     
@@ -142,23 +150,26 @@ GFView.ClassView = Backbone.View.extend({
 	},
 	//for deleting a single instance
 	deleteOne: function() {
-		var confirm = new ConfirmationBox(
-			{
-				message: 'Are you sure you would like to delete the group fitness class for this one date?',
-				button1Name: 'YES',
-				button2Name: 'NO',
-				animate: false,
-				deleteAfterPresent: true
-			}),
+		var calendar,
+			confirm = new ConfirmationBox(
+				{
+					message: 'Are you sure you would like to delete the group fitness class for this one date?',
+					button1Name: 'YES',
+					button2Name: 'NO',
+					animate: false,
+					deleteAfterPresent: true
+				}),
             self = this;
 
 		confirm.show(false);
 		
 		confirm.on('clicked1', function() {
-			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0),
+			var currentDate,
 			    newObjData = self.model.slice(currentDate),
 			    fitnessClasses = GFModel.FitnessClasses.getInstance();
-			
+			calendar = Calendar.getInstance();
+			currentDate = new Date(calendar.getYear(), calendar.getMonth(), calendar.getSelectedDay());
+
 			if (typeof newObjData === 'object') {
 				fitnessClasses.addNewClass(newObjData);
 			}
@@ -170,7 +181,8 @@ GFView.ClassView = Backbone.View.extend({
 	},
 	//for deleting many instances
 	deleteMany:function() {
-		var confirm = new ConfirmationBox(
+		var calendar,
+			confirm = new ConfirmationBox(
 			{
 				message: "Are you sure you would like to delete this and all future group fitness classes?",
 				button1Name: 'YES',
@@ -181,8 +193,12 @@ GFView.ClassView = Backbone.View.extend({
                     self = this;
 		confirm.show(false);
 		confirm.on('clicked1', function() {
-			var currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0),
+			var currentDate,
 				fitnessClasses = GFModel.FitnessClasses.getInstance();
+
+			calendar = Calendar.getInstance();
+			currentDate = new Date(calendar.getYear(), calendar.getMonth(), calendar.getSelectedDay()),
+				
 
 			self.model.slice(currentDate);
 			self.$el.slideUp(400, function() {
@@ -201,20 +217,23 @@ GFView.ClassView = Backbone.View.extend({
 		
 	},
 	delete: function() {
-		var confirm = new ConfirmationBox(
-			{
-				message: "Are you sure you want to delete this group fitness class?",
-				button1Name: "YES",
-				button2Name: "NO",
-				animate: false,
-				deleteAfterPresent: true
-			}),
+		var calendar,
+			confirm = new ConfirmationBox(
+				{
+					message: "Are you sure you want to delete this group fitness class?",
+					button1Name: "YES",
+					button2Name: "NO",
+					animate: false,
+					deleteAfterPresent: true
+				}),
 		    self = this;
 		confirm.show(false);
 		confirm.on('clicked1', function() {
 
 			var fitnessClasses = GFModel.FitnessClasses.getInstance(),
-				currentDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10), 0,0,0,0);
+				currentDate;
+				calendar = Calendar.getInstance();
+				currentDate = new Date(calendar.getYear(), calendar.getMonth(), calendar.getSelectedDay());
 			
 			self.model.slice(currentDate);
 			self.$el.slideUp(400, function() {
@@ -222,12 +241,8 @@ GFView.ClassView = Backbone.View.extend({
 			});
 			//reload the data
 			fitnessClasses.fetch();
-		});
-		
-		
+		});		
 	}
-	
-	
 
 });
 
@@ -331,7 +346,9 @@ GFView.ClassForm = (function() {
 		//called when the submit button is hit
 		submit: function() {
 			
+			//validation is either true or an error message
 			var validation = this.validateSubmission(),
+				calendar = Calendar.getInstance(),
 
                 dayString, monthString, startDate, monthIndex, yearString, newFitnessClass,
                 data = {},
@@ -346,7 +363,7 @@ GFView.ClassForm = (function() {
 				
 				data.className = $('#formWindow-newClass-className-input').val();
 				data.instructor = $('#formWindow-newClass-instructorName-input').val();
-				data.dayOfWeek = parseInt($('#dayOfWeekIndex').text(), 10);
+				data.dayOfWeek = calendar.getSelectedWeekDay();
 
 				data.startTime = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
 				$('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-minutes').children(':selected').text()+
@@ -360,7 +377,7 @@ GFView.ClassForm = (function() {
 				data.timeRange = data.startTime + " - " + data.endTime;
 				
 				//set specialDate variables
-				startDate = new Date(parseInt($('#yearIndex').text(), 10), parseInt($('#monthIndex').text(), 10), parseInt($('#dayIndex').text(), 10));
+				startDate = new Date(calendar.getYear(), calendar.getMonth(), calendar.getSelectedDay());
 
 
 				//convert month to 1-based for date string
@@ -371,13 +388,13 @@ GFView.ClassForm = (function() {
 					monthString = monthIndex.toString();
 				}
 
-				if ($('#dayIndex').text().length === 1) {
-					dayString = '0' + $('#dayIndex').text();
+				if (calendar.getSelectedDay() < 10) {
+					dayString = '0' + calendar.getSelectedDay().toString();
 				} else {
-					dayString = $('#dayIndex').text();
+					dayString = calendar.getSelectedDay().toString();
 				}
 
-				yearString = $('#yearIndex').text();
+				yearString = calendar.getYear();
 				
 				data.startDate = monthString + '/' + dayString + '/' + yearString;
 				if ($("input[name='isRepeated']:checked", '#formWindow-newClass-repeatSelections').val() === 'true') {
@@ -399,6 +416,7 @@ GFView.ClassForm = (function() {
 				this.addClass(newFitnessClass, true);
 				this.formToDefault();
 			} else {
+				//validation is an error message, not a boolean
 				//present the error message
 				$('#formWindow-newClass-error').text(validation);
 				$('#formWindow-newClass-error').show();

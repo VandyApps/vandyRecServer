@@ -367,6 +367,19 @@ Calendar = (function() {
 		//day was selected
 		getSelectedDay: function() {
 			return this.selectedDay;
+		},
+		//returns a Date object if there
+		//is a selected date, and null
+		//if there is no selected date
+		getSelectedDate: function() {
+			if (this.selectedDay === 0) {
+				return null;
+			} else {
+				return new Date(this.year, this.month, this.selectedDay);
+			}
+		},
+		getSelectedWeekDay: function() {
+		 	return this.getSelectedDate().getDay();
 		}
 	});
 
