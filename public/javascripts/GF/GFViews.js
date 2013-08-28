@@ -302,7 +302,7 @@ GFView.ClassForm = (function() {
 				this.addClass(fitnessClass, {animate: false});
 			}, this);
 
-			$('#GFWindowPrimer').fadeIn(400, function() {
+			$('#GFWindowPrimer').show(0, function() {
 				$('#formWindow').show();
 			});
 			
