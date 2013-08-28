@@ -193,7 +193,7 @@ Calendar = (function() {
 				this.trigger('calBlockClicked', {day: event.day});
 			}
 		},
-		
+
 		dayBlocks: [],
 
 		initialize: function(options) {
@@ -359,6 +359,7 @@ Calendar = (function() {
 			//that the calendar knows to allow further responses to other 
 			//blocks
 			this.handlingCalBlock = false;
+			this.selectedDay = 0;
 		},
 		//getters and setters for the calendar
 		//properties

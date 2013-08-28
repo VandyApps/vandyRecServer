@@ -424,12 +424,20 @@ GFView.ClassForm = (function() {
 			
 		},
 		exit: function() {
+			var calendar = Calendar.getInstance();
+
+			//deal with elements
+
 			$('#GFWindowPrimer').hide();
 			$('#formWindow').hide();
 			//hide the form if it was open
 			$('#formWindow-newClass-form').hide();
 			//remove all exsiting class list items
 			$('.formWindow-existingClass').remove();
+
+			//notify the calendar that the calendar 
+			//block is no longer on call
+			calendar.blockHandled();
 		},
 		hoverOnExit: function() {
 			$('#formWindow-exit').animate({backgroundColor: '#cb7c01'}, 200);
