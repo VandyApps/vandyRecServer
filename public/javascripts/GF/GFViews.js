@@ -818,7 +818,7 @@ $('#GFWindowPrimer').click(function() {
 
 $('#specialDaysButton').click(function() {
 			
-	$('#GFWindowPrimer').fadeIn(400, function() {
+	$('#GFWindowPrimer').show(0, function() {
 
 		GFModel.SpecialDates.getInstance().each(function(specialDate) {
 
