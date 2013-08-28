@@ -170,9 +170,30 @@ Calendar = (function() {
 		month: 0,
 		year: 0,
 		selectedDay: 0,
+		//a property to determine if the window for 
+		//the editting of group fitness info will appear,
+		//used to prevent multiple clicks on calendar blocks
+		//from interfering with one another
+		handlingCalBlock: false,
 		//2D array for blocks in the month view
 		//this is an array of rows, and each row 
 		//is an array of columns
+		//this method should not be called on calendar but is used by calendar
+		//as a consistent handler to callback functions for calendar block
+		//click events (in other words, don't use this ever!!)
+		blockHandler: function(event) {
+			//set the selected day of the calendar and trigger 
+			//calBlockClicked event for the calendar
+			//dont respond to the cal block being clicked if 
+			//a block has already been clicked
+			console.log("Block handler was called");
+			if (!this.handlingCalBlock) {
+				this.handlingCalBlock = true;
+				this.selectedDay = event.day;
+				this.trigger('calBlockClicked', {day: event.day});
+			}
+		},
+		
 		dayBlocks: [],
 
 		initialize: function(options) {
@@ -276,12 +297,7 @@ Calendar = (function() {
 							//when the calendar changes months.  The blocks check 
 							//at run-time if the block is in a state of empty before
 							//calling the event, but should listen to all blocks
-							this.dayBlocks[row][column].on('calBlockClicked', function(event) {
-									//set the selected day of the calendar and trigger 
-									//calBlockClicked event for the calendar
-									this.selectedDay = event.day;
-									this.trigger('calBlockClicked', {day: event.day});
-								}, this);
+							this.dayBlocks[row][column].on('calBlockClicked', this.blockHandler, this);
 						} else {
 
 							this.dayBlocks[row][column].reset({row: row, column: column, empty: true});
@@ -296,22 +312,12 @@ Calendar = (function() {
 							
 							if (specialDates.includesDate(iterationDate)) {
 								this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate()), specialDate: specialDates.getSpecialDateForDate(iterationDate)});
-								this.dayBlocks[row][column].on('calBlockClicked', function(event) {
-									//set the selected day of the calendar and trigger 
-									//calBlockClicked event for the calendar
-									this.selectedDay = event.day;
-									this.trigger('calBlockClicked', {day: event.day});
-								}, this);
+								this.dayBlocks[row][column].on('calBlockClicked', this.blockHandler, this);
 						
 							} else {
 
 								this.dayBlocks[row][column] = new CalendarBlock({row: row, column: column, day: iterationDate.getDate(), fitnessClassesForBlock: this.fitnessClasses.getClassesForDay(iterationDate.getDate())});
-								this.dayBlocks[row][column].on('calBlockClicked', function(event) {
-									//set the selected day of the calendar and trigger 
-									//calBlockClicked event for the calendar
-									this.selectedDay = event.day;
-									this.trigger('calBlockClicked', {day: event.day});
-								}, this);
+								this.dayBlocks[row][column].on('calBlockClicked', this.blockHandler, this);
 
 							}
 						} else {
@@ -346,6 +352,13 @@ Calendar = (function() {
 			}
 			return null;
 
+		},
+
+		blockHandled: function() {
+			//call this method after a block has been handled so 
+			//that the calendar knows to allow further responses to other 
+			//blocks
+			this.handlingCalBlock = false;
 		},
 		//getters and setters for the calendar
 		//properties
