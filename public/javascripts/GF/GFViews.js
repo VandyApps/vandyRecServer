@@ -164,11 +164,11 @@ GFView.ClassView = Backbone.View.extend({
 		confirm.show(false);
 		
 		confirm.on('clicked1', function() {
-			var currentDate,
+			var calendar = Calendar.getInstance(),
+				currentDate = calendar.getSelectedDate(),
 			    newObjData = self.model.slice(currentDate),
 			    fitnessClasses = GFModel.FitnessClasses.getInstance();
-			calendar = Calendar.getInstance();
-			currentDate = calendar.getSelectedDate();
+
 
 			if (typeof newObjData === 'object') {
 				fitnessClasses.addNewClass(newObjData);
@@ -176,6 +176,14 @@ GFView.ClassView = Backbone.View.extend({
 			self.$el.slideUp(400, function() {
 				self.remove();
 			});
+
+			confirm.unbind('clicked1');
+			confirm.unbind('clicked2');
+		});
+
+		confirm.on('clicked2', function() {
+			confirm.unbind('clicked1');
+			confirm.unbind('clicked2');
 		});
 		
 	},
