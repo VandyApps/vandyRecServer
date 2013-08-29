@@ -336,10 +336,14 @@ GFView.ClassForm = (function() {
 			if ($('#formWindow-newClass-className-input').val() === '') {
 				return "You need to enter a name";
 			}
-	 
-	                if ($('#formWindow-newClass-instructorName-input').val() === '') {
+	 		
+	        if ($('#formWindow-newClass-instructorName-input').val() === '') {
 				return "You need to enter an instructor";
 			}
+
+			if ($('#formWindow-newClass-location-input').val() === '') {
+	 			return "You need to include a location";
+	 		}
 
 			return true;
 		},
