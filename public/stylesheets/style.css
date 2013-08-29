@@ -982,6 +982,22 @@ textarea {
     width: 180px;
 }
 
+#formWindow-newClass-location {
+    margin: 15px;
+}
+
+#formWindow-newClass-location span {
+    padding-right: 168px;
+     
+}
+
+#formWindow-newClass-location input {
+    border-radius: 10px;
+    border: solid black 1px;
+    padding: 3px 10px;
+    width: 180px;
+}
+
 #formWindow-newClass-times {
     margin: 40px 0px;
     position: relative;
