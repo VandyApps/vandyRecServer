@@ -19,6 +19,7 @@ GFModel.FitnessClass = Backbone.Model.extend({
 		//two different time elements
 		this.set('timeRange', modelData.timeRange);
 		this.set('instructor', modelData.instructor);
+		this.set('location', modelData.location);
 		this.set('dayOfWeek', modelData.dayOfWeek);
 		//if the class is a 1-time occurence, then 
 		//the start and end dates are the same
@@ -370,6 +371,7 @@ GFModel.FitnessClasses = (function() {
 				endDate: data.endDate,
 				dayOfWeek: data.dayOfWeek,
 				instructor: data.instructor,
+				location: data.location,
 				specialDateClass: data.specialDateClass,
 				//cancelled dates will never be added on initialzation
 				cancelledDates: []

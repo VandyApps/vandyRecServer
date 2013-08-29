@@ -367,6 +367,7 @@ GFView.ClassForm = (function() {
 				
 				data.className = $('#formWindow-newClass-className-input').val();
 				data.instructor = $('#formWindow-newClass-instructorName-input').val();
+				data.location = $('#formWindow-newClass-location-input').val();
 				data.dayOfWeek = calendar.getSelectedWeekDay();
 
 				data.startTime = $('#formWindow-newClass-startTime .formWindow-newClass-selectWrapper .formWindow-newClass-hours').children(':selected').text()+':'+
