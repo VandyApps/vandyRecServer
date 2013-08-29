@@ -25,6 +25,7 @@ renderProperties = {
 		//related to GFClass
 		className: true,
 		instructor: true,
+		location: true,
 		timeRange: true,
 		dayOfWeek: true,
 		cancelledDates: true,
@@ -294,6 +295,7 @@ exports.updateGFClass = function(object, callback) {
 					type: object.type,
 					className: object.className,
 					instructor: object.instructor,
+					location: object.location,
 					startDate: object.startDate,
 					endDate: object.endDate,
 					SD_monthCount: object.SD_monthCount,
@@ -335,6 +337,7 @@ exports.insertGFClass = function(object, callback) {
 					className: docs[0].className,
 					timeRange: docs[0].timeRange,
 					instructor: docs[0].instructor,
+					location: docs[0].location,
 					startDate: docs[0].startDate,
 					endDate: docs[0].endDate,
 					dayOfWeek: docs[0].dayOfWeek
