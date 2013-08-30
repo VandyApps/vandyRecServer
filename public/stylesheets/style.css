@@ -855,7 +855,7 @@ textarea {
 #formWindow, #specialDayWindow {
     display: none;
     border: solid black 1px;
-    border-radius: 15px;
+    border-radius: 7px;
     position: fixed;
     background-color: #dedede;
     top: 50%;
