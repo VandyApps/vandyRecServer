@@ -813,9 +813,17 @@ textarea {
     left: 103px;
     text-align: center;
     line-height: 28px;
-    background-color: #c7c7c7;
+    
     border-radius: 14px;
     
+}
+
+.dayBlock:not(.specialDay) .dayIndicator {
+    background-color: #c7c7c7;
+}
+
+.dayBlock.specialDay .dayIndicator {
+    background-color: rgba(255, 166, 109, 1);
 }
 
 .classCountIndicator {
