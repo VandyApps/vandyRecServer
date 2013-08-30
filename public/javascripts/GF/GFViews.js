@@ -663,25 +663,12 @@ GFView.SpecialDateForm = (function() {
 		},
 		//this toggles the appearance of the new class form
 		toggleForm: function() {
+			
 			if (this.formIsShowing) {
-				$('#specialDayWindow-newDate-title').css({
-					'border': 'solid green',
-					'backgroundColor': '#49e45a',
-					'color': 'green'
-				});
-				$('#specialDayWindow-newDate-title').text('Add Special Date');
-				
+				this.hideForm();
 			} else {
-				$('#specialDayWindow-newDate-title').css({
-					'border': 'solid #990',
-					'backgroundColor': '#d6d600',
-					'color': '#990'
-				});
-				
-				$('#specialDayWindow-newDate-title').text('Hide form');
+				this.showForm();
 			}
-			this.formIsShowing = !this.formIsShowing;
-			$('#specialDayWindow-newDate-form').slideToggle();
 		},
 		//returns true if document is ready
 		//to be submitted, returns error message
@@ -747,11 +734,49 @@ GFView.SpecialDateForm = (function() {
 			}
 
 		},
+		hideForm: function(options) {
+			var animate = !options || options.animate;
+
+			//edit the button
+			$('#specialDayWindow-newDate-title').css({
+				'border': 'solid green',
+				'backgroundColor': '#49e45a',
+				'color': 'green'
+			});
+			$('#specialDayWindow-newDate-title').text('Add Special Date');
+			
+			
+			if (animate) {
+				$('#specialDayWindow-newDate-form').slideUp();
+			} else {
+				$('#specialDayWindow-newDate-form').hide();
+			}
+			this.formIsShowing = false;
+		},
+		showForm: function(options) {
+			var animate = !options || options.animate;
+
+
+			$('#specialDayWindow-newDate-title').css({
+				'border': 'solid #990',
+				'backgroundColor': '#d6d600',
+				'color': '#990'
+			});
+			$('#specialDayWindow-newDate-title').text('Hide form');
+		
+			if (animate) {
+				$('#specialDayWindow-newDate-form').slideDown();
+			} else {
+				$('#specialDayWindow-newDate-form').hide();
+			}
+			this.formIsShowing = true;
+		},
 		exit: function() {
 			$('#GFWindowPrimer').hide();
 			$('#specialDayWindow').hide();
 			//hide the form if it was open
-			$('#specialDayWindow-newDate-form').hide();
+			this.hideForm({animate: false});
+			
 			//remove all exsiting class list items
 			$('.specialDayWindow-existingDate').remove();
 		},
