@@ -45,6 +45,7 @@ GFView.ClassView = Backbone.View.extend({
 		}
 		this.$el.append('<div class="formWindow-existingClass-className">'+this.model.getClassName()+'</div>');
 		this.$el.append('<div class="formWindow-existingClass-instructor">'+this.model.getInstructor()+'</div>');
+		this.$el.append('<div class="formWindow-existingClass-location">'+this.model.get('location')+'</div>');
 		this.$el.append('<div class="formWindow-existingClass-times">'+this.model.get('timeRange')+'</div>');
 		this.$el.append('<div class="formWindow-existingClass-startDate">Start date: '+this.model.get('startDate')+'</div>');
 		this.$el.append('<div class="formWindow-existingClass-endDate">End date: '+endDate+'</div>');

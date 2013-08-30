@@ -1061,7 +1061,7 @@ textarea {
 .formWindow-existingClass, .specialDayWindow-existingDate {
     position: relative;
     display: block;
-    height: 140px;
+    height: 160px;
 }
 .formWindow-existingClass-className, .specialDayWindow-existingDate-title {
     
@@ -1081,13 +1081,13 @@ textarea {
 .formWindow-existingClass-startDate {
     position: absolute;
     left: 300px;
-    top: 40px;
+    top: 50px;
     font-size: 10pt;
     
 }
 .formWindow-existingClass-endDate {
     position: absolute;
-    top: 60px;
+    top: 70px;
     left: 300px;
     font-size: 10pt;
 }
@@ -1100,10 +1100,17 @@ textarea {
     font-size: 10pt;
 }
 
+.formWindow-existingClass-location {
+    font-size: 10pt;
+    left: 40px;
+    position: absolute;
+    margin-top: 55px;
+
+}
 .formWindow-existingClass-deleteOptions {
     position: absolute;
     
-    top: 100px;
+    top: 120px;
     width: 440px;
     margin-left: -220px;
     left: 50%;
