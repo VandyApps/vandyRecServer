@@ -344,7 +344,7 @@ GFView.ClassForm = (function() {
 					'color': 'green'
 				});
 				$('#formWindow-newClass-title').text('Add New Group Fitness Class');
-				
+
 			} else {
 				$('#formWindow-newClass-title').css({
 					'border': 'solid #990',
@@ -595,7 +595,7 @@ GFView.SpecialDateForm = (function() {
 	var Instance = GFView.SpecialDateForm = Backbone.View.extend({
 
 		el: '#specialDayWindow-classes',
-
+		formIsShowing: false,
 		events: {
 			//why are events not firing here
 		},
@@ -663,6 +663,24 @@ GFView.SpecialDateForm = (function() {
 		},
 		//this toggles the appearance of the new class form
 		toggleForm: function() {
+			if (this.formIsShowing) {
+				$('#specialDayWindow-newDate-title').css({
+					'border': 'solid green',
+					'backgroundColor': '#49e45a',
+					'color': 'green'
+				});
+				$('#specialDayWindow-newDate-title').text('Add Special Date');
+				
+			} else {
+				$('#specialDayWindow-newDate-title').css({
+					'border': 'solid #990',
+					'backgroundColor': '#d6d600',
+					'color': '#990'
+				});
+				
+				$('#specialDayWindow-newDate-title').text('Hide form');
+			}
+			this.formIsShowing = !this.formIsShowing;
 			$('#specialDayWindow-newDate-form').slideToggle();
 		},
 		//returns true if document is ready
