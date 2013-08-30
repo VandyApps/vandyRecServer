@@ -337,25 +337,51 @@ GFView.ClassForm = (function() {
 		},
 		//this toggles the appearance of the new class form
 		toggleForm: function() {
+			
 			if (this.formIsShowing) {
-				$('#formWindow-newClass-title').css({
-					'border': 'solid green',
-					'backgroundColor': '#49e45a',
-					'color': 'green'
-				});
-				$('#formWindow-newClass-title').text('Add New Group Fitness Class');
-
+				this.hideForm();
 			} else {
-				$('#formWindow-newClass-title').css({
-					'border': 'solid #990',
-					'backgroundColor': '#d6d600',
-					'color': '#990'
-				});
-				
-				$('#formWindow-newClass-title').text('Hide form');
+				this.showForm();
 			}
-			this.formIsShowing = !this.formIsShowing;
-			$('#formWindow-newClass-form').slideToggle();
+		},
+		showForm: function(options) {
+			var animate = !options || options.animate;
+
+			
+			$('#formWindow-newClass-title').css({
+				'border': 'solid #990',
+				'backgroundColor': '#d6d600',
+				'color': '#990'
+			});
+			
+			$('#formWindow-newClass-title').text('Hide form');
+		
+
+			if (animate) {
+				$('#formWindow-newClass-form').slideDown();
+			} else {
+				$('#formWindow-newClass-form').show();
+			}
+			this.formIsShowing = true;
+		},
+		hideForm: function(options) {
+			var animate = !options || options.animate;
+		
+			$('#formWindow-newClass-title').css({
+				'border': 'solid green',
+				'backgroundColor': '#49e45a',
+				'color': 'green'
+			});
+			$('#formWindow-newClass-title').text('Add New Group Fitness Class');
+
+
+			if (animate) {
+				$('#formWindow-newClass-form').slideUp();
+			} else {
+				$('#formWindow-newClass-form').hide();
+			}
+
+			this.formIsShowing = false;
 		},
 		//returns true if document is ready
 		//to be submitted, returns error message
@@ -464,7 +490,7 @@ GFView.ClassForm = (function() {
 			$('#GFWindowPrimer').hide();
 			$('#formWindow').hide();
 			//hide the form if it was open
-			$('#formWindow-newClass-form').hide();
+			this.hideForm();
 			//remove all exsiting class list items
 			$('.formWindow-existingClass').remove();
 
