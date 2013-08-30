@@ -267,6 +267,7 @@ GFView.ClassForm = (function() {
 		//in the form, this object is of type
 		//GFView.ClassView
 		classes: [],
+		formIsShowing: false,
 		events: {
 
 			'click #formWindow-newClass-title': 'toggleForm',
@@ -336,6 +337,24 @@ GFView.ClassForm = (function() {
 		},
 		//this toggles the appearance of the new class form
 		toggleForm: function() {
+			if (this.formIsShowing) {
+				$('#formWindow-newClass-title').css({
+					'border': 'solid green',
+					'backgroundColor': '#49e45a',
+					'color': 'green'
+				});
+				$('#formWindow-newClass-title').text('Add New Group Fitness Class');
+				
+			} else {
+				$('#formWindow-newClass-title').css({
+					'border': 'solid #990',
+					'backgroundColor': '#d6d600',
+					'color': '#990'
+				});
+				
+				$('#formWindow-newClass-title').text('Hide form');
+			}
+			this.formIsShowing = !this.formIsShowing;
 			$('#formWindow-newClass-form').slideToggle();
 		},
 		//returns true if document is ready
