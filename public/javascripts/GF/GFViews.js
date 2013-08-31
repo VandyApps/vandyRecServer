@@ -622,11 +622,7 @@ GFView.SpecialDateForm = (function() {
 
 		el: '#specialDayWindow-classes',
 		formIsShowing: false,
-		events: {
-			//why are events not firing here
-		},
-
-
+		
 		initialize: function() {
 
 			//binding events 
@@ -900,6 +896,9 @@ GFView.SpecialDateForm = (function() {
 				GFView.SpecialDateForm.instance = new Instance();
 			}
 			return GFView.SpecialDateForm.instance;
+		},
+		initialize: function() {
+			GFView.SpecialDateForm.instance = new Instance();
 		}
 	};
 })();
