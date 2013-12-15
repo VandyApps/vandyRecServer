@@ -55,13 +55,6 @@ passport.use(new LocalStrategy( function(username, password, done) {
       return done(null, false);
     }
   });
-  /*
-  if (username === user.username && password === user.password) {
-
-      return done(null, user);
-  }
-  return done(null, false);
-  */
 }));
 
 //routes
@@ -109,7 +102,11 @@ app.get('/programs', routes.programs);
 app.get('/JSON/news', data.news);
 app.get('/JSON/hours', data.hours);
 app.get('/JSON/GF', data.groupFitness);
-app.get('/JSON/IM', data.intramurals);
+
+
+app.get('/JSON/IM', data.intramurals.categories);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}/, data.intramurals.category);
+
 
 passport.serializeUser(function(user, done) {
   done(null, user);

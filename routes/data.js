@@ -1,4 +1,5 @@
-var db = require('../db');
+var db = require('../db'),
+	path = require('path');
 
 exports.news = function(req, res) {
 	db.newsCollection(function(collection) {
@@ -51,7 +52,7 @@ exports.groupFitness = function(req, res) {
 	
 };
 
-
+/*
 exports.intramurals = function(req, res) {
 	if (req.query.season) {
 		db.getIntramuralsForSeason(+req.query.season, function(err, intramurals) {
@@ -64,4 +65,36 @@ exports.intramurals = function(req, res) {
 	}
 	
 };
+*/
+
+
+exports.intramurals = {
+	categories: function(req, res) {
+		db.intramurals.categories(null, function(err, categories) {
+			console.log(err);
+			res.send(categories);
+		});
+	},
+	category: function(req, res) {
+		db.intramurals.categories(path.basename(req.path), function(err, categories) {
+			console.log(err);
+			res.send(categories[0]);
+		});
+	},
+
+	leagues: function(req, res) {
+
+	},
+	league: function(req, res) {
+
+	},
+
+	games: function(req, res) {
+
+	},
+	game: function(req, res) {
+
+	}
+
+}
 

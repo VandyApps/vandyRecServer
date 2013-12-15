@@ -384,6 +384,7 @@ exports.deleteGFObjectWithID = function(id, callback) {
 	});
 };
 
+/*
 exports.getIntramurals = function(callback) {
 	Db.connect(MONGODB_URL, function(err, db) {
 		db.collection(Collections.intramurals, function(err, collection) {
@@ -487,3 +488,41 @@ exports.deleteIntramurals = function(id, callback) {
 		});
 	});
 };
+
+*/
+/* intramurals api*/
+
+exports.intramurals = {
+	categories: function(id, callback) {
+		var renderData = {
+				name: true,
+				season: true
+			},
+			query = (id) ? {_id: ObjectID.createFromHexString(id)} : {};
+
+		
+		Db.connect(MONGODB_URL, function(error, db) {
+
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.find(query, renderData, function(err, cursor) {
+					cursor.toArray(function(err, collection) {
+						callback(err, collection);
+						db.close();
+					});
+				});
+			});
+		});
+	},
+
+	leagues: function(categoryId, id) {
+		
+	}
+
+};
+
+
+
+
+
+
+
