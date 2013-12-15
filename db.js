@@ -514,8 +514,33 @@ exports.intramurals = {
 		});
 	},
 
-	leagues: function(categoryId, id) {
-		
+	leagues: function(categoryId, id, callback) {
+		var renderData = {
+				leagues: true
+			}
+
+		Db.connect(MONGODB_URL, function(error, db) {
+
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.find({_id: ObjectID.createFromHexString(categoryId)}, renderData, function(err, cursor) {
+					cursor.toArray(function(err, collection) {
+						var packet = [];
+						if (id) {
+							collection[0].leagues.forEach(function(league) {
+								if (league.id == id) {
+									packet = [league];
+								}
+							});
+							callback(err, packet);
+						} else {
+							callback(err, collection[0].leagues);
+						}
+						db.close();
+					});
+				});
+			});
+		});
+
 	}
 
 };

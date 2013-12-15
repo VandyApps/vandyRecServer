@@ -103,10 +103,11 @@ app.get('/JSON/news', data.news);
 app.get('/JSON/hours', data.hours);
 app.get('/JSON/GF', data.groupFitness);
 
-
+/* intramurals api*/
 app.get('/JSON/IM', data.intramurals.categories);
-app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}/, data.intramurals.category);
-
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}$/, data.intramurals.category);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/leagues\/?$/, data.intramurals.leagues);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/leagues\/[0-9]{2}\/?$/, data.intramurals.league);
 
 passport.serializeUser(function(user, done) {
   done(null, user);

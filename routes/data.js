@@ -83,17 +83,23 @@ exports.intramurals = {
 	},
 
 	leagues: function(req, res) {
+		var categoryId = req.path.split(path.sep)[3];
+		
+		db.intramurals.leagues(categoryId, null, function(err, leagues) {
+			console.log(err);
+			res.send(leagues);
+		});
 
 	},
 	league: function(req, res) {
+		var splitPath = req.path.split(path.sep),
+			categoryId = splitPath[3],
+			//this id is a 2 digit decimal number
+			id = +splitPath[5];
 
-	},
-
-	games: function(req, res) {
-
-	},
-	game: function(req, res) {
-
+		db.intramurals.leagues(categoryId, id, function(err, leagues) {
+			res.send(leagues);
+		});
 	}
 
 }
