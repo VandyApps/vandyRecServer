@@ -70,13 +70,20 @@ exports.intramurals = function(req, res) {
 
 exports.intramurals = {
 	categories: function(req, res) {
-		db.intramurals.categories(null, function(err, categories) {
-			console.log(err);
-			res.send(categories);
-		});
+		if (req.query.season) {
+			db.intramurals.get.season(+req.query.season, function(err, collection) {
+				res.send(collection);
+			});
+		} else {
+			db.intramurals.get.categories(null, function(err, categories) {
+				console.log(err);
+				res.send(categories);
+			});
+		}
+			
 	},
 	category: function(req, res) {
-		db.intramurals.categories(path.basename(req.path), function(err, categories) {
+		db.intramurals.get.categories(path.basename(req.path), function(err, categories) {
 			console.log(err);
 			res.send(categories[0]);
 		});
@@ -85,7 +92,7 @@ exports.intramurals = {
 	leagues: function(req, res) {
 		var categoryId = req.path.split(path.sep)[3];
 		
-		db.intramurals.leagues(categoryId, null, function(err, leagues) {
+		db.intramurals.get.leagues(categoryId, null, function(err, leagues) {
 			console.log(err);
 			res.send(leagues);
 		});
@@ -97,10 +104,10 @@ exports.intramurals = {
 			//this id is a 2 digit decimal number
 			id = +splitPath[5];
 
-		db.intramurals.leagues(categoryId, id, function(err, leagues) {
+		db.intramurals.get.leagues(categoryId, id, function(err, leagues) {
 			res.send(leagues);
 		});
 	}
 
-}
+};
 

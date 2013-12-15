@@ -385,46 +385,6 @@ exports.deleteGFObjectWithID = function(id, callback) {
 };
 
 /*
-exports.getIntramurals = function(callback) {
-	Db.connect(MONGODB_URL, function(err, db) {
-		db.collection(Collections.intramurals, function(err, collection) {
-			collection.find({}, function(err, cursor) {
-				cursor.toArray(function(err, intramurals) {
-					callback(err, intramurals);
-					db.close();
-				});
-			});
-		});
-	});
-};
-
-exports.getIntramuralsForSeason = function(seasonIndex, callback) {
-	var seasonQuery = {season: seasonIndex};
-	Db.connect(MONGODB_URL, function(err, db) {
-		db.collection(Collections.intramurals, function(err, collection) {
-			collection.find(seasonQuery, function(err, cursor) {
-				cursor.toArray(function(err, intramurals) {
-					callback(err, intramurals);
-					db.close();
-				});
-			});
-		});
-	});
-};
-
-exports.getIntramuralWithID = function(id, callback) {
-	var parsedID = new ObjectID.createFromHexString(id);
-	Db.connect(MONGODB_URL, function(err, db) {
-		db.collection(Collections.intramurals, function(err, collection) {
-			collection.find({_id: parsedID}, function(err, cursor) {
-				cursor.toArray(function(err, sports) {
-					callback(err, sports[0]);
-					db.close();
-				});
-			});
-		});
-	});
-};
 
 exports.updateIntramurals = function(object, callback) {
 	var parsedID = new ObjectID.createFromHexString(object._id);
@@ -492,7 +452,29 @@ exports.deleteIntramurals = function(id, callback) {
 */
 /* intramurals api*/
 
-exports.intramurals = {
+exports.intramurals = {};
+
+exports.intramurals.get = {
+
+	season: function(season, callback) {
+		var renderData = {
+				name: true, 
+				season: true
+			},
+			query = {"season": season};
+
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.find(query, renderData, function(err, cursor) {
+					cursor.toArray(function(err, collection) {
+						callback(err, collection);
+						db.close();
+					});
+				});
+			});
+		});
+	},
+
 	categories: function(id, callback) {
 		var renderData = {
 				name: true,
@@ -517,7 +499,7 @@ exports.intramurals = {
 	leagues: function(categoryId, id, callback) {
 		var renderData = {
 				leagues: true
-			}
+			};
 
 		Db.connect(MONGODB_URL, function(error, db) {
 
@@ -542,9 +524,19 @@ exports.intramurals = {
 		});
 
 	}
-
 };
 
+exports.intramurals.update = {
+	member: function(data, callback) {
+
+	}
+};
+
+exports.intramurals.delete = {
+	member: function(id, callback) {
+
+	}
+};
 
 
 
