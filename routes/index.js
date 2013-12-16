@@ -250,7 +250,7 @@ exports.intramurals = function(req, res) {
 
 exports.createIntramurals = function(req, res) {
 	var data = req.body;
-	db.insertIntramurals(data, function(err, object) {
+	db.intramurals.insert.member(data, function(err, object) {
 		if (err) {
 			res.statusCode = 500;
 			res.send(err);
@@ -265,7 +265,7 @@ exports.createIntramurals = function(req, res) {
 
 exports.updateIntramurals = function(req, res) {
 	var data = req.body;
-	db.updateIntramurals(data, function(err, object) {
+	db.intramurals.update.member(data, function(err, object) {
 		if (err) {
 			res.statusCode = 500;
 			res.send(err);
@@ -278,7 +278,7 @@ exports.updateIntramurals = function(req, res) {
 
 exports.deleteIntramurals = function(req, res) {
 	
-	db.deleteIntramurals(req.headers._id, function(err, sport) {
+	db.intramurals.delete.member(req.headers._id, function(err, sport) {
 		if (err) {
 			res.statusCode = 500;
 			res.send(err);

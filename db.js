@@ -526,15 +526,72 @@ exports.intramurals.get = {
 	}
 };
 
+exports.intramurals.insert = {
+	member: function(data, callback) {
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.insert(data, {w:1},function(err, data) {
+					callback(err, data);
+					db.close();
+				});
+			});
+		});
+	}
+};
+
 exports.intramurals.update = {
 	member: function(data, callback) {
+		var parsedID = new ObjectID.createFromHexString(object._id);
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.update({_id: parsedID},
+				{
+					sport: object.sport,
+					season: object.season,
+					entryDates: object.entryDates,
+					seasonDates: object.seasonDates,
+					teams: object.teams,
+					games: object.games
 
+				}, function(err, numUpdated) {
+					if (err) {
+
+						callback(err, null);
+					} else {
+						console.log("No error: " + JSON.stringify(object));
+						callback(err, object);
+					}
+					db.close();
+				});
+			});
+		});
 	}
 };
 
 exports.intramurals.delete = {
 	member: function(id, callback) {
+		var parsedID = ObjectID.createFromHexString(id);
+		//first find the intramurals sport that you are deleting
 
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.find({_id: parsedID}, function(err, cursor) {
+					cursor.toArray(function(err, sports) {
+						collection.remove({_id: parsedID}, function(err, numRemoved) {
+							if (err) {
+								callback(err, null);
+							} else if (numRemoved === 0) {
+								callback(new Error("Did not remove anything"), null);
+							} else {
+								callback(null, sports[0]);
+							}
+							db.close();
+						});
+					});
+				});
+						
+			});
+		});
 	}
 };
 
