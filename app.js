@@ -93,7 +93,7 @@ app.put('/intramurals', routes.intramurals.update);
 app.delete('/intramurals', routes.intramurals.delete);
 
 app.post('/intramurals/files', routes.intramurals.files);
-app.get('/intramurals/league', routes.intramurals.league);
+app.get(/intramurals\/category\/[A-F,a-f,0-9]{24}\/league\/[0-9]{2}$/, routes.intramurals.league);
 app.get('/intramurals/download', routes.downloadHTML);
 
 app.get('/programs', routes.programs);
@@ -106,8 +106,8 @@ app.get('/JSON/GF', data.groupFitness);
 /* intramurals api*/
 app.get('/JSON/IM', data.intramurals.categories);
 app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}$/, data.intramurals.category);
-app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/leagues\/?$/, data.intramurals.leagues);
-app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/leagues\/[0-9]{2}\/?$/, data.intramurals.league);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/leagues$/, data.intramurals.leagues);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/league\/[0-9]{2}$/, data.intramurals.league);
 
 passport.serializeUser(function(user, done) {
   done(null, user);

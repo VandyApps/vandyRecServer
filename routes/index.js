@@ -368,7 +368,6 @@ exports.programs = function(req, res) {
 	
 };
 
-
 //serves raw ejs files for jQuery tabs
 exports.newsRaw = function(req, res) {
 	res.render('news');
