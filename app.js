@@ -87,13 +87,13 @@ app.delete('/groupFitness', routes.deleteGF);
 app.get('/traffic', routes.traffic);
 
 
-app.get('/intramurals', routes.intramurals);
-app.post('/intramurals', routes.createIntramurals);
-app.put('/intramurals', routes.updateIntramurals);
-app.delete('/intramurals', routes.deleteIntramurals);
+app.get('/intramurals', routes.intramurals.render);
+app.post('/intramurals', routes.intramurals.create);
+app.put('/intramurals', routes.intramurals.update);
+app.delete('/intramurals', routes.intramurals.delete);
 
-app.post('/intramurals/files', routes.intramuralFiles);
-app.get('/intramurals/details', routes.intramuralsDetails);
+app.post('/intramurals/files', routes.intramurals.files);
+app.get('/intramurals/league', routes.intramurals.league);
 app.get('/intramurals/download', routes.downloadHTML);
 
 app.get('/programs', routes.programs);

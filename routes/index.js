@@ -237,9 +237,9 @@ exports.deleteGF = function(req, res) {
 		
 	});
 };
-
+exports.intramurals = {};
 //intramurals methods
-exports.intramurals = function(req, res) {
+exports.intramurals.render = function(req, res) {
 	if (req.user !== undefined) {
 		res.redirect('/?entry=4');
 	} else {
@@ -248,7 +248,7 @@ exports.intramurals = function(req, res) {
 	
 };
 
-exports.createIntramurals = function(req, res) {
+exports.intramurals.create = function(req, res) {
 	var data = req.body;
 	db.intramurals.insert.member(data, function(err, object) {
 		if (err) {
@@ -263,7 +263,7 @@ exports.createIntramurals = function(req, res) {
 	});
 };
 
-exports.updateIntramurals = function(req, res) {
+exports.intramurals.update = function(req, res) {
 	var data = req.body;
 	db.intramurals.update.member(data, function(err, object) {
 		if (err) {
@@ -276,7 +276,7 @@ exports.updateIntramurals = function(req, res) {
 	});
 };
 
-exports.deleteIntramurals = function(req, res) {
+exports.intramurals.delete = function(req, res) {
 	
 	db.intramurals.delete.member(req.headers._id, function(err, sport) {
 		if (err) {
@@ -291,7 +291,7 @@ exports.deleteIntramurals = function(req, res) {
 
 };
 
-exports.intramuralFiles = function(req, res) {
+exports.intramurals.files = function(req, res) {
 	if (!req.files) {
 		//should create an error page
 		res.redirect('/intramurals');
@@ -328,14 +328,9 @@ exports.intramuralFiles = function(req, res) {
 
 };
 
-exports.intramuralsDetails = function(req, res) {
+exports.intramurals.league = function(req, res) {
 	if (req.user) {
-		if (req.query.renderHTML && req.query.renderHTML === 'true') {
-			res.render('sportsDetails');
-			res.attachment();
-		} else {
-			res.render('sportsDetails');
-		}
+		res.render('intramuralsLeague')
 		
 	} else {
 		res.redirect('/login');

@@ -1,0 +1,162 @@
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,code,del,dfn,em,img,q,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,dialog,figure,footer,header,hgroup,nav,section {
+border:0;
+font-size:100%;
+font-family:inherit;
+vertical-align:baseline;
+margin:0;
+padding:0;
+}
+
+article,aside,dialog,figure,footer,header,hgroup,nav,section {
+display:block;
+}
+
+body {
+line-height:1.5;
+font-size:75%;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+:focus {
+outline:0;
+}
+
+table {
+border-collapse:separate;
+border-spacing:0;
+width:100%;
+margin: 50px auto;
+}
+
+caption,th,td {
+text-align:left;
+font-weight:400;
+}
+
+table,td,th {
+vertical-align:top;
+}
+
+blockquote:before,blockquote:after,q:before,q:after {
+content:"";
+}
+
+a img {
+border:none;
+}
+
+html {
+font-size:100.01%;
+}
+
+h1,h2,h3,h4,h5,h6 {
+font-weight:400;
+}
+
+h1 {
+font-size:3em;
+line-height:1;
+margin-bottom:.5em;
+}
+
+h2 {
+font-size:2em;
+margin-bottom:.75em;
+}
+
+h3 {
+font-size:1.5em;
+line-height:1;
+margin-bottom:1em;
+}
+
+h4 {
+font-size:1.2em;
+line-height:1.25;
+margin-bottom:1.25em;
+}
+
+h5 {
+font-size:1em;
+font-weight:700;
+margin-bottom:1.5em;
+}
+
+h6 {
+font-size:1em;
+font-weight:700;
+}
+
+p {
+margin:0 0 1.5em;
+}
+
+p img.left {
+float:left;
+margin:1.5em 1.5em 1.5em 0;
+padding:0;
+}
+
+p img.right {
+float:right;
+margin:1.5em 0 1.5em 1.5em;
+}
+
+a:focus,a:hover {
+color:#000;
+}
+
+a {
+color:#009;
+text-decoration:underline;
+}
+
+strong {
+font-weight:700;
+}
+
+em,dfn {
+font-style:italic;
+}
+
+ul,ol {
+padding-left:3.333em;
+margin:0 1.5em 1em 0;
+}
+
+ul {
+list-style-type:disc;
+}
+
+ol {
+list-style-type:decimal;
+}
+
+tr.even td {
+background:#ECECEC;
+}
+
+.small {
+font-size:.8em;
+margin-bottom:1.875em;
+line-height:1.875em;
+}
+
+.right {
+float:right;
+margin:0 0 10px 10px;
+}
+
+.left {
+float:left;
+margin:0 10px 10px 0;
+}
+
+td {
+border:solid #aaa 1px;
+padding:10px;
+}
+
+h1 img,h2 img,h3 img,h4 img,h5 img,h6 img,li ul,li ol {
+margin:0;
+}
