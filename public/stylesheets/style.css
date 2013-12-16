@@ -1274,3 +1274,39 @@ textarea {
 }
 
 /*intramurals*/
+
+#intramurals {
+    list-style: none;
+    border: solid black 1px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#intramurals ul {
+    list-style: none;
+}
+
+#intramurals li {
+    margin-left: -40px;
+}
+
+#intramurals > li {
+    background: #ffb435;
+    padding: 5px 10px 5px 10px;
+    font-size: 14pt;
+    border-bottom: solid #555 1px;
+}
+
+#intramurals > ul > li {
+    padding: 7px;
+}
+
+ #intramurals > ul > ul > li {
+    padding: 7px;
+ }
+
+ #intramurals > li:not(:first-child) {
+    border-top: solid #555 1px;
+ }
+
+
