@@ -52,7 +52,8 @@ exports.groupFitness = function(req, res) {
 	
 };
 
-exports.intramurals = {
+exports.intramurals = {};
+exports.intramurals.get = {
 	categories: function(req, res) {
 		if (req.query.season) {
 			db.intramurals.get.season(+req.query.season, function(err, collection) {
@@ -95,3 +96,116 @@ exports.intramurals = {
 
 };
 
+exports.intramurals.post = {
+	categories: function(req, res) {
+		if (req.user) {
+			console.log(req.body);
+			db.intramurals.insert.category(req.body, function(err, category) {
+				if (err) {
+					res.statusCode = 500;
+					res.send(err);
+
+				} else {
+					res.statusCode = 200;
+					res.send(category);
+				}
+			});
+			
+		} else {
+			res.statusCode = 401;
+			res.send("Forbidden access. Posting new data requires credentials");
+		}
+	},
+	leagues: function(req, res) {
+		if (req.user) {
+			db.intramurals.insert.league(req.body, function(err, league) {
+				if (err) {
+					res.statusCode = 500;
+					res.send(err);
+				} else {
+					res.statusCode =200;
+					res.send(league);
+				}
+			});
+		} else {
+			res.statusCode = 401;
+			res.send("Forbidden access.  Posting new data requires credentials");
+		}
+	}
+};
+
+exports.intramurals.put = {
+	category: function() {
+		if (req.user) {
+			db.intramurals.update.category(req.body, function(err, category) {
+				if (err) {
+					res.statusCode = 500;
+					res.send(err);
+				} else {
+					res.statusCode = 200;
+					res.send(category);
+				}
+			});
+		} else {
+			res.statusCode = 401;
+			res.send("Forbidden access.  Updating data requires credentials");
+		}
+	},
+	league: function() {
+		if (req.user) {
+
+			db.intramurals.update.league(req.body, function(err, league) {
+				if (err) {
+					res.statusCode = 500;
+					res.send(err);
+				} else {
+					res.statusCode = 200;
+					res.send(league);
+				}
+			});
+
+		} else {
+			res.statusCode = 401;
+			res.send("Forbidden access.  Updating data requires credentials");
+		}
+	}
+};
+
+exports.intramurals.delete = {
+	category: function() {
+		if (req.user) {
+			var splitPath = req.path.split(path.sep),
+				categoryId = splitPath[3];
+
+			db.intramurals.delete.category(categoryId, function(err, sport) {
+				if (err) {
+					res.statusCode = 500;
+					res.send(err);
+				} else {
+					res.statusCode = 200;
+					res.send(sport);
+				}
+				
+			});
+		} else {
+			res.statusCode = 401;
+			res.send("Forbidden access. Deleting data requires credentials");
+		}
+	},
+	league: function() {
+		if (req.user) {
+			db.intramurals.delete.league(req.headers.categoryId, req.headers.leagueId, function(err, id) {
+				if (err) {
+					res.statusCode = 500;
+					res.send(err);
+				} else {
+					res.statusCode = 200;
+					res.send(id);
+				}
+			});
+		} else {
+			res.statusCode = 401;
+			res.send("Forbidden access.  Deleting data requires credentials");
+		}
+	}
+};

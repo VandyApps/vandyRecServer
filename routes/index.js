@@ -1,17 +1,13 @@
 
-/*
- * GET home page.
- */
-
 var db = require('../db'),
 	fs = require('fs'),
 	stream = require('stream'),
     fileParser = require('../fileParser');
 
 exports.index = function(req, res) {
-	if (req.user !== undefined) {
-		if (typeof req.query.entry !== 'undefined') {
-			res.render('index', {tabIndex: parseInt(req.query.entry, 10)});
+	if (req.user) {
+		if (req.query.entry) {
+			res.render('index', {tabIndex: +(req.query.entry)});
 		} else {
 			res.render('index', {tabIndex: 0});
 		}
@@ -24,7 +20,7 @@ exports.index = function(req, res) {
 };
 
 exports.login = function(req, res) {
-	if (req.query.failed !== undefined && req.query.failed === 'true') {
+	if (req.query.failed && req.query.failed === 'true') {
 		res.render('login', {warning: 'Incorrect Login Credentials'});
 	} else {
 		res.render('login', {warning: ''});	
@@ -35,7 +31,7 @@ exports.login = function(req, res) {
 
 
 exports.news = function(req, res) {
-	if (req.user !== undefined) {
+	if (req.user) {
 		res.redirect('/');	
 	} else {
 		res.redirect('/login');
@@ -92,7 +88,7 @@ exports.deleteNews = function(req, res) {
 
 //hours methods
 exports.hours = function(req, res) {
-	if (req.user !== undefined) {
+	if (req.user) {
 		res.redirect('/?entry=1')
 	} else {
 		res.redirect('/login');
@@ -144,7 +140,7 @@ exports.deleteHours = function(req, res) {
 
 //traffic methods 
 exports.traffic = function(req, res) {
-	if (req.user !== undefined) {
+	if (req.user) {
 		res.redirect('/?entry=2');
 	} else {
 		res.redirect('/login');
@@ -156,7 +152,7 @@ exports.traffic = function(req, res) {
 
 //group fitness methods
 exports.groupFitness = function(req, res) {
-	if (req.user !== undefined) {
+	if (req.user) {
 		res.redirect('/?entry=3');
 	} else {
 		res.redirect('/login');
@@ -240,14 +236,14 @@ exports.deleteGF = function(req, res) {
 exports.intramurals = {};
 //intramurals methods
 exports.intramurals.render = function(req, res) {
-	if (req.user !== undefined) {
+	if (req.user) {
 		res.redirect('/?entry=4');
 	} else {
 		res.redirect('/login');
 	}
 	
 };
-
+/*
 exports.intramurals.create = function(req, res) {
 	var data = req.body;
 	db.intramurals.insert.member(data, function(err, object) {
@@ -290,7 +286,7 @@ exports.intramurals.delete = function(req, res) {
 	});
 
 };
-
+*/
 exports.intramurals.files = function(req, res) {
 	if (!req.files) {
 		//should create an error page

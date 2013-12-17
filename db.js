@@ -475,8 +475,14 @@ exports.intramurals.get = {
 		});
 	},
 
-	categories: function(id, callback) {
-		var renderData = {
+	categories: function(id, callback, options) {
+		var renderData = (options && options.renderAll) ? 
+			{
+				name: true,
+				season: true,
+				leagues: true
+			} : 
+			{
 				name: true,
 				season: true
 			},
@@ -527,12 +533,37 @@ exports.intramurals.get = {
 };
 
 exports.intramurals.insert = {
-	member: function(data, callback) {
+	category: function(category, callback) {
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collections.intramurals, function(err, collection) {
-				collection.insert(data, {w:1},function(err, data) {
-					callback(err, data);
+				collection.insert(category, {w:1},function(err, categories) {
+					callback(err, categories[0]);
 					db.close();
+				});
+			});
+		});
+	},
+	league: function(categoryId, league, callback) {
+		var parsedId = new ObjectID.createFromHexString(categoryId),
+			renderData = {
+				season: true,
+				name: true,
+				leagues: true
+			};
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.find({_id:parsedId}, renderData, function(err, cursor) {
+					cursor.toArray(function(err, categories) {
+						categories[0].leagues.push(league);
+						collection.update({_id:parsedId}, categories[0], function(err, numUpdated) {
+							if (err || !numUpdated) {
+								callback((err) ? err : new Error("No leagues inserted"), null);
+							} else {
+								callback(null, league);
+							}
+							db.close();
+						});
+					});
 				});
 			});
 		});
@@ -540,28 +571,56 @@ exports.intramurals.insert = {
 };
 
 exports.intramurals.update = {
-	member: function(data, callback) {
+	category: function(category, callback) {
 		var parsedID = new ObjectID.createFromHexString(object._id);
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collections.intramurals, function(err, collection) {
 				collection.update({_id: parsedID},
 				{
-					sport: object.sport,
-					season: object.season,
-					entryDates: object.entryDates,
-					seasonDates: object.seasonDates,
-					teams: object.teams,
-					games: object.games
+					name: category.name,
+					season: category.season,
+					leagues: category.leagues
 
 				}, function(err, numUpdated) {
 					if (err) {
 
 						callback(err, null);
 					} else {
-						console.log("No error: " + JSON.stringify(object));
-						callback(err, object);
+						callback(err, category);
 					}
 					db.close();
+				});
+			});
+		});
+	},
+	league: function(categoryId, league, callback) {
+		exports.intramurals.get.categories(categoryId, function(err, category) {
+			//replace the updated league in the model
+			var leagues = category.leagues.map(function(mLeague) {
+				if (mLeague.id == league.id) {
+					return league;
+				} else {
+					return mLeague;
+				}
+				
+			}, {renderAll: true});
+			//connect to the db and update the model
+			Db.connect(MONGODB_URL, function(err, db) {
+				db.collection(Collections.intramurals, function(err, collection) {
+					collection.update({_id: new ObjectID.createFromHexString(categoryId)},
+					{
+						"name": category.name,
+						"season": category.season,
+						"leagues": leagues
+
+					}, function(err, numUpdated) {
+						if (err || !numUpdated) {
+							callback((err) ? err : new Error("No leagues were updated"), null);
+						} else {
+							callback(null, league);
+						}
+						db.close();
+					});
 				});
 			});
 		});
@@ -569,8 +628,8 @@ exports.intramurals.update = {
 };
 
 exports.intramurals.delete = {
-	member: function(id, callback) {
-		var parsedID = ObjectID.createFromHexString(id);
+	category: function(id, callback) {
+		var parsedID = new ObjectID.createFromHexString(id);
 		//first find the intramurals sport that you are deleting
 
 		Db.connect(MONGODB_URL, function(err, db) {
@@ -590,6 +649,37 @@ exports.intramurals.delete = {
 					});
 				});
 						
+			});
+		});
+	},
+	league: function(categoryId, id, callback) {
+		var parsedID = new ObjectID.createFromHexString(categoryId),
+			renderData = {
+				season: true,
+				name: true,
+				leagues: true,
+			}; 
+		Db.connect(MONGODB_URL, function(err, db) {
+			db.collection(Collections.intramurals, function(err, collection) {
+				collection.find({_id: parsedID}, renderData, function(err, cursor) {
+					cursor.toArray(function(err, categories) {
+						collection.update({_id: parsedID}, {
+							name: categories[0].name,
+							season: categories[0].season,
+							leagues: categories[0].leagues.filter(function(league) {
+								return league.id !== id;
+							})
+						},
+						function(err, numUpdated) {
+							if (err || !numUpdated) {
+								callback((err) ? err : new Error("No leagues deleted"), null);
+							} else {
+								callback(null, id);
+							}
+							db.close();
+						});
+					});
+				});
 			});
 		});
 	}

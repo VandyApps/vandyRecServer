@@ -88,9 +88,9 @@ app.get('/traffic', routes.traffic);
 
 
 app.get('/intramurals', routes.intramurals.render);
-app.post('/intramurals', routes.intramurals.create);
-app.put('/intramurals', routes.intramurals.update);
-app.delete('/intramurals', routes.intramurals.delete);
+//app.post('/intramurals', routes.intramurals.create);
+//app.put('/intramurals', routes.intramurals.update);
+//app.delete('/intramurals', routes.intramurals.delete);
 
 app.post('/intramurals/files', routes.intramurals.files);
 app.get(/intramurals\/category\/[A-F,a-f,0-9]{24}\/league\/[0-9]{2}$/, routes.intramurals.league);
@@ -104,10 +104,19 @@ app.get('/JSON/hours', data.hours);
 app.get('/JSON/GF', data.groupFitness);
 
 /* intramurals api*/
-app.get('/JSON/IM', data.intramurals.categories);
-app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/?$/, data.intramurals.category);
-app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/leagues\/?$/, data.intramurals.leagues);
-app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/league\/\d{1,2}\/?$/, data.intramurals.league);
+app.get('/JSON/IM', data.intramurals.get.categories);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/?$/, data.intramurals.get.category);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/leagues\/?$/, data.intramurals.get.leagues);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/league\/\d{1,2}\/?$/, data.intramurals.get.league);
+
+app.put(/JSON\/IM\/[A-F,a-f,0-9]{24}\/?$/, data.intramurals.put.category);
+app.put(/JSON\/IM\/[A-F,a-f,0-9]{24}\/league\/\d{1,2}\/?$/, data.intramurals.put.league);
+
+app.post(/JSON\/IM\/?$/, data.intramurals.post.categories);
+app.post(/JSON\/IM\/[A-F,a-f,0-9]{24}\/leagues\/?$/, data.intramurals.post.leagues);
+
+app.delete(/JSON\/IM\/[A-F,a-f,0-9]{24}\/?$/, data.intramurals.delete.category);
+app.delete(/JSON\/IM\/[A-F,a-f,0-9]{24}\/league\/\d{1,2}\/?$/, data.intramurals.delete.league);
 
 passport.serializeUser(function(user, done) {
   done(null, user);
