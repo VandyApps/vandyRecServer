@@ -105,9 +105,9 @@ app.get('/JSON/GF', data.groupFitness);
 
 /* intramurals api*/
 app.get('/JSON/IM', data.intramurals.categories);
-app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}$/, data.intramurals.category);
-app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/leagues$/, data.intramurals.leagues);
-app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/league\/[0-9]{2}$/, data.intramurals.league);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/?$/, data.intramurals.category);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/leagues\/?$/, data.intramurals.leagues);
+app.get(/JSON\/IM\/[A-F,a-f,0-9]{24}\/league\/\d{1,2}\/?$/, data.intramurals.league);
 
 passport.serializeUser(function(user, done) {
   done(null, user);

@@ -157,6 +157,11 @@ border:solid #aaa 1px;
 padding:10px;
 }
 
+#gameTable tr:not(:nth-child(1)) td:not(:nth-child(5)),
+#teamTable tr:not(:nth-child(1)) td:not(:nth-child(1)) {
+	cursor: pointer;
+}
+
 h1 img,h2 img,h3 img,h4 img,h5 img,h6 img,li ul,li ol {
 margin:0;
 }

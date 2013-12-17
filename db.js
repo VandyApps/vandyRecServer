@@ -510,7 +510,7 @@ exports.intramurals.get = {
 						if (id) {
 							collection[0].leagues.forEach(function(league) {
 								if (league.id == id) {
-									packet = [league];
+									packet = league;
 								}
 							});
 							callback(err, packet);
