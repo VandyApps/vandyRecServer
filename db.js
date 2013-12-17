@@ -676,7 +676,7 @@ exports.intramurals.delete = {
 							if (err || !numUpdated) {
 								callback((err) ? err : new Error("No leagues deleted"), null);
 							} else {
-								callback(null, id);
+								callback(null, {_id:id});
 							}
 							db.close();
 						});

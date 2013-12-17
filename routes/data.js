@@ -195,8 +195,11 @@ exports.intramurals.delete = {
 		}
 	},
 	league: function(req, res) {
+		var splitPath;
 		if (req.user) {
-			db.intramurals.delete.league(req.headers.categoryId, req.headers.leagueId, function(err, id) {
+			splitPath = req.path.split(path.sep);
+
+			db.intramurals.delete.league(splitPath[3], +(splitPath[5]), function(err, id) {
 				if (err) {
 					res.statusCode = 500;
 					res.send(err);
