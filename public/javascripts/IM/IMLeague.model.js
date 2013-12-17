@@ -34,20 +34,27 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 	Backbone.Model.extend({
 		idAttribute: "id",
 		initialize: function(mJSON) {
-			console.log("mJSON\n" + JSON.stringify(mJSON));
 			this.set('homeTeam', new Intramurals.Model.Team({id:mJSON.homeTeam}));
 			this.set('awayTeam', new Intramurals.Model.Team({id:mJSON.awayTeam}));
 		},
 		getWinner: function() {
 			//returns null if no winners
+			var status = this.get('status');
+			if (status == 0 || status == 4) {
+				return this.get('homeTeam');
+			} else if (status == 1 || status ==  3) {
+				return this.get('awayTeam');
+			} else {
+				return null;
+			}
 		},
 
 		isCancelled: function() {
-
+			return this.get('status') == 5;
 		},
 
 		isPlayed: function() {
-
+			return this.get('status') != 6;
 		}
 	})
 );
@@ -55,7 +62,24 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 Intramurals.Model.Teams = Backbone.Collection.extend({
 	model: Intramurals.Model.Team,
 	teamWithName: function(name) {
+		var team = null,
+			regexp = new RegExp(name, 'i');
+		this.each(function(team_it) {
+			if (regexp.test(team_it.get('name'))) {
+				team = team_it;
+			}
+		});
+		return team;
+	},
 
+	generateUniqueId: function() {
+		var nextId = 1;
+		this.each(function(team) {
+			if (team.id >= nextId) {
+				nextId = team.id + 1;
+			}
+		});
+		return nextId;
 	}
 });
 
@@ -65,6 +89,16 @@ Intramurals.Model.Games = Backbone.Collection.extend({
 	//reset the wins, losses, and ties for all teams based on current games stats
 	resetWLT: function() {
 
+	},
+
+	generateUniqueId: function() {
+		var nextId = 1;
+		this.each(function(game) {
+			if (game.id >= nextId) {
+				nextId = game.id + 1;
+			}
+		});
+		return nextId;
 	}
 });
 
@@ -85,9 +119,6 @@ Intramurals.Model.League = Backbone.UniqueModel(
 				playoffs: new Intramurals.Model.Playoffs(response.season.playoffs)
 			};
 			return response;
-		},
-		initialize: function() {
-			
 		},
 
 		//get collection of teams
@@ -122,9 +153,6 @@ Intramurals.Model.Leagues = Backbone.Collection.extend({
 Intramurals.Model.Category = Backbone.UniqueModel(
 	Backbone.Model.extend({
 		idAttribute: '_id',
-		initialize: function() {
-
-		},
 		getLeagues: function() {
 			var leagues = new Intramurals.Model.Leagues();
 			leagues.categoryId = this.id;
@@ -135,13 +163,8 @@ Intramurals.Model.Category = Backbone.UniqueModel(
 
 Intramurals.Model.Categories = Backbone.Collection.extend({
 	url: '/JSON/IM/',
-	model: Intramurals.Model.Category,
-	initialize: function() {
-
-	}
+	model: Intramurals.Model.Category	
 });
-
-
 
 /*temp script*/
 
