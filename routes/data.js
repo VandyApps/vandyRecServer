@@ -136,7 +136,7 @@ exports.intramurals.post = {
 };
 
 exports.intramurals.put = {
-	category: function() {
+	category: function(req, res) {
 		if (req.user) {
 			db.intramurals.update.category(req.body, function(err, category) {
 				if (err) {
@@ -152,10 +152,11 @@ exports.intramurals.put = {
 			res.send("Forbidden access.  Updating data requires credentials");
 		}
 	},
-	league: function() {
+	league: function(req, res) {
+		var splitPath;
 		if (req.user) {
-
-			db.intramurals.update.league(req.body, function(err, league) {
+			splitPath = req.path.split(path.sep);
+			db.intramurals.update.league(splitPath[3], req.body, function(err, league) {
 				if (err) {
 					res.statusCode = 500;
 					res.send(err);
@@ -173,7 +174,7 @@ exports.intramurals.put = {
 };
 
 exports.intramurals.delete = {
-	category: function() {
+	category: function(req, res) {
 		if (req.user) {
 			var splitPath = req.path.split(path.sep),
 				categoryId = splitPath[3];
@@ -193,7 +194,7 @@ exports.intramurals.delete = {
 			res.send("Forbidden access. Deleting data requires credentials");
 		}
 	},
-	league: function() {
+	league: function(req, res) {
 		if (req.user) {
 			db.intramurals.delete.league(req.headers.categoryId, req.headers.leagueId, function(err, id) {
 				if (err) {

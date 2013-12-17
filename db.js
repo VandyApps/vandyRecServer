@@ -572,7 +572,8 @@ exports.intramurals.insert = {
 
 exports.intramurals.update = {
 	category: function(category, callback) {
-		var parsedID = new ObjectID.createFromHexString(object._id);
+		console.log(category._id);
+		var parsedID = new ObjectID.createFromHexString(category._id);
 		Db.connect(MONGODB_URL, function(err, db) {
 			db.collection(Collections.intramurals, function(err, collection) {
 				collection.update({_id: parsedID},
@@ -594,9 +595,10 @@ exports.intramurals.update = {
 		});
 	},
 	league: function(categoryId, league, callback) {
-		exports.intramurals.get.categories(categoryId, function(err, category) {
+		exports.intramurals.get.categories(categoryId, function(err, categories) {
 			//replace the updated league in the model
-			var leagues = category.leagues.map(function(mLeague) {
+			console.log(categories);
+			var leagues = categories[0].leagues.map(function(mLeague) {
 				if (mLeague.id == league.id) {
 					return league;
 				} else {
@@ -609,8 +611,8 @@ exports.intramurals.update = {
 				db.collection(Collections.intramurals, function(err, collection) {
 					collection.update({_id: new ObjectID.createFromHexString(categoryId)},
 					{
-						"name": category.name,
-						"season": category.season,
+						"name": categories[0].name,
+						"season": categories[0].season,
 						"leagues": leagues
 
 					}, function(err, numUpdated) {
@@ -623,7 +625,7 @@ exports.intramurals.update = {
 					});
 				});
 			});
-		});
+		}, {renderAll: true});
 	}
 };
 
