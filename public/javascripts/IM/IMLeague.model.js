@@ -4,33 +4,40 @@ var Intramurals = {};
 Intramurals.Model = {};
 
 Intramurals.Model.Team = Backbone.UniqueModel(
-	Backbone.Model.extend({
-		incrementWins: function() {
 
+	Backbone.Model.extend({
+		idAttribute: "id",
+		incrementWins: function() {
+			this.set('wins', this.get('wins') + 1);
 		},
 		incrementLosses: function() {
-
+			this.set('losses', this.get('losses') + 1);
 		},
 		incrementTies: function() {
-
+			this.set('ties', this.get('ties') + 1);
 		},
 
 		decrementWins: function() {
-
+			this.set('wins', this.get('wins') - 1);
 		},
 		decrementLosses: function() {
-
+			this.set('losses', this.get('losses') - 1);
 		},
 		decrementTies: function() {
-
+			this.set('ties', this.get('ties') - 1);
 		}
-
 	})
 );
 
 Intramurals.Model.Game = Backbone.UniqueModel(
+	
 	Backbone.Model.extend({
-
+		idAttribute: "id",
+		initialize: function(mJSON) {
+			console.log("mJSON\n" + JSON.stringify(mJSON));
+			this.set('homeTeam', new Intramurals.Model.Team({id:mJSON.homeTeam}));
+			this.set('awayTeam', new Intramurals.Model.Team({id:mJSON.awayTeam}));
+		},
 		getWinner: function() {
 			//returns null if no winners
 		},
@@ -133,6 +140,24 @@ Intramurals.Model.Categories = Backbone.Collection.extend({
 
 	}
 });
+
+
+
+/*temp script*/
+
+var a = new Intramurals.Model.Categories();
+a.fetch();
+
+a.on('sync', function() {
+	b = a.models[0],
+	c = b.getLeagues();
+	c.fetch();
+	c.on('sync', function() {
+		d = c.models[0];
+	});
+});
+
+
 
 
 
