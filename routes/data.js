@@ -99,7 +99,6 @@ exports.intramurals.get = {
 exports.intramurals.post = {
 	categories: function(req, res) {
 		if (req.user) {
-			console.log(req.body);
 			db.intramurals.insert.category(req.body, function(err, category) {
 				if (err) {
 					res.statusCode = 500;
@@ -117,13 +116,15 @@ exports.intramurals.post = {
 		}
 	},
 	leagues: function(req, res) {
+		var splitPath;
 		if (req.user) {
-			db.intramurals.insert.league(req.body, function(err, league) {
+			splitPath = req.path.split(path.sep);
+			db.intramurals.insert.league(splitPath[3], req.body, function(err, league) {
 				if (err) {
 					res.statusCode = 500;
 					res.send(err);
 				} else {
-					res.statusCode =200;
+					res.statusCode = 200;
 					res.send(league);
 				}
 			});
