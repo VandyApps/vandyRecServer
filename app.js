@@ -101,7 +101,7 @@ app.get(/((JSON)|(api))\/hours/, data.hours);
 app.get(/((JSON)|(api))\/GF/, data.groupFitness);
 
 /* intramurals api*/
-app.get(/((JSON)|(api))\/IM/, data.intramurals.get.categories);
+app.get(/((JSON)|(api))\/IM\/?$/, data.intramurals.get.categories);
 app.get(/((JSON)|(api))\/IM\/[A-F,a-f,0-9]{24}\/?$/, data.intramurals.get.category);
 app.get(/((JSON)|(api))\/IM\/[A-F,a-f,0-9]{24}\/leagues\/?$/, data.intramurals.get.leagues);
 app.get(/((JSON)|(api))\/IM\/[A-F,a-f,0-9]{24}\/league\/\d{1,2}\/?$/, data.intramurals.get.league);
