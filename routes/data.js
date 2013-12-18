@@ -55,17 +55,20 @@ exports.groupFitness = function(req, res) {
 exports.intramurals = {};
 exports.intramurals.get = {
 	categories: function(req, res) {
-		if (req.query.season) {
-			db.intramurals.get.season(+req.query.season, function(err, collection) {
+		db.intramurals.get.categories(null, function(err, categories) {
+			console.log(err);
+			res.send(categories);
+		});
+			
+	},
+	season: function(req, res) {
+		var splitPath = req.path.split(path.sep),
+			season = splitPath[splitPath.length - 1];
+
+			db.intramurals.get.season(+season, function(err, collection) {
 				res.send(collection);
 			});
-		} else {
-			db.intramurals.get.categories(null, function(err, categories) {
-				console.log(err);
-				res.send(categories);
-			});
-		}
-			
+		
 	},
 	category: function(req, res) {
 		db.intramurals.get.categories(path.basename(req.path), function(err, categories) {
