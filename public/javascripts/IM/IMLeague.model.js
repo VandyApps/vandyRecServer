@@ -127,7 +127,6 @@ Intramurals.Model.League = Backbone.UniqueModel(
 				team.on('save', self.onSaveTeams.bind(self));
 			});
 			response.season.games.each(function(game) {
-				console.log("binding game");
 				game.on('save', self.onSaveGames.bind(self));
 			});
 			response.season.playoffs.on('save', self.onSavePlayoffs.bind(self));
@@ -164,7 +163,6 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			this.save();
 		},
 		onAddTeam: function() {
-			console.log("onAddTeam");
 			this.save();
 		},
 		onAddGame: function() {
