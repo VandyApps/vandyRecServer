@@ -554,6 +554,7 @@ exports.intramurals.insert = {
 			db.collection(Collections.intramurals, function(err, collection) {
 				collection.find({_id:parsedId}, renderData, function(err, cursor) {
 					cursor.toArray(function(err, categories) {
+						league.id = exports.intramurals.insert.createLeagueId(categories[0]);
 						categories[0].leagues.push(league);
 						collection.update({_id:parsedId}, categories[0], function(err, numUpdated) {
 							if (err || !numUpdated) {
@@ -567,6 +568,11 @@ exports.intramurals.insert = {
 				});
 			});
 		});
+	},
+	createLeagueId: function(category) {
+		return category.leagues.reduce(function(id, league) {
+			return (id <= league.id) ? league.id + 1 : id;
+		}, 1);
 	}
 };
 
@@ -596,16 +602,14 @@ exports.intramurals.update = {
 	},
 	league: function(categoryId, league, callback) {
 		exports.intramurals.get.categories(categoryId, function(err, categories) {
-			//replace the updated league in the model
-			console.log(categories);
+			
 			var leagues = categories[0].leagues.map(function(mLeague) {
-				if (mLeague.id == league.id) {
-					return league;
-				} else {
-					return mLeague;
-				}
+				return (mLeague.id === league.id) ? league : mLeague;
 				
 			}, {renderAll: true});
+			exports.intramurals.update.setTeamWithoutId(league);
+			exports.intramurals.update.setGameWithoutId(league);
+
 			//connect to the db and update the model
 			Db.connect(MONGODB_URL, function(err, db) {
 				db.collection(Collections.intramurals, function(err, collection) {
@@ -626,6 +630,31 @@ exports.intramurals.update = {
 				});
 			});
 		}, {renderAll: true});
+	},
+
+	setTeamWithoutId: function(league) {
+		league.teams.forEach(function(team) {
+			if (typeof team.id !== 'number') {
+				team.id = exports.intramurals.update.createTeamId(league);
+			}
+		});
+	},
+	setGameWithoutId: function(league) {
+		league.season.games.forEach(function(game) {
+			if (typeof game.id !== 'number') {
+				game.id = exports.intramurals.update.createGameId(league);
+			}
+		});
+	},
+	createTeamId: function(league) {
+		return league.teams.reduce(function(id, team) {
+			return (id <= team.id) ? team.id + 1 : id;
+		}, 1);
+	},
+	createGameId: function(league) {
+		return league.season.games.reduce(function(id, game) {
+			return (id <= game.id) ? game.id + 1 : id;
+		}, 1);
 	}
 };
 

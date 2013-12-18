@@ -88,16 +88,6 @@ Intramurals.Model.Teams = Backbone.Collection.extend({
 			}
 		});
 		return team;
-	},
-
-	generateUniqueId: function() {
-		var nextId = 1;
-		this.each(function(team) {
-			if (team.id >= nextId) {
-				nextId = team.id + 1;
-			}
-		});
-		return nextId;
 	}
 });
 
@@ -107,16 +97,6 @@ Intramurals.Model.Games = Backbone.Collection.extend({
 	//reset the wins, losses, and ties for all teams based on current games stats
 	resetWLT: function() {
 
-	},
-
-	generateUniqueId: function() {
-		var nextId = 1;
-		this.each(function(game) {
-			if (game.id >= nextId) {
-				nextId = game.id + 1;
-			}
-		});
-		return nextId;
 	}
 });
 
