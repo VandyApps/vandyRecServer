@@ -233,7 +233,8 @@ Intramurals.Model.Category = Backbone.UniqueModel(
 
 Intramurals.Model.Categories = Backbone.Collection.extend({
 	url: '/JSON/IM/',
-	model: Intramurals.Model.Category	
+	model: Intramurals.Model.Category,
+	comparator: 'season'
 });
 
 /*temp script*/
