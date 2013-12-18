@@ -117,14 +117,20 @@ Intramurals.Model.League = Backbone.UniqueModel(
 				games: new Intramurals.Model.Games(response.season.games),
 				playoffs: new Intramurals.Model.Playoffs(response.season.playoffs)
 			};
+
+			//bind all relevant events here
+
+			response.teams.on('add', self.onAddTeam.bind(self));
+			response.season.games.on('add', self.onAddGame.bind(self));
+
 			response.teams.each(function(team) {
-				team.on('save', self.onSaveTeams);
+				team.on('save', self.onSaveTeams.bind(self));
 			});
 			response.season.games.each(function(game) {
 				console.log("binding game");
-				game.on('save', self.onSaveGames);
+				game.on('save', self.onSaveGames.bind(self));
 			});
-			response.season.playoffs.on('save', self.onSavePlayoffs);
+			response.season.playoffs.on('save', self.onSavePlayoffs.bind(self));
 
 			return response;
 		},
@@ -141,7 +147,12 @@ Intramurals.Model.League = Backbone.UniqueModel(
 		playoffs: function() {
 			return this.get('season').playoffs;
 		},
-
+		addGame: function(game) {
+			this.get('games').add(game);
+		},
+		addTeam: function(team) {
+			this.get('teams').add(team);
+		},
 		
 		onSaveTeams: function(model) {
 			this.save();
@@ -151,7 +162,14 @@ Intramurals.Model.League = Backbone.UniqueModel(
 		},
 		onSavePlayoffs: function(model) {
 			this.save();
-		}   
+		},
+		onAddTeam: function() {
+			console.log("onAddTeam");
+			this.save();
+		},
+		onAddGame: function() {
+			this.save();
+		}
 	})
 );
 
