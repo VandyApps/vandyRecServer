@@ -107,7 +107,27 @@ Intramurals.Model.Games = Backbone.Collection.extend({
 	
 	//reset the wins, losses, and ties for all teams based on current games stats
 	resetWLT: function() {
-
+		this.each(function(game) {
+			game.get('homeTeam').setWinsToZero();
+			game.get('homeTeam').setTiesToZero();
+			game.get('homeTeam').setLossesToZero();
+			game.get('awayTeam').setWinsToZero();
+			game.get('awayTeam').setLossesToZero();
+			game.get('awayTeam').setTiesToZero();
+		});
+		this.each(function(game) {
+			var status = game.get('status');
+			if (status === 0 || status === 4) {
+				game.get('homeTeam').incrementWins();
+				game.get('awayTeam').incrementLosses();
+			} else if (status === 1 || status === 3) {
+				game.get('homeTeam').incrementLosses();
+				game.get('awayTeam').incrementWins();
+			} else if (status === 2) {
+				game.get('homeTeam').incrementTies();
+				game.get('awayTeam').incrementTies();
+			}
+		});
 	},
 	comparator: function(game) {	
 		return DateHelper.dateFromDateString(game.get('date')).getTime();
