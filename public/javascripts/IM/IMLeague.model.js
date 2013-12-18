@@ -26,6 +26,17 @@ Intramurals.Model.Team = Backbone.UniqueModel(
 		decrementTies: function() {
 			this.set('ties', this.get('ties') - 1);
 		},
+
+		setWinsToZero: function() {
+			this.set('wins', 0);
+		},
+		setLossesToZero: function() {
+			this.set('losses', 0);
+		},
+		setTiesToZero: function() {
+			this.set('ties', 0);
+		},
+
 		save: function() {
 			this.trigger('save', this);
 		}
@@ -97,7 +108,11 @@ Intramurals.Model.Games = Backbone.Collection.extend({
 	//reset the wins, losses, and ties for all teams based on current games stats
 	resetWLT: function() {
 
+	},
+	comparator: function(game) {	
+		return DateHelper.dateFromDateString(game.get('date')).getTime();
 	}
+	
 });
 
 Intramurals.Model.Playoffs = Backbone.Model.extend({
