@@ -261,20 +261,6 @@ Intramurals.Model.Categories = Backbone.Collection.extend({
 	}
 });
 
-/*temp script*/
-
-var a = new Intramurals.Model.Categories();
-a.fetch();
-
-a.on('sync', function() {
-	b = a.models[1],
-	c = b.getLeagues();
-	c.fetch();
-	c.on('sync', function() {
-		d = c.models[0];
-	});
-});
-
 
 
 
