@@ -58,9 +58,6 @@ Intramurals.View.Categories = Backbone.View.extend(
 	clearList: function() {
 		this.$el.html('<li>Summer</li><ul></ul><li>Fall</li><ul></ul><li>Winter</li><ul></ul><li>Spring</li><ul></ul>');
 	},
-	
-
-
 	onCollectionSync: function() {
 		var self = this,
 			count = this.collection.length;
