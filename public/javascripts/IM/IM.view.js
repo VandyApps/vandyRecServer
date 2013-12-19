@@ -10,12 +10,11 @@ Intramurals.View.Categories = Backbone.View.extend(
 		this.collection = null || (options && options.collection);
 		if (this.collection) {
 			this.collection.on('sync', this.onCollectionSync.bind(this));
-			this.collection.fetch();
-		}
-
-		
+		}	
 	},
-
+	init: function() {
+		this.collection.fetch();
+	},
 	generateList: function() {
 		
 		var self = this,
@@ -71,9 +70,7 @@ Intramurals.View.Categories = Backbone.View.extend(
 				self.generateList();
 			}
 		};
-		console.log("On collection sync");
 		this.collection.each(function(category) {
-			console.log("iterating category");
 			category.getLeagues().on('sync', onSyncLeagues.bind(self))
 			category.getLeagues().fetch();
 		});
@@ -91,8 +88,3 @@ Intramurals.View.Categories = Backbone.View.extend(
 		return Intramurals.View.Categories.instance;
 	}
 });
-
-
-//temp script
-
-view = Intramurals.View.Categories.getInstance();

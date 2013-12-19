@@ -1,41 +1,7 @@
 <h1>Intramurals</h1>
 
 <section>
-	<ul id="intramurals">
-		<li>Summer</li>
-		<ul></ul>
-
-		<li>Fall</li>
-		<ul>
-			<li>Football</li>
-			<ul>
-				<li><a href="./intramurals/category/52ae079a6fc635a968e556fd/league/01">Corec black</a></li>
-				<li><a href="">Corec red</a></li>
-				<li><a href="">Corec green</a></li>
-			</ul>
-		</ul>
-
-		<li>Winter</li>
-		<ul>
-			<li>Basketball</li>
-			<ul>
-				<li><a href="">Corec black</a></li>
-			</ul>
-
-			<li>Volleyball</li>
-			<ul>
-				<li><a href="">Corec black</a></li>
-			</ul>
-		</ul>
-
-		<li>Spring</li>
-		<ul>
-			<li>Soccer</li>
-			<ul>
-				<li><a href="">Corec red</a></li>
-			</ul>
-		</ul>
-	</ul>
+	<ul id="intramurals"></ul>
 </section>
 
 <script type="text/javascript" src="./jQuery-ui/js/jquery-1.9.1.js"></script>
@@ -48,4 +14,10 @@
 
 <script type="text/javascript" src="./javascripts/IM/IMLeague.model.js"></script>
 <script type="text/javascript" src="./javascripts/IM/IM.view.js"></script>
+<script type="text/javascript">
+	(function() {
+		var view = Intramurals.View.Categories.getInstance();
+		view.init();
+	})();
+</script>
 
