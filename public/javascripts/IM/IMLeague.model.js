@@ -223,18 +223,43 @@ Intramurals.Model.Leagues = Backbone.Collection.extend({
 Intramurals.Model.Category = Backbone.UniqueModel(
 	Backbone.Model.extend({
 		idAttribute: '_id',
+		leagues: null,
 		getLeagues: function() {
-			var leagues = new Intramurals.Model.Leagues();
-			leagues.categoryId = this.id;
-			return leagues;
+			if (!this.leagues) {
+				this.leagues = new Intramurals.Model.Leagues();
+				this.leagues.categoryId = this.id;
+			}
+			return this.leagues;
 		}
+
 	})
 );
 
 Intramurals.Model.Categories = Backbone.Collection.extend({
 	url: '/JSON/IM/',
 	model: Intramurals.Model.Category,
-	comparator: 'season'
+	comparator: 'season',
+
+	summerSports: function() {
+		return this.filter(function(category) {
+			return category.get('season') === 0;
+		});
+	},
+	fallSports: function() {
+		return this.filter(function(category) {
+			return category.get('season') === 1;
+		});
+	},
+	winterSports: function() {
+		return this.filter(function(category) {
+			return category.get('season') === 2;
+		});
+	},
+	springSports: function() {
+		return this.filter(function(category) {
+			return category.get('season') === 3;
+		});
+	}
 });
 
 /*temp script*/
@@ -250,7 +275,6 @@ a.on('sync', function() {
 		d = c.models[0];
 	});
 });
-
 
 
 
