@@ -7,34 +7,34 @@ Intramurals.Model.Team = Backbone.UniqueModel(
 
 	Backbone.Model.extend({
 		idAttribute: "id",
-		incrementWins: function() {
-			this.set('wins', this.get('wins') + 1);
+		incrementWins: function(options) {
+			this.set('wins', this.get('wins') + 1, {silent: options && options.silent});
 		},
-		incrementLosses: function() {
-			this.set('losses', this.get('losses') + 1);
+		incrementLosses: function(options) {
+			this.set('losses', this.get('losses') + 1, {silent: options && options.silent});
 		},
-		incrementTies: function() {
-			this.set('ties', this.get('ties') + 1);
-		},
-
-		decrementWins: function() {
-			this.set('wins', this.get('wins') - 1);
-		},
-		decrementLosses: function() {
-			this.set('losses', this.get('losses') - 1);
-		},
-		decrementTies: function() {
-			this.set('ties', this.get('ties') - 1);
+		incrementTies: function(options) {
+			this.set('ties', this.get('ties') + 1, {silent: options && options.silent});
 		},
 
-		setWinsToZero: function() {
-			this.set('wins', 0);
+		decrementWins: function(options) {
+			this.set('wins', this.get('wins') - 1, {silent: options && options.silent});
 		},
-		setLossesToZero: function() {
-			this.set('losses', 0);
+		decrementLosses: function(options) {
+			this.set('losses', this.get('losses') - 1, {silent: options && options.silent});
 		},
-		setTiesToZero: function() {
-			this.set('ties', 0);
+		decrementTies: function(options) {
+			this.set('ties', this.get('ties') - 1, {silent: options && options.silent});
+		},
+
+		setWinsToZero: function(options) {
+			this.set('wins', 0, {silent: options && options.silent});
+		},
+		setLossesToZero: function(options) {
+			this.set('losses', 0, {silent: options && options.silent});
+		},
+		setTiesToZero: function(options) {
+			this.set('ties', 0, {silent: options && options.silent});
 		},
 
 		save: function() {
@@ -108,12 +108,12 @@ Intramurals.Model.Games = Backbone.Collection.extend({
 	//reset the wins, losses, and ties for all teams based on current games stats
 	resetWLT: function() {
 		this.each(function(game) {
-			game.get('homeTeam').setWinsToZero();
-			game.get('homeTeam').setTiesToZero();
-			game.get('homeTeam').setLossesToZero();
-			game.get('awayTeam').setWinsToZero();
-			game.get('awayTeam').setLossesToZero();
-			game.get('awayTeam').setTiesToZero();
+			game.get('homeTeam').setWinsToZero({silent: true});
+			game.get('homeTeam').setTiesToZero({silent: true});
+			game.get('homeTeam').setLossesToZero({silent: true});
+			game.get('awayTeam').setWinsToZero({silent: true});
+			game.get('awayTeam').setLossesToZero({silent: true});
+			game.get('awayTeam').setTiesToZero({silent: true});
 		});
 		this.each(function(game) {
 			var status = game.get('status');
@@ -260,7 +260,4 @@ Intramurals.Model.Categories = Backbone.Collection.extend({
 		});
 	}
 });
-
-
-
 
