@@ -223,13 +223,12 @@ Intramurals.Model.Leagues = Backbone.Collection.extend({
 Intramurals.Model.Category = Backbone.UniqueModel(
 	Backbone.Model.extend({
 		idAttribute: '_id',
-		leagues: null,
 		getLeagues: function() {
-			if (!this.leagues) {
-				this.leagues = new Intramurals.Model.Leagues();
-				this.leagues.categoryId = this.id;
+			if (!this.get('leagues')) {
+				this.set('leagues', new Intramurals.Model.Leagues());
+				this.get('leagues').categoryId = this.id;
 			}
-			return this.leagues;
+			return this.get('leagues');
 		}
 
 	})
