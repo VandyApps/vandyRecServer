@@ -18,15 +18,65 @@ Intramurals.View.Categories = Backbone.View.extend(
 
 	generateList: function() {
 		
+		var self = this,
+			listItem = function(category, league) {
+				return "<li><a href="+self.linkForLeague(category, league)+">" + league.get('name') + "</a></li>";
+			},
+			html = 
+			this.collection.summerSports().reduce(function(memo, category) {
+				return "<ul>" + category.getLeagues().reduce(function(memo, league) {
+					return listItem(category,league);
+				}, "") + "</ul>";
+			}, "<li>Summer</li>") + 
+
+			
+			this.collection.fallSports().reduce(function(memo, category) {
+				return "<ul>" + category.getLeagues().reduce(function(memo, league) {
+					return listItem(category, league);
+				}, "") + "</ul>";
+			}, "<li>Fall</li>") + 
+
+			this.collection.winterSports().reduce(function(memo, category) {
+				return "<ul>" + category.getLeagues().reduce(function(memo, league) {
+					return listItem(category,league);
+				}, "") + "</ul>";
+			}, "<li>Winter</li>") + 
+
+			this.collection.springSports().reduce(function(memo, category) {
+				return "<ul>" + category.getLeagues().reduce(function(memo, league) {
+					return listItem(category, league);
+				}, "") + "</ul>";
+			}, "<li>Spring</li>");
+
+		this.$el.html(html);
+		
 	},
+
+	linkForLeague: function(category, league) {
+		return './intramurals/category/' + category.id + '/league/' + league.id;
+	},
+
 	clearList: function() {
-		this.$el.html('<li>Fall</li><ul></ul><li>Winter</li><ul></ul><li>Spring</li><ul></ul><li>Summer</li><ul></ul>');
+		this.$el.html('<li>Summer</li><ul></ul><li>Fall</li><ul></ul><li>Winter</li><ul></ul><li>Spring</li><ul></ul>');
 	},
 	
 
 
 	onCollectionSync: function() {
-		this.generateList();
+		var self = this,
+			count = this.collection.length;
+		function onSyncLeagues() {
+			--count;
+			if (!count) {
+				self.generateList();
+			}
+		};
+		console.log("On collection sync");
+		this.collection.each(function(category) {
+			console.log("iterating category");
+			category.getLeagues().on('sync', onSyncLeagues.bind(self))
+			category.getLeagues().fetch();
+		});
 	}
 },
 {
@@ -41,3 +91,8 @@ Intramurals.View.Categories = Backbone.View.extend(
 		return Intramurals.View.Categories.instance;
 	}
 });
+
+
+//temp script
+
+view = Intramurals.View.Categories.getInstance();
