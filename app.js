@@ -90,7 +90,7 @@ app.get('/traffic', routes.traffic);
 app.get('/intramurals', routes.intramurals.render);
 
 app.post('/intramurals/files', routes.intramurals.files);
-app.get(/intramurals\/category\/[A-F,a-f,0-9]{24}\/league\/[0-9]{2}$/, routes.intramurals.league);
+app.get(/intramurals\/category\/[A-F,a-f,0-9]{24}\/league\/[0-9]{1,2}$/, routes.intramurals.league);
 app.get('/intramurals/download', routes.downloadHTML);
 
 app.get('/programs', routes.programs);
