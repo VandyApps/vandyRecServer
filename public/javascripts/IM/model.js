@@ -64,24 +64,30 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 		},
 		onChangeHomeTeam: function() {
 			if (typeof this.get('homeTeam') === 'number' || this.previous('homeTeam') === 'number') return;
-
+			console.log("Changing home team");
 			if (this.get('status') === 0 || this.get('status') === 4) {
 				this.previous('homeTeam').decrementWins();
 				this.get('homeTeam').incrementWins();
 			} else if (this.get('status') === 1 || this.get('status' === 3)) {
 				this.previous('homeTeam').decrementLosses();
 				this.get('homeTeam').incrementLosses();
+			} else if (this.get('status') === 2) {
+				this.previous('homeTeam').decrementTies();
+				this.get('homeTeam').incrementTies();
 			}
 		},
 		onChangeAwayTeam: function() {
 			if (typeof this.get('awayTeam') === 'number' || typeof this.previous('awayTeam') === 'number') return;
-			
+			console.log("Changing away team");
 			if (this.get('status') === 0 || this.get('status') === 4) {
 				this.previous('awayTeam').decrementLosses();
 				this.get('awayTeam').incrementLosses();
-			} else {
+			} else if (this.get('status') === 1 || this.get('status') === 3) {
 				this.previous('awayTeam').decrementWins();
 				this.get('awayTeam').incrementWins();
+			} else if (this.get('status') === 2) {
+				this.previous('awayTeam').decrementTies();
+				this.get('awayTeam').incrementTies();
 			}
 		},
 		onChangeStatus: function() {
