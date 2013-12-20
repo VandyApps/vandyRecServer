@@ -182,10 +182,12 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			return this.get('season').playoffs;
 		},
 		addGame: function(game) {
-			this.get('games').add(game);
+			this.games().add(game);
+			this.trigger('add:game');
 		},
 		addTeam: function(team) {
-			this.get('teams').add(team);
+			this.teams().add(team);
+			this.trigger('add:team');
 		},
 		
 		onSaveTeams: function(model) {
