@@ -24,7 +24,7 @@ Intramurals.View.Team = Backbone.View.extend({
 		
 	},
 	setModel: function(model) {
-		this.model.off();
+		if (this.model) this.model.off();
 
 		this.model = model;
 		this.model.on('change:name', this.onNameChange.bind(this));
@@ -76,13 +76,28 @@ Intramurals.View.Game = Backbone.View.extend({
             		"<td style='text-align: left;' width='210' height='25'>"+this.homeTeamHTML()+"</td>" + 
             		"<td style='text-align: center;' width='30' height='25'>VS</td>" + 
             		"<td style='text-align: left;' width='210' height='25'>"+this.awayTeamHTML()+"</td>"+
-            		"<td style='text-align: center;' width='70' height='25'>"+this.scoreHTML()+"</td>");
+            		"<td style='text-align: center;' width='70' height='25'>"+this.scoreText()+"</td>");
 	
 		}
 	},
 
 	setModel: function(model) {
+		if (this.model) this.model.off();
 		this.model = model;
+		this.model.on({
+			'change:date': this.onChangeDate.bind(this),
+			'change:time': this.onChangeTime.bind(this),
+			'change:location': this.onChangeLocation.bind(this),
+			'change:homeTeam': this.onChangeHomeTeam.bind(this),
+			'change:awayTeam': this.onChangeAwayTeam.bind(this),
+			'change:homeScore': this.onChangeScore.bind(this),
+			'change:awayScore': this.onChangeScore.bind(this),
+			'change:status': this.onChangeScore.bind(this)
+		});
+
+		this.model.get('homeTeam').on('change:name', this.onChangeHomeTeam.bind(this));
+		this.model.get('awayTeam').on('change:name', this.onChangeAwayTeam.bind(this));
+
 	},
 	relativeLocation: function() {
 		var offset = Intramurals.View.GameTable.getInstance().locationRoot.length + 1;
@@ -102,7 +117,7 @@ Intramurals.View.Game = Backbone.View.extend({
 			return "<strong><span>"+this.model.get('awayTeam').get('name')+"</span></strong>";
 		}
 	},
-	scoreHTML: function() {
+	scoreText: function() {
 		switch(this.model.get('status')) {
 			case 0:
 			case 1:
@@ -117,6 +132,25 @@ Intramurals.View.Game = Backbone.View.extend({
 			case 6: 
 				return "NP";
 		}
+	},
+
+	onChangeDate: function() {
+		this.$el.find('td:nth-child(1)').text(this.model.get('date'));
+	},
+	onChangeTime: function() {
+		this.$el.find('td:nth-child(2)').text(this.model.get('time'));
+	},
+	onChangeHomeTeam:function() {
+		this.$el.find('td:nth-child(4)').html(this.homeTeamHTML());
+	},
+	onChangeAwayTeam: function() {
+		this.$el.find('td:nth-child(6)').html(this.awayTeamHTML());
+	},
+	onChangeScore: function() {
+		this.$el.find('td:nth-child(7)').text(this.scoreText());
+	},
+	onChangeLocation: function() {
+		this.$el.find('td:nth-child(3)').text(this.relativeLocation());
 	}
 });
 
