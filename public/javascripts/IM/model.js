@@ -36,7 +36,6 @@ Intramurals.Model.Team = Backbone.UniqueModel(
 		setTiesToZero: function(options) {
 			this.set('ties', 0, {silent: options && options.silent});
 		},
-
 		save: function() {
 			this.trigger('save', this);
 		}
@@ -48,24 +47,25 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 	Backbone.Model.extend({
 		idAttribute: "id",
 		initialize: function(mJSON) {
-			
 			if (typeof mJSON.homeTeam === 'number') {
 				this.set('homeTeam', new Intramurals.Model.Team({id:mJSON.homeTeam}), {silent: true});
 				this.set('awayTeam', new Intramurals.Model.Team({id:mJSON.awayTeam}), {silent: true});
 			} 
+			this.on('change:homeTeam', this.onChangeHomeTeam.bind(this));
+			this.on('change:awayTeam', this.onChangeAwayTeam.bind(this));
+			this.on('change:status', this.onChangeStatus.bind(this));	
 		},
 		setupTeams: function() {
 			console.log("Setting up");
 			if (typeof this.get('homeTeam') === 'number') {		
 				this.set('homeTeam', new Intramurals.Model.Team({id:this.get('homeTeam')}), {silent: true});
 				this.set('awayTeam', new Intramurals.Model.Team({id:this.get('awayTeam')}), {silent: true});
-
-				this.on('change:homeTeam', this.onChangeHomeTeam.bind(this));
-				this.on('change:awayTeam', this.onChangeAwayTeam.bind(this));
-			}	
+			}
+			
 		},
 		onChangeHomeTeam: function() {
-			console.log("On change home team");
+			if (typeof this.get('homeTeam') === 'number' || this.previous('homeTeam') === 'number') return;
+
 			if (this.get('status') === 0 || this.get('status') === 4) {
 				this.previous('homeTeam').decrementWins();
 				this.get('homeTeam').incrementWins();
@@ -75,7 +75,8 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 			}
 		},
 		onChangeAwayTeam: function() {
-			console.log("On change away team");
+			if (typeof this.get('awayTeam') === 'number' || typeof this.previous('awayTeam') === 'number') return;
+			
 			if (this.get('status') === 0 || this.get('status') === 4) {
 				this.previous('awayTeam').decrementLosses();
 				this.get('awayTeam').incrementLosses();
@@ -83,6 +84,53 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 				this.previous('awayTeam').decrementWins();
 				this.get('awayTeam').incrementWins();
 			}
+		},
+		onChangeStatus: function() {
+			if (typeof this.get('homeTeam') === 'number' || typeof this.get('awayTeam') === 'number') return;
+
+			console.log("Change status called");
+			var status = this.get('status'),
+				prevStatus = this.previous('status'),
+				teamsToUpdate = [];
+
+			if (status === 0 || status === 4) {
+				this.get('homeTeam').incrementWins({silent: true});
+				this.get('awayTeam').incrementLosses({silent: true});
+				teamsToUpdate.push(this.get('homeTeam').id.toString() + " wins");
+				teamsToUpdate.push(this.get('awayTeam').id.toString() + " losses");
+			} else if (status === 1 || status === 3) {
+				this.get('homeTeam').incrementLosses({silent: true});
+				this.get('awayTeam').incrementWins({silent: true});
+				teamsToUpdate.push(this.get('homeTeam').id.toString() + " losses");
+				teamsToUpdate.push(this.get('awayTeam').id.toString() + " wins");
+			} else if (status === 2) {
+				this.get('homeTeam').incrementTies({silent: true});
+				this.get('awayTeam').incrementTies({silent: true});
+				teamsToUpdate.push(this.get('homeTeam').id.toString() + " ties");
+				teamsToUpdate.push(this.get('awayTeam').id.toString() + " ties");
+			}
+
+			if (prevStatus === 0 || prevStatus === 4) {
+				this.get('homeTeam').decrementWins({silent: true});
+				this.get('awayTeam').decrementLosses({silent: true});
+				teamsToUpdate.push(this.get('homeTeam').id.toString() + " wins");
+				teamsToUpdate.push(this.get('awayTeam').id.toString() + " losses");
+			} else if (prevStatus === 1 || prevStatus === 3) {
+				this.get('homeTeam').decrementLosses({silent: true});
+				this.get('awayTeam').decrementWins({silent: true});
+				teamsToUpdate.push(this.get('homeTeam').id.toString() + " losses");
+				teamsToUpdate.push(this.get('awayTeam').id.toString() + " wins");
+			} else if (prevStatus === 2) {
+				this.get('homeTeam').decrementTies({silent: true});
+				this.get('awayTeam').decrementTies({silent: true});
+				teamsToUpdate.push(this.get('homeTeam').id.toString() + " ties");
+				teamsToUpdate.push(this.get('awayTeam').id.toString() + " ties");
+			}
+
+			_.uniq(teamsToUpdate, function(updateHash) {
+				var splitHash = updateHash.split(" ");
+				(new Intramurals.Model.Game({id: +splitHash[0]})).trigger('change:'+splitHash[1]);
+			});
 		},
 		save: function() {
 			this.trigger("save", this);

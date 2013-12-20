@@ -27,10 +27,12 @@ Intramurals.View.Team = Backbone.View.extend({
 		if (this.model) this.model.off();
 
 		this.model = model;
-		this.model.on('change:name', this.onNameChange.bind(this));
-		this.model.on('change:wins', this.onWinsChange.bind(this));
-		this.model.on('change:losses', this.onLossesChange.bind(this));
-		this.model.on('change:ties', this.onTiesChange.bind(this));
+		this.model.on({
+			'change:name': this.onNameChange.bind(this),
+			'change:wins': this.onWinsChange.bind(this),
+			'change:losses': this.onLossesChange.bind(this),
+			'change:ties': this.onTiesChange.bind(this)
+		});
 
 	},
 	numberToTally: function(num) {
@@ -176,11 +178,7 @@ Intramurals.View.TeamTable = Backbone.View.extend({
 		this.teamsView = collection.map(function(team) {
 			return new Intramurals.View.Team({model: team});
 		});
-		/*
-		collection.on('add', function(team) {
-			this.addTeamView(team);
-		}, this);
-	*/
+		
 		this.render();
 	},
 	render: function() {
