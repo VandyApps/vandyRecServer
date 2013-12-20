@@ -48,8 +48,17 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 	Backbone.Model.extend({
 		idAttribute: "id",
 		initialize: function(mJSON) {
-			this.set('homeTeam', new Intramurals.Model.Team({id:mJSON.homeTeam}));
-			this.set('awayTeam', new Intramurals.Model.Team({id:mJSON.awayTeam}));
+			
+			if (typeof this.get('homeTeam') === 'number') {
+				this.set('homeTeam', new Intramurals.Model.Team({id:mJSON.homeTeam}));
+				this.set('awayTeam', new Intramurals.Model.Team({id:mJSON.awayTeam}));
+			}	
+		},
+		setupTeams: function() {
+			if (typeof this.get('homeTeam') === 'number') {		
+				this.set('homeTeam', new Intramurals.Model.Team({id:this.get('homeTeam')}));
+				this.set('awayTeam', new Intramurals.Model.Team({id:this.get('awayTeam')}));
+			}	
 		},
 		getWinner: function() {
 			//returns null if no winners
@@ -78,8 +87,8 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 				id: this.id,
 				date: this.get('date'),
 				time: this.get('time'),
-				homeTeam: this.get('homeTeam').id,
-				awayTeam: this.get('awayTeam').id,
+				homeTeam: (typeof this.get('homeTeam') === 'number') ? this.get('homeTeam') : this.get('homeTeam').id,
+				awayTeam: (typeof this.get('awayTeam') === 'number') ? this.get('awayTeam') : this.get('awayTeam').id,
 				homeScore: this.get('homeScore'),
 				awayScore: this.get('awayScore'),
 				status: this.get('status')
@@ -105,6 +114,17 @@ Intramurals.Model.Teams = Backbone.Collection.extend({
 Intramurals.Model.Games = Backbone.Collection.extend({
 	model: Intramurals.Model.Game,
 	
+	reset: function(rawModels) {
+		
+		console.log(JSON.stringify(rawModels));
+		this.models = rawModels.map(function(model) {
+			var game = new Intramurals.Model.Game(model);
+			game.setupTeams();
+			return game;
+			
+		});
+		models = this.models;
+	},
 	//reset the wins, losses, and ties for all teams based on current games stats
 	resetWLT: function() {
 		this.each(function(game) {
@@ -149,7 +169,9 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			var self = this;
 			response.teams = new Intramurals.Model.Teams(response.teams);
 			response.season = {
-				games: new Intramurals.Model.Games(response.season.games),
+				games: new Intramurals.Model.Games(response.season.games.map(function(game) {
+					return new Intramurals.Model.Game(game);
+				})),
 				playoffs: new Intramurals.Model.Playoffs(response.season.playoffs)
 			};
 
@@ -187,7 +209,7 @@ Intramurals.Model.League = Backbone.UniqueModel(
 		addGame: function(game) {
 			this.games().add(game);
 		},
-		
+
 		onSaveTeams: function(model) {
 			this.save();
 		},

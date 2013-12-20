@@ -43,12 +43,13 @@ Intramurals.View.Game = Backbone.View.extend({
 	tagName: 'tr',
 	//returns html as string for parent vew to use
 	render: function() {
+		
 		if (this.model) {
 			this.$el.html("<td style='text-align: center;' width='70' height='25'><strong>"+this.model.get('date')+"</strong></td><td style='text-align: center;' width='80' height='25'><strong>"+this.model.get('time')+"</strong></td>" + 
             		"<td style='text-align: center;' width='20' height='25'><strong>"+this.model.get('location')+"</strong></td>"+
-            		"<td style='text-align: left;' width='210' height='25'><strong>"+this.model.get('awayTeam').get('name')+"</strong></td>" + 
+            		"<td style='text-align: left;' width='210' height='25'><strong>"+this.model.get('homeTeam').get('name')+"</strong></td>" + 
             		"<td style='text-align: center;' width='30' height='25'><strong>VS </strong></td>" + 
-            		"<td style='text-align: left;' width='210' height='25'><span style='color: #ff0000;'><strong>"+this.model.get('homeTeam').get('name')+"</strong><strong> </strong></span></td>"+
+            		"<td style='text-align: left;' width='210' height='25'><span style='color: #ff0000;'><strong>"+this.model.get('awayTeam').get('name')+"</strong><strong> </strong></span></td>"+
             		"<td style='text-align: center;' width='70' height='25'><strong>"+this.model.get('homeScore')+"&#8211;" + this.model.get('awayScore')+ "</strong></td>");
 	
 		}
@@ -180,8 +181,8 @@ Intramurals.View.GameTable = Backbone.View.extend({
 		},
 		defaultGame = function() {
 			return new Intramurals.Model.Game({
-				homeTeam: mLeague.teams().models[0].id,
-				awayTeam: mLeague.teams().models[1].id,
+				homeTeam: mLeague.teams().models[0],
+				awayTeam: mLeague.teams().models[1],
 				date: DateHelper.dateStringFromDate(new Date()),
 				time: "12:00pm",
 				homeScore: 0,
