@@ -45,12 +45,13 @@ Intramurals.View.Game = Backbone.View.extend({
 	render: function() {
 		
 		if (this.model) {
-			this.$el.html("<td style='text-align: center;' width='70' height='25'><strong>"+this.model.get('date')+"</strong></td><td style='text-align: center;' width='80' height='25'><strong>"+this.model.get('time')+"</strong></td>" + 
-            		"<td style='text-align: center;' width='20' height='25'><strong>"+this.relativeLocation()+"</strong></td>"+
-            		"<td style='text-align: left;' width='210' height='25'><strong>"+this.model.get('homeTeam').get('name')+"</strong></td>" + 
-            		"<td style='text-align: center;' width='30' height='25'><strong>VS </strong></td>" + 
-            		"<td style='text-align: left;' width='210' height='25'><span style='color: #ff0000;'><strong>"+this.model.get('awayTeam').get('name')+"</strong><strong> </strong></span></td>"+
-            		"<td style='text-align: center;' width='70' height='25'>"+this.model.get('homeScore')+"&#8211;" + this.model.get('awayScore')+ "</td>");
+			this.$el.html("<td style='text-align: center;' width='70' height='25'>"+this.model.get('date')+"</td>"+
+					"<td style='text-align: center;' width='80' height='25'>"+this.model.get('time')+"</td>" + 
+            		"<td style='text-align: center;' width='20' height='25'>"+this.relativeLocation()+"</td>"+
+            		"<td style='text-align: left;' width='210' height='25'>"+this.homeTeamHTML()+"</td>" + 
+            		"<td style='text-align: center;' width='30' height='25'>VS</td>" + 
+            		"<td style='text-align: left;' width='210' height='25'>"+this.awayTeamHTML()+"</td>"+
+            		"<td style='text-align: center;' width='70' height='25'>"+this.scoreHTML()+"</td>");
 	
 		}
 	},
@@ -58,6 +59,37 @@ Intramurals.View.Game = Backbone.View.extend({
 		var offset = Intramurals.View.GameTable.getInstance().locationRoot.length + 1;
 		console.log(this.model.get('location'));
 		return this.model.get('location').substr(offset, this.model.get('location').length - offset);
+	},
+	homeTeamHTML: function() {
+		if (this.model.get('status') === 0 || this.model.get('status') === 4) {
+			return "<strong><span style='color: red;'>"+this.model.get('homeTeam').get('name')+"</span></strong>";
+		} else {
+			return "<strong><span>"+this.model.get('homeTeam').get('name')+"</span></strong>"
+		}
+	},
+	awayTeamHTML: function() {
+		if (this.model.get('status') === 1 || this.model.get('status') === 3) {
+			return "<strong><span style='color: red;'>"+this.model.get('awayTeam').get('name')+"</span></strong>";
+		} else {
+			return "<strong><span>"+this.model.get('awayTeam').get('name')+"</span></strong>";
+		}
+	},
+	scoreHTML: function() {
+		console.log(this.model.get('status'));
+		switch(this.model.get('status')) {
+			case 0:
+			case 1:
+			case 2:
+				return this.model.get('homeScore') + "-" + this.model.get('awayScore');
+			case 3:
+				return "F-W";
+			case 4:
+				return "W-F";
+			case 5:
+				return "Cancelled";
+			case 6: 
+				return "NP";
+		}
 	}
 });
 
@@ -117,7 +149,7 @@ Intramurals.View.GameTable = Backbone.View.extend({
 	gamesView: [],
 	locationRoot: "Field",
 	tableHeader: function() {
-		return "<tr><td style='text-align: center;' width='70' height='25'><span><strong>Date</strong></span></td><td style='text-align: center;' width='80' height='25'><strong>Time </strong></td><td style='text-align: center;' width='20' height='25'><strong>Field</strong></td><td style='text-align: left;' width='210' height='25'><strong>Home </strong></td><td style='text-align: center;' width='30' height='25'><strong>VS </strong></td><td style='text-align: left;' width='210' height='25'><strong>Away </strong></td><td style='text-align: center;' width='70' height='25'><span><strong>Score </strong></span></td></tr>";
+		return "<tr><td style='text-align: center;' width='70' height='25'><span><strong>Date</strong></span></td><td style='text-align: center;' width='80' height='25'><strong>Time</strong></td><td style='text-align: center;' width='20' height='25'><strong>"+this.locationRoot+"</strong></td><td style='text-align: left;' width='210' height='25'><strong>Home </strong></td><td style='text-align: center;' width='30' height='25'><strong>VS </strong></td><td style='text-align: left;' width='210' height='25'><strong>Away </strong></td><td style='text-align: center;' width='70' height='25'><span><strong>Score </strong></span></td></tr>";
 	},
 	render: function() {
 		this.gamesView.forEach(function(gameView, index) {

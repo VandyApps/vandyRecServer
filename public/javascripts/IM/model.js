@@ -90,7 +90,8 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 				awayScore: this.get('awayScore'),
 				location: this.get('location'),
 				time: this.get('time'),
-				date: this.get('date')
+				date: this.get('date'),
+				status: this.get('status')
 			};
 			
 		}
