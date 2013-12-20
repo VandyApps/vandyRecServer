@@ -82,17 +82,17 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 			return this.get('status') != 6;
 		},
 		toJSON: function() {
-			//reduce the home and away teams down to just their id's
+			//hard-coded for now
 			return {
-				id: this.id,
-				date: this.get('date'),
-				time: this.get('time'),
 				homeTeam: (typeof this.get('homeTeam') === 'number') ? this.get('homeTeam') : this.get('homeTeam').id,
 				awayTeam: (typeof this.get('awayTeam') === 'number') ? this.get('awayTeam') : this.get('awayTeam').id,
 				homeScore: this.get('homeScore'),
 				awayScore: this.get('awayScore'),
-				status: this.get('status')
+				location: this.get('location'),
+				time: this.get('time'),
+				date: this.get('date')
 			};
+			
 		}
 	})
 );
@@ -113,10 +113,7 @@ Intramurals.Model.Teams = Backbone.Collection.extend({
 
 Intramurals.Model.Games = Backbone.Collection.extend({
 	model: Intramurals.Model.Game,
-	
 	reset: function(rawModels) {
-		
-		console.log(JSON.stringify(rawModels));
 		this.models = rawModels.map(function(model) {
 			var game = new Intramurals.Model.Game(model);
 			game.setupTeams();
@@ -138,16 +135,17 @@ Intramurals.Model.Games = Backbone.Collection.extend({
 		this.each(function(game) {
 			var status = game.get('status');
 			if (status === 0 || status === 4) {
-				game.get('homeTeam').incrementWins();
-				game.get('awayTeam').incrementLosses();
+				game.get('homeTeam').incrementWins({silent: true});
+				game.get('awayTeam').incrementLosses({silent: true});
 			} else if (status === 1 || status === 3) {
-				game.get('homeTeam').incrementLosses();
-				game.get('awayTeam').incrementWins();
+				game.get('homeTeam').incrementLosses({silent: true});
+				game.get('awayTeam').incrementWins({silent: true});
 			} else if (status === 2) {
-				game.get('homeTeam').incrementTies();
-				game.get('awayTeam').incrementTies();
+				game.get('homeTeam').incrementTies({silent: true});
+				game.get('awayTeam').incrementTies({silent: true});
 			}
 		});
+		//call all relevant teams and reset trigger change event for scores
 	},
 	comparator: function(game) {	
 		return DateHelper.dateFromDateString(game.get('date')).getTime();

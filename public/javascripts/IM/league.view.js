@@ -13,7 +13,7 @@ Intramurals.View.Team = Backbone.View.extend({
 		}
 	},
 	//returns html as string for parent view to use
-	render: function(count) {
+	render: function() {
 		
 			this.$el.html("<td style='width: 19px; margin: auto; text-align: center;'>"+this.count+"</td>"+
             		"<td style='width: 200px; margin: auto; text-align: left;'>"+this.model.get('name')+"</td>"+
@@ -23,7 +23,7 @@ Intramurals.View.Team = Backbone.View.extend({
 		
 	},
 	setModel: function(model) {
-
+		this.model = model;
 	},
 	numberToTally: function(num) {
 		var html = "";
@@ -46,13 +46,18 @@ Intramurals.View.Game = Backbone.View.extend({
 		
 		if (this.model) {
 			this.$el.html("<td style='text-align: center;' width='70' height='25'><strong>"+this.model.get('date')+"</strong></td><td style='text-align: center;' width='80' height='25'><strong>"+this.model.get('time')+"</strong></td>" + 
-            		"<td style='text-align: center;' width='20' height='25'><strong>"+this.model.get('location')+"</strong></td>"+
+            		"<td style='text-align: center;' width='20' height='25'><strong>"+this.relativeLocation()+"</strong></td>"+
             		"<td style='text-align: left;' width='210' height='25'><strong>"+this.model.get('homeTeam').get('name')+"</strong></td>" + 
             		"<td style='text-align: center;' width='30' height='25'><strong>VS </strong></td>" + 
             		"<td style='text-align: left;' width='210' height='25'><span style='color: #ff0000;'><strong>"+this.model.get('awayTeam').get('name')+"</strong><strong> </strong></span></td>"+
-            		"<td style='text-align: center;' width='70' height='25'><strong>"+this.model.get('homeScore')+"&#8211;" + this.model.get('awayScore')+ "</strong></td>");
+            		"<td style='text-align: center;' width='70' height='25'>"+this.model.get('homeScore')+"&#8211;" + this.model.get('awayScore')+ "</td>");
 	
 		}
+	},
+	relativeLocation: function() {
+		var offset = Intramurals.View.GameTable.getInstance().locationRoot.length + 1;
+		console.log(this.model.get('location'));
+		return this.model.get('location').substr(offset, this.model.get('location').length - offset);
 	}
 });
 
@@ -110,6 +115,7 @@ Intramurals.View.GameTable = Backbone.View.extend({
 	el: '#gameTable',
 	collection: null,
 	gamesView: [],
+	locationRoot: "Field",
 	tableHeader: function() {
 		return "<tr><td style='text-align: center;' width='70' height='25'><span><strong>Date</strong></span></td><td style='text-align: center;' width='80' height='25'><strong>Time </strong></td><td style='text-align: center;' width='20' height='25'><strong>Field</strong></td><td style='text-align: left;' width='210' height='25'><strong>Home </strong></td><td style='text-align: center;' width='30' height='25'><strong>VS </strong></td><td style='text-align: left;' width='210' height='25'><strong>Away </strong></td><td style='text-align: center;' width='70' height='25'><span><strong>Score </strong></span></td></tr>";
 	},
@@ -187,6 +193,7 @@ Intramurals.View.GameTable = Backbone.View.extend({
 				time: "12:00pm",
 				homeScore: 0,
 				awayScore: 0,
+				location: Intramurals.View.GameTable.getInstance().locationRoot + " 1",
 				status: 6 //not yet played
 			});
 		};
@@ -196,7 +203,7 @@ Intramurals.View.GameTable = Backbone.View.extend({
 	};
 
 	function addGame() {
-		console.log("Add game is called");
+		
 		if (mLeague.teams().length < 2) {
 			alert("Must have at least 2 teams before creating a game");
 		} else {
