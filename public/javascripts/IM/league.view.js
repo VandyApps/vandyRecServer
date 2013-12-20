@@ -21,7 +21,25 @@ Intramurals.View.Team = Backbone.View.extend({
             		"<td style='width: 127px; margin: auto; text-align: center;'>"+this.numberToTally(this.model.get('wins'))+"</td>"+
             		"<td style='width: 127px; margin: auto; text-align: center;'>"+this.numberToTally(this.model.get('losses'))+"</td>"+
             		"<td style='width: 127px; margin: auto; text-align: center;'>"+this.numberToTally(this.model.get('ties'))+"</td>");
+
+			this.setupPopover();
 		
+	},
+	setupPopover: function() { 
+		$('td:nth-child(2)', this.$el).popover(
+			{title: "Change Name", 
+			text: "hello world!", 
+			container: 'body', 
+			trigger: 'click',
+			html: true,
+			placement: 'top',
+			content: "<div id="+this.getTitlePopoverSelector()+"><input style='border: solid #aaa 1px; border-radius: 5px;' type='text' value='"+this.model.get('name')+"'/><input type='button' style='border: solid #aaa 1px; border-radius: 5px; background: #f9bd60;' value='Enter' /></div>"
+		})	.on('shown.bs.popover', this.onPopoverShown.bind(this))
+			.on('hidden.bs.popover', this.onPopoverHidden.bind(this))
+		
+	},
+	getTitlePopoverSelector: function() {
+		return 'popover-team-name-' + this.model.id;
 	},
 	setModel: function(model) {
 		if (this.model) this.model.off({
@@ -63,6 +81,23 @@ Intramurals.View.Team = Backbone.View.extend({
 	},
 	onTiesChange: function() {
 		this.$el.find('td:nth-child(5)').html(this.numberToTally(this.model.get('ties')));
+	},
+
+	onPopoverShown: function(event) {
+		$('input[type="button"]', '#' + this.getTitlePopoverSelector()).click(this.submitNameInText.bind(this));
+		$('input[type="text"]', '#' + this.getTitlePopoverSelector()).keypress(function(event) {
+			if (event.keyCode === 13) {
+				this.submitNameInText();
+			}
+		}.bind(this));
+		$('input[type="text"]', '#' + this.getTitlePopoverSelector()).select();
+	},
+	submitNameInText: function() {
+		this.model.set('name', $('input[type="text"]', '#' + this.getTitlePopoverSelector()).val());
+		$('td:nth-child(2)', this.$el).popover('hide');
+	},
+	onPopoverHidden: function() {
+		
 	}
 });
 
