@@ -7,6 +7,7 @@ Intramurals.View.Team = Backbone.View.extend({
 	tagName: 'tr',
 	model: null,
 	initialize: function(mObject) {
+		mObject || (mObject = {});
 		if (mObject.model) {
 			//bind events here
 			this.setModel(mObject.model);
@@ -23,7 +24,14 @@ Intramurals.View.Team = Backbone.View.extend({
 		
 	},
 	setModel: function(model) {
+		this.model.off();
+
 		this.model = model;
+		this.model.on('change:name', this.onNameChange.bind(this));
+		this.model.on('change:wins', this.onWinsChange.bind(this));
+		this.model.on('change:losses', this.onLossesChange.bind(this));
+		this.model.on('change:ties', this.onTiesChange.bind(this));
+
 	},
 	numberToTally: function(num) {
 		var html = "";
@@ -36,12 +44,29 @@ Intramurals.View.Team = Backbone.View.extend({
 			--num;
 		}
 		return html;
+	},
+	onNameChange: function() {
+		this.$el.find('td:nth-child(2)').text(this.model.get('name'));
+	},
+	onWinsChange: function() {
+		this.$el.find('td:nth-child(3)').html(this.numberToTally(this.model.get('wins')));
+	},
+	onLossesChange: function() {
+		this.$el.find('td:nth-child(4)').html(this.numberToTally(this.model.get('losses')));
+	},
+	onTiesChange: function() {
+		this.$el.find('td:nth-child(5)').html(this.numberToTally(this.model.get('ties')));
 	}
 });
 
 Intramurals.View.Game = Backbone.View.extend({
 	tagName: 'tr',
-	//returns html as string for parent vew to use
+	initialize: function(mObject) {
+		mObject || (mObject = {});
+		if (mObject.model) {
+			this.setModel(mObject.model);
+		}
+	},
 	render: function() {
 		
 		if (this.model) {
@@ -55,9 +80,12 @@ Intramurals.View.Game = Backbone.View.extend({
 	
 		}
 	},
+
+	setModel: function(model) {
+		this.model = model;
+	},
 	relativeLocation: function() {
 		var offset = Intramurals.View.GameTable.getInstance().locationRoot.length + 1;
-		console.log(this.model.get('location'));
 		return this.model.get('location').substr(offset, this.model.get('location').length - offset);
 	},
 	homeTeamHTML: function() {
@@ -75,7 +103,6 @@ Intramurals.View.Game = Backbone.View.extend({
 		}
 	},
 	scoreHTML: function() {
-		console.log(this.model.get('status'));
 		switch(this.model.get('status')) {
 			case 0:
 			case 1:
@@ -126,9 +153,6 @@ Intramurals.View.TeamTable = Backbone.View.extend({
 			teamView.render();
 		}.bind(this));
 	},
-	addTeamView: function(team, options) {
-		console.log("Adding team\n" + JSON.stringify(team.toJSON()));
-	},
 	removeTeamAtIndex: function(index) {
 
 	}
@@ -174,9 +198,6 @@ Intramurals.View.GameTable = Backbone.View.extend({
 			this.addGameView(game)
 		}, this);
 		this.render();
-	},
-	addGameView: function(game, options) {
-		console.log("adding game\n" + JSON.stringify(game.toJSON()));
 	},
 	removeGameAtIndex: function(index) {
 
