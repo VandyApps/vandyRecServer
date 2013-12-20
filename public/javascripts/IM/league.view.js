@@ -24,7 +24,12 @@ Intramurals.View.Team = Backbone.View.extend({
 		
 	},
 	setModel: function(model) {
-		if (this.model) this.model.off();
+		if (this.model) this.model.off({
+			'change:name': this.onNameChange.bind(this),
+			'change:wins': this.onWinsChange.bind(this),
+			'change:losses': this.onLossesChange.bind(this),
+			'change:ties': this.onTiesChange.bind(this)
+		});
 
 		this.model = model;
 		this.model.on({
@@ -85,7 +90,17 @@ Intramurals.View.Game = Backbone.View.extend({
 
 	setModel: function(model) {
 		console.log("Setting model");
-		if (this.model) this.model.off();
+		if (this.model) this.model.off({
+			'change:date': this.onChangeDate.bind(this),
+			'change:time': this.onChangeTime.bind(this),
+			'change:location': this.onChangeLocation.bind(this),
+			'change:homeTeam': this.onChangeHomeTeam.bind(this),
+			'change:awayTeam': this.onChangeAwayTeam.bind(this),
+			'change:homeScore': this.onChangeScore.bind(this),
+			'change:awayScore': this.onChangeScore.bind(this),
+			'change:status': this.onChangeScore.bind(this)
+		});
+			
 		this.model = model;
 		this.model.on({
 			'change:date': this.onChangeDate.bind(this),

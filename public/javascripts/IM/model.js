@@ -50,10 +50,10 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 			if (typeof mJSON.homeTeam === 'number') {
 				this.set('homeTeam', new Intramurals.Model.Team({id:mJSON.homeTeam}), {silent: true});
 				this.set('awayTeam', new Intramurals.Model.Team({id:mJSON.awayTeam}), {silent: true});
-			} 
+			}
+			this.on('change:status', this.onChangeStatus.bind(this));
 			this.on('change:homeTeam', this.onChangeHomeTeam.bind(this));
 			this.on('change:awayTeam', this.onChangeAwayTeam.bind(this));
-			this.on('change:status', this.onChangeStatus.bind(this));	
 		},
 		setupTeams: function() {
 			console.log("Setting up");
@@ -61,7 +61,6 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 				this.set('homeTeam', new Intramurals.Model.Team({id:this.get('homeTeam')}), {silent: true});
 				this.set('awayTeam', new Intramurals.Model.Team({id:this.get('awayTeam')}), {silent: true});
 			}
-			
 		},
 		onChangeHomeTeam: function() {
 			if (typeof this.get('homeTeam') === 'number' || this.previous('homeTeam') === 'number') return;
@@ -129,7 +128,7 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 
 			_.uniq(teamsToUpdate, function(updateHash) {
 				var splitHash = updateHash.split(" ");
-				(new Intramurals.Model.Game({id: +splitHash[0]})).trigger('change:'+splitHash[1]);
+				(new Intramurals.Model.Team({id: +splitHash[0]})).trigger('change:'+splitHash[1]);
 			});
 		},
 		save: function() {
