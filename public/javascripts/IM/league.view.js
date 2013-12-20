@@ -82,6 +82,7 @@ Intramurals.View.Game = Backbone.View.extend({
 	},
 
 	setModel: function(model) {
+		console.log("Setting model");
 		if (this.model) this.model.off();
 		this.model = model;
 		this.model.on({
@@ -104,17 +105,24 @@ Intramurals.View.Game = Backbone.View.extend({
 		return this.model.get('location').substr(offset, this.model.get('location').length - offset);
 	},
 	homeTeamHTML: function() {
-		if (this.model.get('status') === 0 || this.model.get('status') === 4) {
-			return "<strong><span style='color: red;'>"+this.model.get('homeTeam').get('name')+"</span></strong>";
-		} else {
-			return "<strong><span>"+this.model.get('homeTeam').get('name')+"</span></strong>"
+		//this is messy, why do I need to check if the model is set correctly?
+		if (typeof this.model.get('homeTeam') === 'object') {
+			if (this.model.get('status') === 0 || this.model.get('status') === 4) {
+				return "<strong><span style='color: red;'>"+this.model.get('homeTeam').get('name')+"</span></strong>";
+			} else {
+				return "<strong><span>"+this.model.get('homeTeam').get('name')+"</span></strong>"
+			}
 		}
+			
 	},
 	awayTeamHTML: function() {
-		if (this.model.get('status') === 1 || this.model.get('status') === 3) {
-			return "<strong><span style='color: red;'>"+this.model.get('awayTeam').get('name')+"</span></strong>";
-		} else {
-			return "<strong><span>"+this.model.get('awayTeam').get('name')+"</span></strong>";
+		//this is messy, why do I need to check if the model is set correctly?
+		if (typeof this.model.get('awayTeam') === 'object') {
+			if (this.model.get('status') === 1 || this.model.get('status') === 3) {
+				return "<strong><span style='color: red;'>"+this.model.get('awayTeam').get('name')+"</span></strong>";
+			} else {
+				return "<strong><span>"+this.model.get('awayTeam').get('name')+"</span></strong>";
+			}
 		}
 	},
 	scoreText: function() {
@@ -168,9 +176,11 @@ Intramurals.View.TeamTable = Backbone.View.extend({
 		this.teamsView = collection.map(function(team) {
 			return new Intramurals.View.Team({model: team});
 		});
+		/*
 		collection.on('add', function(team) {
 			this.addTeamView(team);
 		}, this);
+	*/
 		this.render();
 	},
 	render: function() {
@@ -222,15 +232,14 @@ Intramurals.View.GameTable = Backbone.View.extend({
 		}.bind(this));
 	},
 	setCollection: function(collection) {
+		console.log("Setting collection");
 		if (this.collection) this.collection.off();
 
 		this.collection = collection;
 		this.gamesView = collection.map(function(game) {
+			console.log(JSON.stringify(game));
 			return new Intramurals.View.Game({model: game});
 		});
-		collection.on('add', function(game) {
-			this.addGameView(game)
-		}, this);
 		this.render();
 	},
 	removeGameAtIndex: function(index) {
@@ -315,6 +324,3 @@ Intramurals.View.GameTable = Backbone.View.extend({
 	league = mLeague;
 	
 })();
-
-
-
