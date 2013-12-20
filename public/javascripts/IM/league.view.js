@@ -100,7 +100,7 @@ Intramurals.View.Game = Backbone.View.extend({
 			'change:awayScore': this.onChangeScore.bind(this),
 			'change:status': this.onChangeScore.bind(this)
 		});
-			
+
 		this.model = model;
 		this.model.on({
 			'change:date': this.onChangeDate.bind(this),
@@ -110,7 +110,7 @@ Intramurals.View.Game = Backbone.View.extend({
 			'change:awayTeam': this.onChangeAwayTeam.bind(this),
 			'change:homeScore': this.onChangeScore.bind(this),
 			'change:awayScore': this.onChangeScore.bind(this),
-			'change:status': this.onChangeScore.bind(this)
+			'change:status': this.onChangeStatus.bind(this)
 		});
 
 		this.model.get('homeTeam').on('change:name', this.onChangeHomeTeam.bind(this));
@@ -176,6 +176,12 @@ Intramurals.View.Game = Backbone.View.extend({
 	},
 	onChangeLocation: function() {
 		this.$el.find('td:nth-child(3)').text(this.relativeLocation());
+	},
+	onChangeStatus: function() {
+		//should optimize this later, check which calls are necessary
+		this.onChangeScore();
+		this.onChangeHomeTeam();
+		this.onChangeAwayTeam();
 	}
 });
 
