@@ -57,31 +57,28 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 			this.on('change:awayTeam', this.onChangeAwayTeam.bind(this));
 		},
 		onChangeHomeTeam: function() {
-			console.log("Changing home team called");
-			if (typeof this.get('homeTeam') === 'number' || typeof this.previous('homeTeam') === 'number') return;
-			console.log("Changing home team continued");
+			
 			if (this.get('status') === 0 || this.get('status') === 4) {
-				if (typeof this.previous('homeTeam') !== 'number') this.previous('homeTeam').decrementWins();
+				this.previous('homeTeam').decrementWins();
 				this.get('homeTeam').incrementWins();
 			} else if (this.get('status') === 1 || this.get('status' === 3)) {
-				if (typeof this.previous('homeTeam') !== 'number') this.previous('homeTeam').decrementLosses();
+				this.previous('homeTeam').decrementLosses();
 				this.get('homeTeam').incrementLosses();
 			} else if (this.get('status') === 2) {
-				if (typeof this.previous('homeTeam') !== 'number') this.previous('homeTeam').decrementTies();
+				this.previous('homeTeam').decrementTies();
 				this.get('homeTeam').incrementTies();
 			}
 		},
 		onChangeAwayTeam: function() {
-			if (typeof this.get('awayTeam') === 'number' || typeof this.previous('awayTeam') === 'number') return;
-			console.log("Changing away team");
+			
 			if (this.get('status') === 0 || this.get('status') === 4) {
-				if (typeof this.previous('awayTeam') !== 'number') this.previous('awayTeam').decrementLosses();
+				this.previous('awayTeam').decrementLosses();
 				this.get('awayTeam').incrementLosses();
 			} else if (this.get('status') === 1 || this.get('status') === 3) {
-				if (typeof this.previous('awayTeam') !== 'number') this.previous('awayTeam').decrementWins();
+				this.previous('awayTeam').decrementWins();
 				this.get('awayTeam').incrementWins();
 			} else if (this.get('status') === 2) {
-				if (typeof this.previous('awayTeam') !== 'number') this.previous('awayTeam').decrementTies();
+				this.previous('awayTeam').decrementTies();
 				this.get('awayTeam').incrementTies();
 			}
 		},
@@ -233,31 +230,48 @@ Intramurals.Model.League = Backbone.UniqueModel(
 		},
 		parse: function(response) {
 			var self = this;
+
+			console.log("Parse called");
+			//unbind any previously set events
+
+			//assume if teams is collection, everything else is 
+			//set correctly
+			if (response.teams instanceof Backbone.Collection) {
+				this.setEventsForResponseObj(respone, 'off');
+			}
+
+			//set the new data
 			response.teams = new Intramurals.Model.Teams(response.teams);
 			response.season = {
-				games: new Intramurals.Model.Games(_.extend(response.season.games, {
-					homeTeam: Intramurals.Model.Team({id: response.season.games.homeTeam}),
-					awayTeam: Intramurals.Model.Team({id: response.season.games.awayTeam})
+				games: new Intramurals.Model.Games(response.season.games.map(function(game) {
+					return _.extend(game, {
+						homeTeam: new Intramurals.Model.Team({id: game.homeTeam}),
+						awayTeam: new Intramurals.Model.Team({id: game.awayTeam})
+					});
 				})),
 				playoffs: new Intramurals.Model.Playoffs(response.season.playoffs)
 			};
 
-			//bind all relevant events here
-
-			response.teams.on('add', self.onAddTeam.bind(self));
-			response.season.games.on('add', self.onAddGame.bind(self));
-
-			response.teams.each(function(team) {
-				team.on('save', self.onSaveTeams.bind(self));
-			});
-			response.season.games.each(function(game) {
-				game.on('save', self.onSaveGames.bind(self));
-			});
-			response.season.playoffs.on('save', self.onSavePlayoffs.bind(self));
-
+			this.setEventsForResponseObj(response);
+			
 			return response;
 		},
 
+		setEventsForResponseObj: function(response, setKey) {
+			var self = this;
+			setKey || (setKey = 'on');
+
+			response.teams[setKey]('add', self.onAddTeam.bind(self));
+			response.season.games[setKey]('add', self.onAddGame.bind(self));
+
+			response.teams.each(function(team) {
+				team[setKey]('save', self.onSaveTeams.bind(self));
+			});
+			response.season.games.each(function(game) {
+				game[setKey]('save', self.onSaveGames.bind(self));
+			});
+			response.season.playoffs[setKey]('save', self.onSavePlayoffs.bind(self));
+		},
 		//get collection of teams
 		teams: function() {
 			return this.get('teams');
@@ -278,19 +292,21 @@ Intramurals.Model.League = Backbone.UniqueModel(
 		},
 
 		onSaveTeams: function(model) {
-			this.save();
+			this.save({wait: true});
 		},
 		onSaveGames: function(model) {
-			this.save();
+			console.log("On save games called");
+			this.save({wait: true});
+
 		},
 		onSavePlayoffs: function(model) {
-			this.save();
+			this.save({wait: true});
 		},
 		onAddTeam: function() {
-			this.save();
+			this.save({wait: true});
 		},
 		onAddGame: function() {
-			this.save();
+			this.save({wait: true});
 		}
 	})
 );
