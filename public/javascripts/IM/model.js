@@ -225,6 +225,7 @@ Intramurals.Model.Playoffs = Backbone.Model.extend({
 Intramurals.Model.League = Backbone.UniqueModel(
 	Backbone.Model.extend({
 		idAttribute: 'id',
+		initialSetup: true,
 		urlRoot: function() {
 			return '/JSON/IM/' + this.get('categoryId') + '/league';
 		},
@@ -236,8 +237,17 @@ Intramurals.Model.League = Backbone.UniqueModel(
 
 			//assume if teams is collection, everything else is 
 			//set correctly
-			if (response.teams instanceof Backbone.Collection) {
-				this.setEventsForResponseObj(respone, 'off');
+			;
+			if (this.teams() instanceof Backbone.Collection) {
+				this.teams().off();
+				this.games().off();
+				this.playoffs().off();
+				this.teams().forEach(function(team) {
+					team.off();
+				});
+				this.games().forEach(function(game) {
+					game.off();
+				});
 			}
 
 			//set the new data
@@ -253,7 +263,7 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			};
 
 			this.setEventsForResponseObj(response);
-			
+			this.initialSetup = false;
 			return response;
 		},
 
