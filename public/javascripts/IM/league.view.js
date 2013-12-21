@@ -126,7 +126,7 @@ Intramurals.View.Game = Backbone.View.extend({
             		"<td style='text-align: center;' width='30' height='25'>VS</td>" + 
             		"<td style='text-align: left;' width='210' height='25'>"+this.awayTeamHTML()+"</td>"+
             		"<td style='text-align: center;' width='70' height='25'>"+this.scoreText()+"</td>");
-	
+			this.setupPopovers();
 		}
 	},
 
@@ -224,7 +224,43 @@ Intramurals.View.Game = Backbone.View.extend({
 		this.onChangeScore();
 		this.onChangeHomeTeam();
 		this.onChangeAwayTeam();
-	}
+	},
+
+	/*forms and popovers*/
+	setupPopovers: function() {
+		//date popover
+		$('td:nth-child(1)', this.$el).popover({
+			html: true,
+			container: 'body',
+			trigger: 'click',
+			title: 'Change Date',
+			content: '<div id="'+this.getPopoverIdForAttr('date')+'"><input type="date"/><input style="background: #f9bd60; border: solid #aaa 1px; border-radius: 5px;" type="button" value="Enter" /></div>'
+		})
+			.on('shown.bs.popover', this.onDatePopoverShown.bind(this))
+			.on('hidden.bs.popover', this.onDatePopoverHidden.bind(this));
+	},
+	getPopoverIdForAttr: function(attr) {
+		return 'popover-game-' + this.attr + '-' + this.model.id;
+	},
+	onDatePopoverShown: function() {
+		$('#' + this.getPopoverIdForAttr('date') + " input[type='button']").click(this.submitDate.bind(this));
+	},
+	onDatePopoverHidden: function() {
+		$('#' + this.getPopoverIdForAttr('date') + " input[type='button']").parent().parent().remove();
+	},
+	
+
+	submitDate: function() {
+		var splitDate = $('#' + this.getPopoverIdForAttr('date') + " input[type='date']").val().split('-');
+		this.model.set('date', DateHelper.dateStringFromDate(new Date(+splitDate[0], +splitDate[1]- 1, +splitDate[2])));
+		this.model.save();
+		$('td:nth-child(1)', this.$el).popover('destroy');
+	},
+	submitTime: function() {},
+	submitHomeTeam: function() {},
+	submitAwayTeam: function() {},
+	submitStatus: function() {},
+	submitScore: function() {}
 });
 
 Intramurals.View.TeamTable = Backbone.View.extend({
