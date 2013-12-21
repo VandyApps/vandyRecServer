@@ -251,8 +251,13 @@ Intramurals.View.Game = Backbone.View.extend({
 			container: 'body',
 			trigger: 'click',
 			title: 'Change Time',
-			content: '<div id="'+this.getPopoverIdForAttr('time')+'"><select class="game-popover-time-hours></select><select></select>"'
-		});
+			content: 	'<div id="'+this.getPopoverIdForAttr('time')+'">'+
+						'<select><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>'+
+						'<select><option value="00">00</option><option value="30">30</option></select>'+
+						'<select><option value="am">am</option><option value="pm">pm</option></select><input type="button" value="enter"  style="border: solid 1px #aaa; border-radius: 5px; background: #f9bd60;"/>'
+		})
+			.on('shown.bs.popover', this.onTimePopoverShown.bind(this))
+			.on('hidden.bs.popover', this.onTimePopoverHidden.bind(this));
 	},
 	setupHomeTeamPopover: function() {},
 	setupAwayTeamPopover: function() {},
@@ -265,8 +270,13 @@ Intramurals.View.Game = Backbone.View.extend({
 		$('#' + this.getPopoverIdForAttr('date') + " input[type='button']").click(this.submitDate.bind(this));
 	},
 	onDatePopoverHidden: function() {
-		$('#' + this.getPopoverIdForAttr('date')).parent().parent().remove();
-		
+		$('#' + this.getPopoverIdForAttr('date')).parent().parent().remove();		
+	},
+	onTimePopoverShown: function() {
+		$('#' + this.getPopoverIdForAttr('time') + " input[type='button']").click(this.submitTime.bind(this));
+	},
+	onTimePopoverHidden: function() {
+		$('#' + this.getPopoverIdForAttr('time')).parent().parent().remove();
 	},
 	submitDate: function() {
 		var splitDate = $('#' + this.getPopoverIdForAttr('date') + " input[type='date']").val().split('-');
@@ -276,11 +286,16 @@ Intramurals.View.Game = Backbone.View.extend({
 			$('td:nth-child(1)', this.$el).popover('destroy');
 		}  else {
 			$('td:nth-child(1)', this.$el).trigger('click');
-		}
-		
-		
+		}	
 	},
-	submitTime: function() {},
+	submitTime: function() {
+		var timeString = 	$('#' + this.getPopoverIdForAttr('time') + " select:nth-child(1)").val() + ":" +
+							$('#' + this.getPopoverIdForAttr('time') + " select:nth-child(2)").val() +
+							$('#' + this.getPopoverIdForAttr('time') + " select:nth-child(3)").val();
+		this.model.set('time', timeString);
+		this.model.save();
+		$('td:nth-child(2)', this.$el).popover('destroy');
+	},
 	submitHomeTeam: function() {},
 	submitAwayTeam: function() {},
 	submitStatus: function() {},
