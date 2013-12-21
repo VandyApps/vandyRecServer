@@ -46,18 +46,12 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 	
 	Backbone.Model.extend({
 		idAttribute: "id",
-		setupTeams: function() {
-			console.log("Setup called");
-			if (typeof this.get('homeTeam') === 'number') {		
-				this.set('homeTeam', new Intramurals.Model.Team({id:this.get('homeTeam')}), {silent: true});
-				this.set('awayTeam', new Intramurals.Model.Team({id:this.get('awayTeam')}), {silent: true});
-			}
+		initialize: function(attrs) {
 			this.on('change:status', this.onChangeStatus.bind(this));
 			this.on('change:homeTeam', this.onChangeHomeTeam.bind(this));
 			this.on('change:awayTeam', this.onChangeAwayTeam.bind(this));
 		},
 		onChangeHomeTeam: function() {
-			
 			if (this.get('status') === 0 || this.get('status') === 4) {
 				this.previous('homeTeam').decrementWins();
 				this.get('homeTeam').incrementWins();
@@ -83,8 +77,7 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 			}
 		},
 		onChangeStatus: function() {
-			//if (typeof this.get('homeTeam') === 'number' || typeof this.get('awayTeam') === 'number') return;
-
+			
 			var status = this.get('status'),
 				prevStatus = this.previous('status'),
 				teamsToUpdate = [];
@@ -133,8 +126,7 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 			this.trigger("save", this);
 		},
 
-		toJSON: function() {
-			
+		toJSON: function() {	
 			return {
 				homeTeam: (typeof this.get('homeTeam') === 'number') ? this.get('homeTeam') : this.get('homeTeam').id,
 				awayTeam: (typeof this.get('awayTeam') === 'number') ? this.get('awayTeam') : this.get('awayTeam').id,
@@ -166,15 +158,6 @@ Intramurals.Model.Teams = Backbone.Collection.extend({
 
 Intramurals.Model.Games = Backbone.Collection.extend({
 	model: Intramurals.Model.Game,
-	reset: function(rawModels) {
-		this.models = rawModels.map(function(model) {
-			var game = new Intramurals.Model.Game(model);
-			game.setupTeams();
-			return game;
-			
-		});
-		models = this.models;
-	},
 	//reset the wins, losses, and ties for all teams based on current games stats
 	resetWLT: function() {
 		var teamsToUpdate = [];
