@@ -13,13 +13,6 @@ Intramurals.View.Team = Backbone.View.extend({
 			this.setModel(mObject.model);
 		}
 	},
-	nameToTextInput: function(text) {
-		var refinedText = "", i = 0;
-		for ( ; i < text.length; ++i) {
-			refinedText += (text.charAt(i) === "'") ? "\'" : text.charAt(i);
-		}
-		return refinedText;
-	},
 	//returns html as string for parent view to use
 	render: function() {
 		
@@ -38,7 +31,7 @@ Intramurals.View.Team = Backbone.View.extend({
 			container: 'body', 
 			trigger: 'click',
 			html: true,
-			content: "<div id="+this.getTitlePopoverId()+"><input style='border: solid #aaa 1px; border-radius: 5px;' type='text' value='"+this.nameToTextInput(this.model.get('name'))+"'/><input type='button' style='border: solid #aaa 1px; border-radius: 5px; background: #f9bd60;' value='Enter' /></div>"
+			content: "<div id="+this.getTitlePopoverId()+"><input style='border: solid #aaa 1px; border-radius: 5px;' type='text' value='"+this.model.get('name')+"'/><input type='button' style='border: solid #aaa 1px; border-radius: 5px; background: #f9bd60;' value='Enter' /></div>"
 		})	.on('shown.bs.popover', this.onPopoverShown.bind(this))
 			.on('hidden.bs.popover', this.onPopoverHidden.bind(this))
 		
@@ -256,7 +249,7 @@ Intramurals.View.Game = Backbone.View.extend({
 			content: 	'<div id="'+this.getPopoverIdForAttr('time')+'">'+
 						'<select><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>'+
 						'<select><option value="00">00</option><option value="30">30</option></select>'+
-						'<select><option value="am">am</option><option value="pm">pm</option></select><input type="button" value="enter"  style="border: solid 1px #aaa; border-radius: 5px; background: #f9bd60;"/>'
+						'<select><option value="am">am</option><option value="pm">pm</option></select><input type="button" value="enter"  style="background: #f9bd60; border: solid #aaa 1px; border-radius: 5px;"/>'
 		})
 			.on('shown.bs.popover', this.onTimePopoverShown.bind(this))
 			.on('hidden.bs.popover', this.onTimePopoverHidden.bind(this));
@@ -270,7 +263,7 @@ Intramurals.View.Game = Backbone.View.extend({
 			content: '<div id="'+this.getPopoverIdForAttr('location')+'"><input style="width: 40px; margin-right: 10px; text-align: center;" type="text" value="'+$('td:nth-child(3)', this.$el).text()+'" /><input type="button" value="enter" style="border: solid 1px #aaa; border-radius: 5px; background: #f9bd60;"/></div>'
 		})
 			.on('shown.bs.popover', this.onLocationPopoverShown.bind(this))
-			.on('hidden.bs.popover', this.onLocationPopoverHidden.bind(this));;
+			.on('hidden.bs.popover', this.onLocationPopoverHidden.bind(this));
 	},
 	setupHomeTeamPopover: function() {
 
@@ -278,7 +271,27 @@ Intramurals.View.Game = Backbone.View.extend({
 	setupAwayTeamPopover: function() {
 
 	},
-	setupStatusPopover: function() {},
+	setupStatusPopover: function() {
+		$('td:nth-child(7)', this.$el).popover({
+			html: true,
+			container: 'body',
+			trigger: 'click',
+			placement: 'top',
+			title: 'Change Game Status',
+			content: 	'<div id="'+this.getPopoverIdForAttr('status')+'">'+
+						'<div><input type="radio" name="status" value="0" style="margin-right: 10px;" />Home Team Won</div>'+
+						'<div><input type="radio" name="status" value="1" style="margin-right: 10px;" />Away Team Won</div>'+
+						'<div><input type="radio" name="status" value="2" style="margin-right: 10px;" />Tie</div>'+
+						'<div><input type="radio" name="status" value="3" style="margin-right: 10px;" />Home Team Forfeit</div>'+
+						'<div><input type="radio" name="status" value="4" style="margin-right: 10px;" />Away Team Forfeit</div>'+
+						'<div><input type="radio" name="status" value="5" style="margin-right: 10px;" />Game Cancelled</div>'+
+						'<div><input type="radio" name="status" value="6" style="margin-right: 10px;" />Not Yet Played</div>'+
+						'<div style="margin-top: 10px;"><input type="button" value="Enter" style="background: #f9bd60; border: solid #aaa 1px; border-radius: 5px;"/></div>'+
+						'</div>'
+		})
+			.on('shown.bs.popover', this.onStatusPopoverShown.bind(this))
+			.on('hidden.bs.popover', this.onStatusPopoverHidden.bind(this));
+	},
 	setupScorePopover: function() {},
 	getPopoverIdForAttr: function(attr) {
 		return 'popover-game-' + attr + '-' + this.model.id;
@@ -307,6 +320,14 @@ Intramurals.View.Game = Backbone.View.extend({
 	onLocationPopoverHidden: function() {
 		$('#' + this.getPopoverIdForAttr('location')).parent().parent().remove();
 	},
+	onStatusPopoverShown: function() {
+		$('#' + this.getPopoverIdForAttr('status') + " input[type='button']").click(this.submitStatus.bind(this));
+		console.log(this.model.get('status'));
+		$('#' + this.getPopoverIdForAttr('status') + " input[type='radio'][value='"+this.model.get('status')+"']").attr('checked', true)
+	},
+	onStatusPopoverHidden: function() {
+		$('#' + this.getPopoverIdForAttr('status')).parent().parent().remove();
+	},
 	submitDate: function() {
 		var splitDate = $('#' + this.getPopoverIdForAttr('date') + " input[type='date']").val().split('-');
 		if (splitDate.length === 3) {
@@ -334,7 +355,13 @@ Intramurals.View.Game = Backbone.View.extend({
 	},
 	submitHomeTeam: function() {},
 	submitAwayTeam: function() {},
-	submitStatus: function() {},
+	submitStatus: function() {
+		var status = +$('#' + this.getPopoverIdForAttr('status') + " input[type='radio']:checked").val();
+		console.log(status);
+		this.model.set('status', status);
+		this.model.save();
+		$('td:nth-child(7)', this.$el).popover('destroy');
+	},
 	submitScore: function() {}
 });
 
