@@ -34,8 +34,7 @@ Intramurals.View.Team = Backbone.View.extend({
 	},
 	setupPopover: function() { 
 		$('td:nth-child(2)', this.$el).popover(
-			{title: "Change Name", 
-			text: "hello world!", 
+			{title: "Change Name",  
 			container: 'body', 
 			trigger: 'click',
 			html: true,
@@ -228,7 +227,14 @@ Intramurals.View.Game = Backbone.View.extend({
 
 	/*forms and popovers*/
 	setupPopovers: function() {
-		//date popover
+		this.setupDatePopover();
+		this.setupTimePopover();
+		this.setupHomeTeamPopover();
+		this.setupAwayTeamPopover();
+		this.setupStatusPopover();
+		this.setupScorePopover();
+	},
+	setupDatePopover: function() {
 		$('td:nth-child(1)', this.$el).popover({
 			html: true,
 			container: 'body',
@@ -239,22 +245,40 @@ Intramurals.View.Game = Backbone.View.extend({
 			.on('shown.bs.popover', this.onDatePopoverShown.bind(this))
 			.on('hidden.bs.popover', this.onDatePopoverHidden.bind(this));
 	},
+	setupTimePopover: function() {
+		$('td:nth-child(2)', this.$el).popover({
+			html: true,
+			container: 'body',
+			trigger: 'click',
+			title: 'Change Time',
+			content: '<div id="'+this.getPopoverIdForAttr('time')+'"><select class="game-popover-time-hours></select><select></select>"'
+		});
+	},
+	setupHomeTeamPopover: function() {},
+	setupAwayTeamPopover: function() {},
+	setupStatusPopover: function() {},
+	setupScorePopover: function() {},
 	getPopoverIdForAttr: function(attr) {
-		return 'popover-game-' + this.attr + '-' + this.model.id;
+		return 'popover-game-' + attr + '-' + this.model.id;
 	},
 	onDatePopoverShown: function() {
 		$('#' + this.getPopoverIdForAttr('date') + " input[type='button']").click(this.submitDate.bind(this));
 	},
 	onDatePopoverHidden: function() {
-		$('#' + this.getPopoverIdForAttr('date') + " input[type='button']").parent().parent().remove();
+		$('#' + this.getPopoverIdForAttr('date')).parent().parent().remove();
+		
 	},
-	
-
 	submitDate: function() {
 		var splitDate = $('#' + this.getPopoverIdForAttr('date') + " input[type='date']").val().split('-');
-		this.model.set('date', DateHelper.dateStringFromDate(new Date(+splitDate[0], +splitDate[1]- 1, +splitDate[2])));
-		this.model.save();
-		$('td:nth-child(1)', this.$el).popover('destroy');
+		if (splitDate.length === 3) {
+			this.model.set('date', DateHelper.dateStringFromDate(new Date(+splitDate[0], +splitDate[1]- 1, +splitDate[2])));
+			this.model.save();
+			$('td:nth-child(1)', this.$el).popover('destroy');
+		}  else {
+			$('td:nth-child(1)', this.$el).trigger('click');
+		}
+		
+		
 	},
 	submitTime: function() {},
 	submitHomeTeam: function() {},
