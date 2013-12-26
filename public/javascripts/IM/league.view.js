@@ -118,7 +118,7 @@ Intramurals.View.Game = Backbone.View.extend({
             		"<td style='text-align: left;' width='210' height='25'>"+this.homeTeamHTML()+"</td>" + 
             		"<td style='text-align: center;' width='30' height='25'>VS</td>" + 
             		"<td style='text-align: left;' width='210' height='25'>"+this.awayTeamHTML()+"</td>"+
-            		"<td style='text-align: center;' width='70' height='25'>"+this.scoreText()+"</td>");
+            		"<td style='text-align: center;' width='90' height='25'>"+this.scoreText()+"</td>");
 			this.setupPopovers();
 		}
 	},
