@@ -46,11 +46,6 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 	
 	Backbone.Model.extend({
 		idAttribute: "id",
-		initialize: function(attrs) {
-			this.on('change:status', this.onChangeStatus.bind(this));
-			this.on('change:homeTeam', this.onChangeHomeTeam.bind(this));
-			this.on('change:awayTeam', this.onChangeAwayTeam.bind(this));
-		},
 		onChangeHomeTeam: function() {
 			if (this.get('status') === 0 || this.get('status') === 4) {
 				this.previous('homeTeam').decrementWins();
@@ -81,8 +76,9 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 			var status = this.get('status'),
 				prevStatus = this.previous('status'),
 				teamsToUpdate = [];
-				console.log("Previous status " + prevStatus);
 
+			console.log("Current status: " + this.get('status'));
+			console.log("Previous status: " + this.previous('status'));
 			if (status === 0 || status === 4) {
 				this.get('homeTeam').incrementWins({silent: true});
 				this.get('awayTeam').incrementLosses({silent: true});
@@ -118,6 +114,7 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 			}
 
 			_.uniq(teamsToUpdate, function(updateHash) {
+				console.log("Teams to update called");
 				var splitHash = updateHash.split(" ");
 				(new Intramurals.Model.Team({id: +splitHash[0]})).trigger('change:'+splitHash[1]);
 			});
@@ -215,7 +212,6 @@ Intramurals.Model.League = Backbone.UniqueModel(
 		parse: function(response) {
 			var self = this;
 
-			console.log("Parse called");
 			//unbind any previously set events
 
 			//assume if teams is collection, everything else is 
@@ -245,6 +241,14 @@ Intramurals.Model.League = Backbone.UniqueModel(
 				playoffs: new Intramurals.Model.Playoffs(response.season.playoffs)
 			};
 
+			//bind events for games
+			response.season.games.forEach(function(game) {
+				game.on('change:status', game.onChangeStatus.bind(game));
+				game.on('change:homeTeam', game.onChangeHomeTeam.bind(game));
+				game.on('change:awayTeam', game.onChangeAwayTeam.bind(game));
+			});
+
+			//bind events for league
 			this.setEventsForResponseObj(response);
 			this.initialSetup = false;
 			return response;
@@ -288,7 +292,6 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			this.save({wait: true});
 		},
 		onSaveGames: function(model) {
-			console.log("On save games called");
 			this.save({wait: true});
 
 		},

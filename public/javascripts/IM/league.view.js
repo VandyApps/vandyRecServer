@@ -124,7 +124,6 @@ Intramurals.View.Game = Backbone.View.extend({
 	},
 
 	setModel: function(model) {
-		console.log("Setting model");
 		if (this.model) this.model.off({
 			'change:date': this.onChangeDate.bind(this),
 			'change:time': this.onChangeTime.bind(this),
@@ -442,12 +441,10 @@ Intramurals.View.GameTable = Backbone.View.extend({
 		}.bind(this));
 	},
 	setCollection: function(collection) {
-		console.log("Setting collection");
 		if (this.collection) this.collection.off();
 
 		this.collection = collection;
 		this.gamesView = collection.map(function(game) {
-			console.log(JSON.stringify(game));
 			return new Intramurals.View.Game({model: game});
 		});
 		this.render();
