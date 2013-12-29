@@ -265,7 +265,13 @@ Intramurals.View.Game = Backbone.View.extend({
 			.on('hidden.bs.popover', this.onLocationPopoverHidden.bind(this));
 	},
 	setupHomeTeamPopover: function() {
-
+		$('td:nth-child(4)', this.$el).popover({
+			html: true,
+			container: 'body',
+			trigger: 'click',
+			title: 'Change Home Team',
+			content: '<div id="'+this.getPopoverIdForAttr('homeTeam')+'"><select style="margin-right: 10px;">'+this.getOptionsForTeamSelect()+'</select><input type="button" value="enter" style="border: solid 1px #aaa; border-radius: 5px; background: #f9bd60;"/></div>'
+		});
 	},
 	setupAwayTeamPopover: function() {
 
@@ -322,7 +328,6 @@ Intramurals.View.Game = Backbone.View.extend({
 		$('#' + this.getPopoverIdForAttr('location')).parent().parent().remove();
 	},
 	onStatusPopoverShown: function() {
-		console.log("Status popover shown");
 		$('#' + this.getPopoverIdForAttr('status') + " input[type='button']").click(this.submitStatus.bind(this));
 		$('#' + this.getPopoverIdForAttr('status') + " input.inputHomeScore").val(this.model.get('homeScore'));
 		$('#' + this.getPopoverIdForAttr('status') + " input.inputAwayScore").val(this.model.get('awayScore'));
@@ -371,6 +376,12 @@ Intramurals.View.Game = Backbone.View.extend({
 		this.model.set(setMap);
 		this.model.save();
 		$('td:nth-child(7)', this.$el).popover('destroy');
+	},
+
+	getOptionsForTeamSelect: function() {
+		return Intramurals.View.TeamTable.getInstance().collection.reduce(function(memo, team) {
+			return memo + '<option value="'+team.id+'">'+team.get('name')+'</option>';
+		}, String());
 	}
 });
 
