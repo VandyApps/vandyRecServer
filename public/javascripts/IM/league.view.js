@@ -309,6 +309,7 @@ Intramurals.View.Game = Backbone.View.extend({
 		$('#' + this.getPopoverIdForAttr('time')).parent().parent().remove();
 	},
 	onLocationPopoverShown: function() {
+
 		$('#'+this.getPopoverIdForAttr('location') + " input[type='button']").click(this.submitLocation.bind(this));
 		$('#'+this.getPopoverIdForAttr('location') + " input[type='text']").select();
 		$('#'+this.getPopoverIdForAttr('location') + " input[type='text']").keypress(function(event) {
@@ -319,12 +320,9 @@ Intramurals.View.Game = Backbone.View.extend({
 	},
 	onLocationPopoverHidden: function() {
 		$('#' + this.getPopoverIdForAttr('location')).parent().parent().remove();
-		if (this.model.get('status') <= 2) {
-			//show the score popover
-			$('td:nth-child(7)').popover('show');
-		}
 	},
 	onStatusPopoverShown: function() {
+		console.log("Status popover shown");
 		$('#' + this.getPopoverIdForAttr('status') + " input[type='button']").click(this.submitStatus.bind(this));
 		$('#' + this.getPopoverIdForAttr('status') + " input.inputHomeScore").val(this.model.get('homeScore'));
 		$('#' + this.getPopoverIdForAttr('status') + " input.inputAwayScore").val(this.model.get('awayScore'));
