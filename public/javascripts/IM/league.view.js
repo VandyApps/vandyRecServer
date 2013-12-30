@@ -20,7 +20,8 @@ Intramurals.View.Team = Backbone.View.extend({
             		"<td style='width: 200px; margin: auto; text-align: left;'>"+this.model.get('name')+"</td>"+
             		"<td style='width: 127px; margin: auto; text-align: center;'>"+this.numberToTally(this.model.get('wins'))+"</td>"+
             		"<td style='width: 127px; margin: auto; text-align: center;'>"+this.numberToTally(this.model.get('losses'))+"</td>"+
-            		"<td style='width: 127px; margin: auto; text-align: center;'>"+this.numberToTally(this.model.get('ties'))+"</td>");
+            		"<td style='width: 127px; margin: auto; text-align: center;'>"+this.numberToTally(this.model.get('ties'))+"</td>" + 
+            		"<td style='text-align: center;' width='40' height= '25'><div>x</div></td>");
 
 			this.setupPopover();
 		
@@ -118,7 +119,9 @@ Intramurals.View.Game = Backbone.View.extend({
             		"<td style='text-align: left;' width='210' height='25'>"+this.homeTeamHTML()+"</td>" + 
             		"<td style='text-align: center;' width='30' height='25'>VS</td>" + 
             		"<td style='text-align: left;' width='210' height='25'>"+this.awayTeamHTML()+"</td>"+
-            		"<td style='text-align: center;' width='90' height='25'>"+this.scoreText()+"</td>");
+            		"<td style='text-align: center;' width='90' height='25'>"+this.scoreText()+"</td>" + 
+					"<td style='text-align: center;' width='40' height= '25'><div>x</div></td>");
+
 			this.setupPopovers();
 		}
 	},

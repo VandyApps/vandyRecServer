@@ -153,11 +153,37 @@ margin:0 10px 10px 0;
 }
 
 td {
-border:solid #aaa 1px;
 padding:10px;
 }
 
-#gameTable tr:not(:nth-child(1)) td:not(:nth-child(5)),
+td:not(:last-child), tr:nth-child(1) td {
+border:solid #aaa 1px;
+
+}
+
+
+
+tr:not(:nth-child(1)) td:last-child > div {
+	cursor: pointer;  
+	width: 20px; 
+	height: 20px; 
+	line-height: 20px; 
+	text-align: center; 
+	border-radius: 10px;
+	background: #ffb8bd;
+	color: #888;
+}
+
+tr:not(:nth-child(1)) td:last-child > div:hover {
+	background:  red;
+	color: black;
+	transition: background .3s linear, color .3s linear;
+	-webkit-transition: background .3s linear, color .3s linear;
+	-o-transition: background .3s linear, color .3s linear;
+	-moz-transition: background .3s linear, color .3s linear;
+}
+
+#gameTable tr:not(:nth-child(1)) td:not(:nth-child(5)):not(:nth-child(8)),
 #teamTable tr:not(:nth-child(1)) td:nth-child(2) {
 	cursor: pointer;
 }
