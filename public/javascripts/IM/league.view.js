@@ -271,7 +271,9 @@ Intramurals.View.Game = Backbone.View.extend({
 			trigger: 'click',
 			title: 'Change Home Team',
 			content: '<div id="'+this.getPopoverIdForAttr('homeTeam')+'"><select style="margin-right: 10px;">'+this.getOptionsForTeamSelect()+'</select><input type="button" value="enter" style="border: solid 1px #aaa; border-radius: 5px; background: #f9bd60;"/></div>'
-		});
+		})
+			.on('shown.bs.popover', this.onHomeTeamShown.bind(this))
+			.on('hidden.bs.popover', this.onHomeTeamHidden.bind(this));
 	},
 	setupAwayTeamPopover: function() {
 
@@ -327,6 +329,16 @@ Intramurals.View.Game = Backbone.View.extend({
 	onLocationPopoverHidden: function() {
 		$('#' + this.getPopoverIdForAttr('location')).parent().parent().remove();
 	},
+	onHomeTeamShown: function() {
+		$('#'+this.getPopoverIdForAttr('homeTeam') + ' input[type="button"]').click(this.submitHomeTeam.bind(this));
+		$('#' + this.getPopoverIdForAttr('homeTeam') + ' select').val(this.model.get('homeTeam').id.toString());
+	},
+	onHomeTeamHidden: function() {
+		$('#' + this.getPopoverIdForAttr('homeTeam')).parent().parent().remove();
+	},
+	onAwayTeamShown: function() {},
+	onAwayTeamHidden: function() {},
+
 	onStatusPopoverShown: function() {
 		$('#' + this.getPopoverIdForAttr('status') + " input[type='button']").click(this.submitStatus.bind(this));
 		$('#' + this.getPopoverIdForAttr('status') + " input.inputHomeScore").val(this.model.get('homeScore'));
@@ -337,6 +349,7 @@ Intramurals.View.Game = Backbone.View.extend({
 	onStatusPopoverHidden: function() {
 		$('#' + this.getPopoverIdForAttr('status')).parent().parent().remove();
 	},
+
 	submitDate: function() {
 		var splitDate = $('#' + this.getPopoverIdForAttr('date') + " input[type='date']").val().split('-');
 		if (splitDate.length === 3) {
@@ -362,7 +375,12 @@ Intramurals.View.Game = Backbone.View.extend({
 		this.model.save();
 		$('td:nth-child(3)', this.$el).popover('destroy');
 	},
-	submitHomeTeam: function() {},
+	submitHomeTeam: function() {
+		var id = +$('#'+this.getPopoverIdForAttr('homeTeam') + ' select').val();
+		this.model.set('homeTeam', Intramurals.Model.Team({id: id}));
+		this.model.save();
+		$('td:nth-child(4)', this.$el).popover('destroy');
+	},
 	submitAwayTeam: function() {},
 	submitStatus: function() {
 		var setMap = {
