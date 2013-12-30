@@ -24,6 +24,7 @@ Intramurals.View.Team = Backbone.View.extend({
             		"<td style='text-align: center;' width='40' height= '25'><div>x</div></td>");
 
 			this.setupPopover();
+			$('td:nth-child(6) > div', this.$el).click(this.onDeleteButtonClicked.bind(this));
 		
 	},
 	setupPopover: function() { 
@@ -60,7 +61,7 @@ Intramurals.View.Team = Backbone.View.extend({
 	numberToTally: function(num) {
 		var html = "";
 		while (num >= 5) {
-			html += "<del>IIII</del>&#32"
+			html += "<del>IIII</del>&#32;"
 			num -= 5;
 		}
 		while (num) {
@@ -98,6 +99,31 @@ Intramurals.View.Team = Backbone.View.extend({
 	},
 	onPopoverHidden: function() {
 		$('#' + this.getTitlePopoverId()).parent().parent().remove();
+	},
+	onDeleteButtonClicked: function(event) {
+
+		var confirmation = new ConfirmationBox(
+			{
+				message: 'Are you sure you would like to delete the team "' +this.model.get('name') +'"?',
+				button1Name: 'YES',
+				button2Name: 'NO'
+			});
+
+		
+
+		confirmation.on('clicked1', function() {
+			this.model.destroy();
+
+			confirmation.unbind('clicked1');
+			confirmation.unbind('clicked2');
+		}.bind(this));
+
+		confirmation.on('clicked2', function() {
+			confirmation.unbind('clicked1');
+			confirmation.unbind('clicked2');
+		});
+
+		confirmation.show();
 	}
 });
 

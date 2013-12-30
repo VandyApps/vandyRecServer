@@ -38,6 +38,9 @@ Intramurals.Model.Team = Backbone.UniqueModel(
 		},
 		save: function() {
 			this.trigger('save', this);
+		},
+		destroy: function() {
+			this.trigger('destroy', this);
 		}
 	})
 );
@@ -264,10 +267,14 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			response.teams.each(function(team) {
 				team[setKey]('save', self.onSaveTeams.bind(self));
 			});
+
+			response.teams.on('destroy', this.onDestroyTeam.bind(this));
+
 			response.season.games.each(function(game) {
 				game[setKey]('save', self.onSaveGames.bind(self));
 			});
 			response.season.playoffs[setKey]('save', self.onSavePlayoffs.bind(self));
+
 		},
 		//get collection of teams
 		teams: function() {
@@ -302,6 +309,12 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			this.save({wait: true});
 		},
 		onAddGame: function() {
+			this.save({wait: true});
+		},
+		onDestroyTeam: function() {
+			this.save({wait: true});
+		},
+		onDestroyGame: function() {
 			this.save({wait: true});
 		}
 	})
