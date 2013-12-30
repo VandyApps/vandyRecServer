@@ -276,7 +276,15 @@ Intramurals.View.Game = Backbone.View.extend({
 			.on('hidden.bs.popover', this.onHomeTeamHidden.bind(this));
 	},
 	setupAwayTeamPopover: function() {
-
+		$('td:nth-child(6)', this.$el).popover({
+			html: true,
+			container: 'body',
+			trigger: 'click',
+			title: 'Change Away Team',
+			content: '<div id="'+this.getPopoverIdForAttr('awayTeam')+'"><select style="margin-right: 10px;">'+this.getOptionsForTeamSelect()+'</select><input type="button" value="enter" style="border: solid 1px #aaa; border-radius: 5px; background: #f9bd60;"/></div>'
+		})
+			.on('shown.bs.popover', this.onAwayTeamShown.bind(this))
+			.on('hidden.bs.popover', this.onAwayTeamHidden.bind(this));
 	},
 	setupStatusPopover: function() {
 		$('td:nth-child(7)', this.$el).popover({
@@ -336,8 +344,13 @@ Intramurals.View.Game = Backbone.View.extend({
 	onHomeTeamHidden: function() {
 		$('#' + this.getPopoverIdForAttr('homeTeam')).parent().parent().remove();
 	},
-	onAwayTeamShown: function() {},
-	onAwayTeamHidden: function() {},
+	onAwayTeamShown: function() {
+		$('#'+this.getPopoverIdForAttr('awayTeam') + ' input[type="button"]').click(this.submitAwayTeam.bind(this));
+		$('#' + this.getPopoverIdForAttr('awayTeam') + ' select').val(this.model.get('awayTeam').id.toString());
+	},
+	onAwayTeamHidden: function() {
+		$('#' + this.getPopoverIdForAttr('awayTeam')).parent().parent().remove();
+	},
 
 	onStatusPopoverShown: function() {
 		$('#' + this.getPopoverIdForAttr('status') + " input[type='button']").click(this.submitStatus.bind(this));
@@ -381,7 +394,12 @@ Intramurals.View.Game = Backbone.View.extend({
 		this.model.save();
 		$('td:nth-child(4)', this.$el).popover('destroy');
 	},
-	submitAwayTeam: function() {},
+	submitAwayTeam: function() {
+		var id = +$('#'+this.getPopoverIdForAttr('awayTeam') + ' select').val();
+		this.model.set('awayTeam', Intramurals.Model.Team({id: id}));
+		this.model.save();
+		$('td:nth-child(6)', this.$el).popover('destroy');
+	},
 	submitStatus: function() {
 		var setMap = {
 			status: +$('#' + this.getPopoverIdForAttr('status') + " input[type='radio']:checked").val()
