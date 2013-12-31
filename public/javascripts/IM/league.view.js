@@ -27,6 +27,8 @@ Intramurals.View.Team = Backbone.View.extend({
 		
 	},
 	setupPopovers: function() { 
+		var dropMessage = (this.model.get('isDropped')) ? "Un-Drop Team" : "Drop Team";
+
 		$('td:nth-child(2)', this.$el).popover(
 			{title: "Change Name",  
 			container: 'body', 
@@ -41,7 +43,7 @@ Intramurals.View.Team = Backbone.View.extend({
 			container: 'body',
 			trigger: 'click',
 			html: true,
-			content: 	"<div id='"+this.getDeletePopoverId()+"'><ul style='list-style: none; padding: 0; margin: 0;'><li style='cursor: pointer; border-bottom: solid 1px #aaa;'>Drop Team</li>"+
+			content: 	"<div id='"+this.getDeletePopoverId()+"'><ul style='list-style: none; padding: 0; margin: 0;'><li style='cursor: pointer; border-bottom: solid 1px #aaa;'>"+dropMessage+"</li>"+
 						"<li style='cursor: pointer; border-bottom: solid 1px #aaa;'>Delete Team</li></ul></div>"
 		})
 			.on('shown.bs.popover', this.onDeletePopoverShown.bind(this))
@@ -115,7 +117,10 @@ Intramurals.View.Team = Backbone.View.extend({
 	},
 
 	onDeletePopoverShown: function() {
-		console.log("SHowing popover");
+		$('#' + this.getDeletePopoverId() + " li:nth-child(1)").click(function() {
+			this.model.set('isDropped', !this.model.get('isDropped'));
+		}.bind(this));
+		$('#' + this.getDeletePopoverId() + " li:nth-child(2)").click(this.onDeleteButtonClicked.bind(this));
 	},
 	onDeletePopoverHidden: function() {
 		console.log("Deleting popover");
@@ -125,7 +130,7 @@ Intramurals.View.Team = Backbone.View.extend({
 
 		var confirmation = new ConfirmationBox(
 			{
-				message: 'Are you sure you would like to delete the team "' +this.model.get('name') +'"?',
+				message: 'Are you sure you would like to delete the team "' +this.model.get('name') +'"?  Note: This would mean that all games this team played in would also be deleted!',
 				button1Name: 'YES',
 				button2Name: 'NO'
 			});
