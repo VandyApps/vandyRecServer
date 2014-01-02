@@ -89,7 +89,7 @@ Intramurals.View.Team = Backbone.View.extend({
 		return (this.model.get('isDropped')) ?  '<del>'+this.model.get('name')+'</del><div style="color: red;">Team is Dropped</div>': this.model.get('name');
 	},
 	onNameChange: function() {
-		this.$el.find('td:nth-child(2)').text(this.model.get('name'));
+		this.$el.find('td:nth-child(2)').text(this.getNameHTML());
 	},
 	onWinsChange: function() {
 		this.$el.find('td:nth-child(3)').html(this.numberToTally(this.model.get('wins')));
