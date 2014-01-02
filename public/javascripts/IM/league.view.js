@@ -17,7 +17,7 @@ Intramurals.View.Team = Backbone.View.extend({
 	render: function() {
 		
 			this.$el.html("<td style='width: 19px; margin: auto; text-align: center;'>"+this.count+"</td>"+
-            		"<td style='width: 200px; margin: auto; text-align: left;'>"+this.model.get('name')+"</td>"+
+            		"<td style='width: 200px; margin: auto; text-align: left;'>"+this.getNameHTML()+"</td>"+
             		"<td style='width: 127px; margin: auto; text-align: center;'>"+this.numberToTally(this.model.get('wins'))+"</td>"+
             		"<td style='width: 127px; margin: auto; text-align: center;'>"+this.numberToTally(this.model.get('losses'))+"</td>"+
             		"<td style='width: 127px; margin: auto; text-align: center;'>"+this.numberToTally(this.model.get('ties'))+"</td>" + 
@@ -85,6 +85,9 @@ Intramurals.View.Team = Backbone.View.extend({
 		}
 		return html;
 	},
+	getNameHTML: function() {
+		return (this.model.get('isDropped')) ?  '<del>'+this.model.get('name')+'</del><div style="color: red;">Team is Dropped</div>': this.model.get('name');
+	},
 	onNameChange: function() {
 		this.$el.find('td:nth-child(2)').text(this.model.get('name'));
 	},
@@ -119,6 +122,9 @@ Intramurals.View.Team = Backbone.View.extend({
 	onDeletePopoverShown: function() {
 		$('#' + this.getDeletePopoverId() + " li:nth-child(1)").click(function() {
 			this.model.set('isDropped', !this.model.get('isDropped'));
+			$('td:nth-child(6)', this.$el).popover('destroy');
+			this.model.save();
+
 		}.bind(this));
 		$('#' + this.getDeletePopoverId() + " li:nth-child(2)").click(this.onDeleteButtonClicked.bind(this));
 	},
@@ -134,8 +140,6 @@ Intramurals.View.Team = Backbone.View.extend({
 				button1Name: 'YES',
 				button2Name: 'NO'
 			});
-
-		
 
 		confirmation.on('clicked1', function() {
 			this.model.destroy();
