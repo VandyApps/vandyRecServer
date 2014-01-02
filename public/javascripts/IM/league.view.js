@@ -134,14 +134,16 @@ Intramurals.View.Team = Backbone.View.extend({
 
 	onDeleteButtonClicked: function(event) {
 
-		var confirmation = new ConfirmationBox(
-			{
-				message: 'Are you sure you would like to delete the team "' +this.model.get('name') +'"?  Note: This would mean that all games this team played in would also be deleted!',
-				button1Name: 'YES',
-				button2Name: 'NO'
-			});
+		var self = this,
+			confirmation = new ConfirmationBox(
+				{
+					message: 'Are you sure you would like to delete the team "' +this.model.get('name') +'"?  Note: This would mean that all games this team played in would also be deleted!',
+					button1Name: 'YES',
+					button2Name: 'NO'
+				});
 
 		confirmation.on('clicked1', function() {
+			$('td:nth-child(6)').popover('destroy');
 			this.model.destroy();
 
 			confirmation.unbind('clicked1');
@@ -149,6 +151,7 @@ Intramurals.View.Team = Backbone.View.extend({
 		}.bind(this));
 
 		confirmation.on('clicked2', function() {
+			$('td:nth-child(6)', self.$el).popover('destroy');
 			confirmation.unbind('clicked1');
 			confirmation.unbind('clicked2');
 		});
