@@ -311,10 +311,46 @@ Intramurals.Model.League = Backbone.UniqueModel(
 		onAddGame: function() {
 			this.save({wait: true});
 		},
-		onDestroyTeam: function() {
+		onDestroyTeam: function(model) {
+			var games = this.games(),
+			//cache games to remove until after iterating collection
+			//shouldn't delete elements in collection being iterated
+				gamesToRemove = [];
+			//destroy all games with this team
+			games.each(function(game) {
+				console.log("Iterating");
+				//silent score changed because after the save, all the views
+				//will be re-rendered anyway
+				var status = game.get('status');
+				if (game.get('homeTeam') === model) {
+					if (status === 0 || status === 4) {
+						game.get('awayTeam').decrementLosses({silent: true});
+					} else if (status === 1 || status === 3) {
+						game.get('awayTeam').decrementWins({silent: true});
+					} else if (status === 2) {
+						game.get('awayTeam').decrementTies({silent: true});
+					}
+					gamesToRemove.push(game);
+
+				} else if (game.get('awayTeam') === model) {
+					if (status === 0 || status === 4) {
+						game.get('homeTeam').decrementWins({silent: true});
+					} else if (status === 1 || status === 3) {
+						game.get('homeTeam').decrementLosses({silent: true});
+					} else if (status === 2) {
+						game.get('homeTeam').decrementTies({silent: true});
+					}
+					gamesToRemove.push(game);
+				}
+			});
+
+			_.uniq(gamesToRemove).forEach(function(game) {
+				games.remove(game);
+			});
 			this.save({wait: true});
 		},
-		onDestroyGame: function() {
+		onDestroyGame: function(model) {
+			console.log("Destroy game should NOT be called!!!!");
 			this.save({wait: true});
 		}
 	})
