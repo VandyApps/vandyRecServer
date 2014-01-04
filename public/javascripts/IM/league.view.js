@@ -143,7 +143,7 @@ Intramurals.View.Team = Backbone.View.extend({
 				});
 
 		confirmation.on('clicked1', function() {
-			$('td:nth-child(6)').popover('destroy');
+			$('td:nth-child(6)', this.$el).popover('destroy');
 			this.model.destroy();
 
 			confirmation.unbind('clicked1');
@@ -151,10 +151,11 @@ Intramurals.View.Team = Backbone.View.extend({
 		}.bind(this));
 
 		confirmation.on('clicked2', function() {
-			$('td:nth-child(6)', self.$el).popover('destroy');
+			//trigger click to prevent manual deleting
+			$('td:nth-child(6)', this.$el).trigger('click');
 			confirmation.unbind('clicked1');
 			confirmation.unbind('clicked2');
-		});
+		}.bind(this));
 
 		confirmation.show();
 	}
