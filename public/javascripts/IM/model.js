@@ -8,33 +8,42 @@ Intramurals.Model.Team = Backbone.UniqueModel(
 	Backbone.Model.extend({
 		idAttribute: "id",
 		incrementWins: function(options) {
-			this.set('wins', this.get('wins') + 1, {silent: options && options.silent});
+			options || (options = {});
+			this.set('wins', this.get('wins') + 1, options);
 		},
 		incrementLosses: function(options) {
-			this.set('losses', this.get('losses') + 1, {silent: options && options.silent});
+			options || (options = {});
+			this.set('losses', this.get('losses') + 1, options);
 		},
 		incrementTies: function(options) {
-			this.set('ties', this.get('ties') + 1, {silent: options && options.silent});
+			options || (options = {});
+			this.set('ties', this.get('ties') + 1, options);
 		},
 
 		decrementWins: function(options) {
-			this.set('wins', this.get('wins') - 1, {silent: options && options.silent});
+			options || (options = {});
+			this.set('wins', this.get('wins') - 1, options);
 		},
 		decrementLosses: function(options) {
-			this.set('losses', this.get('losses') - 1, {silent: options && options.silent});
+			options || (options = {});
+			this.set('losses', this.get('losses') - 1, options);
 		},
 		decrementTies: function(options) {
-			this.set('ties', this.get('ties') - 1, {silent: options && options.silent});
+			options || (options = {});
+			this.set('ties', this.get('ties') - 1, options);
 		},
 
 		setWinsToZero: function(options) {
-			this.set('wins', 0, {silent: options && options.silent});
+			options || (options = {});
+			this.set('wins', 0, options);
 		},
 		setLossesToZero: function(options) {
-			this.set('losses', 0, {silent: options && options.silent});
+			options || (options = {});
+			this.set('losses', 0, options);
 		},
 		setTiesToZero: function(options) {
-			this.set('ties', 0, {silent: options && options.silent});
+			options || (options = {});
+			this.set('ties', 0, options);
 		},
 		save: function() {
 			this.trigger('save', this);
