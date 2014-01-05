@@ -183,6 +183,7 @@ Intramurals.View.Game = Backbone.View.extend({
 					"<td style='text-align: center;' width='40' height= '25'><div>x</div></td>");
 
 			this.setupPopovers();
+			$('td:nth-child(8)', this.$el).click(this.onClickDelete.bind(this));
 		}
 	},
 
@@ -481,6 +482,28 @@ Intramurals.View.Game = Backbone.View.extend({
 		return Intramurals.View.TeamTable.getInstance().collection.reduce(function(memo, team) {
 			return memo + '<option value="'+team.id+'">'+team.get('name')+'</option>';
 		}, String());
+	},
+	onClickDelete: function() {
+		var confirmation = new ConfirmationBox({
+			message: 'Are you sure you would like to delete this game',
+			button1Name: 'YES',
+			button2Name: 'NO'
+		});
+
+		confirmation.show();
+		confirmation.on('clicked1', function() {
+			this.model.destroy();
+
+			confirmation.unbind('clicked1');
+			confirmation.unbind('clicked2');
+		}.bind(this));
+
+		confirmation.on('clicked1', function() {
+
+			confirmation.unbind('clicked1');
+			confirmation.unbind('clicked2');
+
+		}.bind(this));
 	}
 });
 

@@ -125,7 +125,9 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 		save: function() {
 			this.trigger("save", this);
 		},
-
+		destroy: function() {
+			this.trigger('destroy', this);
+		},
 		toJSON: function() {	
 			return {
 				homeTeam: (typeof this.get('homeTeam') === 'number') ? this.get('homeTeam') : this.get('homeTeam').id,
@@ -273,6 +275,7 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			response.season.games.each(function(game) {
 				game[setKey]('save', self.onSaveGames.bind(self));
 			});
+			response.season.games.on('destroy', this.onDestroyGame.bind(this));
 			response.season.playoffs[setKey]('save', self.onSavePlayoffs.bind(self));
 
 		},
@@ -311,18 +314,17 @@ Intramurals.Model.League = Backbone.UniqueModel(
 		onAddGame: function() {
 			this.save({wait: true});
 		},
-		onDestroyTeam: function(model) {
+		onDestroyTeam: function(team) {
 			var games = this.games(),
 			//cache games to remove until after iterating collection
 			//shouldn't delete elements in collection being iterated
 				gamesToRemove = [];
 			//destroy all games with this team
 			games.each(function(game) {
-				console.log("Iterating");
 				//silent score changed because after the save, all the views
 				//will be re-rendered anyway
 				var status = game.get('status');
-				if (game.get('homeTeam') === model) {
+				if (game.get('homeTeam') === team) {
 					if (status === 0 || status === 4) {
 						game.get('awayTeam').decrementLosses({silent: true});
 					} else if (status === 1 || status === 3) {
@@ -332,7 +334,7 @@ Intramurals.Model.League = Backbone.UniqueModel(
 					}
 					gamesToRemove.push(game);
 
-				} else if (game.get('awayTeam') === model) {
+				} else if (game.get('awayTeam') === team) {
 					if (status === 0 || status === 4) {
 						game.get('homeTeam').decrementWins({silent: true});
 					} else if (status === 1 || status === 3) {
@@ -349,8 +351,30 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			});
 			this.save({wait: true});
 		},
-		onDestroyGame: function(model) {
-			console.log("Destroy game should NOT be called!!!!");
+		onDestroyGame: function(game) {
+			var status = game.get('status'),
+				isTie = status === 2,
+				winningTeam = null,
+				losingTeam = null;
+
+			if (status === 0 || status === 4) {
+				winningTeam = game.get('homeTeam');
+				losingTeam = game.get('awayTeam');
+			} else if (status === 1 || status === 3) {
+				winningTeam = game.get('awayTeam');
+				losingTeam = game.get('homeTeam');
+			}
+
+			//silent decrementing wins and ties since views
+			//will be refreshed on save
+			if (winningTeam) {
+				winningTeam.decrementWins({silent: true});
+				losingTeam.decrementLosses({silent: true});
+			} else if (isTie) {
+				game.get('homeTeam').decrementTies({silent: true});
+				game.get('awayTeam').decrementTies({silent: true});
+			}
+
 			this.save({wait: true});
 		}
 	})
