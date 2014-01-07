@@ -308,20 +308,20 @@ Intramurals.Model.League = Backbone.UniqueModel(
 		},
 
 		onSaveTeams: function(model) {
-			this.save({wait: true});
+			this.save();
 		},
 		onSaveGames: function(model) {
-			this.save({wait: true});
+			this.save();
 
 		},
 		onSavePlayoffs: function(model) {
-			this.save({wait: true});
+			this.save();
 		},
 		onAddTeam: function() {
-			this.save({wait: true});
+			this.save();
 		},
 		onAddGame: function() {
-			this.save({wait: true});
+			this.save();
 		},
 		onDestroyTeam: function(team) {
 			var games = this.games(),
@@ -358,7 +358,7 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			_.uniq(gamesToRemove).forEach(function(game) {
 				games.remove(game);
 			});
-			this.save({wait: true});
+			this.save();
 		},
 		onDestroyGame: function(game) {
 			var status = game.get('status'),
@@ -377,14 +377,14 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			//silent decrementing wins and ties since views
 			//will be refreshed on save
 			if (winningTeam) {
-				winningTeam.decrementWins({silent: true});
-				losingTeam.decrementLosses({silent: true});
+				winningTeam.decrementWins();
+				losingTeam.decrementLosses();
 			} else if (isTie) {
 				game.get('homeTeam').decrementTies({silent: true});
 				game.get('awayTeam').decrementTies({silent: true});
 			}
 
-			this.save({wait: true});
+			this.save();
 		}
 	})
 );

@@ -637,7 +637,6 @@ Intramurals.View.GameTable = Backbone.View.extend({
 	};
 
 	function addGame() {
-		
 		if (mLeague.teams().length < 2) {
 			alert("Must have at least 2 teams before creating a game");
 		} else {
@@ -656,7 +655,6 @@ Intramurals.View.GameTable = Backbone.View.extend({
 		//from the server, instead of models that depend on Model.League to do so
 		Intramurals.View.TeamTable.getInstance().setCollection(mLeague.teams());
 		Intramurals.View.GameTable.getInstance().setCollection(mLeague.games());
-		
 	});
 	mLeague.fetch();
 	league = mLeague;
