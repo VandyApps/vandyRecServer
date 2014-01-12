@@ -399,7 +399,7 @@ Intramurals.Model.League = Backbone.UniqueModel(
 		},
 		onDestroyGame: function(game) {
 			//league.games().resetWLT();
-			//this.save();
+			this.save();
 		},
 		save: function(options) {
 			console.log("Saving");
