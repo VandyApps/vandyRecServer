@@ -85,3 +85,4 @@ Intramurals.View.Categories = Backbone.View.extend(
 		return Intramurals.View.Categories.instance;
 	}
 });
+

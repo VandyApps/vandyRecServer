@@ -492,10 +492,12 @@ Intramurals.View.Game = Backbone.View.extend({
 
 		confirmation.show();
 		confirmation.on('clicked1', function() {
-			this.model.destroy();
-
 			confirmation.unbind('clicked1');
 			confirmation.unbind('clicked2');
+
+			this.model.destroy();
+
+			
 		}.bind(this));
 
 		confirmation.on('clicked1', function() {
@@ -515,13 +517,22 @@ Intramurals.View.TeamTable = Backbone.View.extend({
 		return "<tr><td style='width: 19px; margin: auto;'></td><td style='width: 200px; text-align: left;'><strong>Team</strong></td><td style='width: 127px; margin: auto; text-align: center;'><strong>Won</strong></td><td style='width: 127px; margin: auto; text-align: center;'><strong>Lost</strong></td><td style='width: 127px; margin: auto; text-align: center;'><strong>Tied</strong></td></tr>";
 	},
 	setCollection: function(collection) {
-		if (this.collection) this.collection.off();
-
-		this.collection = collection;
-		this.teamsView = collection.map(function(team) {
-			return new Intramurals.View.Team({model: team});
+		
+		collection.on('destroy', function() {
+			console.log("Destroy was called on TEAM.  Make sure this isn't duplicated");
 		});
 		
+
+		var i, length = collection.length;
+		for (i = 0; i < collection.length; ++i) {
+			if (this.teamsView[i]) {
+				this.teamsView[i].setModel(collection.at(i));
+			} else {
+				this.teamsView[i] = new Intramurals.View.Team({model: collection.at(i)});
+			}
+		}
+		this.collection = collection;
+
 		this.render();
 	},
 	render: function() {
@@ -572,16 +583,41 @@ Intramurals.View.GameTable = Backbone.View.extend({
 		}.bind(this));
 	},
 	setCollection: function(collection) {
-		if (this.collection) this.collection.off();
-
+		collection.on('destroy', this.destroyGame.bind(this));
+		
+		var i, length = collection.length;
+		for (i = 0; i < collection.length; ++i) {
+			if (this.gamesView[i]) {
+				this.gamesView[i].setModel(collection.at(i));
+			} else {
+				this.gamesView[i] = new Intramurals.View.Game({model: collection.at(i)});
+			}
+		}
 		this.collection = collection;
-		this.gamesView = collection.map(function(game) {
-			return new Intramurals.View.Game({model: game});
-		});
+		
 		this.render();
 	},
-	removeGameAtIndex: function(index) {
+	destroyGame: function(model) {
+		var i, length = this.gamesView.length, isDone = false, gameView;
 
+		for (i = 0; i < length && !isDone; ++i) {
+			gameView = this.gamesView[i];
+			if (gameView.model.id === model.id) {
+				this.removeGameAtIndex(i);
+				isDone = true;
+			}
+		}
+	},
+	removeGameAtIndex: function(index) {
+		//delete element from the dom
+		$('tr:nth-child(' + (index+2).toString() + ')', this.$el).remove();
+
+		//delete Backbone view from the array
+		if (index === 0) {
+			this.gamesView = this.gamesView.slice(1, this.gamesView.length);
+		} else {
+			this.gamesView = this.gamesView.slice(0, index - 1).concat(this.gamesView.slice(index + 1, this.gamesView.length));
+		}
 	}
 },
 {

@@ -8,40 +8,49 @@ Intramurals.Model.Team = Backbone.UniqueModel(
 	Backbone.Model.extend({
 		idAttribute: "id",
 		incrementWins: function(options) {
+			console.log("Changing WLT");
 			options || (options = {});
 			this.set('wins', this.get('wins') + 1, options);
 		},
 		incrementLosses: function(options) {
+			console.log("Changing WLT");
 			options || (options = {});
 			this.set('losses', this.get('losses') + 1, options);
 		},
 		incrementTies: function(options) {
+			console.log("Changing WLT");
 			options || (options = {});
 			this.set('ties', this.get('ties') + 1, options);
 		},
 
 		decrementWins: function(options) {
+			console.log("Changing WLT");
 			options || (options = {});
 			this.set('wins', this.get('wins') - 1, options);
 		},
 		decrementLosses: function(options) {
+			console.log("Changing WLT");
 			options || (options = {});
 			this.set('losses', this.get('losses') - 1, options);
 		},
 		decrementTies: function(options) {
+			console.log("Changing WLT");
 			options || (options = {});
 			this.set('ties', this.get('ties') - 1, options);
 		},
 
 		setWinsToZero: function(options) {
+			console.log("Normalizing WLT");
 			options || (options = {});
 			this.set('wins', 0, options);
 		},
 		setLossesToZero: function(options) {
+			console.log("Normalizing WLT");
 			options || (options = {});
 			this.set('losses', 0, options);
 		},
 		setTiesToZero: function(options) {
+			console.log("Normalizing WLT");
 			options || (options = {});
 			this.set('ties', 0, options);
 		},
@@ -89,8 +98,6 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 				prevStatus = this.previous('status'),
 				teamsToUpdate = [];
 
-			console.log("Current status: " + this.get('status'));
-			console.log("Previous status: " + this.previous('status'));
 			if (status === 0 || status === 4) {
 				this.get('homeTeam').incrementWins({silent: true});
 				this.get('awayTeam').incrementLosses({silent: true});
@@ -208,6 +215,36 @@ Intramurals.Model.Games = Backbone.Collection.extend({
 	},
 	comparator: function(game) {	
 		return DateHelper.dateFromDateString(game.get('date')).getTime();
+	},
+	remove: function(game, options) {
+		console.log("Game collection::remove");
+		//do pre-processing before destroying the game
+		var status = game.get('status'),
+			isTie = status === 2,
+			winningTeam = null,
+			losingTeam = null;
+
+		if (status === 0 || status === 4) {
+			winningTeam = game.get('homeTeam');
+			losingTeam = game.get('awayTeam');
+		} else if (status === 1 || status === 3) {
+			winningTeam = game.get('awayTeam');
+			losingTeam = game.get('homeTeam');
+		}
+		
+		//silent decrementing wins and ties since views
+		//will be refreshed on save
+		/*
+		if (winningTeam) {
+			winningTeam.decrementWins({silent: true});
+			losingTeam.decrementLosses({silent: true});
+		} else if (isTie) {
+			game.get('homeTeam').decrementTies({silent: true});
+			game.get('awayTeam').decrementTies({silent: true});
+		}*/
+
+		//call the original remove method here to do the rest of the work
+		Backbone.Collection.prototype.remove.call(this, game, options);
 	}
 	
 });
@@ -361,30 +398,12 @@ Intramurals.Model.League = Backbone.UniqueModel(
 			this.save();
 		},
 		onDestroyGame: function(game) {
-			var status = game.get('status'),
-				isTie = status === 2,
-				winningTeam = null,
-				losingTeam = null;
-
-			if (status === 0 || status === 4) {
-				winningTeam = game.get('homeTeam');
-				losingTeam = game.get('awayTeam');
-			} else if (status === 1 || status === 3) {
-				winningTeam = game.get('awayTeam');
-				losingTeam = game.get('homeTeam');
-			}
-
-			//silent decrementing wins and ties since views
-			//will be refreshed on save
-			if (winningTeam) {
-				winningTeam.decrementWins();
-				losingTeam.decrementLosses();
-			} else if (isTie) {
-				game.get('homeTeam').decrementTies({silent: true});
-				game.get('awayTeam').decrementTies({silent: true});
-			}
-
-			this.save();
+			//league.games().resetWLT();
+			//this.save();
+		},
+		save: function(options) {
+			console.log("Saving");
+			Backbone.Model.prototype.save.call(this, options);
 		}
 	})
 );
