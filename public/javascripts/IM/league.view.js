@@ -517,22 +517,24 @@ Intramurals.View.TeamTable = Backbone.View.extend({
 		return "<tr><td style='width: 19px; margin: auto;'></td><td style='width: 200px; text-align: left;'><strong>Team</strong></td><td style='width: 127px; margin: auto; text-align: center;'><strong>Won</strong></td><td style='width: 127px; margin: auto; text-align: center;'><strong>Lost</strong></td><td style='width: 127px; margin: auto; text-align: center;'><strong>Tied</strong></td></tr>";
 	},
 	setCollection: function(collection) {
-		
-		collection.on('destroy', function() {
-			console.log("Destroy was called on TEAM.  Make sure this isn't duplicated");
-		});
-		
-		var i, length = collection.length;
-		for (i = 0; i < collection.length; ++i) {
-			if (this.teamsView[i]) {
-				this.teamsView[i].setModel(collection.at(i));
-			} else {
-				this.teamsView[i] = new Intramurals.View.Team({model: collection.at(i)});
+		//this is bad, should register for events instead of rerendering
+		if (collection !== this.collection) {
+			
+			if (this.teamsView.length > collection.length) {
+				this.teamsView = this.teamsView.slice(0, collection.length - 1);
 			}
-		}
-		this.collection = collection;
-		//for chaining
-		this.render();
+
+			for (i = 0; i < collection.length; ++i) {
+				if (this.teamsView[i]) {
+					this.teamsView[i].setModel(collection.at(i));
+				} else {
+					this.teamsView[i] = new Intramurals.View.Team({model: collection.at(i)});
+				}
+			}
+			this.collection = collection;
+			//for chaining
+			this.render();
+		}	
 	},
 	render: function() {
 		console.log("Rendering the team table");
