@@ -522,7 +522,6 @@ Intramurals.View.TeamTable = Backbone.View.extend({
 			console.log("Destroy was called on TEAM.  Make sure this isn't duplicated");
 		});
 		
-
 		var i, length = collection.length;
 		for (i = 0; i < collection.length; ++i) {
 			if (this.teamsView[i]) {
@@ -532,10 +531,12 @@ Intramurals.View.TeamTable = Backbone.View.extend({
 			}
 		}
 		this.collection = collection;
-
+		//for chaining
 		this.render();
 	},
 	render: function() {
+		console.log("Rendering the team table");
+
 		this.teamsView.forEach(function(teamView, index) {
 			if (index) {
 				this.$el.find('tbody').append("<tr></tr>");
@@ -571,11 +572,14 @@ Intramurals.View.GameTable = Backbone.View.extend({
 		return "<tr><td style='text-align: center;' width='70' height='25'><span><strong>Date</strong></span></td><td style='text-align: center;' width='80' height='25'><strong>Time</strong></td><td style='text-align: center;' width='20' height='25'><strong>"+this.locationRoot+"</strong></td><td style='text-align: left;' width='210' height='25'><strong>Home </strong></td><td style='text-align: center;' width='30' height='25'><strong>VS </strong></td><td style='text-align: left;' width='210' height='25'><strong>Away </strong></td><td style='text-align: center;' width='70' height='25'><span><strong>Score </strong></span></td></tr>";
 	},
 	render: function() {
+		console.log("Rendering the game table");
 		this.gamesView.forEach(function(gameView, index) {
+
+			//check if the index is at the table header
 			if (index) {
 				this.$el.find('tbody').append("<tr></tr>");
 			} else {
-				//initial element
+				//initial element, resets the entire tbody
 				this.$el.find('tbody').html(this.tableHeader() + "<tr></tr>");
 			}
 			gameView.$el = this.$el.find("tbody tr:nth-child("+(index+2)+")");
@@ -583,19 +587,24 @@ Intramurals.View.GameTable = Backbone.View.extend({
 		}.bind(this));
 	},
 	setCollection: function(collection) {
-		collection.on('destroy', this.destroyGame.bind(this));
 		
-		var i, length = collection.length;
-		for (i = 0; i < collection.length; ++i) {
-			if (this.gamesView[i]) {
-				this.gamesView[i].setModel(collection.at(i));
-			} else {
-				this.gamesView[i] = new Intramurals.View.Game({model: collection.at(i)});
+		if (collection !== this.collection) {
+
+			//fix the games view
+			if (this.gamesView.length > collection.length) {
+				this.gamesView = this.gamesView.slice(0, collection.length - 1);
 			}
+
+			for (i = 0; i < collection.length; ++i) {
+				if (this.gamesView[i]) {
+					this.gamesView[i].setModel(collection.at(i));
+				} else {
+					this.gamesView[i] = new Intramurals.View.Game({model: collection.at(i)});
+				}
+			}
+			this.collection = collection;
+			this.render();
 		}
-		this.collection = collection;
-		
-		this.render();
 	},
 	destroyGame: function(model) {
 		var i, length = this.gamesView.length, isDone = false, gameView;
@@ -690,6 +699,7 @@ Intramurals.View.GameTable = Backbone.View.extend({
 		//models are defined, would have to make each Game/Team a model that fetches
 		//from the server, instead of models that depend on Model.League to do so
 		Intramurals.View.TeamTable.getInstance().setCollection(mLeague.teams());
+												
 		Intramurals.View.GameTable.getInstance().setCollection(mLeague.games());
 	});
 	mLeague.fetch();

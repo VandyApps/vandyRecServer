@@ -234,14 +234,14 @@ Intramurals.Model.Games = Backbone.Collection.extend({
 		
 		//silent decrementing wins and ties since views
 		//will be refreshed on save
-		/*
+		
 		if (winningTeam) {
 			winningTeam.decrementWins({silent: true});
 			losingTeam.decrementLosses({silent: true});
 		} else if (isTie) {
 			game.get('homeTeam').decrementTies({silent: true});
 			game.get('awayTeam').decrementTies({silent: true});
-		}*/
+		}
 
 		//call the original remove method here to do the rest of the work
 		Backbone.Collection.prototype.remove.call(this, game, options);
