@@ -543,17 +543,18 @@ Intramurals.View.TeamTable = Backbone.View.extend({
 	render: function() {
 		console.log("Rendering the team table");
 
+		//set up the table header
+		this.$el.find('tbody').html(this.tableHeader());
 		this.teamsView.forEach(function(teamView, index) {
-			if (index) {
-				this.$el.find('tbody').append("<tr></tr>");
-			} else {
-				this.$el.find('tbody').html(this.tableHeader() + "<tr></tr>");
-			}
 			
+			this.$el.find('tbody').append("<tr></tr>");
+			//set the count so the team view can find itself in the table
 			teamView.count = index + 1;
 			teamView.$el = this.$el.find("tbody tr:nth-child(" + (index + 2) + ")");
 			teamView.render();
+
 		}.bind(this));
+		console.log("Done rendering");
 	},
 	removeTeamAtIndex: function(index) {
 
@@ -704,8 +705,10 @@ Intramurals.View.GameTable = Backbone.View.extend({
 		//this is inefficient, cannot change without fixing the api and how
 		//models are defined, would have to make each Game/Team a model that fetches
 		//from the server, instead of models that depend on Model.League to do so
+		console.log("Refreshing team table");
 		Intramurals.View.TeamTable.getInstance().setCollection(mLeague.teams());
 												
+		console.log("Refreshing game table");
 		Intramurals.View.GameTable.getInstance().setCollection(mLeague.games());
 	});
 	mLeague.fetch();
