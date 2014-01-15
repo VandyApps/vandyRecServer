@@ -133,7 +133,6 @@ Intramurals.Model.Game = Backbone.UniqueModel(
 			}
 
 			_.uniq(teamsToUpdate, function(updateHash) {
-				console.log("Teams to update called");
 				var splitHash = updateHash.split(" ");
 				(new Intramurals.Model.Team({id: +splitHash[0]})).trigger('change:'+splitHash[1]);
 			});

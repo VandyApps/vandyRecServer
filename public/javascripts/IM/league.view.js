@@ -57,21 +57,19 @@ Intramurals.View.Team = Backbone.View.extend({
 		return 'popover-team-delete-' + this.model.id;
 	},
 	setModel: function(model) {
-		if (this.model) this.model.off({
-			'change:name': this.onNameChange.bind(this),
-			'change:wins': this.onWinsChange.bind(this),
-			'change:losses': this.onLossesChange.bind(this),
-			'change:ties': this.onTiesChange.bind(this)
-		});
-
-		this.model = model;
-		this.model.on({
-			'change:name': this.onNameChange.bind(this),
-			'change:wins': this.onWinsChange.bind(this),
-			'change:losses': this.onLossesChange.bind(this),
-			'change:ties': this.onTiesChange.bind(this)
-		});
-
+		if (model !== this.model) {
+			if (!this.setModel.mainCallbackMap) {
+				this.setModel.mainCallbackMap = {
+					'change:name': this.onNameChange.bind(this),
+					'change:wins': this.onWinsChange.bind(this),
+					'change:losses': this.onLossesChange.bind(this),
+					'change:ties': this.onTiesChange.bind(this)
+				};
+			}
+			this.model.off(this.setModel.mainCallbackMap);
+			this.model = model;
+			this.model.on(this.setModel.mainCallbackMap);
+		}
 	},
 	numberToTally: function(num) {
 		var html = "";
@@ -187,32 +185,38 @@ Intramurals.View.Game = Backbone.View.extend({
 		}
 	},
 
+	//assuming you are not setting the model to null
+	//must set to valid backbone object of type Intramurals.Team
 	setModel: function(model) {
-		if (this.model) this.model.off({
-			'change:date': this.onChangeDate.bind(this),
-			'change:time': this.onChangeTime.bind(this),
-			'change:location': this.onChangeLocation.bind(this),
-			'change:homeTeam': this.onChangeHomeTeam.bind(this),
-			'change:awayTeam': this.onChangeAwayTeam.bind(this),
-			'change:homeScore': this.onChangeScore.bind(this),
-			'change:awayScore': this.onChangeScore.bind(this),
-			'change:status': this.onChangeScore.bind(this)
-		});
+		if (this.model !== model) {
+			if (!this.setModel.mainCallbackMap) {
+				this.setModel.mainCallbackMap = {
+					'change:date': this.onChangeDate.bind(this),
+					'change:time': this.onChangeTime.bind(this),
+					'change:location': this.onChangeLocation.bind(this),
+					'change:homeTeam': this.onChangeHomeTeam.bind(this),
+					'change:awayTeam': this.onChangeAwayTeam.bind(this),
+					'change:homeScore': this.onChangeScore.bind(this),
+					'change:awayScore': this.onChangeScore.bind(this),
+					'change:status': this.onChangeScore.bind(this)
+				};
+				this.setModel.homeTeamCallbackMap = {
+					'homeTeam': this.onChangeHomeTeam.bind(this)
+				};
+				this.setModel.awayTeamCallbackMap = {
+					'awayTeam' : this.onChangeAwayTeam.bind(this)
+				};
+			}
+			
+			this.model.off(this.setModel.mainCallbackMap);
+			this.model.get('homeTeam').off(this.setModel.homeTeamCallbackMap);
+			this.model.get('awayTeam').off(this.setModel.awayTeamCallbackMap);
 
-		this.model = model;
-		this.model.on({
-			'change:date': this.onChangeDate.bind(this),
-			'change:time': this.onChangeTime.bind(this),
-			'change:location': this.onChangeLocation.bind(this),
-			'change:homeTeam': this.onChangeHomeTeam.bind(this),
-			'change:awayTeam': this.onChangeAwayTeam.bind(this),
-			'change:homeScore': this.onChangeScore.bind(this),
-			'change:awayScore': this.onChangeScore.bind(this),
-			'change:status': this.onChangeStatus.bind(this)
-		});
-
-		this.model.get('homeTeam').on('change:name', this.onChangeHomeTeam.bind(this));
-		this.model.get('awayTeam').on('change:name', this.onChangeAwayTeam.bind(this));
+			this.model = model;
+			this.model.on(this.setModel.mainCallbackMap);
+			this.model.get('homeTeam').on(this.setModel.homeTeamCallbackMap);
+			this.model.get('awayTeam').on(this.setModel.awayTeamCallbackMap);
+		}
 
 	},
 	relativeLocation: function() {
